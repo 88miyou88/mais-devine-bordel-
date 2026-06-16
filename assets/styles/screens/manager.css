@@ -1,0 +1,24 @@
+/* Gestion */
+.manage-card{height:100%;max-height:100%;display:flex;flex-direction:column;overflow:hidden}
+.manage-header{flex:0 0 auto;display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.manage-mode-tabs{flex:0 0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
+.mode-tab{--mode-color:var(--accent);min-height:43px;border:1px solid color-mix(in srgb,var(--mode-color) 45%,transparent);border-radius:12px;background:color-mix(in srgb,var(--mode-color) 7%,transparent);color:var(--muted);font-weight:900}
+.mode-tab.selected{color:#111318;background:var(--mode-color)}
+.manage-toolbar{flex:0 0 auto;display:grid;grid-template-columns:minmax(180px,1.4fr) minmax(150px,.9fr) auto auto;gap:8px}
+.search-input,.select-input{min-width:0;width:100%}
+.manage-stats{flex:0 0 auto;margin:10px 2px 8px;color:var(--muted);font-size:.9rem}
+.card-list{flex:1 1 auto;min-height:0;overflow-y:auto;border:1px solid var(--outline);border-radius:15px}
+.manage-card-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 12px;border-bottom:1px solid var(--outline);background:rgba(255,255,255,.018)}
+.manage-card-row:last-child{border-bottom:0}.manage-card-row.inactive{opacity:.52}
+.manage-card-main{min-width:0;display:flex;flex-direction:column;gap:3px}
+.manage-card-main strong,.manage-card-main span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.manage-card-main>span{color:var(--muted)}
+.card-badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.box-badge,.difficulty-badge{display:inline-flex;align-self:flex-start;max-width:100%;padding:3px 7px;border-radius:999px;font-size:.72rem;font-weight:800}
+.box-badge{background:rgba(185,129,255,.13);color:#d8b9ff!important}
+.difficulty-badge.easy{background:rgba(72,224,125,.1);color:var(--green)!important}
+.difficulty-badge.medium{background:rgba(255,173,69,.1);color:var(--mime)!important}
+.difficulty-badge.hard{background:rgba(255,91,103,.1);color:var(--red)!important}
+.manage-card-actions{display:grid;grid-template-columns:repeat(2,auto);gap:6px}
+.icon-button{min-height:34px;padding:6px 9px;border-radius:10px;background:var(--panel-3);color:var(--text);border:1px solid var(--outline);font-size:.78rem;font-weight:800}
+.icon-button.danger{color:var(--red)}
+.empty-list{margin:0;padding:24px;color:var(--muted);text-align:center}

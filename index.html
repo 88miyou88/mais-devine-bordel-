@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#111318">
+  <meta name="description" content="Mais devine, bordel ! — jeu de cartes personnalisable à poser sur le front.">
+  <title>Mais devine, bordel !</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
+  <link rel="stylesheet" href="./assets/styles/foundation.css">
+  <link rel="stylesheet" href="./assets/styles/components.css">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css">
+</head>
+<body>
+  <main id="app">
+    <section id="homeScreen" class="screen active" aria-labelledby="appTitle">
+      <div class="home-card">
+        <header class="home-topbar">
+          <div class="home-brand">
+            <h1 id="appTitle">Mais devine, bordel !</h1>
+          </div>
+
+          <fieldset id="globalTimerSettings" class="timer-settings home-timer-settings">
+            <legend>Durée de la manche</legend>
+            <div class="preset-row" role="radiogroup" aria-label="Durée">
+              <button class="duration-btn" data-seconds="30" type="button">30 s</button>
+              <button class="duration-btn selected" data-seconds="60" type="button">60 s</button>
+              <button class="duration-btn" data-seconds="90" type="button">90 s</button>
+            </div>
+            <label class="custom-duration">
+              Personnalisée
+              <span>
+                <input id="customSeconds" type="number" min="10" max="600" step="5" inputmode="numeric" placeholder="45">
+                s
+              </span>
+            </label>
+          </fieldset>
+        </header>
+
+        <fieldset class="mode-selection-panel">
+          <legend>Modes de jeu</legend>
+          <div class="selection-topline">
+            <strong id="availableCount">0 carte disponible</strong>
+            <div>
+              <button id="selectAllButton" class="mini-button" type="button">Tout</button>
+              <button id="selectNoneButton" class="mini-button" type="button">Aucun</button>
+            </div>
+          </div>
+          <div id="modeSelectionList" class="mode-app-grid"></div>
+        </fieldset>
+
+        <div class="home-action-bar">
+          <button id="startButton" class="primary-button home-start-button" type="button">Lancer la partie</button>
+          <button id="manageCardsButton" class="secondary-button home-compact-button" type="button">Gérer les cartes</button>
+          <button id="installButton" class="secondary-button home-compact-button hidden" type="button">Installer</button>
+
+          <details class="settings-panel">
+            <summary>⚙ Réglages</summary>
+            <div class="settings-content">
+              <label class="toggle-row">
+                <span>
+                  <strong>Vibrations</strong>
+                  <small>Petites impulsions = validé · vibration longue = passé</small>
+                </span>
+                <input id="vibrationToggle" type="checkbox" checked>
+              </label>
+
+              <div class="test-vibrations">
+                <button id="testValidVibrationButton" class="mini-button valid-test" type="button">Tester « validé »</button>
+                <button id="testPassVibrationButton" class="mini-button pass-test" type="button">Tester « passé »</button>
+              </div>
+
+              <details id="advancedSettingsPanel" class="advanced-settings">
+                <summary>Paramètres avancés</summary>
+                <div class="advanced-settings-content">
+                  <p class="advanced-explanation">
+                    Chaque mode possède sa bibliothèque officielle GitHub. Les cartes personnelles et les modifications restent sur ce téléphone.
+                  </p>
+
+                  <div id="libraryVersionList" class="library-version-list"></div>
+
+                  <p id="libraryLastChecked" class="library-last-checked">Dernière vérification : jamais</p>
+                  <p id="libraryStatusMessage" class="library-status-message">Bibliothèques chargées.</p>
+
+                  <div class="advanced-actions">
+                    <button id="checkLibrariesButton" class="secondary-button compact-button" type="button">Vérifier les mises à jour</button>
+                    <button id="updateLibrariesButton" class="primary-button compact-button" type="button" disabled>Mettre à jour les bibliothèques</button>
+                    <button id="exportBackupButton" class="secondary-button compact-button" type="button">Exporter une sauvegarde</button>
+                    <button id="restoreBackupButton" class="secondary-button compact-button" type="button">Restaurer une sauvegarde</button>
+                    <input id="restoreBackupInput" class="hidden" type="file" accept=".json,application/json">
+                    <button id="diagnosticButton" class="secondary-button compact-button" type="button">Diagnostic</button>
+                    <button id="resetLibrariesButton" class="danger-button compact-button" type="button">Réinitialiser les bibliothèques officielles</button>
+                  </div>
+
+                  <p class="advanced-warning">
+                    La réinitialisation annule les modifications locales des cartes officielles, mais conserve les cartes et boîtes personnelles.
+                  </p>
+                </div>
+              </details>
+            </div>
+          </details>
+
+          <button id="flipHomeButton" class="secondary-button home-compact-button" type="button">↻ Retourner</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="manageScreen" class="screen">
+      <div class="manage-card">
+        <header class="manage-header">
+          <button id="manageBackButton" class="secondary-button compact-button" type="button">← Accueil</button>
+          <div>
+            <p class="eyebrow">Contenu du jeu</p>
+            <h2>Gérer les cartes</h2>
+          </div>
+        </header>
+
+        <div id="manageModeTabs" class="manage-mode-tabs"></div>
+
+        <div class="manage-toolbar">
+          <input id="cardSearchInput" class="search-input" type="search" placeholder="Rechercher une carte…">
+          <select id="manageBoxFilter" class="select-input" aria-label="Filtrer par boîte"></select>
+          <button id="addCardButton" class="primary-button compact-button" type="button">+ Ajouter une carte</button>
+          <button id="manageBoxesButton" class="secondary-button compact-button" type="button">Gérer les boîtes</button>
+        </div>
+
+        <p id="manageStats" class="manage-stats"></p>
+        <div id="cardList" class="card-list"></div>
+      </div>
+    </section>
+
+    <section id="countdownScreen" class="screen" aria-live="assertive">
+      <div id="countdownValue" class="countdown-value">3</div>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <header class="game-header">
+        <div class="time-block" aria-label="Temps restant">
+          <span class="header-label">TEMPS</span>
+          <span id="timeDisplay" class="time-display">60</span>
+        </div>
+        <div class="score-block valid">
+          <span class="header-label">VALIDÉES</span>
+          <span id="validScore">0</span>
+        </div>
+        <div class="score-block passed">
+          <span class="header-label">PASSÉES</span>
+          <span id="passScore">0</span>
+        </div>
+      </header>
+
+      <div class="swipe-stage">
+        <article id="gameCard" class="game-card" aria-live="polite">
+          <div id="leftSwipeGuide" class="swipe-guide swipe-guide-left guide-pass" data-result="pass" aria-hidden="true">
+            <span class="guide-arrow">&lt;</span>
+            <span class="guide-word">PASSÉE</span>
+          </div>
+
+          <div id="rightSwipeGuide" class="swipe-guide swipe-guide-right guide-valid" data-result="valid" aria-hidden="true">
+            <span class="guide-word">VALIDÉE</span>
+            <span class="guide-arrow">&gt;</span>
+          </div>
+
+          <p id="gameModeLabel" class="mode-label">DEVINER LES PAROLES</p>
+
+          <div id="lyricsGameContent" class="mode-card-content">
+            <p id="promptText" class="prompt-text"></p>
+            <div class="separator">…</div>
+            <p id="answerText" class="answer-text"></p>
+          </div>
+
+          <div id="mimeGameContent" class="mode-card-content hidden">
+            <p id="mimePromptText" class="mime-prompt-text"></p>
+          </div>
+
+          <div id="wordsGameContent" class="mode-card-content hidden">
+            <p id="wordPromptText" class="word-prompt-text"></p>
+            <div id="forbiddenWordsBlock" class="forbidden-words-block">
+              <span class="forbidden-title">MOTS INTERDITS</span>
+              <div id="forbiddenWordsList" class="forbidden-words-list"></div>
+            </div>
+          </div>
+
+          <div id="cardMeta" class="card-meta">
+            <span id="cardMetaPrimary"></span>
+            <span id="cardMetaSecondary"></span>
+          </div>
+        </article>
+      </div>
+
+      <div id="pauseOverlay" class="pause-overlay hidden" role="dialog" aria-modal="true">
+        <p>PAUSE</p>
+        <button id="resumeOverlayButton" class="primary-button" type="button">Reprendre</button>
+      </div>
+
+      <footer class="game-controls">
+        <button id="undoButton" class="control-button" type="button" disabled>↶ Retour</button>
+        <button id="pauseButton" class="control-button" type="button">Ⅱ Pause</button>
+        <button id="flipGameButton" class="control-button" type="button">↻ Retourner</button>
+        <button id="endButton" class="control-button danger" type="button">■ Terminer</button>
+      </footer>
+    </section>
+
+    <section id="drawRevealScreen" class="screen draw-screen">
+      <div class="draw-reveal-card">
+        <div id="drawPromptPanel">
+          <p class="draw-mode-kicker">DESSINE-MOI ÇA !</p>
+          <p id="drawAttemptLabel" class="draw-attempt-label">Dessin 1 sur 3</p>
+
+          <button id="drawRevealPromptButton" class="draw-reveal-prompt-button" type="button" aria-pressed="false">
+            <span id="drawRevealPrompt">Appuie pour révéler le mot</span>
+            <small>Écran face au dessinateur uniquement</small>
+          </button>
+
+          <p id="drawRevealMeta" class="draw-reveal-meta hidden">Catégorie · Difficulté</p>
+          <p class="draw-rule-reminder">Pas de lettres, de mots ni de chiffres qui donnent la réponse.</p>
+          <div class="draw-reveal-actions draw-reveal-actions-direct">
+            <button id="drawOnPhoneButton" class="primary-button draw-primary" type="button" disabled>Je gribouille ici</button>
+            <button id="drawOnPaperButton" class="secondary-button" type="button" disabled>Je massacre une feuille</button>
+            <button id="drawSkipRevealButton" class="danger-button" type="button" disabled>Passer ce dessin</button>
+          </div>
+          <p class="draw-choice-note">Le chrono démarre seulement après le choix du support.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="drawPlayScreen" class="screen draw-screen">
+      <div class="draw-play-shell">
+        <div class="draw-workspace">
+          <div class="draw-canvas-hud" aria-live="polite">
+            <div class="draw-hud-progress">
+              <strong id="drawPlayProgress">Dessin 1/3</strong>
+              <span id="drawLiveScore">0 point</span>
+            </div>
+            <div id="drawTimerDisplay" class="draw-timer-display">30</div>
+          </div>
+
+          <div id="drawCanvasArea" class="draw-canvas-area">
+            <canvas id="drawingCanvas" aria-label="Zone de dessin"></canvas>
+          </div>
+
+          <div id="drawPaperArea" class="draw-paper-area hidden">
+            <div class="paper-icon" aria-hidden="true">▱</div>
+            <h2>Massacre la feuille !</h2>
+            <p>Le mot est caché. Dessine jusqu’à ce qu’il soit trouvé ou que le chrono explose.</p>
+          </div>
+
+          <div class="draw-side-stack draw-side-stack-left">
+            <button id="drawFoundButton" class="draw-result-button draw-found-button" type="button" aria-label="Maintenir une demi-seconde pour valider">
+              <span class="draw-result-icon" aria-hidden="true">✓</span>
+              <span>Trouvé</span>
+              <small>0,5 s</small>
+            </button>
+
+            <div id="drawColorChoices" class="draw-side-toolbar draw-color-choices" aria-label="Couleurs">
+              <button class="draw-color selected" type="button" data-color="#111318" style="--swatch:#111318" aria-label="Noir"></button>
+              <button class="draw-color" type="button" data-color="#e53935" style="--swatch:#e53935" aria-label="Rouge"></button>
+              <button class="draw-color" type="button" data-color="#1976d2" style="--swatch:#1976d2" aria-label="Bleu"></button>
+              <button class="draw-color" type="button" data-color="#2e7d32" style="--swatch:#2e7d32" aria-label="Vert"></button>
+              <button class="draw-color" type="button" data-color="#f9a825" style="--swatch:#f9a825" aria-label="Jaune"></button>
+              <button class="draw-color" type="button" data-color="#8e24aa" style="--swatch:#8e24aa" aria-label="Violet"></button>
+            </div>
+          </div>
+
+          <div class="draw-side-stack draw-side-stack-right">
+            <button id="drawPassButton" class="draw-result-button draw-pass-button" type="button" aria-label="Maintenir une demi-seconde pour passer">
+              <span class="draw-result-icon" aria-hidden="true">✕</span>
+              <span>Passer</span>
+              <small>0,5 s</small>
+            </button>
+
+            <div id="drawToolsPanel" class="draw-side-toolbar draw-tools-panel" aria-label="Outils de dessin">
+              <label class="draw-size-control" aria-label="Épaisseur du trait">
+                <span class="draw-size-icon" aria-hidden="true">●</span>
+                <input id="drawBrushSize" type="range" min="2" max="24" value="7" aria-label="Épaisseur du trait">
+              </label>
+              <button id="drawEraserButton" class="draw-tool-button draw-icon-button" type="button" aria-label="Passer à la gomme" title="Gomme">
+                <span id="drawToolIcon" aria-hidden="true"></span>
+              </button>
+              <button id="drawUndoButton" class="draw-tool-button draw-icon-button" type="button" aria-label="Annuler le dernier trait" title="Annuler">
+                <span class="draw-undo-icon" aria-hidden="true">↶</span>
+              </button>
+              <button id="drawClearButton" class="draw-tool-button draw-icon-button draw-trash-button" type="button" aria-label="Tout effacer" title="Tout effacer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-1 11H8L7 9Zm3 2v7m4-7v7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultsScreen" class="screen">
+      <div class="results-card">
+        <p class="eyebrow">Manche terminée</p>
+        <h2>Résultats</h2>
+
+        <div class="result-summary">
+          <div><strong id="resultValid">0</strong><span id="resultValidLabel">validées</span></div>
+          <div><strong id="resultPassed">0</strong><span id="resultPassedLabel">passées</span></div>
+          <div><strong id="resultTotal">0</strong><span id="resultTotalLabel">jouées</span></div>
+        </div>
+
+        <div id="resultDetails" class="result-details"></div>
+
+        <div class="results-actions">
+          <button id="replayButton" class="primary-button" type="button">Rejouer</button>
+          <button id="homeButton" class="secondary-button" type="button">Accueil</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="modeConfigDialog" class="mode-config-dialog">
+    <form>
+      <div id="modeDialogHero" class="mode-dialog-hero">
+        <div id="modeDialogIcon" class="mode-dialog-icon" aria-hidden="true"></div>
+        <div class="mode-dialog-heading">
+          <p class="mode-dialog-title-line"><span>Mode de jeu :</span> <strong id="modeDialogTitle">Mode</strong></p>
+          <p id="modeDialogDescription"></p>
+        </div>
+        <button id="closeModeDialogButton" class="close-button mode-dialog-close" type="button" aria-label="Fermer">×</button>
+      </div>
+
+      <div class="mode-dialog-body">
+        <label class="mode-enable-row">
+          <span>
+            <strong>Inclure ce mode dans la partie</strong>
+            <small id="modeDialogCount">0 carte sélectionnée</small>
+          </span>
+          <input id="modeEnabledInput" type="checkbox" checked>
+        </label>
+
+        <section class="mode-rule-card">
+          <h3>Comment jouer ?</h3>
+          <ul id="modeRulesList"></ul>
+        </section>
+
+        <section class="mode-setting-section">
+          <div class="section-title-row">
+            <div>
+              <h3>Difficulté</h3>
+              <p>Ce filtre s’applique à toutes les catégories du mode.</p>
+            </div>
+          </div>
+          <div id="modeDifficultyChoices" class="difficulty-choice-grid"></div>
+        </section>
+
+        <section id="wordsSpecialSettings" class="mode-setting-section hidden">
+          <label class="special-option-row">
+            <span>
+              <strong>Afficher les mots interdits</strong>
+              <small>Ils apparaîtront en rouge sous le mot à faire deviner.</small>
+            </span>
+            <input id="showForbiddenWordsInput" type="checkbox" checked>
+          </label>
+        </section>
+
+        <section id="drawSpecialSettings" class="mode-setting-section hidden">
+          <p class="draw-autonomous-note"><strong>Version actuelle :</strong> ce mode se joue seul. L’intégration aux manches mélangées arrivera ensuite.</p>
+          <div class="draw-config-grid">
+            <label>
+              Nombre de dessins
+              <select id="drawAttemptCountInput">
+                <option value="3">3 dessins</option>
+                <option value="5">5 dessins</option>
+                <option value="7">7 dessins</option>
+                <option value="10">10 dessins</option>
+              </select>
+            </label>
+            <label>
+              Facile
+              <span><input id="drawEasySecondsInput" type="number" min="10" max="120" step="5" value="30"> s</span>
+            </label>
+            <label>
+              Moyen
+              <span><input id="drawMediumSecondsInput" type="number" min="10" max="120" step="5" value="45"> s</span>
+            </label>
+            <label>
+              Difficile
+              <span><input id="drawHardSecondsInput" type="number" min="10" max="180" step="5" value="60"> s</span>
+            </label>
+          </div>
+          <label class="special-option-row draw-sound-option">
+            <span>
+              <strong>Son à la fin du chrono</strong>
+              <small>La vibration reste active selon le réglage général.</small>
+            </span>
+            <input id="drawSoundEnabledInput" type="checkbox" checked>
+          </label>
+        </section>
+
+        <section class="mode-setting-section">
+          <div class="section-title-row">
+            <div>
+              <h3>Catégories</h3>
+              <p>Choisis les boîtes utilisées pour ce mode.</p>
+            </div>
+            <div class="section-mini-actions">
+              <button id="modeSelectAllBoxesButton" class="mini-button" type="button">Tout</button>
+              <button id="modeSelectNoBoxesButton" class="mini-button" type="button">Aucun</button>
+            </div>
+          </div>
+          <div id="modeBoxChoices" class="mode-box-choice-grid"></div>
+        </section>
+      </div>
+
+      <div class="dialog-actions one-column mode-dialog-actions">
+        <button id="doneModeDialogButton" class="primary-button" type="button">Terminer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="cardDialog" class="editor-dialog">
+    <form id="cardForm">
+      <div class="dialog-header">
+        <h2 id="cardDialogTitle">Ajouter une carte</h2>
+        <button id="closeCardDialogButton" class="close-button" type="button" aria-label="Fermer">×</button>
+      </div>
+
+      <input id="cardIdInput" type="hidden">
+      <input id="cardModeInput" type="hidden">
+
+      <div id="lyricsEditorFields">
+        <label>
+          Paroles à chanter
+          <textarea id="cardPromptInput" rows="2" placeholder="Libérée, délivrée"></textarea>
+        </label>
+        <label>
+          Paroles à retrouver
+          <textarea id="cardAnswerInput" rows="2" placeholder="Je ne mentirai plus jamais"></textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            Titre
+            <input id="cardTitleInput" type="text" placeholder="Libérée, délivrée">
+          </label>
+          <label>
+            Artiste / film / source
+            <input id="cardSourceInput" type="text" placeholder="La Reine des Neiges">
+          </label>
+        </div>
+      </div>
+
+      <div id="mimeEditorFields" class="hidden">
+        <label>
+          <span id="simplePromptLabel">Consigne à mimer</span>
+          <textarea id="mimePromptInput" rows="3" placeholder="Un pigeon qui vole une frite"></textarea>
+        </label>
+      </div>
+
+      <div id="wordsEditorFields" class="hidden">
+        <label>
+          Mot ou expression à faire deviner
+          <textarea id="wordPromptInput" rows="2" placeholder="Ornithorynque"></textarea>
+        </label>
+        <label>
+          Mots interdits
+          <textarea id="forbiddenWordsInput" rows="3" placeholder="bec, canard, Australie, mammifère, castor"></textarea>
+          <small>Sépare les mots par des virgules ou des retours à la ligne.</small>
+        </label>
+      </div>
+
+      <label>
+        Difficulté
+        <select id="cardDifficultyInput">
+          <option value="easy">Facile</option>
+          <option value="medium">Moyen</option>
+          <option value="hard">Difficile</option>
+        </select>
+      </label>
+
+      <label>
+        Boîte
+        <select id="cardBoxInput" required></select>
+      </label>
+
+      <label class="checkbox-row">
+        <input id="cardActiveInput" type="checkbox" checked>
+        Carte active dans le jeu
+      </label>
+
+      <div class="dialog-actions">
+        <button class="secondary-button" id="cancelCardButton" type="button">Annuler</button>
+        <button class="primary-button" type="submit">Enregistrer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="boxesDialog" class="editor-dialog">
+    <form>
+      <div class="dialog-header">
+        <h2 id="boxesDialogTitle">Gérer les boîtes</h2>
+        <button id="closeBoxesDialogButton" class="close-button" type="button" aria-label="Fermer">×</button>
+      </div>
+      <div class="add-box-row">
+        <input id="newBoxNameInput" type="text" placeholder="Nom de la nouvelle boîte">
+        <button id="addBoxButton" class="primary-button compact-button" type="button">Ajouter</button>
+      </div>
+      <div id="boxesList" class="boxes-list"></div>
+      <p class="dialog-note">Si tu supprimes une boîte, ses cartes seront déplacées dans « Sans catégorie ».</p>
+      <div class="dialog-actions one-column">
+        <button id="doneBoxesButton" class="secondary-button" type="button">Terminer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="diagnosticDialog" class="diagnostic-dialog">
+    <form method="dialog">
+      <div class="dialog-header">
+        <h2>Diagnostic</h2>
+        <button class="close-button" value="close" aria-label="Fermer">×</button>
+      </div>
+      <pre id="diagnosticOutput"></pre>
+      <div class="dialog-actions">
+        <button id="copyDiagnosticButton" class="primary-button" type="button">Copier le diagnostic</button>
+        <button class="secondary-button" value="close">Fermer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
