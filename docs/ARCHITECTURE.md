@@ -1,10 +1,20 @@
-# Architecture — V0.6.0
+# Architecture — V0.7.0
 
 ## Objectif
 
-La V0.6.0 conserve l'architecture modulaire de la V0.5.1 et ajoute le Dessin mélangé sans dupliquer le moteur de dessin autonome.
+La V0.7.0 ajoute une couche multijoueur au-dessus des moteurs existants, sans dupliquer les modes de jeu.
 
-Le même canevas, le même chronomètre de dessin, les mêmes actions tactiles et les mêmes écrans téléphone/papier sont réutilisés. Le contrôleur de partie classique orchestre uniquement l'interruption, la pénalité et la reprise.
+Une manche multijoueur correspond à une **run complète d’un joueur**. Pendant la durée choisie, le joueur garde le téléphone et le moteur alterne les modes de son parcours. L’orchestrateur reçoit ensuite un résultat normalisé, cumule les scores et passe au joueur suivant.
+
+```text
+Orchestrateur multijoueur
+        ↓
+Moteur de manche classique ou Dessin autonome
+        ↓
+Résultat normalisé
+        ↓
+Score, sauvegarde de session, joueur suivant
+```
 
 ## Direction des dépendances
 
@@ -20,12 +30,12 @@ config / core
 
 Règles :
 
-- `config/` ne dépend d'aucune fonctionnalité ;
-- `core/` ne doit jamais importer `services/` ou `features/` ;
+- `config/` ne dépend d’aucune fonctionnalité ;
+- `core/` n’importe jamais `services/` ou `features/` ;
 - `services/` peut importer `config/` et `core/` ;
 - `features/` peut importer `config/`, `core/` et `services/` ;
-- `main.js` orchestre l'initialisation ;
-- aucun import circulaire n'est autorisé.
+- `main.js` initialise l’application sans contenir la logique métier ;
+- aucun import circulaire n’est autorisé.
 
 ## Organisation principale
 
@@ -39,6 +49,8 @@ mais-devine-bordel/
 ├── assets/
 │   ├── icons/
 │   └── styles/
+│       └── screens/
+│           └── multiplayer.css
 ├── data/
 ├── src/
 │   ├── main.js
@@ -49,103 +61,148 @@ mais-devine-bordel/
 │       ├── home.js
 │       ├── game/
 │       ├── drawing/
-│       └── card-manager/
+│       ├── card-manager/
+│       └── multiplayer/
+│           ├── multiplayer-controller.js
+│           ├── schedule.js
+│           ├── scoreboard.js
+│           └── session.js
 └── tests/
 ```
 
-## Modules concernés par le Dessin mélangé
+## Modules multijoueur
 
-### `src/features/drawing/mixed-drawing.js`
+### `schedule.js`
 
-Module métier pur. Il ne manipule pas le DOM et ne dépend pas du contrôleur de jeu.
+Module métier pur, sans DOM.
 
-Il gère :
+Il :
 
-- la normalisation du nombre de dessins ;
-- le calcul de la pénalité selon la durée de manche ;
-- la création des positions théoriques dans la manche ;
-- le calcul du nombre réellement faisable pour les durées très courtes ;
-- le déclenchement lorsque la position est atteinte ;
-- le blocage des dessins devenus impossibles faute de temps ;
-- l'état commencé/terminé d'une interruption Dessin.
+- accepte une liste dynamique de modes ;
+- construit une manche par joueur et par cycle ;
+- place tous les modes sélectionnés dans chaque parcours ;
+- fournit un ordre commun ou une rotation équilibrée ;
+- génère exactement `nombre de modes` parcours candidats, correspondant aux rotations d’un ordre de base, au lieu de calculer des permutations factorielles ;
+- répartit chaque mode entre les positions avec un écart maximal d’une occurrence ;
+- décale le point de départ à chaque cycle afin de répartir les restes et d’éviter qu’un joueur conserve le même parcours deux cycles de suite ;
+- valide que chaque joueur possède le même nombre de manches et tous les modes exactement une fois dans son parcours.
 
-### `src/features/game/game-controller.js`
+Le module ne dépend pas de `MODE_ORDER`. L’ajout futur d’un mode n’exige donc aucune modification de l’algorithme.
 
-Il orchestre la manche normale et la mécanique mélangée :
+### `scoreboard.js`
 
-1. prépare les cartes normales et la file de dessins ;
-2. déclenche un dessin après une carte normale ;
-3. met silencieusement le chronomètre général en pause ;
-4. reçoit le résultat du mini-jeu ;
-5. applique une seule fois la pénalité ;
-6. met à jour le score et l'historique ;
-7. reprend la manche après le compte à rebours.
+Il transforme l’historique d’une manche en statistiques communes :
 
-Il ne contient pas la logique du canevas.
+- score ;
+- réussites, passages et expirations ;
+- détail par mode ;
+- temps de dessin ;
+- classement avec égalités réelles.
 
-### `src/features/drawing/drawing-controller.js`
+Chaque mode conserve notamment :
 
-Il gère deux contextes avec le même moteur :
+```text
+réussites / tentatives
+```
 
-- `standalone` : partie Dessin autonome ;
-- `mixed` : interruption spéciale au milieu d'une partie classique.
+Ces données alimentent les puces compactes avec l’icône du mode sur les écrans de résultats.
 
-Il prend en charge :
+### `session.js`
 
-- récupération du téléphone ;
-- révélation volontaire de la consigne ;
-- choix téléphone/papier ;
-- mini-chronomètre ;
-- pause locale du dessin ;
-- Trouvé, Passer ou expiration ;
-- retour au front et compte à rebours ;
-- callback vers le contrôleur de jeu.
+Il gère uniquement la session temporaire :
 
-### `src/features/game/timer.js`
+- planning ;
+- index de la prochaine manche ;
+- scores ;
+- cartes déjà utilisées ;
+- validation avant restauration.
 
-Le chronomètre général distingue désormais :
+La session est enregistrée après chaque manche complète. Si l’application est fermée pendant une manche, cette manche recommence au prochain lancement : aucun résultat partiel n’est compté.
 
-- la pause volontaire de l'utilisateur ;
-- la pause système liée au Dessin mélangé.
+### `multiplayer-controller.js`
 
-La pause Dessin n'affiche pas l'overlay de pause classique et ne peut pas être reprise accidentellement par le bouton principal.
+Il orchestre :
 
-### `src/features/game/results.js`
+- la configuration des joueurs ;
+- la création du planning ;
+- le passage du téléphone ;
+- le compte à rebours ;
+- le lancement du moteur adapté ;
+- l’enregistrement du résultat ;
+- le résumé de manche ;
+- le classement final ;
+- la reprise d’une session.
 
-L'historique final conserve l'ordre réel des cartes classiques et des dessins. Le résumé distingue :
+Il ne contient ni calcul de swipe, ni canevas, ni calcul détaillé des scores.
 
-- cartes normales validées et passées ;
-- dessins trouvés, passés et expirés ;
-- points de dessin ;
-- pénalité totale ;
-- dessins non déclenchés faute de temps.
+## Adaptation des moteurs existants
+
+### `game/game-controller.js`
+
+Le contrôleur accepte désormais un contexte multijoueur contenant :
+
+- le joueur ;
+- la manche ;
+- la durée ;
+- l’ordre dynamique des modes ;
+- les cartes déjà utilisées ;
+- un callback de fin.
+
+En multijoueur, il prend une carte dans le mode suivant du parcours et recommence le parcours tant que le temps reste disponible.
+
+Le mode Dessin utilise toujours le moteur mixte de la V0.6.0. Il peut apparaître en première position du parcours : le chronomètre général est alors immédiatement mis en pause avant l’affichage de la consigne cachée.
+
+### `drawing/drawing-controller.js`
+
+Le même moteur gère :
+
+- Dessin autonome libre ;
+- Dessin autonome multijoueur ;
+- Dessin mélangé dans une manche classique.
+
+En Dessin mélangé, le signal d’arrivée est joué directement avant l’écran de révélation. L’écran supplémentaire de récupération du téléphone n’existe plus. Le compte à rebours de retour au front est conservé après le dessin.
+
+## Paquets de cartes
+
+La session conserve une liste d’identifiants utilisés par mode.
+
+Pour chaque mode :
+
+1. seules les cartes actives correspondant aux filtres sont utilisées ;
+2. une carte n’est pas reproposée tant que le paquet contient des cartes inédites ;
+3. lorsque le paquet est épuisé, la liste utilisée pour ce mode est réinitialisée ;
+4. aucun mélange entre les identifiants de deux modes n’est effectué.
+
+## Interface
+
+L’accueil contient :
+
+- un sélecteur compact `Partie libre | Multijoueur` ;
+- les boutons 30, 60 et 90 secondes ;
+- un champ personnalisé compact dans la même rangée.
+
+La grille de modes utilise une variable CSS calculée depuis le nombre réel de modes et autorise un défilement horizontal lorsque de futurs modes ne tiennent plus proprement sur une seule ligne.
 
 ## Données et compatibilité
 
-La V0.6.0 conserve les clés `localStorage` de la V0.5.1 et de la V0.5.0.
+Clés existantes conservées :
 
-Les anciens réglages Dessin sont complétés par défaut avec :
+- `mdb-global-settings-v2` ;
+- toutes les clés des quatre bibliothèques ;
+- anciennes clés de sélection et de paramètres.
 
-- `mixedCount: 2` ;
-- `arrivalSoundEnabled: true`.
+Nouvelle clé temporaire :
 
-La lecture des réglages et la restauration des sauvegardes fusionnent ces nouvelles propriétés sans supprimer les anciennes personnalisations.
+`mdb-multiplayer-session-v1`
 
-Sont préservés :
+Le schéma de sauvegarde permanent passe à `4` pour inclure les réglages multijoueur. La session active n’est volontairement pas exportée.
 
-- identifiants de cartes et catégories ;
-- cartes personnelles ;
-- cartes officielles modifiées ;
-- catégories personnelles ;
-- sélections et réglages des quatre modes ;
-- sauvegardes existantes.
+## PWA
 
-## PWA et service worker
-
-`sw.js` reste à la racine pour contrôler toute l'application.
+`sw.js` reste à la racine.
 
 Cache de la version :
 
-`mdb-v0-6-0`
+`mdb-v0-7-0`
 
-Le nouveau module `src/features/drawing/mixed-drawing.js` fait partie des fichiers mis en cache.
+Le cache inclut la feuille de style multijoueur et les quatre modules du dossier `src/features/multiplayer/`.

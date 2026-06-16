@@ -1,4 +1,4 @@
-const CACHE_NAME = "mdb-v0-6-0";
+const CACHE_NAME = "mdb-v0-7-0";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -12,6 +12,7 @@ const APP_FILES = [
   "./assets/styles/screens/game.css",
   "./assets/styles/screens/results.css",
   "./assets/styles/screens/drawing.css",
+  "./assets/styles/screens/multiplayer.css",
   "./data/lyrics.json",
   "./data/mimes.json",
   "./data/words.json",
@@ -37,7 +38,11 @@ const APP_FILES = [
   "./src/features/drawing/paper-mode.js",
   "./src/features/card-manager/manager-controller.js",
   "./src/features/card-manager/card-editor.js",
-  "./src/features/card-manager/category-manager.js"
+  "./src/features/card-manager/category-manager.js",
+  "./src/features/multiplayer/multiplayer-controller.js",
+  "./src/features/multiplayer/schedule.js",
+  "./src/features/multiplayer/scoreboard.js",
+  "./src/features/multiplayer/session.js"
 ];
 
 self.addEventListener("install", event => {

@@ -1,59 +1,96 @@
-# Tests — V0.6.0
+# Tests — V0.7.0
 
-## Tests automatiques
+## Commandes automatiques
 
-Exécuter depuis la racine du dépôt :
+Depuis la racine du dépôt :
 
 ```bash
 node tests/validate-data.mjs
 node tests/smoke-test.mjs
 ```
 
-### Validation des bibliothèques
+## Validation des bibliothèques
 
 `validate-data.mjs` contrôle :
 
-- validité des quatre JSON ;
-- identifiants uniques ;
-- catégories référencées ;
-- difficultés autorisées ;
-- champs obligatoires ;
-- cinq mots interdits par carte dans Sans le dire ! ;
-- nombres de cartes attendus.
+- la validité des quatre JSON ;
+- les identifiants uniques ;
+- les catégories référencées ;
+- les difficultés ;
+- les champs obligatoires ;
+- les cinq mots interdits de Sans le dire !
 
 Résultat attendu :
 
-- paroles : 143 ;
-- mime : 395 ;
-- Sans le dire : 360 ;
-- dessin : 420 ;
-- total : 1 318.
+- paroles : 143 cartes ;
+- mime : 395 cartes ;
+- Sans le dire : 360 cartes ;
+- dessin : 420 cartes ;
+- total : 1 318 cartes.
 
-### Contrôle architectural et fonctionnel statique
+## Smoke test
 
-`smoke-test.mjs` contrôle notamment :
+`smoke-test.mjs` vérifie notamment :
 
-- arborescence et fichiers requis ;
-- syntaxe de tous les modules ;
-- résolution des imports ;
-- absence d'import circulaire ;
-- direction des dépendances ;
-- références DOM principales ;
-- anciennes clés de stockage ;
-- chemins HTML, manifeste et service worker ;
-- version `0.6.0` ;
-- cache `mdb-v0-6-0` ;
-- présence du module Dessin mélangé ;
-- suppression de l'ancienne exclusivité du mode Dessin ;
-- pénalités de référence pour 30, 60 et 90 secondes ;
-- répartition ordonnée des déclenchements ;
-- garde de temps minimum avant un dessin ;
-- réduction contrôlée du nombre de dessins pour les durées trop courtes ;
-- compatibilité des données locales et sauvegardes V0.5.x.
+- l’arborescence complète ;
+- la version `0.7.0` ;
+- le cache `mdb-v0-7-0` ;
+- tous les chemins HTML, CSS, manifeste et service worker ;
+- les identifiants DOM ;
+- la syntaxe de tous les modules ;
+- la résolution des imports ;
+- l’absence d’import circulaire ;
+- la direction des dépendances ;
+- la conservation des anciennes clés de stockage ;
+- l’absence de l’écran « Récupère le téléphone » ;
+- le déclenchement direct du Dessin sur la consigne cachée ;
+- le Dessin en première position d’un parcours ;
+- la fin correcte d’une série Dessin multijoueur ;
+- les scores réussites/tentatives par mode ;
+- le classement ;
+- la sauvegarde et la restauration de session ;
+- la compatibilité des données locales et sauvegardes V0.6.0.
 
-## Test dans un navigateur
+### Matrice du planificateur
 
-Les modules ES doivent être servis par HTTP :
+Le test génère automatiquement des plannings avec :
+
+- 1, 2, 3, 4, 5 et 8 modes synthétiques ;
+- 2, 3, 5 et 12 joueurs ;
+- plusieurs cycles ;
+- ordre commun ;
+- rotation équilibrée.
+
+Il vérifie que :
+
+- chaque joueur possède le même nombre de manches ;
+- chaque parcours contient tous les modes exactement une fois ;
+- aucun identifiant de mode n’est perdu ou dupliqué ;
+- l’ordre commun est réellement identique ;
+- la rotation équilibrée produit plusieurs ordres lorsque c’est possible ;
+- chaque mode apparaît dans les différentes positions avec un écart maximal d’une occurrence ;
+- un joueur ne reçoit pas le même parcours deux cycles de suite lorsqu’il existe plusieurs modes ;
+- l’algorithme n’est pas limité aux quatre modes actuels.
+
+Un test de contrainte complémentaire a également parcouru 5 500 combinaisons couvrant 1 à 10 modes, 2 à 12 joueurs, 1 à 5 cycles et 10 graines aléatoires. L’écart maximal observé entre les positions est de 1 et aucune répétition consécutive évitable n’a été détectée.
+
+## Test navigateur automatisé effectué avant livraison
+
+La version est également chargée dans Chromium par un harnais temporaire utilisant les vrais modules ES et les vrais JSON. Ce contrôle vérifie :
+
+- chargement des 1 318 cartes ;
+- passage Partie libre → Multijoueur ;
+- création d’une partie ;
+- parcours commençant par Dessin ;
+- absence d’écran de récupération intermédiaire ;
+- révélation et passage du dessin ;
+- reprise du chronomètre général sur le mode suivant ;
+- fin manuelle de la manche ;
+- affichage des statistiques par mode.
+
+Ce harnais n’est pas ajouté au dépôt afin de conserver uniquement les deux fichiers de tests prévus par l’architecture.
+
+## Test local par HTTP
 
 ```bash
 python3 -m http.server 8000
@@ -61,36 +98,35 @@ python3 -m http.server 8000
 
 Puis ouvrir :
 
-`http://localhost:8000/?v=060`
+`http://localhost:8000/?v=070`
 
 Ne pas utiliser `file://`.
 
-## Vérifications manuelles Android
+## Vérifications Android avant validation définitive
 
-Après publication :
+1. ouvrir `https://88miyou88.github.io/mais-devine-bordel/?v=070` ;
+2. vérifier `Version : 0.7.0` et `Cache attendu : mdb-v0-7-0` ;
+3. vérifier Partie libre et Multijoueur sur l’accueil ;
+4. tester le champ de durée personnalisé compact ;
+5. créer une partie de 2, puis 3 joueurs ;
+6. modifier, déplacer, mélanger et supprimer des joueurs ;
+7. tester plusieurs cycles ;
+8. tester Ordre commun ;
+9. tester Rotation équilibrée ;
+10. vérifier qu’un joueur garde le téléphone pendant toute sa durée ;
+11. vérifier que les modes s’enchaînent dans l’ordre affiché ;
+12. tester un parcours commençant par Dessin ;
+13. vérifier que vibration et son arrivent directement sur « Appuie pour révéler le mot » ;
+14. vérifier qu’aucun écran « Récupère le téléphone » n’apparaît ;
+15. tester Dessin sur téléphone, sur papier, passé et expiré ;
+16. vérifier le compte à rebours de retour au front ;
+17. vérifier les puces icône + réussites/tentatives ;
+18. vérifier les scores cumulés et le classement final ;
+19. fermer l’application entre deux manches puis reprendre ;
+20. fermer l’application pendant une manche et vérifier que cette manche recommence ;
+21. tester Dessin seul en multijoueur ;
+22. tester une partie libre classique après la mise à jour ;
+23. vérifier les anciennes cartes, catégories, réglages et sauvegardes ;
+24. fermer puis rouvrir la PWA pour contrôler le nouveau service worker.
 
-1. ouvrir `https://88miyou88.github.io/mais-devine-bordel/?v=060` ;
-2. vérifier `Version : 0.6.0` et `Cache : mdb-v0-6-0` dans le diagnostic ;
-3. vérifier les quatre nombres de cartes ;
-4. vérifier que Dessin seul fonctionne toujours ;
-5. sélectionner Dessin avec chacun des trois modes classiques ;
-6. sélectionner les quatre modes ensemble ;
-7. tester 1, 2, 3, 4 puis 5 dessins sur plusieurs durées ;
-8. vérifier qu'un dessin n'arrive qu'après une carte normale ;
-9. vérifier qu'aucun dessin n'est consécutif ;
-10. vérifier que le chrono général ne bouge pas pendant le dessin ;
-11. tester révélation, téléphone, papier et Passer avant démarrage ;
-12. tester Trouvé, Passer et expiration ;
-13. vérifier la vibration et le son d'arrivée ;
-14. vérifier le son de fin activé puis désactivé ;
-15. vérifier le maintien de 0,5 seconde et son annulation hors du bouton ;
-16. tester pause/reprise pendant le dessin ;
-17. terminer manuellement la manche pendant une interruption Dessin ;
-18. vérifier le compte à rebours de retour au front ;
-19. vérifier que la pénalité n'est appliquée qu'une fois ;
-20. vérifier les résultats détaillés et l'ordre chronologique ;
-21. vérifier une manche trop courte ou terminée avant tous les dessins ;
-22. vérifier les anciennes cartes, catégories, réglages et sauvegardes locales ;
-23. fermer puis rouvrir l'application pour contrôler le service worker.
-
-Les gestes, vibrations, sons, orientation et mise en arrière-plan doivent être validés sur un véritable téléphone Android.
+Les vibrations, sons, maintien tactile, plein écran, orientation et comportement réel en arrière-plan doivent être validés sur un téléphone Android.

@@ -6,7 +6,9 @@ export function initializeDurationControls() {
     button.addEventListener("click", () => updateDurationSelection(Number(button.dataset.seconds)));
   });
   el.customSeconds.addEventListener("input", () => {
-    if (el.customSeconds.value !== "") {
+    const hasCustomValue = el.customSeconds.value !== "";
+    el.customSeconds.closest(".custom-duration-chip")?.classList.toggle("selected", hasCustomValue);
+    if (hasCustomValue) {
       el.durationButtons.forEach(button => button.classList.remove("selected"));
     }
   });
@@ -24,6 +26,7 @@ export function updateDurationSelection(seconds) {
     button.classList.toggle("selected", Number(button.dataset.seconds) === seconds);
   });
   el.customSeconds.value = "";
+  el.customSeconds.closest(".custom-duration-chip")?.classList.remove("selected");
 }
 
 export function runCountdown(onComplete) {

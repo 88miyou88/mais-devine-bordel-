@@ -16,6 +16,8 @@ export const state = {
   passed: 0,
   score: 0,
   mixedDrawing: null,
+  roundContext: null,
+  multiplayer: null,
   pointer: null,
   wakeLock: null,
   installPrompt: null,
@@ -25,6 +27,15 @@ export const state = {
   settings: {
     selectedModeIds: ["lyrics", "mime", "words"],
     vibrationEnabled: true,
+    playType: "free",
+    multiplayer: {
+      players: [
+        { id: "player-1", name: "Joueur 1" },
+        { id: "player-2", name: "Joueur 2" }
+      ],
+      cycles: 1,
+      orderType: "balanced"
+    },
     lastLibraryCheckAt: "",
     modeOptions: {
       words: { showForbiddenWords: true },
