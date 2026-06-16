@@ -29,6 +29,12 @@ export function renderHomeData() {
   renderModeSelection();
   renderAdvancedSettings();
   el.vibrationToggle.checked = state.settings.vibrationEnabled;
+  const multiplayer = state.settings.playType === "multiplayer";
+  el.freePlayButton.classList.toggle("selected", !multiplayer);
+  el.multiplayerPlayButton.classList.toggle("selected", multiplayer);
+  el.freePlayButton.setAttribute("aria-pressed", String(!multiplayer));
+  el.multiplayerPlayButton.setAttribute("aria-pressed", String(multiplayer));
+  el.startButton.textContent = multiplayer ? "Configurer le multijoueur" : "Lancer la partie";
   const drawOnly = state.settings.selectedModeIds.length === 1 && state.settings.selectedModeIds[0] === "draw";
   el.globalTimerSettings.classList.toggle("hidden", drawOnly);
   el.homeScreen.classList.toggle("draw-only-home", drawOnly);
@@ -39,6 +45,7 @@ export function renderHomeData() {
 
 function renderModeSelection() {
   el.modeSelectionList.innerHTML = "";
+  el.modeSelectionList.style.setProperty("--mode-count", String(Math.max(1, MODE_ORDER.length)));
   MODE_ORDER.forEach(modeId => {
     const config = modeConfig(modeId);
     const selected = state.settings.selectedModeIds.includes(modeId);
@@ -88,6 +95,13 @@ function renderModeSelection() {
     tile.append(checkbox, openButton);
     el.modeSelectionList.append(tile);
   });
+}
+
+
+function setPlayType(playType) {
+  state.settings.playType = playType === "multiplayer" ? "multiplayer" : "free";
+  saveGlobalSettings();
+  renderHomeData();
 }
 
 function setModeEnabled(modeId, enabled) {
@@ -363,6 +377,8 @@ function initializeInstallPrompt() {
 export function initializeHome(options = {}) {
   callbacks = options;
   el.startButton.addEventListener("click", () => callbacks.onStart?.());
+  el.freePlayButton.addEventListener("click", () => setPlayType("free"));
+  el.multiplayerPlayButton.addEventListener("click", () => setPlayType("multiplayer"));
   el.manageCardsButton.addEventListener("click", () => callbacks.onManage?.());
   el.selectAllButton.addEventListener("click", selectEverything);
   el.selectNoneButton.addEventListener("click", selectNothing);

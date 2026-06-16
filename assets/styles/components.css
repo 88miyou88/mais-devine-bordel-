@@ -552,3 +552,14 @@
 .mode-setting-section h3{font-size:.95rem}
 .mode-setting-section p{font-size:.75rem}
 .mode-dialog-actions{padding:8px 12px 10px}
+
+
+/* Récupération après cache ou déploiement incomplet */
+.boot-recovery{position:fixed;inset:0;z-index:9999;padding:18px;display:grid;place-items:center;background:rgba(5,7,10,.88);backdrop-filter:blur(7px)}
+.boot-recovery.hidden{display:none}
+.boot-recovery-card{width:min(620px,100%);padding:clamp(20px,4vw,34px);border:1px solid var(--outline);border-radius:22px;background:var(--panel);box-shadow:0 28px 90px rgba(0,0,0,.55);text-align:center}
+.boot-recovery-card h2{margin:4px 0 10px;font-size:clamp(1.55rem,4vw,2.45rem)}
+.boot-recovery-card p:not(.eyebrow){color:var(--muted);line-height:1.4}
+.boot-recovery-actions{display:grid;grid-template-columns:1fr 1.3fr;gap:10px;margin:20px 0 12px}
+.boot-recovery-card small{display:block;color:var(--muted);font-size:.76rem;line-height:1.35}
+@media(max-width:620px){.boot-recovery-actions{grid-template-columns:1fr}}

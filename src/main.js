@@ -1,3 +1,4 @@
+import { APP_VERSION } from "./config/config.js";
 import {
   assertRequiredDom,
   el,
@@ -24,12 +25,21 @@ import {
   stopClassicGame
 } from "./features/game/game-controller.js";
 import { setFlipped, toggleFlipped } from "./features/game/swipe.js";
+import {
+  initializeMultiplayer,
+  openMultiplayerSetup
+} from "./features/multiplayer/multiplayer-controller.js";
 import { registerServiceWorker } from "./services/diagnostics.js";
 import { getPlayableCards, loadContent } from "./services/libraries.js";
 
 async function startFlow() {
   if (getPlayableCards().length === 0) {
     alert("Sélectionne au moins un mode contenant une boîte et une carte active.");
+    return;
+  }
+
+  if (state.settings.playType === "multiplayer") {
+    openMultiplayerSetup();
     return;
   }
 
@@ -65,6 +75,7 @@ async function init() {
   initializeCardManager({ onHomeDataChanged: renderHomeData });
   initializeDrawing({ onAbortMixed: () => finishGame("manual") });
   initializeGame({ onReplay: startFlow, onHome: returnHome });
+  initializeMultiplayer({ onHome: returnHome });
   initializeHome({
     onStart: startFlow,
     onManage: openManageScreen,
@@ -78,8 +89,18 @@ async function init() {
   registerServiceWorker();
 }
 
-init().catch(error => {
-  recordError(error);
-  console.error(error);
-  alert("L’application n’a pas pu charger ses données. Recharge la page ou ouvre le diagnostic.");
-});
+init()
+  .then(() => {
+    document.documentElement.dataset.mdbReady = "1";
+    document.documentElement.dataset.mdbVersion = APP_VERSION;
+    window.dispatchEvent(new CustomEvent("mdb:ready", { detail: { version: APP_VERSION } }));
+  })
+  .catch(error => {
+    recordError(error);
+    console.error(error);
+    if (typeof window.MDB_BOOT_FAILURE === "function") {
+      window.MDB_BOOT_FAILURE(error);
+    } else {
+      alert("L’application n’a pas pu démarrer. Recharge la page.");
+    }
+  });

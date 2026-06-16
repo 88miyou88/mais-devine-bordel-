@@ -3,6 +3,8 @@ import {
   LEGACY_SETTINGS_KEY,
   MODE_CONFIG,
   MODE_ORDER,
+  MIN_MULTIPLAYER_PLAYERS,
+  MAX_MULTIPLAYER_PLAYERS,
   UNCATEGORIZED_ID
 } from "../config/config.js";
 import { modeState, recordError, state } from "../core/state.js";
@@ -321,6 +323,29 @@ async function loadMode(modeId, legacySettings) {
   return { fresh: false };
 }
 
+
+function normalizeMultiplayerPlayers(players) {
+  const source = Array.isArray(players) ? players : [];
+  const normalized = source
+    .slice(0, MAX_MULTIPLAYER_PLAYERS)
+    .map((player, index) => ({
+      id: String(player?.id || `player-${index + 1}`),
+      name: String(player?.name || `Joueur ${index + 1}`).trim().slice(0, 24) || `Joueur ${index + 1}`
+    }));
+  while (normalized.length < MIN_MULTIPLAYER_PLAYERS) {
+    const index = normalized.length;
+    normalized.push({ id: `player-${index + 1}`, name: `Joueur ${index + 1}` });
+  }
+  const usedIds = new Set();
+  normalized.forEach((player, index) => {
+    let id = player.id;
+    while (usedIds.has(id)) id = `player-${index + 1}-${usedIds.size + 1}`;
+    player.id = id;
+    usedIds.add(id);
+  });
+  return normalized;
+}
+
 export async function loadContent() {
   const legacySettings = readJsonStorage(LEGACY_SETTINGS_KEY, null, recordError);
   const globalSettings = readJsonStorage(GLOBAL_SETTINGS_KEY, null, recordError);
@@ -330,6 +355,12 @@ export async function loadContent() {
       ? globalSettings.selectedModeIds.filter(id => MODE_ORDER.includes(id))
       : MODE_ORDER.filter(id => id !== "draw"),
     vibrationEnabled: globalSettings?.vibrationEnabled ?? legacySettings?.vibrationEnabled ?? true,
+    playType: globalSettings?.playType === "multiplayer" ? "multiplayer" : "free",
+    multiplayer: {
+      players: normalizeMultiplayerPlayers(globalSettings?.multiplayer?.players),
+      cycles: Math.min(10, Math.max(1, Number(globalSettings?.multiplayer?.cycles) || 1)),
+      orderType: globalSettings?.multiplayer?.orderType === "common" ? "common" : "balanced"
+    },
     lastLibraryCheckAt: String(globalSettings?.lastLibraryCheckAt || ""),
     modeOptions: {
       words: {

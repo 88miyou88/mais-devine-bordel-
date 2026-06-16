@@ -6,9 +6,16 @@ export function initializeDurationControls() {
     button.addEventListener("click", () => updateDurationSelection(Number(button.dataset.seconds)));
   });
   el.customSeconds.addEventListener("input", () => {
-    if (el.customSeconds.value !== "") {
+    const hasCustomValue = el.customSeconds.value !== "";
+    el.customSeconds.closest(".custom-duration-chip")?.classList.toggle("selected", hasCustomValue);
+    if (hasCustomValue) {
       el.durationButtons.forEach(button => button.classList.remove("selected"));
     }
+  });
+  el.customSeconds.addEventListener("blur", () => {
+    if (el.customSeconds.value === "") return;
+    const normalized = Math.min(600, Math.max(10, Number.parseInt(el.customSeconds.value, 10) || 45));
+    el.customSeconds.value = String(normalized);
   });
 }
 
@@ -24,6 +31,7 @@ export function updateDurationSelection(seconds) {
     button.classList.toggle("selected", Number(button.dataset.seconds) === seconds);
   });
   el.customSeconds.value = "";
+  el.customSeconds.closest(".custom-duration-chip")?.classList.remove("selected");
 }
 
 export function runCountdown(onComplete) {

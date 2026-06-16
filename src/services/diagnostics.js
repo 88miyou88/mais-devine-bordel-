@@ -46,6 +46,10 @@ export async function buildDiagnostic() {
     `Pointer Events : ${"PointerEvent" in window ? "Oui" : "Non"}`,
     `Vibrations : ${"vibrate" in navigator ? "Prises en charge" : "Non prises en charge"}`,
     `Vibrations activées : ${state.settings.vibrationEnabled ? "Oui" : "Non"}`,
+    `Type de partie : ${state.settings.playType === "multiplayer" ? "Multijoueur" : "Partie libre"}`,
+    `Joueurs configurés : ${state.settings.multiplayer.players.length}`,
+    `Cycles multijoueur : ${state.settings.multiplayer.cycles}`,
+    `Rotation multijoueur : ${state.settings.multiplayer.orderType === "common" ? "Ordre commun" : "Équilibrée"}`,
     `Wake Lock : ${"wakeLock" in navigator ? "Pris en charge" : "Non pris en charge"}`,
     `Plein écran : ${document.fullscreenEnabled ? "Pris en charge" : "Non pris en charge"}`,
     `Mots interdits affichés : ${state.settings.modeOptions.words.showForbiddenWords ? "Oui" : "Non"}`,
@@ -89,7 +93,24 @@ export async function copyDiagnostic() {
 export async function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
   try {
-    await navigator.serviceWorker.register("./sw.js", { scope: "./" });
+    const versionToken = APP_VERSION.replaceAll(".", "");
+    const registration = await navigator.serviceWorker.register(`./sw.js?v=${versionToken}`, {
+      scope: "./",
+      updateViaCache: "none"
+    });
+    await registration.update();
+    if (registration.waiting) registration.waiting.postMessage({ type: "SKIP_WAITING" });
+
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      try {
+        const key = `mdb-sw-reload-${APP_VERSION}`;
+        if (sessionStorage.getItem(key) === "1") return;
+        sessionStorage.setItem(key, "1");
+        window.location.reload();
+      } catch (_) {
+        window.location.reload();
+      }
+    }, { once: true });
   } catch (error) {
     recordError(error);
   }
