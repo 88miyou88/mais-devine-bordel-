@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { readFile, stat } from "node:fs/promises";
-import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import path from "node:path";
+import { execFileSync } from "node:child_process";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = relativePath => readFile(path.join(root, relativePath), "utf8");
@@ -22,7 +22,7 @@ const expectedFiles = [
   "assets/styles/foundation.css", "assets/styles/components.css",
   "assets/styles/screens/home.css", "assets/styles/screens/game.css",
   "assets/styles/screens/drawing.css", "assets/styles/screens/manager.css",
-  "assets/styles/screens/results.css", "assets/styles/screens/multiplayer.css",
+  "assets/styles/screens/results.css",
   "data/lyrics.json", "data/mimes.json", "data/words.json", "data/drawings.json",
   "src/main.js", "src/config/config.js",
   "src/core/state.js", "src/core/dom.js", "src/core/storage.js", "src/core/utils.js",
@@ -34,8 +34,6 @@ const expectedFiles = [
   "src/features/drawing/canvas.js", "src/features/drawing/hold-actions.js", "src/features/drawing/paper-mode.js",
   "src/features/card-manager/manager-controller.js", "src/features/card-manager/card-editor.js",
   "src/features/card-manager/category-manager.js",
-  "src/features/multiplayer/multiplayer-controller.js", "src/features/multiplayer/schedule.js",
-  "src/features/multiplayer/scoreboard.js", "src/features/multiplayer/session.js",
   "tests/validate-data.mjs", "tests/smoke-test.mjs"
 ];
 
@@ -59,11 +57,6 @@ const html = await read("index.html");
 assert.match(html, /<script\s+type="module"\s+src="\.\/src\/main\.js"><\/script>/);
 assert.doesNotMatch(html, /js-(?:config|dom|state|utils|storage|home|manager|library-sync|drawing|game|diagnostics|main)\.js/);
 assert.doesNotMatch(html, /css-(?:base|manager|game|dialogs|drawing|home)\.css/);
-assert.match(html, />Partie libre</);
-assert.match(html, />Multijoueur</);
-assert.match(html, /class="custom-duration-chip"/);
-assert.doesNotMatch(html, /Récupère le téléphone/);
-assert.doesNotMatch(html, /id="drawTransitionButton"/);
 
 const htmlIds = [...html.matchAll(/\sid=["']([^"']+)["']/g)].map(match => match[1]);
 const duplicateIds = htmlIds.filter((id, index) => htmlIds.indexOf(id) !== index);
@@ -73,11 +66,6 @@ const requiredDomIds = [...domSource.matchAll(/document\.querySelector\(["']#([^
 for (const id of requiredDomIds) {
   assert.ok(htmlIds.includes(id), `Référence DOM sans élément HTML : #${id}`);
 }
-for (const id of [
-  "freePlayButton", "multiplayerPlayButton", "multiplayerSetupScreen", "multiplayerPlayerList",
-  "multiplayerHandoffScreen", "multiplayerTurnSummaryScreen", "multiplayerResultsScreen",
-  "resumeMultiplayerDialog", "multiplayerTurnModeStats", "multiplayerRanking"
-]) assert.ok(htmlIds.includes(id), `Élément multijoueur absent : #${id}`);
 
 const manifest = JSON.parse(await read("manifest.webmanifest"));
 assert.equal(manifest.name, "Mais devine, bordel !");
@@ -85,9 +73,8 @@ assert.equal(manifest.short_name, "MDB!");
 assert.ok(manifest.icons.every(icon => icon.src.replace(/^\.\//, "").startsWith("assets/icons/")), "Chemins des icônes du manifeste incorrects");
 
 const config = await read("src/config/config.js");
-assert.match(config, /APP_VERSION\s*=\s*"0\.7\.0"/);
-assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-7-0"/);
-assert.match(config, /MULTIPLAYER_SESSION_KEY\s*=\s*"mdb-multiplayer-session-v1"/);
+assert.match(config, /APP_VERSION\s*=\s*"0\.6\.0"/);
+assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-6-0"/);
 assert.match(config, /mdb-global-settings-v2/);
 assert.match(config, /mdb-settings-v1/);
 for (const key of [
@@ -98,7 +85,7 @@ for (const key of [
 ]) assert.ok(config.includes(key), `Clé de stockage absente : ${key}`);
 
 const sw = await read("sw.js");
-assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-7-0"/);
+assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-6-0"/);
 const cachedPaths = new Set([...sw.matchAll(/"(\.\/[^"\n]+)"/g)].map(match => match[1]));
 for (const relativePath of expectedFiles.filter(file => !file.startsWith("docs/") && !file.startsWith("tests/") && file !== "README.md" && file !== "sw.js")) {
   assert.ok(cachedPaths.has(`./${relativePath}`), `Fichier applicatif absent du cache : ${relativePath}`);
@@ -111,8 +98,7 @@ const expectedStylePaths = [
   "./assets/styles/screens/manager.css",
   "./assets/styles/screens/game.css",
   "./assets/styles/screens/results.css",
-  "./assets/styles/screens/drawing.css",
-  "./assets/styles/screens/multiplayer.css"
+  "./assets/styles/screens/drawing.css"
 ];
 const linkedStylePaths = [...html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)].map(match => match[1]);
 assert.deepEqual(linkedStylePaths, expectedStylePaths, "Ordre ou chemins des feuilles de style incorrects");
@@ -142,6 +128,7 @@ for (const relativePath of sourceFiles) {
     assert.equal(await exists(resolvedRelative), true, `${relativePath}: import introuvable ${importedPath}`);
     if (importGraph.has(resolvedRelative)) importGraph.get(relativePath).push(resolvedRelative);
   }
+
   if (relativePath.startsWith("src/core/") || relativePath.startsWith("src/config/")) {
     assert.doesNotMatch(source, /features\//, `${relativePath}: dépendance interdite vers features/`);
     assert.doesNotMatch(source, /services\//, `${relativePath}: dépendance interdite vers services/`);
@@ -156,94 +143,62 @@ const visited = new Set();
 function assertNoImportCycle(file, trail = []) {
   if (visiting.has(file)) {
     const cycleStart = trail.indexOf(file);
-    assert.fail(`Import circulaire détecté : ${[...trail.slice(cycleStart), file].join(" → ")}`);
+    const cycle = [...trail.slice(cycleStart), file].join(" → ");
+    assert.fail(`Import circulaire détecté : ${cycle}`);
   }
   if (visited.has(file)) return;
   visiting.add(file);
-  for (const dependency of importGraph.get(file) || []) assertNoImportCycle(dependency, [...trail, file]);
+  for (const dependency of importGraph.get(file) || []) {
+    assertNoImportCycle(dependency, [...trail, file]);
+  }
   visiting.delete(file);
   visited.add(file);
 }
 sourceFiles.forEach(file => assertNoImportCycle(file));
+
 execFileSync(process.execPath, ["--check", path.join(root, "sw.js")], { stdio: "pipe" });
 
-const scheduleModule = await import(pathToFileURL(path.join(root, "src/features/multiplayer/schedule.js")).href);
-const deterministicRandom = (() => {
-  let value = 0;
-  return () => ((value += 0.173) % 1);
-})();
-for (const modeCount of [1, 2, 3, 4, 5, 8]) {
-  const modeIds = Array.from({ length: modeCount }, (_, index) => index === modeCount - 1 && modeCount > 1 ? "draw" : `mode-${index + 1}`);
-  for (const playerCount of [2, 3, 5, 12]) {
-    const players = Array.from({ length: playerCount }, (_, index) => ({ id: `p${index + 1}`, name: `Joueur ${index + 1}` }));
-    const common = scheduleModule.buildMultiplayerSchedule({ players, modeIds, cycles: 3, orderType: "common", random: deterministicRandom });
-    assert.equal(scheduleModule.validateMultiplayerSchedule(common).valid, true);
-    assert.equal(common.turns.length, playerCount * 3);
-    assert.ok(common.turns.every(turn => turn.modeOrder.join("|") === common.turns[0].modeOrder.join("|")), "L’ordre commun doit être identique pour tous");
-
-    const balanced = scheduleModule.buildMultiplayerSchedule({ players, modeIds, cycles: 3, orderType: "balanced", random: deterministicRandom });
-    const validation = scheduleModule.validateMultiplayerSchedule(balanced);
-    assert.equal(validation.valid, true, validation.errors.join("\n"));
-    balanced.turns.forEach(turn => {
-      assert.equal(turn.modeOrder.length, modeIds.length);
-      assert.deepEqual([...turn.modeOrder].sort(), [...modeIds].sort());
-    });
-    if (modeCount > 1 && playerCount > 1) {
-      const firstCycleOrders = balanced.turns.slice(0, playerCount).map(turn => turn.modeOrder.join("|"));
-      assert.ok(new Set(firstCycleOrders).size > 1, "La rotation équilibrée doit produire plusieurs ordres quand c’est possible");
-
-      const countsByModeAndPosition = new Map(modeIds.map(modeId => [modeId, Array(modeCount).fill(0)]));
-      balanced.turns.forEach(turn => {
-        turn.modeOrder.forEach((modeId, position) => {
-          countsByModeAndPosition.get(modeId)[position] += 1;
-        });
-      });
-      countsByModeAndPosition.forEach(positionCounts => {
-        assert.ok(
-          Math.max(...positionCounts) - Math.min(...positionCounts) <= 1,
-          `Les positions d’un mode doivent rester équilibrées : ${positionCounts.join("/")}`
-        );
-      });
-
-      for (const player of players) {
-        const playerOrders = balanced.turns
-          .filter(turn => turn.playerId === player.id)
-          .map(turn => turn.modeOrder.join("|"));
-        for (let cycleIndex = 1; cycleIndex < playerOrders.length; cycleIndex += 1) {
-          assert.notEqual(
-            playerOrders[cycleIndex],
-            playerOrders[cycleIndex - 1],
-            `${player.name} ne doit pas recevoir le même parcours deux cycles de suite`
-          );
-        }
-      }
-    }
-  }
+console.log("✓ Arborescence complète, DOM et CSS cohérents");
+console.log("✓ Aucun ancien fichier plat");
+console.log("✓ Modules ES, imports résolus et absence de cycle");
+console.log("✓ Clés de stockage V0.5.0 préservées");
+const requiredMixedDomIds = [
+  "drawTransitionScreen", "drawTransitionButton", "drawMixedCountInput",
+  "drawPenaltyPreview", "drawArrivalSoundEnabledInput", "drawPauseButton",
+  "drawEndButton", "drawPauseOverlay", "resultBreakdown"
+];
+for (const id of requiredMixedDomIds) {
+  assert.match(html, new RegExp(`id=["']${id}["']`), `Élément mixte absent : ${id}`);
 }
 
-const scoreboardModule = await import(pathToFileURL(path.join(root, "src/features/multiplayer/scoreboard.js")).href);
-const players = [{ id: "p1", name: "Camille" }, { id: "p2", name: "Léa" }];
-const scoreboard = scoreboardModule.createScoreboard(players, ["mime", "draw", "lyrics"]);
-const sampleTurn = {
-  id: "t1", turnIndex: 0, cycleIndex: 0, playerId: "p1", playerName: "Camille",
-  modeOrder: ["mime", "draw", "lyrics"]
-};
-const normalized = scoreboardModule.normalizeTurnResult({
-  reason: "time", durationMs: 60000, remainingMs: 0,
-  history: [
-    { kind: "classic", card: { id: "m1", modeId: "mime" }, result: "valid", points: 1 },
-    { kind: "classic", card: { id: "m2", modeId: "mime" }, result: "pass", points: 0 },
-    { kind: "draw", card: { id: "d1", modeId: "draw" }, result: "valid", points: 2, usedMs: 9200 },
-    { kind: "classic", card: { id: "l1", modeId: "lyrics" }, result: "valid", points: 1 }
-  ]
-}, sampleTurn, ["mime", "draw", "lyrics"]);
-assert.equal(normalized.score, 4);
-assert.deepEqual([normalized.perMode.mime.successes, normalized.perMode.mime.attempts], [1, 2]);
-assert.deepEqual([normalized.perMode.draw.successes, normalized.perMode.draw.attempts], [1, 1]);
-scoreboardModule.addTurnToScoreboard(scoreboard, normalized);
-assert.equal(scoreboard.p1.score, 4);
-assert.equal(scoreboard.p1.perMode.mime.attempts, 2);
-assert.equal(scoreboardModule.rankScoreboard(scoreboard)[0].playerId, "p1");
+const homeSource = await read("src/features/home.js");
+assert.doesNotMatch(homeSource, /selectedModeIds\s*=\s*\["draw"\]/, "Le mode Dessin ne doit plus exclure les autres modes");
+const mainSource = await read("src/main.js");
+assert.doesNotMatch(mainSource, /se joue seul/, "Ancien blocage du Dessin mélangé encore présent");
+
+const mixedRulesUrl = pathToFileURL(path.join(root, "src/features/drawing/mixed-drawing.js")).href;
+const mixedRules = await import(mixedRulesUrl);
+assert.equal(mixedRules.getMixedDrawingPenaltySeconds(60, 1), 7);
+assert.equal(mixedRules.getMixedDrawingPenaltySeconds(60, 5), 2);
+assert.equal(mixedRules.getMixedDrawingPenaltySeconds(30, 2), 3);
+assert.equal(mixedRules.getMixedDrawingPenaltySeconds(90, 3), 6);
+assert.equal(mixedRules.getFeasibleMixedDrawingCount(10000, 5), 0);
+assert.equal(mixedRules.getFeasibleMixedDrawingCount(15000, 5), 1);
+assert.equal(mixedRules.getFeasibleMixedDrawingCount(20000, 5), 3);
+assert.equal(mixedRules.getFeasibleMixedDrawingCount(30000, 5), 5);
+const plan = mixedRules.createMixedDrawingPlan(60000, 4);
+assert.equal(plan.targetElapsedMs.length, 4);
+assert.ok(plan.targetElapsedMs.every((value, index, values) => index === 0 || value > values[index - 1]));
+assert.ok(plan.targetElapsedMs[0] > 0 && plan.targetElapsedMs.at(-1) < 60000);
+assert.equal(mixedRules.isMixedDrawingDue(plan, plan.targetElapsedMs[0], 30000), true);
+mixedRules.markMixedDrawingStarted(plan);
+assert.equal(plan.active, true);
+mixedRules.markMixedDrawingCompleted(plan);
+assert.equal(plan.active, false);
+assert.equal(plan.completedCount, 1);
+const closingPlan = mixedRules.createMixedDrawingPlan(60000, 5);
+assert.equal(mixedRules.closeUnplayableMixedDrawings(closingPlan, closingPlan.minimumRemainingMs), 5);
+assert.equal(closingPlan.skippedForTime, 5);
 
 const originalLocalStorage = globalThis.localStorage;
 const originalFetch = globalThis.fetch;
@@ -265,17 +220,6 @@ globalThis.fetch = async url => {
 };
 
 const configModule = await import(pathToFileURL(path.join(root, "src/config/config.js")).href);
-const sessionModule = await import(pathToFileURL(path.join(root, "src/features/multiplayer/session.js")).href);
-const sessionSchedule = scheduleModule.buildMultiplayerSchedule({
-  players, modeIds: ["mime", "draw", "lyrics"], cycles: 2, orderType: "balanced", random: deterministicRandom
-});
-const session = sessionModule.createMultiplayerSession({ schedule: sessionSchedule, durationSeconds: 60 });
-session.nextTurnIndex = 1;
-sessionModule.saveMultiplayerSession(session);
-assert.equal(sessionModule.loadMultiplayerSession().nextTurnIndex, 1);
-sessionModule.clearMultiplayerSession();
-assert.equal(sessionModule.loadMultiplayerSession(), null);
-
 for (const [modeId, modeConfig] of Object.entries(configModule.MODE_CONFIG)) {
   const official = JSON.parse(await read(modeConfig.libraryUrl.replace(/^\.\//, "")));
   const boxes = official.boxes.map(box => ({ ...box, origin: "official", locallyModified: false }));
@@ -311,28 +255,17 @@ memoryStorage.set(configModule.GLOBAL_SETTINGS_KEY, JSON.stringify({
 const librariesModule = await import(pathToFileURL(path.join(root, "src/services/libraries.js")).href);
 const stateModule = await import(pathToFileURL(path.join(root, "src/core/state.js")).href);
 await librariesModule.loadContent();
-assert.ok(stateModule.state.modes.lyrics.cards.some(card => card.id === "personal-card"), "Carte personnelle V0.6.0 perdue");
-assert.ok(stateModule.state.modes.lyrics.boxes.some(box => box.id === "personal-box"), "Catégorie personnelle V0.6.0 perdue");
+assert.ok(stateModule.state.modes.lyrics.cards.some(card => card.id === "personal-card"), "Carte personnelle V0.5.x perdue");
+assert.ok(stateModule.state.modes.lyrics.boxes.some(box => box.id === "personal-box"), "Catégorie personnelle V0.5.x perdue");
 assert.equal(stateModule.state.modes.lyrics.cards[0].prompt, "Modification locale conservée");
 assert.equal(stateModule.state.settings.modeOptions.draw.attemptCount, 5);
 assert.equal(stateModule.state.settings.modeOptions.draw.soundEnabled, false);
 assert.equal(stateModule.state.settings.modeOptions.draw.mixedCount, 2);
-assert.equal(stateModule.state.settings.playType, "free");
-assert.equal(stateModule.state.settings.multiplayer.players.length, 2);
-assert.equal(stateModule.state.settings.multiplayer.orderType, "balanced");
+assert.equal(stateModule.state.settings.modeOptions.draw.arrivalSoundEnabled, true);
 
-stateModule.state.settings.playType = "multiplayer";
-stateModule.state.settings.multiplayer = {
-  players: [{ id: "camille", name: "Camille" }, { id: "lea", name: "Léa" }],
-  cycles: 3,
-  orderType: "common"
-};
-const backupModule = await import(pathToFileURL(path.join(root, "src/services/backup.js")).href);
-const newBackup = backupModule.createBackupData();
-assert.equal(newBackup.backupSchemaVersion, 4);
-assert.equal(newBackup.settings.multiplayer.cycles, 3);
-assert.equal(Object.hasOwn(newBackup, "multiplayerSession"), false, "La session temporaire ne doit pas être exportée");
-
+stateModule.state.settings.modeOptions.draw.mixedCount = 4;
+stateModule.state.settings.modeOptions.draw.arrivalSoundEnabled = false;
+const lyricsMode = structuredClone(stateModule.state.modes.lyrics);
 const legacyBackup = {
   backupSchemaVersion: 3,
   settings: {
@@ -345,42 +278,21 @@ const legacyBackup = {
   },
   modes: {
     lyrics: {
-      boxes: structuredClone(stateModule.state.modes.lyrics.boxes),
-      cards: structuredClone(stateModule.state.modes.lyrics.cards),
-      selectedBoxIds: structuredClone(stateModule.state.modes.lyrics.selectedBoxIds),
-      selectedDifficultyIds: structuredClone(stateModule.state.modes.lyrics.selectedDifficultyIds),
-      libraryMeta: structuredClone(stateModule.state.modes.lyrics.libraryMeta)
+      boxes: lyricsMode.boxes, cards: lyricsMode.cards,
+      selectedBoxIds: lyricsMode.selectedBoxIds, selectedDifficultyIds: lyricsMode.selectedDifficultyIds,
+      libraryMeta: lyricsMode.libraryMeta
     }
   }
 };
+const backupModule = await import(pathToFileURL(path.join(root, "src/services/backup.js")).href);
 backupModule.restoreBackupData(legacyBackup);
 assert.equal(stateModule.state.settings.modeOptions.draw.attemptCount, 7);
-assert.equal(stateModule.state.settings.multiplayer.cycles, 3, "Une ancienne sauvegarde ne doit pas effacer les réglages multijoueur actuels");
+assert.equal(stateModule.state.settings.modeOptions.draw.mixedCount, 4);
+assert.equal(stateModule.state.settings.modeOptions.draw.arrivalSoundEnabled, false);
 
-const drawingSource = await read("src/features/drawing/drawing-controller.js");
-assert.match(drawingSource, /playDrawingArrivalSignal\(\);\s*showNextDrawingPrompt\(\);/);
-assert.doesNotMatch(drawingSource, /showPickupTransition/);
-assert.match(drawingSource, /round\?\.kind !== "mixed"/);
-const gameSource = await read("src/features/game/game-controller.js");
-assert.match(gameSource, /if \(step\.type === "draw"\)[\s\S]*pauseRoundClock\("drawing"\)[\s\S]*markMixedDrawingStarted/);
-const scheduleSource = await read("src/features/multiplayer/schedule.js");
-assert.doesNotMatch(scheduleSource, /MODE_ORDER/);
-assert.doesNotMatch(scheduleSource, /length\s*===\s*4/);
+globalThis.localStorage = originalLocalStorage;
+globalThis.fetch = originalFetch;
 
-const mixedRules = await import(pathToFileURL(path.join(root, "src/features/drawing/mixed-drawing.js")).href);
-assert.equal(mixedRules.getMixedDrawingPenaltySeconds(60, 1), 7);
-assert.equal(mixedRules.getMixedDrawingPenaltySeconds(60, 5), 2);
-assert.equal(mixedRules.getFeasibleMixedDrawingCount(10000, 5), 0);
-assert.equal(mixedRules.getFeasibleMixedDrawingCount(30000, 5), 5);
-
-const originalStorageRestore = originalLocalStorage;
-const originalFetchRestore = originalFetch;
-globalThis.localStorage = originalStorageRestore;
-globalThis.fetch = originalFetchRestore;
-
-console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.7.0 cohérents");
-console.log("✓ Modules ES résolus, dépendances orientées et aucun cycle d’import");
-console.log("✓ Planning dynamique testé de 1 à 8 modes et de 2 à 12 joueurs");
-console.log("✓ Scores par mode, classement et sauvegarde de session validés");
-console.log("✓ Dessin direct, dessin en première position et fin de série validés");
-console.log("✓ Données locales et sauvegardes V0.6.0 compatibles");
+console.log("✓ Manifeste, cache et version 0.6.0 cohérents");
+console.log("✓ Règles du Dessin mélangé et pénalités validées");
+console.log("✓ Données locales et sauvegardes V0.5.x compatibles");

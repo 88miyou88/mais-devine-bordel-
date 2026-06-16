@@ -24,9 +24,8 @@ export function createMixedDrawingPlan(durationMs, requestedCount) {
   const roundSeconds = duration / 1000;
   const penaltyMs = getMixedDrawingPenaltySeconds(roundSeconds, count) * 1000;
 
-  // En partie libre, les dessins sont répartis dans la zone centrale de la
-  // manche et déclenchés après une carte normale. En multijoueur, le parcours
-  // explicite des modes peut aussi placer Dessin en première position.
+  // Les dessins sont répartis dans la zone centrale de la manche. Ils ne sont
+  // déclenchés qu'après la validation ou le passage d'une carte normale.
   const safeStartMs = Math.min(9000, duration * 0.18);
   const safeEndMs = Math.min(8000, duration * 0.17);
   const usableMs = Math.max(1000, duration - safeStartMs - safeEndMs);

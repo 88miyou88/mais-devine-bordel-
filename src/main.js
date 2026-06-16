@@ -24,21 +24,12 @@ import {
   stopClassicGame
 } from "./features/game/game-controller.js";
 import { setFlipped, toggleFlipped } from "./features/game/swipe.js";
-import {
-  initializeMultiplayer,
-  openMultiplayerSetup
-} from "./features/multiplayer/multiplayer-controller.js";
 import { registerServiceWorker } from "./services/diagnostics.js";
 import { getPlayableCards, loadContent } from "./services/libraries.js";
 
 async function startFlow() {
   if (getPlayableCards().length === 0) {
     alert("Sélectionne au moins un mode contenant une boîte et une carte active.");
-    return;
-  }
-
-  if (state.settings.playType === "multiplayer") {
-    openMultiplayerSetup();
     return;
   }
 
@@ -74,7 +65,6 @@ async function init() {
   initializeCardManager({ onHomeDataChanged: renderHomeData });
   initializeDrawing({ onAbortMixed: () => finishGame("manual") });
   initializeGame({ onReplay: startFlow, onHome: returnHome });
-  initializeMultiplayer({ onHome: returnHome });
   initializeHome({
     onStart: startFlow,
     onManage: openManageScreen,

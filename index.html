@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="./assets/styles/screens/game.css">
   <link rel="stylesheet" href="./assets/styles/screens/results.css">
   <link rel="stylesheet" href="./assets/styles/screens/drawing.css">
-  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css">
 </head>
 <body>
   <main id="app">
@@ -27,25 +26,21 @@
             <h1 id="appTitle">Mais devine, bordel !</h1>
           </div>
 
-          <div class="home-top-controls">
-            <div class="play-type-switch" role="radiogroup" aria-label="Type de partie">
-              <button id="freePlayButton" class="play-type-button selected" type="button" data-play-type="free" aria-pressed="true">Partie libre</button>
-              <button id="multiplayerPlayButton" class="play-type-button" type="button" data-play-type="multiplayer" aria-pressed="false">Multijoueur</button>
+          <fieldset id="globalTimerSettings" class="timer-settings home-timer-settings">
+            <legend>Durée de la manche</legend>
+            <div class="preset-row" role="radiogroup" aria-label="Durée">
+              <button class="duration-btn" data-seconds="30" type="button">30 s</button>
+              <button class="duration-btn selected" data-seconds="60" type="button">60 s</button>
+              <button class="duration-btn" data-seconds="90" type="button">90 s</button>
             </div>
-
-            <fieldset id="globalTimerSettings" class="timer-settings home-timer-settings">
-              <legend>Durée de la manche</legend>
-              <div class="preset-row" role="radiogroup" aria-label="Durée">
-                <button class="duration-btn" data-seconds="30" type="button">30 s</button>
-                <button class="duration-btn selected" data-seconds="60" type="button">60 s</button>
-                <button class="duration-btn" data-seconds="90" type="button">90 s</button>
-                <label class="custom-duration-chip" title="Durée personnalisée">
-                  <input id="customSeconds" type="number" min="10" max="600" step="5" inputmode="numeric" placeholder="45" aria-label="Durée personnalisée en secondes">
-                  <span>s</span>
-                </label>
-              </div>
-            </fieldset>
-          </div>
+            <label class="custom-duration">
+              Personnalisée
+              <span>
+                <input id="customSeconds" type="number" min="10" max="600" step="5" inputmode="numeric" placeholder="45">
+                s
+              </span>
+            </label>
+          </fieldset>
         </header>
 
         <fieldset class="mode-selection-panel">
@@ -112,123 +107,6 @@
           </details>
 
           <button id="flipHomeButton" class="secondary-button home-compact-button" type="button">↻ Retourner</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="multiplayerSetupScreen" class="screen multiplayer-screen">
-      <div class="multiplayer-shell multiplayer-setup-shell">
-        <header class="multiplayer-header">
-          <button id="multiplayerSetupBackButton" class="secondary-button compact-button" type="button">← Accueil</button>
-          <div>
-            <p class="eyebrow">Préparation de la partie</p>
-            <h2>Multijoueur</h2>
-          </div>
-          <div id="multiplayerSetupModeSummary" class="multiplayer-mode-summary"></div>
-        </header>
-
-        <div class="multiplayer-setup-grid">
-          <section class="multiplayer-panel players-panel">
-            <div class="multiplayer-panel-title">
-              <div>
-                <h3>Joueurs</h3>
-                <p>De 2 à 12 personnes. L’ordre affiché est l’ordre de passage.</p>
-              </div>
-              <div class="section-mini-actions">
-                <button id="shufflePlayersButton" class="mini-button" type="button">Mélanger</button>
-                <button id="addPlayerButton" class="mini-button" type="button">+ Ajouter</button>
-              </div>
-            </div>
-            <div id="multiplayerPlayerList" class="multiplayer-player-list"></div>
-          </section>
-
-          <section class="multiplayer-panel multiplayer-rules-panel">
-            <div class="multiplayer-panel-title">
-              <div>
-                <h3>Déroulement</h3>
-                <p>Chaque joueur garde le téléphone pendant toute sa manche et enchaîne les modes.</p>
-              </div>
-            </div>
-
-            <label class="multiplayer-setting-row">
-              <span>
-                <strong>Nombre de cycles</strong>
-                <small>Un cycle = une manche complète par joueur.</small>
-              </span>
-              <select id="multiplayerCyclesInput">
-                <option value="1">1 cycle</option>
-                <option value="2">2 cycles</option>
-                <option value="3">3 cycles</option>
-                <option value="4">4 cycles</option>
-                <option value="5">5 cycles</option>
-              </select>
-            </label>
-
-            <div class="multiplayer-order-choices" role="radiogroup" aria-label="Ordre des modes">
-              <label class="multiplayer-order-card">
-                <input type="radio" name="multiplayerOrder" value="common">
-                <span>
-                  <strong>Ordre commun</strong>
-                  <small>Tous les joueurs suivent le même enchaînement de modes.</small>
-                </span>
-              </label>
-              <label class="multiplayer-order-card">
-                <input type="radio" name="multiplayerOrder" value="balanced" checked>
-                <span>
-                  <strong>Rotation équilibrée</strong>
-                  <small>Chaque joueur reçoit les mêmes modes dans un ordre différent et équitable.</small>
-                </span>
-              </label>
-            </div>
-
-            <div id="multiplayerEstimate" class="multiplayer-estimate"></div>
-            <button id="startMultiplayerButton" class="primary-button multiplayer-start-button" type="button">Préparer la partie</button>
-          </section>
-        </div>
-      </div>
-    </section>
-
-    <section id="multiplayerHandoffScreen" class="screen multiplayer-screen">
-      <div class="multiplayer-shell multiplayer-handoff-card">
-        <p id="multiplayerHandoffKicker" class="eyebrow">Manche 1 sur 2</p>
-        <h2 id="multiplayerHandoffTitle">Passe le téléphone à Camille</h2>
-        <p id="multiplayerHandoffText">Tu as 60 secondes pour marquer un maximum de points.</p>
-        <div id="multiplayerHandoffModes" class="multiplayer-mode-route"></div>
-        <div id="multiplayerHandoffScore" class="multiplayer-current-score"></div>
-        <div class="multiplayer-handoff-actions">
-          <button id="multiplayerAbortButton" class="secondary-button" type="button">Abandonner la partie</button>
-          <button id="multiplayerReadyButton" class="primary-button" type="button">Je suis prêt·e</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="multiplayerTurnSummaryScreen" class="screen multiplayer-screen">
-      <div class="multiplayer-shell multiplayer-summary-card">
-        <p id="multiplayerTurnSummaryKicker" class="eyebrow">Manche terminée</p>
-        <h2 id="multiplayerTurnSummaryTitle">Camille</h2>
-        <div class="multiplayer-turn-score">
-          <strong id="multiplayerTurnScore">0</strong>
-          <span>points cette manche</span>
-        </div>
-        <div id="multiplayerTurnModeStats" class="multiplayer-mode-stats"></div>
-        <p id="multiplayerTurnTotal" class="multiplayer-turn-total"></p>
-        <button id="multiplayerContinueButton" class="primary-button" type="button">Passer au joueur suivant</button>
-      </div>
-    </section>
-
-    <section id="multiplayerResultsScreen" class="screen multiplayer-screen">
-      <div class="multiplayer-shell multiplayer-results-shell">
-        <header class="multiplayer-results-header">
-          <div>
-            <p class="eyebrow">Partie terminée</p>
-            <h2>Classement final</h2>
-          </div>
-          <div id="multiplayerWinnerBanner" class="multiplayer-winner-banner"></div>
-        </header>
-        <div id="multiplayerRanking" class="multiplayer-ranking"></div>
-        <div class="multiplayer-final-actions">
-          <button id="multiplayerReplayButton" class="primary-button" type="button">Rejouer avec les mêmes réglages</button>
-          <button id="multiplayerResultsHomeButton" class="secondary-button" type="button">Accueil</button>
         </div>
       </div>
     </section>
@@ -331,11 +209,12 @@
 
     <section id="drawTransitionScreen" class="screen draw-screen" aria-live="assertive">
       <div class="draw-transition-card">
-        <p id="drawTransitionKicker" class="draw-mode-kicker">DESSIN TERMINÉ</p>
+        <p id="drawTransitionKicker" class="draw-mode-kicker">CARTE SPÉCIALE</p>
         <div class="draw-transition-icon" aria-hidden="true">✎</div>
-        <h2 id="drawTransitionTitle">Remets le téléphone sur ton front</h2>
-        <p id="drawTransitionText">La partie reprend automatiquement.</p>
-        <div id="drawTransitionCountdown" class="draw-transition-countdown">3</div>
+        <h2 id="drawTransitionTitle">Récupère le téléphone !</h2>
+        <p id="drawTransitionText">Une carte Dessin arrive. Le chrono général est en pause.</p>
+        <div id="drawTransitionCountdown" class="draw-transition-countdown hidden">3</div>
+        <button id="drawTransitionButton" class="primary-button draw-primary" type="button">J’ai le téléphone</button>
       </div>
     </section>
 
@@ -702,23 +581,6 @@
       <div class="dialog-actions">
         <button id="copyDiagnosticButton" class="primary-button" type="button">Copier le diagnostic</button>
         <button class="secondary-button" value="close">Fermer</button>
-      </div>
-    </form>
-  </dialog>
-
-
-  <dialog id="resumeMultiplayerDialog" class="resume-multiplayer-dialog">
-    <form>
-      <div class="dialog-header">
-        <div>
-          <p class="eyebrow">Partie en cours</p>
-          <h2>Reprendre le multijoueur ?</h2>
-        </div>
-      </div>
-      <p id="resumeMultiplayerText">Une partie interrompue a été retrouvée.</p>
-      <div class="dialog-actions">
-        <button id="discardMultiplayerButton" class="danger-button" type="button">Abandonner</button>
-        <button id="resumeMultiplayerButton" class="primary-button" type="button">Reprendre</button>
       </div>
     </form>
   </dialog>

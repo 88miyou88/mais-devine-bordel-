@@ -5,7 +5,7 @@ import { sanitizeMode, saveAllData } from "./libraries.js";
 
 export function createBackupData() {
   return {
-    backupSchemaVersion: 4,
+    backupSchemaVersion: 3,
     appVersion: APP_VERSION,
     exportedAt: new Date().toISOString(),
     settings: clone(state.settings),
@@ -38,7 +38,7 @@ export function exportBackup() {
 }
 
 export function validBackup(data) {
-  if ([2, 3, 4].includes(Number(data?.backupSchemaVersion))) {
+  if ([2, 3].includes(Number(data?.backupSchemaVersion))) {
     return data.settings && data.modes && Object.values(data.modes).some(mode =>
       Array.isArray(mode?.boxes) && Array.isArray(mode?.cards)
     );
@@ -56,14 +56,6 @@ function mergeRestoredSettings(settings = {}) {
     selectedModeIds: Array.isArray(settings.selectedModeIds)
       ? clone(settings.selectedModeIds)
       : state.settings.selectedModeIds,
-    playType: settings.playType === "multiplayer" ? "multiplayer" : state.settings.playType,
-    multiplayer: {
-      players: Array.isArray(settings.multiplayer?.players)
-        ? clone(settings.multiplayer.players)
-        : clone(state.settings.multiplayer.players),
-      cycles: Math.min(10, Math.max(1, Number(settings.multiplayer?.cycles) || state.settings.multiplayer.cycles)),
-      orderType: settings.multiplayer?.orderType === "common" ? "common" : state.settings.multiplayer.orderType
-    },
     modeOptions: {
       words: {
         showForbiddenWords: settings.modeOptions?.words?.showForbiddenWords !== false
@@ -101,7 +93,7 @@ export function restoreBackupData(data) {
     throw new Error("Ce fichier n’est pas une sauvegarde MDB valide.");
   }
 
-  if ([2, 3, 4].includes(Number(data.backupSchemaVersion))) {
+  if ([2, 3].includes(Number(data.backupSchemaVersion))) {
     mergeRestoredSettings(data.settings);
     MODE_ORDER.forEach(modeId => {
       const restored = data.modes[modeId];

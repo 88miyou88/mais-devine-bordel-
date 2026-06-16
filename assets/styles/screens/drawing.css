@@ -103,12 +103,3 @@
 }
 @media(max-width:760px){.draw-config-grid,.draw-mixed-grid{grid-template-columns:1fr}.draw-duration-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.draw-reveal-card{width:min(700px,100%)}}
 @media(max-width:520px){.draw-reveal-actions,.draw-duration-grid{grid-template-columns:1fr}}
-#drawRevealScreen.mixed-draw-arrival .draw-reveal-card{
-  animation:mixedDrawArrival .55s ease both;
-  border-color:rgba(32,201,190,.7);
-  box-shadow:0 0 0 1px rgba(32,201,190,.25),0 26px 80px rgba(0,0,0,.5);
-}
-@keyframes mixedDrawArrival{
-  0%{transform:scale(.96);filter:brightness(1.35)}
-  100%{transform:scale(1);filter:brightness(1)}
-}

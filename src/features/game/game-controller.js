@@ -45,28 +45,9 @@ import {
 let onReplay = null;
 let onHome = null;
 let preparedMixedDrawingCount = null;
-let roundOptions = null;
-let sequenceCursor = 0;
-let modeQueues = new Map();
-
-function isMultiplayerRound() {
-  return roundOptions?.multiplayer === true;
-}
-
-function selectedModeOrder() {
-  const configured = Array.isArray(roundOptions?.modeOrder) && roundOptions.modeOrder.length
-    ? roundOptions.modeOrder
-    : state.settings.selectedModeIds;
-  return [...new Set(configured)];
-}
-
-function classicModeIds() {
-  return selectedModeOrder().filter(modeId => modeId !== "draw");
-}
 
 function classicCards() {
-  if (!isMultiplayerRound()) return getPlayableCards({ excludeModeIds: ["draw"] });
-  return classicModeIds().flatMap(modeId => selectedCardsForMode(modeId));
+  return getPlayableCards({ excludeModeIds: ["draw"] });
 }
 
 function refillQueue() {
@@ -76,40 +57,6 @@ function refillQueue() {
     if (firstSame) [next[0], next[1]] = [next[1], next[0]];
   }
   state.queue.push(...next);
-}
-
-function usedIdsForMode(modeId) {
-  if (!roundOptions?.usedCardIdsByMode) return null;
-  roundOptions.usedCardIdsByMode[modeId] ||= [];
-  return roundOptions.usedCardIdsByMode[modeId];
-}
-
-function refillModeQueue(modeId) {
-  const cards = selectedCardsForMode(modeId);
-  if (!cards.length) {
-    modeQueues.set(modeId, []);
-    return;
-  }
-  const usedIds = usedIdsForMode(modeId);
-  let available = usedIds ? cards.filter(card => !usedIds.includes(card.id)) : cards;
-  if (!available.length) {
-    if (usedIds) usedIds.splice(0, usedIds.length);
-    available = cards;
-  }
-  const queue = shuffle(available);
-  if (state.currentCard && queue.length > 1 && queue[0].id === state.currentCard.id) {
-    [queue[0], queue[1]] = [queue[1], queue[0]];
-  }
-  modeQueues.set(modeId, queue);
-}
-
-function takeCardForMode(modeId) {
-  if (!modeQueues.get(modeId)?.length) refillModeQueue(modeId);
-  const card = modeQueues.get(modeId)?.shift();
-  if (!card) return null;
-  const usedIds = usedIdsForMode(modeId);
-  if (usedIds && !usedIds.includes(card.id)) usedIds.push(card.id);
-  return card;
 }
 
 function drawNextCard() {
@@ -188,27 +135,16 @@ function fitCardContent() {
   });
 }
 
-function buildDrawQueue(drawCards, wanted) {
-  const usedIds = usedIdsForMode("draw");
-  let available = usedIds ? drawCards.filter(card => !usedIds.includes(card.id)) : drawCards;
-  if (available.length < wanted) {
-    if (usedIds) usedIds.splice(0, usedIds.length);
-    available = drawCards;
-  }
-  return buildBalancedDrawQueue(available, wanted);
-}
-
 function createMixedDrawingState() {
-  const modes = selectedModeOrder();
-  const drawSelected = modes.includes("draw");
-  if (!drawSelected || modes.length < 2) return null;
+  const drawSelected = state.settings.selectedModeIds.includes("draw");
+  if (!drawSelected || state.settings.selectedModeIds.length < 2) return null;
   const drawCards = selectedCardsForMode("draw");
   if (!drawCards.length) return null;
   const wanted = preparedMixedDrawingCount ?? Math.min(state.settings.modeOptions.draw.mixedCount, drawCards.length);
   preparedMixedDrawingCount = null;
   return {
     ...createMixedDrawingPlan(state.durationMs, wanted),
-    queue: buildDrawQueue(drawCards, wanted),
+    queue: buildBalancedDrawQueue(drawCards, wanted),
     found: 0,
     passed: 0,
     expired: 0,
@@ -217,103 +153,39 @@ function createMixedDrawingState() {
   };
 }
 
-function liveRemainingMs() {
-  if (state.paused) return state.remainingMs;
-  return Math.max(0, state.deadline - performance.now());
-}
-
-function nextSequenceStep() {
-  const order = selectedModeOrder();
-  if (!order.length) return null;
-  const maxChecks = Math.max(4, order.length * 3);
-  for (let guard = 0; guard < maxChecks; guard += 1) {
-    const modeId = order[sequenceCursor % order.length];
-    sequenceCursor += 1;
-    if (modeId === "draw") {
-      const plan = state.mixedDrawing;
-      if (!plan || plan.active || plan.nextIndex >= plan.requestedCount) continue;
-      const remaining = liveRemainingMs();
-      state.remainingMs = remaining;
-      if (remaining <= plan.minimumRemainingMs) {
-        closeUnplayableMixedDrawings(plan, remaining);
-        continue;
-      }
-      return { type: "draw" };
-    }
-    const card = takeCardForMode(modeId);
-    if (card) return { type: "classic", card };
-  }
-  return null;
-}
-
-function executeSequenceStep(step) {
-  if (!state.running) return;
-  if (!step) {
-    finishGame("empty");
-    return;
-  }
-  if (step.type === "draw") {
-    if (!state.mixedDrawing?.active) {
-      pauseRoundClock("drawing");
-      markMixedDrawingStarted(state.mixedDrawing);
-    }
-    beginMixedDrawingBreak();
-    return;
-  }
-  state.currentCard = step.card;
-  renderGameCard();
-}
-
-export async function startClassicRound(options = {}) {
+export async function startClassicRound() {
   preparedMixedDrawingCount = null;
-  roundOptions = options.multiplayer ? {
-    ...options,
-    modeOrder: [...new Set(options.modeOrder || state.settings.selectedModeIds)]
-  } : null;
-  const modes = selectedModeOrder();
-  const classicIds = modes.filter(modeId => modeId !== "draw");
-  if (!classicIds.length || !classicCards().length) {
-    alert("Sélectionne au moins un mode classique contenant des cartes actives pour lancer cette manche.");
-    roundOptions = null;
+  if (!classicCards().length) {
+    alert("Sélectionne au moins un mode classique contenant des cartes actives pour lancer une partie mélangée.");
     return false;
   }
 
-  state.durationMs = (Number(options.durationSeconds) || getRequestedSeconds()) * 1000;
-  const drawSelected = modes.includes("draw");
+  state.durationMs = getRequestedSeconds() * 1000;
+  const drawSelected = state.settings.selectedModeIds.includes("draw");
   if (drawSelected) {
     const drawCards = selectedCardsForMode("draw");
     if (!drawCards.length) {
       alert("Le mode Dessin est sélectionné, mais aucune de ses cartes ne correspond aux catégories et difficultés choisies.");
-      roundOptions = null;
       return false;
     }
+
     const requested = state.settings.modeOptions.draw.mixedCount;
     const availableCount = Math.min(requested, drawCards.length);
     const feasibleCount = getFeasibleMixedDrawingCount(state.durationMs, availableCount);
     if (feasibleCount === 0) {
       alert("Cette manche est trop courte pour placer un dessin proprement. Augmente la durée à au moins 15 secondes ou désactive le mode Dessin.");
-      roundOptions = null;
       return false;
     }
     preparedMixedDrawingCount = feasibleCount;
-    if (!options.multiplayer && feasibleCount < requested) {
+    if (feasibleCount < requested) {
       alert(`Avec ${state.durationMs / 1000} secondes et les cartes sélectionnées, cette manche utilisera ${feasibleCount} dessin${feasibleCount > 1 ? "s" : ""} au lieu de ${requested}.`);
     }
   }
 
   state.remainingMs = state.durationMs;
-  state.roundContext = roundOptions ? {
-    kind: "multiplayer",
-    playerId: roundOptions.playerId,
-    turnId: roundOptions.turnId,
-    modeOrder: [...roundOptions.modeOrder]
-  } : { kind: "free" };
   await requestGameDisplay();
-  if (options.skipCountdown) beginGame();
-  else {
-    showScreen(el.countdownScreen);
-    runCountdown(beginGame);
-  }
+  showScreen(el.countdownScreen);
+  runCountdown(beginGame);
   return true;
 }
 
@@ -329,17 +201,12 @@ function beginGame() {
   state.score = 0;
   state.remainingMs = state.durationMs;
   state.mixedDrawing = createMixedDrawingState();
-  sequenceCursor = 0;
-  modeQueues = new Map();
   updateScores();
+  refillQueue();
+  drawNextCard();
   showScreen(el.gameScreen);
   state.deadline = performance.now() + state.remainingMs;
   startTimerLoop(() => finishGame("time"));
-  if (isMultiplayerRound()) executeSequenceStep(nextSequenceStep());
-  else {
-    refillQueue();
-    drawNextCard();
-  }
 }
 
 function missedCount() {
@@ -370,11 +237,13 @@ export function togglePause(forcePause) {
 function drawingBreakDueAfterCurrentCard() {
   const plan = state.mixedDrawing;
   if (!plan) return false;
-  const remaining = liveRemainingMs();
-  state.remainingMs = remaining;
-  const elapsedMs = state.durationMs - remaining;
-  closeUnplayableMixedDrawings(plan, remaining);
-  return isMixedDrawingDue(plan, elapsedMs, remaining);
+  const liveRemaining = state.paused
+    ? state.remainingMs
+    : Math.max(0, state.deadline - performance.now());
+  state.remainingMs = liveRemaining;
+  const elapsedMs = state.durationMs - liveRemaining;
+  closeUnplayableMixedDrawings(plan, liveRemaining);
+  return isMixedDrawingDue(plan, elapsedMs, liveRemaining);
 }
 
 function beginMixedDrawingBreak() {
@@ -390,8 +259,6 @@ function beginMixedDrawingBreak() {
     return;
   }
   const card = plan.queue[plan.nextIndex];
-  const usedIds = usedIdsForMode("draw");
-  if (usedIds && !usedIds.includes(card.id)) usedIds.push(card.id);
   startMixedDrawingBreak({
     card,
     index: plan.nextIndex + 1,
@@ -426,10 +293,8 @@ function completeMixedDrawingBreak(entry) {
 
 function resumeAfterDrawingBreak() {
   if (!state.running) return;
+  drawNextCard();
   showScreen(el.gameScreen);
-  if (isMultiplayerRound()) executeSequenceStep(nextSequenceStep());
-  else drawNextCard();
-  if (!state.running) return;
   resumeRoundClock(() => finishGame("time"));
   requestWakeLock();
 }
@@ -445,26 +310,16 @@ export function commitSwipe(result) {
   } else {
     state.passed += 1;
   }
-
-  let nextStep = null;
-  let startsDrawing = false;
-  if (isMultiplayerRound()) {
-    nextStep = nextSequenceStep();
-    startsDrawing = nextStep?.type === "draw";
-  } else {
-    startsDrawing = drawingBreakDueAfterCurrentCard();
-  }
+  const startsDrawing = drawingBreakDueAfterCurrentCard();
   if (startsDrawing) {
     pauseRoundClock("drawing");
     markMixedDrawingStarted(state.mixedDrawing);
   }
-
   updateScores();
   vibrateForResult(result);
   animateCardExit(result, () => {
     if (!state.running) return;
     if (startsDrawing) beginMixedDrawingBreak();
-    else if (isMultiplayerRound()) executeSequenceStep(nextStep);
     else drawNextCard();
   });
 }
@@ -480,11 +335,7 @@ export function undoLast() {
   } else {
     state.passed = Math.max(0, state.passed - 1);
   }
-  if (isMultiplayerRound()) {
-    sequenceCursor = Math.max(0, sequenceCursor - 1);
-  } else if (state.currentCard) {
-    state.queue.unshift(state.currentCard);
-  }
+  if (state.currentCard) state.queue.unshift(state.currentCard);
   state.currentCard = last.card;
   updateScores();
   renderGameCard();
@@ -502,26 +353,8 @@ function finalizeUnplayedDrawings(reason) {
   }
 }
 
-function currentRoundResult(reason) {
-  if (state.running && !state.paused) state.remainingMs = liveRemainingMs();
-  return {
-    reason,
-    durationMs: state.durationMs,
-    remainingMs: state.remainingMs,
-    score: state.score,
-    valid: state.valid,
-    passed: state.passed,
-    history: state.history.map(entry => ({
-      ...entry,
-      card: entry.card ? { ...entry.card } : null
-    }))
-  };
-}
-
 export function finishGame(reason = "manual") {
   if (!state.running) return;
-  const result = currentRoundResult(reason);
-  const complete = roundOptions?.onComplete || null;
   state.running = false;
   state.paused = false;
   state.pauseReason = null;
@@ -530,18 +363,6 @@ export function finishGame(reason = "manual") {
   stopDrawingRound();
   el.pauseOverlay.classList.add("hidden");
   el.pauseButton.textContent = "Ⅱ Pause";
-
-  if (complete) {
-    const completedOptions = roundOptions;
-    roundOptions = null;
-    state.roundContext = null;
-    state.mixedDrawing = null;
-    state.currentCard = null;
-    releaseWakeLock();
-    complete(result, completedOptions);
-    return;
-  }
-
   renderGameResults(reason);
   showScreen(el.resultsScreen);
   releaseWakeLock();
@@ -553,10 +374,6 @@ export function stopClassicGame() {
   state.pauseReason = null;
   state.pointer = null;
   state.mixedDrawing = null;
-  state.roundContext = null;
-  roundOptions = null;
-  sequenceCursor = 0;
-  modeQueues = new Map();
   stopTimers();
   el.pauseOverlay.classList.add("hidden");
   el.pauseButton.textContent = "Ⅱ Pause";

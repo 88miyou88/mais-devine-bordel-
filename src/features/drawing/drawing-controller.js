@@ -88,38 +88,23 @@ function createDrawingRound({
     canvasHeight: 0,
     penaltySeconds,
     onComplete,
-    onRoundComplete: null,
-    turnContext: null,
-    usedCardIds: null
+    transitionAction: null
   };
 }
 
-export async function startDrawingRound(options = {}) {
+export async function startDrawingRound() {
   const cards = selectedCardsForMode("draw");
   if (!cards.length) {
     alert("Sélectionne au moins une catégorie et une difficulté pour le dessin.");
     return false;
   }
   await requestGameDisplay();
-  const wanted = Math.min(
-    Number(options.attemptCount) || state.settings.modeOptions.draw.attemptCount,
-    cards.length
-  );
-  const usedIds = Array.isArray(options.usedCardIds) ? options.usedCardIds : null;
-  let available = usedIds ? cards.filter(card => !usedIds.includes(card.id)) : cards;
-  if (available.length < wanted) {
-    if (usedIds) usedIds.splice(0, usedIds.length);
-    available = cards;
-  }
-  const queue = buildBalancedDrawQueue(available, wanted);
+  const wanted = Math.min(state.settings.modeOptions.draw.attemptCount, cards.length);
   state.drawRound = createDrawingRound({
-    kind: options.multiplayer ? "multiplayer" : "standalone",
-    queue,
+    kind: "standalone",
+    queue: buildBalancedDrawQueue(cards, wanted),
     totalAttempts: wanted
   });
-  state.drawRound.onRoundComplete = options.onComplete || null;
-  state.drawRound.turnContext = options.turnContext || null;
-  state.drawRound.usedCardIds = usedIds;
   showNextDrawingPrompt();
   return true;
 }
@@ -143,11 +128,25 @@ export function startMixedDrawingBreak({
     onComplete
   });
   playDrawingArrivalSignal();
-  showNextDrawingPrompt();
+  showPickupTransition();
 }
 
 function drawingIndex(round) {
   return round.kind === "mixed" ? round.displayIndex : round.attemptIndex + 1;
+}
+
+function showPickupTransition() {
+  const round = state.drawRound;
+  if (!round) return;
+  clearInterval(round.transitionTimer);
+  round.transitionAction = showNextDrawingPrompt;
+  el.drawTransitionKicker.textContent = "CARTE SPÉCIALE · DESSIN";
+  el.drawTransitionTitle.textContent = "Récupère le téléphone !";
+  el.drawTransitionText.textContent = "Le chrono général est en pause. Prends le téléphone sans montrer la prochaine consigne.";
+  el.drawTransitionCountdown.classList.add("hidden");
+  el.drawTransitionButton.classList.remove("hidden");
+  el.drawTransitionButton.textContent = "J’ai le téléphone";
+  showScreen(el.drawTransitionScreen);
 }
 
 function showReturnTransition(entry) {
@@ -159,6 +158,7 @@ function showReturnTransition(entry) {
   el.drawTransitionKicker.textContent = entry.result === "valid" ? "DESSIN TROUVÉ" : "DESSIN TERMINÉ";
   el.drawTransitionTitle.textContent = "Remets le téléphone sur ton front";
   el.drawTransitionText.textContent = `Pénalité appliquée : −${round.penaltySeconds} s. La partie reprend automatiquement.`;
+  el.drawTransitionButton.classList.add("hidden");
   el.drawTransitionCountdown.classList.remove("hidden");
   let remaining = DRAW_RETURN_COUNTDOWN_SECONDS;
   el.drawTransitionCountdown.textContent = String(remaining);
@@ -181,27 +181,28 @@ function showReturnTransition(entry) {
   }, 900);
 }
 
+function handleTransitionButton() {
+  const action = state.drawRound?.transitionAction;
+  if (!action) return;
+  state.drawRound.transitionAction = null;
+  action();
+}
+
 function showNextDrawingPrompt() {
   const round = state.drawRound;
   cancelAnimationFrame(round?.timerRaf || 0);
   if (!round || round.attemptIndex >= round.queue.length) {
-    if (round?.kind !== "mixed") finishDrawingRound();
+    if (round?.kind === "standalone") finishDrawingRound();
     return;
   }
   round.currentCard = round.queue[round.attemptIndex];
-  if (round.usedCardIds && !round.usedCardIds.includes(round.currentCard.id)) {
-    round.usedCardIds.push(round.currentCard.id);
-  }
   round.support = null;
   round.resultLocked = false;
   round.timerPaused = false;
   el.drawPauseOverlay.classList.add("hidden");
   el.drawPauseButton.textContent = "Ⅱ";
   el.drawPromptPanel.classList.remove("hidden");
-  el.drawRevealScreen.classList.toggle("mixed-draw-arrival", round.kind === "mixed");
-  el.drawAttemptLabel.textContent = round.kind === "mixed"
-    ? `Carte spéciale · Dessin ${drawingIndex(round)} sur ${round.totalAttempts}`
-    : `Dessin ${drawingIndex(round)} sur ${round.totalAttempts}`;
+  el.drawAttemptLabel.textContent = `Dessin ${drawingIndex(round)} sur ${round.totalAttempts}`;
   const points = drawPointValue(round.currentCard.difficulty);
   el.drawRevealMeta.textContent = `${getBoxName("draw", round.currentCard.boxId)} · ${DIFFICULTY_LABELS[round.currentCard.difficulty]} · ${points} point${points > 1 ? "s" : ""}`;
   setDrawingPromptRevealed(false);
@@ -391,29 +392,11 @@ function recordDrawingResult(result, elapsedMs = null, fromReveal = false) {
   window.setTimeout(showNextDrawingPrompt, 280);
 }
 
-function finishDrawingRound(reason = "completed") {
+function finishDrawingRound() {
   const round = state.drawRound;
   if (!round) return;
   cancelAnimationFrame(round.timerRaf);
   clearInterval(round.transitionTimer);
-
-  if (round.onRoundComplete) {
-    const complete = round.onRoundComplete;
-    const result = {
-      reason,
-      durationMs: round.history.reduce((total, entry) => total + (Number(entry.usedMs) || 0), 0),
-      remainingMs: 0,
-      score: round.points,
-      valid: round.successes,
-      passed: round.history.filter(entry => entry.result === "passed").length,
-      history: round.history.map(entry => ({ ...entry, card: { ...entry.card } }))
-    };
-    state.drawRound = null;
-    releaseWakeLock();
-    complete(result);
-    return;
-  }
-
   el.resultBreakdown.classList.add("hidden");
   el.resultBreakdown.innerHTML = "";
   el.resultValid.textContent = String(round.points);
@@ -457,7 +440,7 @@ function endDrawingRound() {
     stopDrawingRound();
     callbacks.onAbortMixed?.();
   } else {
-    finishDrawingRound("manual");
+    finishDrawingRound();
   }
 }
 
@@ -469,7 +452,6 @@ export function stopDrawingRound() {
   state.drawRound = null;
   state.drawPointer = null;
   el.drawPauseOverlay.classList.add("hidden");
-  el.drawRevealScreen.classList.remove("mixed-draw-arrival");
   resetDrawHoldButtons();
 }
 
@@ -480,6 +462,7 @@ export function initializeDrawing(options = {}) {
     onFound: () => recordDrawingResult("valid"),
     onPass: () => recordDrawingResult("passed")
   });
+  el.drawTransitionButton.addEventListener("click", handleTransitionButton);
   el.drawRevealPromptButton.addEventListener("click", revealDrawingPrompt);
   el.drawSkipRevealButton.addEventListener("click", skipDrawingBeforeStart);
   el.drawOnPhoneButton.addEventListener("click", () => startDrawingPlay("phone"));
