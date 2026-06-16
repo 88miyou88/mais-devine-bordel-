@@ -16,6 +16,8 @@ export const el = {
   drawTransitionScreen: document.querySelector("#drawTransitionScreen"),
   drawRevealScreen: document.querySelector("#drawRevealScreen"),
   drawPlayScreen: document.querySelector("#drawPlayScreen"),
+  orientationGuard: document.querySelector("#orientationGuard"),
+  orientationGuardButton: document.querySelector("#orientationGuardButton"),
 
   startButton: document.querySelector("#startButton"),
   freePlayButton: document.querySelector("#freePlayButton"),
@@ -219,8 +221,36 @@ export const el = {
 };
 
 
+const LANDSCAPE_SCREEN_IDS = new Set([
+  "multiplayerSetupScreen",
+  "multiplayerHandoffScreen",
+  "multiplayerTurnSummaryScreen",
+  "multiplayerResultsScreen",
+  "countdownScreen",
+  "gameScreen",
+  "resultsScreen",
+  "drawTransitionScreen",
+  "drawRevealScreen",
+  "drawPlayScreen"
+]);
+
+function activeScreenRequiresLandscape() {
+  const activeScreen = el.screens.find(screen => screen.classList.contains("active"));
+  return Boolean(activeScreen && LANDSCAPE_SCREEN_IDS.has(activeScreen.id));
+}
+
+export function updateOrientationGuard() {
+  if (!el.orientationGuard) return;
+  const isPortrait = window.matchMedia?.("(orientation: portrait)")?.matches
+    ?? window.innerHeight > window.innerWidth;
+  const shouldShow = isPortrait && activeScreenRequiresLandscape();
+  el.orientationGuard.classList.toggle("hidden", !shouldShow);
+  el.orientationGuard.setAttribute("aria-hidden", String(!shouldShow));
+}
+
 export function showScreen(target) {
   el.screens.forEach(screen => screen.classList.toggle("active", screen === target));
+  window.requestAnimationFrame(updateOrientationGuard);
 }
 
 export function getSwipeThreshold() {
@@ -245,16 +275,35 @@ export function assertRequiredDom() {
   }
 }
 
+async function requestLandscapeLock() {
+  try {
+    if (screen.orientation?.lock) {
+      await screen.orientation.lock("landscape");
+      return true;
+    }
+  } catch (_) {}
+  return false;
+}
+
 export async function requestGameDisplay() {
+  await requestLandscapeLock();
   try {
     if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
       await document.documentElement.requestFullscreen({ navigationUI: "hide" });
     }
   } catch (_) {}
-  try {
-    if (screen.orientation?.lock) await screen.orientation.lock("landscape");
-  } catch (_) {}
+  await requestLandscapeLock();
+  updateOrientationGuard();
   await requestWakeLock();
+}
+
+export function initializeOrientationGuard() {
+  const refresh = () => updateOrientationGuard();
+  window.addEventListener("resize", refresh, { passive: true });
+  window.addEventListener("orientationchange", refresh, { passive: true });
+  screen.orientation?.addEventListener?.("change", refresh);
+  el.orientationGuardButton?.addEventListener("click", requestGameDisplay);
+  updateOrientationGuard();
 }
 
 export async function requestWakeLock() {

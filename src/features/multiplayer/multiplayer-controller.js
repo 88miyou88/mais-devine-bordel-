@@ -52,10 +52,9 @@ function currentTurn() {
 }
 
 function modeRouteHtml(modeIds) {
-  return modeIds.map((modeId, index) => {
+  return modeIds.map(modeId => {
     const config = modeConfig(modeId);
-    const arrow = index < modeIds.length - 1 ? '<span class="mode-route-arrow">›</span>' : "";
-    return `<span class="mode-route-item" style="--mode-color:${config.color}"><span class="mode-route-icon">${MODE_ICONS[config.icon] || ""}</span><strong>${config.name}</strong></span>${arrow}`;
+    return `<span class="mode-route-item" style="--mode-color:${config.color}" role="img" aria-label="${config.name}" title="${config.name}"><span class="mode-route-icon">${MODE_ICONS[config.icon] || ""}</span></span>`;
   }).join("");
 }
 

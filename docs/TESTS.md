@@ -1,4 +1,4 @@
-# Tests — V0.7.1
+# Tests — V0.7.2
 
 ## Commandes automatiques
 
@@ -33,8 +33,8 @@ Résultat attendu :
 `smoke-test.mjs` vérifie notamment :
 
 - l’arborescence complète ;
-- la version `0.7.1` ;
-- le cache `mdb-v0-7-1` ;
+- la version `0.7.2` ;
+- le cache `mdb-v0-7-2` ;
 - tous les chemins HTML, CSS, manifeste et service worker ;
 - les identifiants DOM ;
 - la syntaxe de tous les modules ;
@@ -52,6 +52,9 @@ Résultat attendu :
 - le schéma de session multijoueur V2 ;
 - la fenêtre de récupération et la réparation sélective du cache ;
 - le versionnement des CSS, du module principal et du service worker ;
+- les nouveaux noms de modes et les icônes compactes sans flèches ;
+- la présence du garde-fou paysage ;
+- le responsive de l’accueil et du multijoueur sur fenêtre étroite ;
 - la compatibilité des données locales et sauvegardes V0.6.0.
 
 ### Matrice du planificateur
@@ -93,6 +96,16 @@ La version est également chargée dans Chromium par un harnais temporaire utili
 
 Ce harnais n’est pas ajouté au dépôt afin de conserver uniquement les deux fichiers de tests prévus par l’architecture.
 
+Pour la V0.7.2, il vérifie aussi :
+
+- l’accueil en 1280 × 720 ;
+- l’absence de débordement horizontal en 800 × 450 ;
+- l’accès à la barre d’actions après défilement vertical ;
+- les quatre icônes seules dans le résumé multijoueur ;
+- l’absence de texte et de flèches entre les modes ;
+- l’écran de rotation en 430 × 850 ;
+- la disparition automatique de cet écran après retour en paysage.
+
 ## Test local par HTTP
 
 ```bash
@@ -101,14 +114,14 @@ python3 -m http.server 8000
 
 Puis ouvrir :
 
-`http://localhost:8000/?v=071`
+`http://localhost:8000/?v=072`
 
 Ne pas utiliser `file://`.
 
 ## Vérifications Android avant validation définitive
 
-1. ouvrir `https://88miyou88.github.io/mais-devine-bordel-/?v=071` ;
-2. vérifier `Version : 0.7.1` et `Cache attendu : mdb-v0-7-1` ;
+1. ouvrir `https://88miyou88.github.io/mais-devine-bordel-/?v=072` ;
+2. vérifier `Version : 0.7.2` et `Cache attendu : mdb-v0-7-2` ;
 3. vérifier Partie libre et Multijoueur sur l’accueil ;
 4. tester le champ de durée personnalisé compact ;
 5. créer une partie de 2, puis 3 joueurs ;
@@ -132,4 +145,4 @@ Ne pas utiliser `file://`.
 23. vérifier les anciennes cartes, catégories, réglages et sauvegardes ;
 24. fermer puis rouvrir la PWA pour contrôler le nouveau service worker.
 
-Les vibrations, sons, maintien tactile, plein écran, orientation et comportement réel en arrière-plan doivent être validés sur un téléphone Android.
+Les vibrations, sons, maintien tactile, plein écran, verrouillage paysage et comportement réel en arrière-plan doivent être validés sur un téléphone Android. Si le navigateur refuse le verrouillage, vérifier que le garde-fou de rotation s’affiche proprement.

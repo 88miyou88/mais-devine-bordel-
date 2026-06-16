@@ -1,5 +1,5 @@
-export const APP_VERSION = "0.7.1";
-export const APP_CACHE_NAME = "mdb-v0-7-1";
+export const APP_VERSION = "0.7.2";
+export const APP_CACHE_NAME = "mdb-v0-7-2";
 export const SWIPE_ANIMATION_MS = 180;
 export const DRAW_HOLD_MS = 500;
 export const DRAW_RETURN_COUNTDOWN_SECONDS = 3;
@@ -8,8 +8,8 @@ export const UNCATEGORIZED_ID = "uncategorized";
 export const MODE_CONFIG = {
   lyrics: {
     id: "lyrics",
-    name: "Deviner les paroles",
-    gameLabel: "DEVINER LES PAROLES",
+    name: "La suite, maestro !",
+    gameLabel: "LA SUITE, MAESTRO !",
     description: "Chanter le début et retrouver la suite",
     color: "#b981ff",
     icon: "lyrics",
@@ -29,8 +29,8 @@ export const MODE_CONFIG = {
   },
   mime: {
     id: "mime",
-    name: "Mimer",
-    gameLabel: "MIMER",
+    name: "Ferme-la et mime !",
+    gameLabel: "FERME-LA ET MIME !",
     description: "Faire deviner une scène uniquement par gestes",
     color: "#ffad45",
     icon: "mime",
@@ -71,8 +71,8 @@ export const MODE_CONFIG = {
   },
   draw: {
     id: "draw",
-    name: "Dessine-moi ça !",
-    gameLabel: "DESSINE-MOI ÇA !",
+    name: "Picasso en PLS",
+    gameLabel: "PICASSO EN PLS",
     description: "Faire deviner une consigne en la dessinant sur le téléphone ou sur papier",
     color: "#20c9be",
     icon: "draw",
@@ -104,22 +104,23 @@ export const MAX_MULTIPLAYER_PLAYERS = 12;
 export const MODE_ICONS = {
   lyrics: `
     <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <circle cx="34" cy="18" r="11" fill="currentColor" opacity=".95"/>
-      <path d="M27 27h14l-4 21H23l4-21Z" fill="currentColor" opacity=".85"/>
-      <path d="M25 32h14M24 38h14M23 44h14M29 28l-4 20M35 28l-4 20" stroke="#111318" stroke-width="2" opacity=".8"/>
-      <path d="M24 48 15 58" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-      <circle cx="51" cy="16" r="2.2" fill="currentColor"/><circle cx="56" cy="22" r="2.2" fill="currentColor" opacity=".75"/>
-      <path d="m52 4 1.4 3.2L57 8.5l-3.6 1.3L52 13l-1.4-3.2L47 8.5l3.6-1.3L52 4Z" fill="currentColor"/>
+      <g transform="rotate(-10 29 27)">
+        <rect x="20" y="7" width="21" height="34" rx="10.5" fill="currentColor"/>
+        <path d="M24 17h13M23 23h15M23 29h15" stroke="#111318" stroke-width="2.5" stroke-linecap="round" opacity=".78"/>
+        <path d="M16 28c0 10 6 17 15 17s15-7 15-17" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <path d="M31 45v8M22 55h18" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      </g>
+      <path d="M48 11v13.5a5 5 0 1 1-3-4.6V14l10-2.5v10a5 5 0 1 1-3-4.6V9.5L48 11Z" fill="currentColor" opacity=".95"/>
     </svg>`,
   mime: `
     <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <path d="M17 18c5-10 24-12 34-1-9 0-17 2-25 7l-9-6Z" fill="currentColor"/>
-      <path d="M24 18c-3 3-5 8-5 13 0 10 7 18 16 18s16-8 16-18c0-5-2-9-5-12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-      <path d="M26 32c2 2 4 2 6 0M39 32c2 2 4 2 6 0M31 41c3 2 7 2 10 0" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-      <path d="M22 42C16 37 12 31 13 23" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-      <path d="M13 23 8 18M13 23l1-8M13 23l7-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M43 44c5 4 10 7 16 6" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-      <path d="M59 50l-1-7M59 50l-6 4M59 50l-7-1" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="32" cy="29" r="17" stroke="currentColor" stroke-width="4"/>
+      <path d="M24 25c2-2 5-2 7 0M37 25c2-2 5-2 7 0" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M25 36h14" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="m28 33 8 6M36 33l-8 6" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" opacity=".9"/>
+      <path d="M17 43c-5-2-9-6-10-11M47 43c5-2 9-6 10-11" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <path d="M7 32 5 25M7 32l5-5M7 32l7 1M57 32l2-7M57 32l-5-5M57 32l-7 1" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M22 48c3 4 6 7 10 9 4-2 7-5 10-9" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`,
   words: `
     <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">

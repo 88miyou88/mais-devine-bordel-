@@ -1,8 +1,8 @@
-# Architecture — V0.7.1
+# Architecture — V0.7.2
 
 ## Objectif
 
-La V0.7.1 ajoute une couche multijoueur au-dessus des moteurs existants, sans dupliquer les modes de jeu.
+La V0.7.2 conserve la couche multijoueur de la V0.7.1 et ajoute une finition responsive et une gestion explicite de l’orientation, sans modifier les règles de score ou de rotation.
 
 Une manche multijoueur correspond à une **run complète d’un joueur**. Pendant la durée choisie, le joueur garde le téléphone et le moteur alterne les modes de son parcours. L’orchestrateur reçoit ensuite un résultat normalisé, cumule les scores et passe au joueur suivant.
 
@@ -183,6 +183,15 @@ L’accueil contient :
 
 La grille de modes utilise une variable CSS calculée depuis le nombre réel de modes et autorise un défilement horizontal lorsque de futurs modes ne tiennent plus proprement sur une seule ligne.
 
+
+## Interface responsive et orientation
+
+Les écrans de jeu et de multijoueur demandent le mode paysage. `requestGameDisplay()` tente le verrouillage avant et après l’entrée en plein écran, car les navigateurs Android n’acceptent pas tous la même séquence.
+
+Si le verrouillage est refusé, `orientationGuard` affiche une interface dédiée plutôt qu’un écran déformé. Le bouton relance la demande de plein écran et de paysage sans toucher aux données. L’accueil reste utilisable en portrait et sur une fenêtre étroite grâce à une grille adaptative et à un défilement vertical explicite.
+
+Les récapitulatifs de modes utilisent uniquement les icônes configurées dans `MODE_ICONS`. Aucun texte ni flèche n’est dupliqué dans le contrôleur multijoueur.
+
 ## Données et compatibilité
 
 Clés existantes conservées :
@@ -201,7 +210,7 @@ Le schéma de sauvegarde permanent passe à `4` pour inclure les réglages multi
 
 ### Démarrage et récupération du cache
 
-Les feuilles de style, le module principal et le service worker portent un jeton de version `071`. Le service worker est enregistré avec `updateViaCache: "none"` et son installation recharge explicitement les ressources réseau.
+Les feuilles de style, le module principal et le service worker portent un jeton de version `072`. Le service worker est enregistré avec `updateViaCache: "none"` et son installation recharge explicitement les ressources réseau.
 
 Si un déploiement est incomplet ou si un ancien cache empêche l’initialisation, `index.html` affiche une fenêtre de récupération autonome. Le bouton **Réparer le cache technique** désenregistre les service workers et supprime uniquement les caches dont le nom commence par `mdb-`. Il ne touche jamais au `localStorage`, donc les cartes personnelles, réglages et sauvegardes sont préservés.
 
@@ -210,6 +219,6 @@ Si un déploiement est incomplet ou si un ancien cache empêche l’initialisati
 
 Cache de la version :
 
-`mdb-v0-7-1`
+`mdb-v0-7-2`
 
 Le cache inclut la feuille de style multijoueur et les quatre modules du dossier `src/features/multiplayer/`.

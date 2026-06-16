@@ -9,14 +9,14 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
-  <link rel="stylesheet" href="./assets/styles/foundation.css?v=071">
-  <link rel="stylesheet" href="./assets/styles/components.css?v=071">
-  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=071">
-  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=071">
-  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=071">
-  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=071">
-  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=071">
-  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=071">
+  <link rel="stylesheet" href="./assets/styles/foundation.css?v=072">
+  <link rel="stylesheet" href="./assets/styles/components.css?v=072">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=072">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=072">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=072">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=072">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=072">
+  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=072">
 </head>
 <body>
   <main id="app">
@@ -458,6 +458,16 @@
     </section>
   </main>
 
+  <section id="orientationGuard" class="orientation-guard hidden" role="alertdialog" aria-modal="true" aria-labelledby="orientationGuardTitle">
+    <div class="orientation-guard-card">
+      <div class="orientation-guard-phone" aria-hidden="true">↻</div>
+      <p class="eyebrow">Mode paysage requis</p>
+      <h2 id="orientationGuardTitle">Tourne ton téléphone</h2>
+      <p>Cette partie est conçue pour être jouée à l’horizontale. L’application essaie de verrouiller automatiquement l’écran en paysage.</p>
+      <button id="orientationGuardButton" class="primary-button" type="button">Passer en paysage</button>
+    </div>
+  </section>
+
   <dialog id="modeConfigDialog" class="mode-config-dialog">
     <form>
       <div id="modeDialogHero" class="mode-dialog-hero">
@@ -739,7 +749,7 @@
 
   <script>
     (() => {
-      const VERSION_TOKEN = "071";
+      const VERSION_TOKEN = "072";
       const recovery = document.querySelector("#bootRecovery");
       const message = document.querySelector("#bootRecoveryMessage");
       let bootFinished = false;
@@ -793,7 +803,7 @@
     })();
   </script>
   <script type="module" data-mdb-bootstrap>
-    import("./src/main.js?v=071").catch(error => window.MDB_BOOT_FAILURE(error));
+    import("./src/main.js?v=072").catch(error => window.MDB_BOOT_FAILURE(error));
   </script>
 </body>
 </html>

@@ -57,9 +57,11 @@ for (const relativePath of legacyFiles) {
 
 const html = await read("index.html");
 assert.match(html, /<script\s+type="module"\s+data-mdb-bootstrap>/);
-assert.match(html, /import\(["']\.\/src\/main\.js\?v=071["']\)/);
+assert.match(html, /import\(["']\.\/src\/main\.js\?v=072["']\)/);
 assert.match(html, /id="bootRecovery"/);
 assert.match(html, /id="bootRepairButton"/);
+assert.match(html, /id="orientationGuard"/);
+assert.match(html, /id="orientationGuardButton"/);
 assert.match(html, /startsWith\(["']mdb-["']\)/);
 assert.doesNotMatch(html, /js-(?:config|dom|state|utils|storage|home|manager|library-sync|drawing|game|diagnostics|main)\.js/);
 assert.doesNotMatch(html, /css-(?:base|manager|game|dialogs|drawing|home)\.css/);
@@ -86,11 +88,15 @@ for (const id of [
 const manifest = JSON.parse(await read("manifest.webmanifest"));
 assert.equal(manifest.name, "Mais devine, bordel !");
 assert.equal(manifest.short_name, "MDB!");
+assert.equal(manifest.orientation, "landscape");
 assert.ok(manifest.icons.every(icon => icon.src.replace(/^\.\//, "").startsWith("assets/icons/")), "Chemins des icônes du manifeste incorrects");
 
 const config = await read("src/config/config.js");
-assert.match(config, /APP_VERSION\s*=\s*"0\.7\.1"/);
-assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-7-1"/);
+assert.match(config, /APP_VERSION\s*=\s*"0\.7\.2"/);
+assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-7-2"/);
+assert.match(config, /name:\s*"La suite, maestro !"/);
+assert.match(config, /name:\s*"Ferme-la et mime !"/);
+assert.match(config, /name:\s*"Picasso en PLS"/);
 assert.match(config, /MULTIPLAYER_SESSION_KEY\s*=\s*"mdb-multiplayer-session-v2"/);
 assert.match(config, /MULTIPLAYER_SESSION_SCHEMA\s*=\s*2/);
 assert.match(config, /mdb-global-settings-v2/);
@@ -103,7 +109,7 @@ for (const key of [
 ]) assert.ok(config.includes(key), `Clé de stockage absente : ${key}`);
 
 const sw = await read("sw.js");
-assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-7-1"/);
+assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-7-2"/);
 assert.match(sw, /new Request\(url, \{ cache: "reload" \}\)/);
 assert.match(sw, /SKIP_WAITING/);
 const cachedPaths = new Set([...sw.matchAll(/"(\.\/[^"\n]+)"/g)].map(match => match[1]));
@@ -124,7 +130,7 @@ const expectedStylePaths = [
 const linkedStylePaths = [...html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)]
   .map(match => match[1].split("?")[0]);
 assert.deepEqual(linkedStylePaths, expectedStylePaths, "Ordre ou chemins des feuilles de style incorrects");
-assert.equal((html.match(/\?v=071/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
+assert.equal((html.match(/\?v=072/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
 
 const styleFiles = expectedFiles.filter(file => file.endsWith(".css"));
 for (const relativePath of styleFiles) {
@@ -182,6 +188,14 @@ assert.match(diagnosticsSource, /controllerchange/);
 
 const timerSource = await read("src/features/game/timer.js");
 assert.match(timerSource, /Math\.min\(600, Math\.max\(10,/);
+
+const multiplayerControllerSource = await read("src/features/multiplayer/multiplayer-controller.js");
+assert.doesNotMatch(multiplayerControllerSource, /mode-route-arrow/);
+assert.doesNotMatch(multiplayerControllerSource, /<strong>\$\{config\.name\}<\/strong>/);
+assert.match(multiplayerControllerSource, /aria-label="\$\{config\.name\}"/);
+const domOrientationSource = await read("src/core/dom.js");
+assert.match(domOrientationSource, /initializeOrientationGuard/);
+assert.match(domOrientationSource, /screen\.orientation\?\.lock/);
 
 const scheduleModule = await import(pathToFileURL(path.join(root, "src/features/multiplayer/schedule.js")).href);
 const deterministicRandom = (() => {
@@ -394,7 +408,7 @@ const originalFetchRestore = originalFetch;
 globalThis.localStorage = originalStorageRestore;
 globalThis.fetch = originalFetchRestore;
 
-console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.7.1 cohérents");
+console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.7.2 cohérents");
 console.log("✓ Modules ES résolus, dépendances orientées et aucun cycle d’import");
 console.log("✓ Planning dynamique testé de 1 à 12 modes et de 2 à 12 joueurs");
 console.log("✓ Scores par mode, classement et sauvegarde de session validés");

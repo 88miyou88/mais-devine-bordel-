@@ -2,18 +2,27 @@
 
 Application web mobile installable (PWA) regroupant plusieurs mini-jeux de soirée. La version actuelle contient :
 
-- Deviner les paroles ;
-- Mimer ;
+- La suite, maestro ! ;
+- Ferme-la et mime ! ;
 - Sans le dire ! ;
-- Dessine-moi ça !
+- Picasso en PLS.
 
 L’interface et le moteur multijoueur sont conçus pour accepter de nouveaux modes sans limiter le planning aux quatre modes actuels.
 
 ## Version
 
-Version actuelle : **0.7.1**
+Version actuelle : **0.7.2**
 
-La V0.7.1 ajoute un véritable mode multijoueur local :
+La V0.7.2 consolide l’interface de la V0.7.1 sans modifier le moteur multijoueur :
+
+- affichage compact des modes actifs avec leurs icônes uniquement ;
+- suppression des flèches et libellés trop larges dans les récapitulatifs ;
+- nouvel habillage des modes Paroles et Mime ;
+- nouvelle icône PWA « MDB! » ;
+- accueil et configuration multijoueur accessibles sur les fenêtres étroites ;
+- tentative de verrouillage automatique en paysage et écran de rotation propre lorsque le navigateur refuse le verrouillage.
+
+Le multijoueur local conserve :
 
 - de 2 à 12 joueurs ;
 - plusieurs cycles ;
@@ -61,7 +70,7 @@ L’ancien écran intermédiaire « Récupère le téléphone » a été supprim
 
 ## Données locales
 
-La V0.7.1 conserve les clés de stockage existantes et reste compatible avec les données V0.5.x et V0.6.0 :
+La V0.7.2 conserve les clés de stockage existantes et reste compatible avec les données V0.5.x et V0.6.0 :
 
 - cartes personnelles ;
 - cartes officielles modifiées ;
@@ -73,7 +82,7 @@ La session multijoueur active utilise une clé distincte et n’est pas incluse 
 
 ## Récupération technique
 
-La V0.7.1 renforce le déploiement PWA : ressources critiques versionnées, mise à jour forcée du service worker et écran de réparation du cache en cas de chargement incomplet. Cette réparation supprime uniquement le cache technique et conserve le stockage local de l’utilisateur.
+La V0.7.2 conserve le système de récupération PWA : ressources critiques versionnées, mise à jour forcée du service worker et écran de réparation du cache en cas de chargement incomplet. Cette réparation supprime uniquement le cache technique et conserve le stockage local de l’utilisateur.
 
 ## Utilisation
 
@@ -83,7 +92,7 @@ Application publiée :
 
 URL de test conseillée :
 
-`https://88miyou88.github.io/mais-devine-bordel-/?v=071`
+`https://88miyou88.github.io/mais-devine-bordel-/?v=072`
 
 L’application est conçue principalement pour Android, en mode paysage et avec des interactions tactiles.
 
@@ -97,7 +106,7 @@ python3 -m http.server 8000
 
 Puis ouvrir :
 
-`http://localhost:8000/?v=071`
+`http://localhost:8000/?v=072`
 
 ## Contrôles automatiques
 

@@ -2,7 +2,9 @@ import { APP_VERSION } from "./config/config.js";
 import {
   assertRequiredDom,
   el,
+  initializeOrientationGuard,
   releaseWakeLock,
+  requestGameDisplay,
   showScreen,
   vibrateForResult
 } from "./core/dom.js";
@@ -39,6 +41,7 @@ async function startFlow() {
   }
 
   if (state.settings.playType === "multiplayer") {
+    await requestGameDisplay();
     openMultiplayerSetup();
     return;
   }
@@ -68,6 +71,7 @@ function bindGlobalErrorHandling() {
 
 async function init() {
   assertRequiredDom();
+  initializeOrientationGuard();
   bindGlobalErrorHandling();
   await loadContent();
   setFlipped(state.flipped);
