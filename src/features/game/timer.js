@@ -63,23 +63,38 @@ export function renderTime() {
   el.timeDisplay.textContent = String(Math.ceil(state.remainingMs / 1000));
 }
 
+export function pauseRoundClock(reason = "system") {
+  if (!state.running || state.paused) return false;
+  state.remainingMs = Math.max(0, state.deadline - performance.now());
+  state.paused = true;
+  state.pauseReason = reason;
+  cancelAnimationFrame(state.rafId);
+  renderTime();
+  return true;
+}
+
+export function resumeRoundClock(onExpired) {
+  if (!state.running || !state.paused) return false;
+  state.paused = false;
+  state.pauseReason = null;
+  state.deadline = performance.now() + state.remainingMs;
+  startTimerLoop(onExpired);
+  return true;
+}
+
 export function togglePauseState(forcePause, { onResume = null, onExpired = null } = {}) {
-  if (!state.running) return;
+  if (!state.running || state.pauseReason === "drawing") return;
   const shouldPause = typeof forcePause === "boolean" ? forcePause : !state.paused;
   if (shouldPause === state.paused) return;
 
   if (shouldPause) {
-    state.remainingMs = Math.max(0, state.deadline - performance.now());
-    state.paused = true;
-    cancelAnimationFrame(state.rafId);
+    pauseRoundClock("user");
     el.pauseOverlay.classList.remove("hidden");
     el.pauseButton.textContent = "▶ Reprendre";
   } else {
-    state.paused = false;
-    state.deadline = performance.now() + state.remainingMs;
     el.pauseOverlay.classList.add("hidden");
     el.pauseButton.textContent = "Ⅱ Pause";
-    startTimerLoop(onExpired);
+    resumeRoundClock(onExpired);
     onResume?.();
   }
 }

@@ -1,6 +1,8 @@
-export const APP_VERSION = "0.5.1";
+export const APP_VERSION = "0.6.0";
+export const APP_CACHE_NAME = "mdb-v0-6-0";
 export const SWIPE_ANIMATION_MS = 180;
 export const DRAW_HOLD_MS = 500;
+export const DRAW_RETURN_COUNTDOWN_SECONDS = 3;
 export const UNCATEGORIZED_ID = "uncategorized";
 
 export const MODE_CONFIG = {
@@ -77,6 +79,7 @@ export const MODE_CONFIG = {
     rules: [
       "Le dessinateur touche la carte pour révéler la consigne sans la montrer aux autres.",
       "Il choisit « Je gribouille ici » ou « Je massacre une feuille ».",
+      "En partie mélangée, le chrono général se met en pause puis reprend après une pénalité fixe.",
       "Aucune lettre, aucun mot et aucun chiffre ne doit donner directement la réponse."
     ],
     libraryUrl: "./data/drawings.json",

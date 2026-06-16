@@ -343,7 +343,9 @@ export async function loadContent() {
           medium: Math.min(120, Math.max(10, Number(globalSettings?.modeOptions?.draw?.durations?.medium) || 45)),
           hard: Math.min(180, Math.max(10, Number(globalSettings?.modeOptions?.draw?.durations?.hard) || 60))
         },
-        soundEnabled: globalSettings?.modeOptions?.draw?.soundEnabled !== false
+        soundEnabled: globalSettings?.modeOptions?.draw?.soundEnabled !== false,
+        mixedCount: Math.min(5, Math.max(1, Number(globalSettings?.modeOptions?.draw?.mixedCount) || 2)),
+        arrivalSoundEnabled: globalSettings?.modeOptions?.draw?.arrivalSoundEnabled !== false
       }
     }
   };
@@ -404,8 +406,9 @@ export function selectedCardsForMode(modeId) {
     .map(card => ({ ...card, modeId }));
 }
 
-export function getPlayableCards() {
-  return MODE_ORDER.flatMap(selectedCardsForMode);
+export function getPlayableCards({ excludeModeIds = [] } = {}) {
+  const excluded = new Set(excludeModeIds);
+  return MODE_ORDER.filter(modeId => !excluded.has(modeId)).flatMap(selectedCardsForMode);
 }
 
 export function hasLibraryUpdate() {

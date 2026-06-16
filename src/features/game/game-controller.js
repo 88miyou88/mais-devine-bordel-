@@ -9,13 +9,33 @@ import {
 } from "../../core/dom.js";
 import { state } from "../../core/state.js";
 import { shuffle } from "../../core/utils.js";
-import { getBoxName, getPlayableCards, modeConfig } from "../../services/libraries.js";
+import {
+  getBoxName,
+  getPlayableCards,
+  modeConfig,
+  selectedCardsForMode
+} from "../../services/libraries.js";
+import {
+  buildBalancedDrawQueue,
+  startMixedDrawingBreak,
+  stopDrawingRound
+} from "../drawing/drawing-controller.js";
+import {
+  closeUnplayableMixedDrawings,
+  createMixedDrawingPlan,
+  getFeasibleMixedDrawingCount,
+  isMixedDrawingDue,
+  markMixedDrawingCompleted,
+  markMixedDrawingStarted
+} from "../drawing/mixed-drawing.js";
 import { renderGameResults } from "./results.js";
 import { animateCardExit, initializeSwipe, resetCardPosition } from "./swipe.js";
 import {
   getRequestedSeconds,
   initializeDurationControls,
+  pauseRoundClock,
   renderTime,
+  resumeRoundClock,
   runCountdown,
   startTimerLoop,
   stopTimers,
@@ -24,9 +44,14 @@ import {
 
 let onReplay = null;
 let onHome = null;
+let preparedMixedDrawingCount = null;
+
+function classicCards() {
+  return getPlayableCards({ excludeModeIds: ["draw"] });
+}
 
 function refillQueue() {
-  const next = shuffle(getPlayableCards());
+  const next = shuffle(classicCards());
   if (state.currentCard && next.length > 1) {
     const firstSame = next[0].modeId === state.currentCard.modeId && next[0].id === state.currentCard.id;
     if (firstSame) [next[0], next[1]] = [next[1], next[0]];
@@ -110,23 +135,72 @@ function fitCardContent() {
   });
 }
 
+function createMixedDrawingState() {
+  const drawSelected = state.settings.selectedModeIds.includes("draw");
+  if (!drawSelected || state.settings.selectedModeIds.length < 2) return null;
+  const drawCards = selectedCardsForMode("draw");
+  if (!drawCards.length) return null;
+  const wanted = preparedMixedDrawingCount ?? Math.min(state.settings.modeOptions.draw.mixedCount, drawCards.length);
+  preparedMixedDrawingCount = null;
+  return {
+    ...createMixedDrawingPlan(state.durationMs, wanted),
+    queue: buildBalancedDrawQueue(drawCards, wanted),
+    found: 0,
+    passed: 0,
+    expired: 0,
+    points: 0,
+    totalPenaltyMs: 0
+  };
+}
+
 export async function startClassicRound() {
+  preparedMixedDrawingCount = null;
+  if (!classicCards().length) {
+    alert("Sélectionne au moins un mode classique contenant des cartes actives pour lancer une partie mélangée.");
+    return false;
+  }
+
   state.durationMs = getRequestedSeconds() * 1000;
+  const drawSelected = state.settings.selectedModeIds.includes("draw");
+  if (drawSelected) {
+    const drawCards = selectedCardsForMode("draw");
+    if (!drawCards.length) {
+      alert("Le mode Dessin est sélectionné, mais aucune de ses cartes ne correspond aux catégories et difficultés choisies.");
+      return false;
+    }
+
+    const requested = state.settings.modeOptions.draw.mixedCount;
+    const availableCount = Math.min(requested, drawCards.length);
+    const feasibleCount = getFeasibleMixedDrawingCount(state.durationMs, availableCount);
+    if (feasibleCount === 0) {
+      alert("Cette manche est trop courte pour placer un dessin proprement. Augmente la durée à au moins 15 secondes ou désactive le mode Dessin.");
+      return false;
+    }
+    preparedMixedDrawingCount = feasibleCount;
+    if (feasibleCount < requested) {
+      alert(`Avec ${state.durationMs / 1000} secondes et les cartes sélectionnées, cette manche utilisera ${feasibleCount} dessin${feasibleCount > 1 ? "s" : ""} au lieu de ${requested}.`);
+    }
+  }
+
   state.remainingMs = state.durationMs;
   await requestGameDisplay();
   showScreen(el.countdownScreen);
   runCountdown(beginGame);
+  return true;
 }
 
 function beginGame() {
   state.running = true;
   state.paused = false;
+  state.pauseReason = null;
   state.queue = [];
   state.currentCard = null;
   state.history = [];
   state.valid = 0;
   state.passed = 0;
+  state.score = 0;
   state.remainingMs = state.durationMs;
+  state.mixedDrawing = createMixedDrawingState();
   updateScores();
   refillQueue();
   drawNextCard();
@@ -135,10 +209,22 @@ function beginGame() {
   startTimerLoop(() => finishGame("time"));
 }
 
+function missedCount() {
+  const drawing = state.mixedDrawing;
+  return state.passed + (drawing ? drawing.passed + drawing.expired : 0);
+}
+
 function updateScores() {
-  el.validScore.textContent = String(state.valid);
-  el.passScore.textContent = String(state.passed);
-  el.undoButton.disabled = state.history.length === 0;
+  const mixed = Boolean(state.mixedDrawing);
+  el.validScoreLabel.textContent = mixed ? "POINTS" : "VALIDÉES";
+  el.passScoreLabel.textContent = mixed ? "RATÉS" : "PASSÉES";
+  el.validScore.textContent = String(mixed ? state.score : state.valid);
+  el.passScore.textContent = String(mixed ? missedCount() : state.passed);
+  const last = state.history.at(-1);
+  el.undoButton.disabled = !last || last.kind !== "classic";
+  el.undoButton.title = last?.kind === "draw"
+    ? "Le dernier résultat est un dessin et ne peut pas être annulé."
+    : "Revenir à la carte précédente";
 }
 
 export function togglePause(forcePause) {
@@ -148,35 +234,133 @@ export function togglePause(forcePause) {
   });
 }
 
+function drawingBreakDueAfterCurrentCard() {
+  const plan = state.mixedDrawing;
+  if (!plan) return false;
+  const liveRemaining = state.paused
+    ? state.remainingMs
+    : Math.max(0, state.deadline - performance.now());
+  state.remainingMs = liveRemaining;
+  const elapsedMs = state.durationMs - liveRemaining;
+  closeUnplayableMixedDrawings(plan, liveRemaining);
+  return isMixedDrawingDue(plan, elapsedMs, liveRemaining);
+}
+
+function beginMixedDrawingBreak() {
+  const plan = state.mixedDrawing;
+  if (!plan || plan.nextIndex >= plan.queue.length) {
+    if (plan) {
+      plan.active = false;
+      const missing = Math.max(0, plan.requestedCount - plan.nextIndex);
+      plan.cancelledCount += missing;
+      plan.nextIndex = plan.requestedCount;
+    }
+    resumeAfterDrawingBreak();
+    return;
+  }
+  const card = plan.queue[plan.nextIndex];
+  startMixedDrawingBreak({
+    card,
+    index: plan.nextIndex + 1,
+    total: plan.requestedCount,
+    currentScore: state.score,
+    penaltySeconds: plan.penaltyMs / 1000,
+    onComplete: completeMixedDrawingBreak
+  });
+}
+
+function completeMixedDrawingBreak(entry) {
+  const plan = state.mixedDrawing;
+  if (!state.running || !plan) return;
+  state.history.push(entry);
+  state.score += entry.points;
+  plan.points += entry.points;
+  if (entry.result === "valid") plan.found += 1;
+  else if (entry.result === "expired") plan.expired += 1;
+  else plan.passed += 1;
+  plan.totalPenaltyMs += plan.penaltyMs;
+  state.remainingMs = Math.max(0, state.remainingMs - plan.penaltyMs);
+  markMixedDrawingCompleted(plan);
+  updateScores();
+  renderTime();
+
+  if (state.remainingMs <= 0) {
+    finishGame("time");
+    return;
+  }
+  resumeAfterDrawingBreak();
+}
+
+function resumeAfterDrawingBreak() {
+  if (!state.running) return;
+  drawNextCard();
+  showScreen(el.gameScreen);
+  resumeRoundClock(() => finishGame("time"));
+  requestWakeLock();
+}
+
 export function commitSwipe(result) {
   if (!state.running || state.paused || !state.currentCard) return;
   const judgedCard = state.currentCard;
-  state.history.push({ card: judgedCard, result });
-  if (result === "valid") state.valid += 1;
-  else state.passed += 1;
+  const points = result === "valid" ? 1 : 0;
+  state.history.push({ kind: "classic", card: judgedCard, result, points });
+  if (result === "valid") {
+    state.valid += 1;
+    state.score += 1;
+  } else {
+    state.passed += 1;
+  }
+  const startsDrawing = drawingBreakDueAfterCurrentCard();
+  if (startsDrawing) {
+    pauseRoundClock("drawing");
+    markMixedDrawingStarted(state.mixedDrawing);
+  }
   updateScores();
   vibrateForResult(result);
   animateCardExit(result, () => {
-    if (state.running) drawNextCard();
+    if (!state.running) return;
+    if (startsDrawing) beginMixedDrawingBreak();
+    else drawNextCard();
   });
 }
 
 export function undoLast() {
   if (!state.running || state.paused || state.history.length === 0) return;
-  const last = state.history.pop();
-  if (last.result === "valid") state.valid = Math.max(0, state.valid - 1);
-  else state.passed = Math.max(0, state.passed - 1);
+  const last = state.history.at(-1);
+  if (last.kind !== "classic") return;
+  state.history.pop();
+  if (last.result === "valid") {
+    state.valid = Math.max(0, state.valid - 1);
+    state.score = Math.max(0, state.score - 1);
+  } else {
+    state.passed = Math.max(0, state.passed - 1);
+  }
   if (state.currentCard) state.queue.unshift(state.currentCard);
   state.currentCard = last.card;
   updateScores();
   renderGameCard();
 }
 
+function finalizeUnplayedDrawings(reason) {
+  const plan = state.mixedDrawing;
+  if (!plan) return;
+  plan.active = false;
+  const remaining = Math.max(0, plan.requestedCount - plan.nextIndex);
+  if (remaining) {
+    if (reason === "time") plan.skippedForTime += remaining;
+    else plan.cancelledCount += remaining;
+    plan.nextIndex = plan.requestedCount;
+  }
+}
+
 export function finishGame(reason = "manual") {
   if (!state.running) return;
   state.running = false;
   state.paused = false;
+  state.pauseReason = null;
   stopTimers();
+  finalizeUnplayedDrawings(reason);
+  stopDrawingRound();
   el.pauseOverlay.classList.add("hidden");
   el.pauseButton.textContent = "Ⅱ Pause";
   renderGameResults(reason);
@@ -187,7 +371,9 @@ export function finishGame(reason = "manual") {
 export function stopClassicGame() {
   state.running = false;
   state.paused = false;
+  state.pauseReason = null;
   state.pointer = null;
+  state.mixedDrawing = null;
   stopTimers();
   el.pauseOverlay.classList.add("hidden");
   el.pauseButton.textContent = "Ⅱ Pause";
@@ -207,7 +393,7 @@ export function initializeGame(callbacks = {}) {
 
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden" && state.running && !state.paused) togglePause(true);
-    else if (document.visibilityState === "visible" && state.running) requestWakeLock();
+    else if (document.visibilityState === "visible" && state.running && state.pauseReason !== "drawing") requestWakeLock();
   });
   window.addEventListener("keydown", event => {
     if (!state.running || state.paused) return;

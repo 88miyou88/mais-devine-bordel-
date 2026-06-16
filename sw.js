@@ -1,4 +1,4 @@
-const CACHE_NAME = "mdb-v0-5-1";
+const CACHE_NAME = "mdb-v0-6-0";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -31,6 +31,7 @@ const APP_FILES = [
   "./src/features/game/swipe.js",
   "./src/features/game/results.js",
   "./src/features/drawing/drawing-controller.js",
+  "./src/features/drawing/mixed-drawing.js",
   "./src/features/drawing/canvas.js",
   "./src/features/drawing/hold-actions.js",
   "./src/features/drawing/paper-mode.js",

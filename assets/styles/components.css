@@ -536,3 +536,19 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Fenêtre de configuration compacte — V0.6.0 */
+.mode-dialog-hero{min-height:0;padding:12px 48px 11px 12px;grid-template-columns:54px minmax(0,1fr);gap:10px}
+.mode-dialog-icon{width:50px;height:50px;padding:7px}
+.mode-dialog-title-line{margin:0;font-size:clamp(.88rem,2.2vw,1.05rem);line-height:1.15;color:var(--muted)}
+.mode-dialog-title-line strong{color:var(--mode-color);font-size:clamp(1.05rem,2.8vw,1.35rem);font-weight:1000}
+.mode-dialog-heading p:last-child{margin:3px 0 0;font-size:clamp(.75rem,1.9vw,.9rem);line-height:1.25}
+.mode-dialog-body{padding-top:10px}
+.mode-rule-card{padding:10px 12px;margin-bottom:10px}
+.mode-rule-card h3{margin-bottom:5px;font-size:.95rem}
+.mode-rule-card ul{margin:0;padding-left:18px;display:grid;gap:3px}
+.mode-rule-card li{font-size:.78rem;line-height:1.25}
+.mode-setting-section{padding:10px 12px;margin-top:9px}
+.mode-setting-section h3{font-size:.95rem}
+.mode-setting-section p{font-size:.75rem}
+.mode-dialog-actions{padding:8px 12px 10px}

@@ -18,6 +18,7 @@ import {
   stopDrawingRound
 } from "./features/drawing/drawing-controller.js";
 import {
+  finishGame,
   initializeGame,
   startClassicRound,
   stopClassicGame
@@ -33,12 +34,8 @@ async function startFlow() {
   }
 
   const drawSelected = state.settings.selectedModeIds.includes("draw");
-  if (drawSelected && state.settings.selectedModeIds.length > 1) {
-    alert("Pour cette version, Dessine-moi ça ! se joue seul. Désactive les autres modes ou sélectionne une autre tuile.");
-    return;
-  }
-
-  if (drawSelected) await startDrawingRound();
+  const drawOnly = drawSelected && state.settings.selectedModeIds.length === 1;
+  if (drawOnly) await startDrawingRound();
   else await startClassicRound();
 }
 
@@ -66,7 +63,7 @@ async function init() {
   setFlipped(state.flipped);
 
   initializeCardManager({ onHomeDataChanged: renderHomeData });
-  initializeDrawing();
+  initializeDrawing({ onAbortMixed: () => finishGame("manual") });
   initializeGame({ onReplay: startFlow, onHome: returnHome });
   initializeHome({
     onStart: startFlow,

@@ -6,6 +6,7 @@ import {
 import { el } from "../core/dom.js";
 import { modeState, recordError, state } from "../core/state.js";
 import { formatDate } from "../core/utils.js";
+import { getMixedDrawingPenaltySeconds } from "./drawing/mixed-drawing.js";
 import { exportBackup, readBackupFile, restoreBackupData } from "../services/backup.js";
 import { copyDiagnostic, openDiagnostic } from "../services/diagnostics.js";
 import {
@@ -91,12 +92,7 @@ function renderModeSelection() {
 
 function setModeEnabled(modeId, enabled) {
   if (enabled) {
-    if (modeId === "draw") {
-      state.settings.selectedModeIds = ["draw"];
-    } else {
-      state.settings.selectedModeIds = state.settings.selectedModeIds.filter(id => id !== "draw");
-      if (!state.settings.selectedModeIds.includes(modeId)) state.settings.selectedModeIds.push(modeId);
-    }
+    if (!state.settings.selectedModeIds.includes(modeId)) state.settings.selectedModeIds.push(modeId);
   } else {
     state.settings.selectedModeIds = state.settings.selectedModeIds.filter(id => id !== modeId);
   }
@@ -168,6 +164,9 @@ function renderModeConfigDialog() {
   el.drawSpecialSettings.classList.toggle("hidden", config.type !== "draw");
   const drawOptions = state.settings.modeOptions.draw;
   el.drawAttemptCountInput.value = String(drawOptions.attemptCount);
+  el.drawMixedCountInput.value = String(drawOptions.mixedCount);
+  el.drawArrivalSoundEnabledInput.checked = drawOptions.arrivalSoundEnabled;
+  updateDrawPenaltyPreview();
   el.drawEasySecondsInput.value = String(drawOptions.durations.easy);
   el.drawMediumSecondsInput.value = String(drawOptions.durations.medium);
   el.drawHardSecondsInput.value = String(drawOptions.durations.hard);
@@ -201,7 +200,7 @@ function renderModeConfigDialog() {
 }
 
 function selectEverything() {
-  state.settings.selectedModeIds = MODE_ORDER.filter(id => id !== "draw");
+  state.settings.selectedModeIds = [...MODE_ORDER];
   MODE_ORDER.forEach(modeId => {
     const mode = modeState(modeId);
     mode.selectedBoxIds = mode.boxes.map(box => box.id);
@@ -323,14 +322,26 @@ async function handleResetLibraries() {
   }
 }
 
+
+function updateDrawPenaltyPreview() {
+  const count = Number(el.drawMixedCountInput.value) || state.settings.modeOptions.draw.mixedCount;
+  const customSeconds = Number.parseInt(el.customSeconds.value, 10);
+  const roundSeconds = Number.isFinite(customSeconds) ? customSeconds : state.selectedSeconds;
+  const penalty = getMixedDrawingPenaltySeconds(roundSeconds, count);
+  el.drawPenaltyPreview.textContent = `Pénalité prévue : −${penalty} s par dessin pour une manche de ${roundSeconds} s`;
+}
+
 function saveDrawOptions() {
   const options = state.settings.modeOptions.draw;
   options.attemptCount = Number(el.drawAttemptCountInput.value) || 3;
+  options.mixedCount = Math.min(5, Math.max(1, Number(el.drawMixedCountInput.value) || 2));
+  options.arrivalSoundEnabled = el.drawArrivalSoundEnabledInput.checked;
   options.durations.easy = Math.min(120, Math.max(10, Number(el.drawEasySecondsInput.value) || 30));
   options.durations.medium = Math.min(120, Math.max(10, Number(el.drawMediumSecondsInput.value) || 45));
   options.durations.hard = Math.min(180, Math.max(10, Number(el.drawHardSecondsInput.value) || 60));
   options.soundEnabled = el.drawSoundEnabledInput.checked;
   saveGlobalSettings();
+  updateDrawPenaltyPreview();
 }
 
 function initializeInstallPrompt() {
@@ -389,6 +400,8 @@ export function initializeHome(options = {}) {
   });
   [
     el.drawAttemptCountInput,
+    el.drawMixedCountInput,
+    el.drawArrivalSoundEnabledInput,
     el.drawEasySecondsInput,
     el.drawMediumSecondsInput,
     el.drawHardSecondsInput,

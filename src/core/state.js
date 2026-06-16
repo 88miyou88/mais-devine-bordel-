@@ -7,12 +7,15 @@ export const state = {
   countdownTimer: 0,
   running: false,
   paused: false,
+  pauseReason: null,
   flipped: false,
   queue: [],
   currentCard: null,
   history: [],
   valid: 0,
   passed: 0,
+  score: 0,
+  mixedDrawing: null,
   pointer: null,
   wakeLock: null,
   installPrompt: null,
@@ -28,7 +31,9 @@ export const state = {
       draw: {
         attemptCount: 3,
         durations: { easy: 30, medium: 45, hard: 60 },
-        soundEnabled: true
+        soundEnabled: true,
+        mixedCount: 2,
+        arrivalSoundEnabled: true
       }
     }
   },

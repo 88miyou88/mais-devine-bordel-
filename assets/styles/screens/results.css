@@ -15,3 +15,12 @@
 .result-row .details{min-width:0;display:flex;flex-direction:column}.result-row .details strong,.result-row .details small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .result-row .details small{opacity:.78}.result-row .result-word{font-size:.74rem;font-weight:950}
 .results-actions{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:9px}.results-actions .primary-button,.results-actions .secondary-button{min-height:48px;padding:9px 14px}
+
+/* Détail des manches mélangées */
+.result-breakdown{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 9px}
+.result-breakdown-item{min-width:0;padding:7px 8px;border:1px solid var(--outline);border-radius:11px;background:var(--panel-2);display:flex;align-items:baseline;justify-content:center;gap:5px;text-align:center}
+.result-breakdown-item strong{font-size:1.05rem;line-height:1}.result-breakdown-item span{min-width:0;color:var(--muted);font-size:.64rem;font-weight:800;line-height:1.1}
+.result-breakdown-item.positive strong{color:var(--green)}.result-breakdown-item.negative strong{color:var(--red)}.result-breakdown-item.draw strong{color:#5ff4e8}.result-breakdown-item.neutral strong{color:#ffd27a}
+.result-row.drawing{box-shadow:inset 3px 0 0 #20c9be}.result-row.drawing .details small{color:#9feee7}
+@media(max-width:760px){.result-breakdown{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-height:500px){.result-breakdown{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.result-breakdown-item{padding:5px}.result-breakdown-item span{font-size:.58rem}}

@@ -1,79 +1,96 @@
-# Tests — V0.5.1
+# Tests — V0.6.0
 
 ## Tests automatiques
 
-Les scripts nécessitent Node.js et doivent être exécutés depuis la racine du dépôt.
-
-### Validation des bibliothèques
+Exécuter depuis la racine du dépôt :
 
 ```bash
 node tests/validate-data.mjs
-```
-
-Ce contrôle vérifie notamment :
-
-- la validité des quatre JSON ;
-- les identifiants uniques ;
-- l’existence des catégories référencées ;
-- les difficultés autorisées ;
-- les champs obligatoires ;
-- les cinq mots interdits du mode Sans le dire ! ;
-- les nombres attendus de cartes.
-
-Résultat attendu :
-
-- paroles : 143 cartes ;
-- mime : 395 cartes ;
-- Sans le dire ! : 360 cartes ;
-- dessin : 420 cartes ;
-- total : 1 318 cartes.
-
-### Contrôle architectural
-
-```bash
 node tests/smoke-test.mjs
 ```
 
-Ce contrôle vérifie notamment :
+### Validation des bibliothèques
 
-- l’arborescence attendue ;
-- l’absence des anciens fichiers plats ;
-- la syntaxe JavaScript ;
-- la résolution des imports ;
-- la direction des dépendances ;
-- la présence des anciennes clés de stockage ;
-- les chemins HTML, manifeste et service worker ;
-- la version 0.5.1 et le cache `mdb-v0-5-1`.
+`validate-data.mjs` contrôle :
+
+- validité des quatre JSON ;
+- identifiants uniques ;
+- catégories référencées ;
+- difficultés autorisées ;
+- champs obligatoires ;
+- cinq mots interdits par carte dans Sans le dire ! ;
+- nombres de cartes attendus.
+
+Résultat attendu :
+
+- paroles : 143 ;
+- mime : 395 ;
+- Sans le dire : 360 ;
+- dessin : 420 ;
+- total : 1 318.
+
+### Contrôle architectural et fonctionnel statique
+
+`smoke-test.mjs` contrôle notamment :
+
+- arborescence et fichiers requis ;
+- syntaxe de tous les modules ;
+- résolution des imports ;
+- absence d'import circulaire ;
+- direction des dépendances ;
+- références DOM principales ;
+- anciennes clés de stockage ;
+- chemins HTML, manifeste et service worker ;
+- version `0.6.0` ;
+- cache `mdb-v0-6-0` ;
+- présence du module Dessin mélangé ;
+- suppression de l'ancienne exclusivité du mode Dessin ;
+- pénalités de référence pour 30, 60 et 90 secondes ;
+- répartition ordonnée des déclenchements ;
+- garde de temps minimum avant un dessin ;
+- réduction contrôlée du nombre de dessins pour les durées trop courtes ;
+- compatibilité des données locales et sauvegardes V0.5.x.
 
 ## Test dans un navigateur
 
-Les modules ES doivent être servis par HTTP.
+Les modules ES doivent être servis par HTTP :
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Ouvrir ensuite :
+Puis ouvrir :
 
-`http://localhost:8000/?v=051`
+`http://localhost:8000/?v=060`
 
-Ne pas tester en ouvrant directement `index.html` avec `file://`.
+Ne pas utiliser `file://`.
 
 ## Vérifications manuelles Android
 
-Après publication sur GitHub Pages :
+Après publication :
 
-1. ouvrir `https://88miyou88.github.io/mais-devine-bordel/?v=051` ;
-2. ouvrir le diagnostic et vérifier `Version : 0.5.1` ;
+1. ouvrir `https://88miyou88.github.io/mais-devine-bordel/?v=060` ;
+2. vérifier `Version : 0.6.0` et `Cache : mdb-v0-6-0` dans le diagnostic ;
 3. vérifier les quatre nombres de cartes ;
-4. tester l’accueil sans défilement vertical en paysage ;
-5. lancer une partie classique ;
-6. tester swipe droite, swipe gauche, retour, pause et fin manuelle ;
-7. lancer Dessin seul ;
-8. tester révélation, téléphone, papier, Trouvé, Passer et expiration ;
-9. tester crayon, couleurs, épaisseur, gomme, annulation et poubelle ;
-10. vérifier les cartes et catégories personnelles déjà enregistrées ;
-11. créer puis restaurer une sauvegarde ;
-12. fermer et rouvrir l’application installée pour contrôler le cache.
+4. vérifier que Dessin seul fonctionne toujours ;
+5. sélectionner Dessin avec chacun des trois modes classiques ;
+6. sélectionner les quatre modes ensemble ;
+7. tester 1, 2, 3, 4 puis 5 dessins sur plusieurs durées ;
+8. vérifier qu'un dessin n'arrive qu'après une carte normale ;
+9. vérifier qu'aucun dessin n'est consécutif ;
+10. vérifier que le chrono général ne bouge pas pendant le dessin ;
+11. tester révélation, téléphone, papier et Passer avant démarrage ;
+12. tester Trouvé, Passer et expiration ;
+13. vérifier la vibration et le son d'arrivée ;
+14. vérifier le son de fin activé puis désactivé ;
+15. vérifier le maintien de 0,5 seconde et son annulation hors du bouton ;
+16. tester pause/reprise pendant le dessin ;
+17. terminer manuellement la manche pendant une interruption Dessin ;
+18. vérifier le compte à rebours de retour au front ;
+19. vérifier que la pénalité n'est appliquée qu'une fois ;
+20. vérifier les résultats détaillés et l'ordre chronologique ;
+21. vérifier une manche trop courte ou terminée avant tous les dessins ;
+22. vérifier les anciennes cartes, catégories, réglages et sauvegardes locales ;
+23. fermer puis rouvrir l'application pour contrôler le service worker.
 
-Le test réel des gestes et vibrations sur Android reste nécessaire : les contrôles automatiques ne remplacent pas un appareil tactile.
+Les gestes, vibrations, sons, orientation et mise en arrière-plan doivent être validés sur un véritable téléphone Android.

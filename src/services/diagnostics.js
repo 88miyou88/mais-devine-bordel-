@@ -1,4 +1,4 @@
-import { APP_VERSION, MODE_ORDER } from "../config/config.js";
+import { APP_CACHE_NAME, APP_VERSION, MODE_ORDER } from "../config/config.js";
 import { el, getSwipeThreshold } from "../core/dom.js";
 import { modeState, recordError, state } from "../core/state.js";
 import { getPlayableCards, modeConfig } from "./libraries.js";
@@ -35,6 +35,7 @@ export async function buildDiagnostic() {
   return [
     "Application : Mais devine, bordel !",
     `Version : ${APP_VERSION}`,
+    `Cache attendu : ${APP_CACHE_NAME}`,
     `Date : ${new Date().toISOString()}`,
     `Navigateur : ${navigator.userAgent}`,
     `En ligne : ${navigator.onLine ? "Oui" : "Non"}`,
@@ -48,6 +49,8 @@ export async function buildDiagnostic() {
     `Wake Lock : ${"wakeLock" in navigator ? "Pris en charge" : "Non pris en charge"}`,
     `Plein écran : ${document.fullscreenEnabled ? "Pris en charge" : "Non pris en charge"}`,
     `Mots interdits affichés : ${state.settings.modeOptions.words.showForbiddenWords ? "Oui" : "Non"}`,
+    `Dessins mélangés par manche : ${state.settings.modeOptions.draw.mixedCount}`,
+    `Signal sonore d’arrivée Dessin : ${state.settings.modeOptions.draw.arrivalSoundEnabled ? "Oui" : "Non"}`,
     ...modeLines,
     `Cartes jouables : ${getPlayableCards().length}`,
     `Seuil du swipe : ${Math.round(getSwipeThreshold())} px`,

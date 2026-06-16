@@ -146,11 +146,11 @@
           <span id="timeDisplay" class="time-display">60</span>
         </div>
         <div class="score-block valid">
-          <span class="header-label">VALIDÉES</span>
+          <span id="validScoreLabel" class="header-label">VALIDÉES</span>
           <span id="validScore">0</span>
         </div>
         <div class="score-block passed">
-          <span class="header-label">PASSÉES</span>
+          <span id="passScoreLabel" class="header-label">PASSÉES</span>
           <span id="passScore">0</span>
         </div>
       </header>
@@ -207,6 +207,17 @@
       </footer>
     </section>
 
+    <section id="drawTransitionScreen" class="screen draw-screen" aria-live="assertive">
+      <div class="draw-transition-card">
+        <p id="drawTransitionKicker" class="draw-mode-kicker">CARTE SPÉCIALE</p>
+        <div class="draw-transition-icon" aria-hidden="true">✎</div>
+        <h2 id="drawTransitionTitle">Récupère le téléphone !</h2>
+        <p id="drawTransitionText">Une carte Dessin arrive. Le chrono général est en pause.</p>
+        <div id="drawTransitionCountdown" class="draw-transition-countdown hidden">3</div>
+        <button id="drawTransitionButton" class="primary-button draw-primary" type="button">J’ai le téléphone</button>
+      </div>
+    </section>
+
     <section id="drawRevealScreen" class="screen draw-screen">
       <div class="draw-reveal-card">
         <div id="drawPromptPanel">
@@ -238,7 +249,11 @@
               <strong id="drawPlayProgress">Dessin 1/3</strong>
               <span id="drawLiveScore">0 point</span>
             </div>
-            <div id="drawTimerDisplay" class="draw-timer-display">30</div>
+            <div class="draw-hud-actions">
+              <button id="drawPauseButton" class="draw-hud-button" type="button" aria-label="Mettre le dessin en pause">Ⅱ</button>
+              <button id="drawEndButton" class="draw-hud-button draw-hud-end" type="button" aria-label="Terminer la manche">■</button>
+              <div id="drawTimerDisplay" class="draw-timer-display">30</div>
+            </div>
           </div>
 
           <div id="drawCanvasArea" class="draw-canvas-area">
@@ -266,6 +281,11 @@
               <button class="draw-color" type="button" data-color="#f9a825" style="--swatch:#f9a825" aria-label="Jaune"></button>
               <button class="draw-color" type="button" data-color="#8e24aa" style="--swatch:#8e24aa" aria-label="Violet"></button>
             </div>
+          </div>
+
+          <div id="drawPauseOverlay" class="draw-pause-overlay hidden" role="dialog" aria-modal="true">
+            <p>PAUSE</p>
+            <button id="drawResumeButton" class="primary-button draw-primary" type="button">Reprendre le dessin</button>
           </div>
 
           <div class="draw-side-stack draw-side-stack-right">
@@ -306,6 +326,7 @@
           <div><strong id="resultTotal">0</strong><span id="resultTotalLabel">jouées</span></div>
         </div>
 
+        <div id="resultBreakdown" class="result-breakdown hidden"></div>
         <div id="resultDetails" class="result-details"></div>
 
         <div class="results-actions">
@@ -362,9 +383,12 @@
         </section>
 
         <section id="drawSpecialSettings" class="mode-setting-section hidden">
-          <p class="draw-autonomous-note"><strong>Version actuelle :</strong> ce mode se joue seul. L’intégration aux manches mélangées arrivera ensuite.</p>
-          <div class="draw-config-grid">
-            <label>
+          <div class="draw-config-group">
+            <div class="draw-config-heading">
+              <h4>Dessin seul</h4>
+              <p>Nombre de tentatives lorsque ce mode est lancé sans les autres.</p>
+            </div>
+            <label class="draw-attempt-setting">
               Nombre de dessins
               <select id="drawAttemptCountInput">
                 <option value="3">3 dessins</option>
@@ -373,19 +397,56 @@
                 <option value="10">10 dessins</option>
               </select>
             </label>
-            <label>
-              Facile
-              <span><input id="drawEasySecondsInput" type="number" min="10" max="120" step="5" value="30"> s</span>
-            </label>
-            <label>
-              Moyen
-              <span><input id="drawMediumSecondsInput" type="number" min="10" max="120" step="5" value="45"> s</span>
-            </label>
-            <label>
-              Difficile
-              <span><input id="drawHardSecondsInput" type="number" min="10" max="180" step="5" value="60"> s</span>
+          </div>
+
+          <div class="draw-config-group draw-mixed-settings">
+            <div class="draw-config-heading">
+              <h4>Partie mélangée</h4>
+              <p>Le chrono général se met en pause pendant chaque dessin.</p>
+            </div>
+            <div class="draw-mixed-grid">
+              <label>
+                Dessins par manche
+                <select id="drawMixedCountInput">
+                  <option value="1">1 dessin</option>
+                  <option value="2">2 dessins</option>
+                  <option value="3">3 dessins</option>
+                  <option value="4">4 dessins</option>
+                  <option value="5">5 dessins</option>
+                </select>
+              </label>
+              <div id="drawPenaltyPreview" class="draw-penalty-preview">Pénalité : −5 s par dessin</div>
+            </div>
+            <label class="special-option-row draw-arrival-option">
+              <span>
+                <strong>Son spécial à l’arrivée</strong>
+                <small>La vibration distinctive respecte le réglage général.</small>
+              </span>
+              <input id="drawArrivalSoundEnabledInput" type="checkbox" checked>
             </label>
           </div>
+
+          <div class="draw-config-group">
+            <div class="draw-config-heading">
+              <h4>Durée des dessins</h4>
+              <p>Ces durées s’appliquent au mode seul et aux parties mélangées.</p>
+            </div>
+            <div class="draw-config-grid draw-duration-grid">
+              <label>
+                Facile
+                <span><input id="drawEasySecondsInput" type="number" min="10" max="120" step="5" value="30"> s</span>
+              </label>
+              <label>
+                Moyen
+                <span><input id="drawMediumSecondsInput" type="number" min="10" max="120" step="5" value="45"> s</span>
+              </label>
+              <label>
+                Difficile
+                <span><input id="drawHardSecondsInput" type="number" min="10" max="180" step="5" value="60"> s</span>
+              </label>
+            </div>
+          </div>
+
           <label class="special-option-row draw-sound-option">
             <span>
               <strong>Son à la fin du chrono</strong>

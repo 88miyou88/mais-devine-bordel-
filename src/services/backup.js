@@ -69,7 +69,11 @@ function mergeRestoredSettings(settings = {}) {
           medium: Number(settings.modeOptions?.draw?.durations?.medium) || state.settings.modeOptions.draw.durations.medium,
           hard: Number(settings.modeOptions?.draw?.durations?.hard) || state.settings.modeOptions.draw.durations.hard
         },
-        soundEnabled: settings.modeOptions?.draw?.soundEnabled !== false
+        soundEnabled: settings.modeOptions?.draw?.soundEnabled !== false,
+        mixedCount: Math.min(5, Math.max(1, Number(settings.modeOptions?.draw?.mixedCount) || state.settings.modeOptions.draw.mixedCount)),
+        arrivalSoundEnabled: typeof settings.modeOptions?.draw?.arrivalSoundEnabled === "boolean"
+          ? settings.modeOptions.draw.arrivalSoundEnabled
+          : state.settings.modeOptions.draw.arrivalSoundEnabled
       }
     }
   };
