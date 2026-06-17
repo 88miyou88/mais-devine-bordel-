@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 2,
-  "libraryVersion": "2026.06.17-1",
+  "schemaVersion": 3,
+  "libraryVersion": "2026.06.17-2",
   "updatedAt": "2026-06-17",
   "modeId": "drinking",
   "modeName": "Qui boit, bordel ?",
@@ -19037,7 +19037,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19118,7 +19118,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19172,7 +19172,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19226,7 +19226,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19280,7 +19280,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19361,7 +19361,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19415,7 +19415,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19469,7 +19469,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19523,7 +19523,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19577,7 +19577,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19631,7 +19631,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19685,7 +19685,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19739,7 +19739,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19793,7 +19793,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19847,7 +19847,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19901,7 +19901,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -19955,7 +19955,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -20009,7 +20009,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -20063,7 +20063,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -20117,7 +20117,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -20171,7 +20171,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -20225,7 +20225,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -20279,7 +20279,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -20954,7 +20954,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21062,7 +21062,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21116,7 +21116,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21170,7 +21170,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21224,7 +21224,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21278,7 +21278,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21332,7 +21332,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21386,7 +21386,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21440,7 +21440,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21494,7 +21494,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21548,7 +21548,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21602,7 +21602,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21656,7 +21656,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21710,7 +21710,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21764,7 +21764,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21818,7 +21818,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21872,7 +21872,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21926,7 +21926,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -21980,7 +21980,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -22034,7 +22034,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -22088,7 +22088,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -22142,7 +22142,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -22196,7 +22196,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -22250,7 +22250,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -22304,7 +22304,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -22358,7 +22358,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27110,7 +27110,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27164,7 +27164,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27245,7 +27245,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27299,7 +27299,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27380,7 +27380,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27434,7 +27434,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27488,7 +27488,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27542,7 +27542,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27596,7 +27596,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27650,7 +27650,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27704,7 +27704,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27785,7 +27785,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27839,7 +27839,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27893,7 +27893,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27920,7 +27920,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -27974,7 +27974,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -28028,7 +28028,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -28082,7 +28082,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -28136,7 +28136,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -28190,7 +28190,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -28244,7 +28244,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -28298,7 +28298,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -28352,7 +28352,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",
@@ -28406,7 +28406,7 @@
         "scoreMultiplier": 1
       },
       "resolution": {
-        "kind": "answer_or_penalty",
+        "kind": "personal_condition",
         "supports": [
           "drink",
           "points",

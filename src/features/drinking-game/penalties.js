@@ -1,6 +1,6 @@
 const SOFT_MODE_LABELS = {
-  points: "points de pénalité",
-  tokens: "jetons de pénalité",
+  points: "pénalité",
+  tokens: "jeton de pénalité",
   mini_challenge: "mini-défi",
   joker: "joker"
 };
@@ -21,16 +21,21 @@ export function rollPenalty(intensity, maximum, random = Math.random) {
   return min + Math.floor(random() * (max - min + 1));
 }
 
+function pluralize(value, singular, plural = `${singular}s`) {
+  return `${value} ${value > 1 ? plural : singular}`;
+}
+
 export function describePenalty(player, amount, softMode = "points") {
-  if (!player?.teamSoft) return `${amount} gorgée${amount > 1 ? "s" : ""} · +${amount} point${amount > 1 ? "s" : ""}`;
-  if (softMode === "mini_challenge") {
-    return `1 mini-défi choisi par le groupe · +${amount} point${amount > 1 ? "s" : ""}`;
-  }
+  const value = Math.max(1, Number(amount) || 1);
+  if (!player?.teamSoft) return pluralize(value, "gorgée");
+  if (softMode === "mini_challenge") return "1 mini-défi";
   if (softMode === "joker") {
-    return `perd ${Math.max(1, Math.ceil(amount / 3))} joker${amount > 3 ? "s" : ""} · +${amount} point${amount > 1 ? "s" : ""}`;
+    const jokers = Math.max(1, Math.ceil(value / 3));
+    return pluralize(jokers, "joker");
   }
   const label = SOFT_MODE_LABELS[softMode] || SOFT_MODE_LABELS.points;
-  return `${amount} ${label} · +${amount} point${amount > 1 ? "s" : ""}`;
+  if (softMode === "tokens") return pluralize(value, label, "jetons de pénalité");
+  return pluralize(value, label, "pénalités");
 }
 
 export function applyPenalty(player, stats, amount, softMode = "points", reason = "card") {

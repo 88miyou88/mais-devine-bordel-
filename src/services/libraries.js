@@ -305,6 +305,9 @@ async function loadMode(modeId, legacySettings) {
 
   const officialBoxes = new Map(library.boxes.map(box => [box.id, box]));
   const officialCards = new Map(library.cards.map(card => [card.id, card]));
+  const migrateDrinkingInteractions = modeId === "drinking" &&
+    String(storedMeta?.installedVersion || "") === "2026.06.17-1" &&
+    String(library.libraryVersion) === "2026.06.17-2";
 
   const boxes = storedBoxes.map(box => {
     const official = officialBoxes.get(box.id);
@@ -324,6 +327,12 @@ async function loadMode(modeId, legacySettings) {
 
   const cards = storedCards.map(card => {
     const official = officialCards.get(card.id);
+    if (migrateDrinkingInteractions && official && card.origin === "official" && card.locallyModified !== true) {
+      return {
+        ...officialCardFrom(official),
+        active: card.active !== false
+      };
+    }
     const normalizedCard = {
       ...card,
       difficulty: normalizeDifficulty(card.difficulty, modeId, card)
@@ -364,7 +373,9 @@ async function loadMode(modeId, legacySettings) {
       ? selectionObject.difficultyIds
       : ["easy", "medium", "hard"],
     libraryMeta: {
-      installedVersion: storedMeta?.installedVersion || library.libraryVersion,
+      installedVersion: migrateDrinkingInteractions
+        ? library.libraryVersion
+        : (storedMeta?.installedVersion || library.libraryVersion),
       availableVersion: library.libraryVersion,
       lastCheckedAt: storedMeta?.lastCheckedAt || "",
       deletedOfficialCardIds: cleanIdList(

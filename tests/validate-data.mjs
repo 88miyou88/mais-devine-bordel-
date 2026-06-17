@@ -49,6 +49,10 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
     if (modeId === "drinking") {
       assert.ok(card.mechanic, `${relativePath}: mécanique absente pour ${card.id}`);
       assert.ok(card.targetType, `${relativePath}: cible absente pour ${card.id}`);
+      assert.ok([
+        "vote", "personal_condition", "answer_or_penalty", "collective_condition",
+        "challenge_or_penalty", "duel", "tribunal", "temporary_rule"
+      ].includes(card.resolution?.kind), `${relativePath}: résolution invalide pour ${card.id}`);
       assert.ok(["light", "medium", "strong"].includes(card.penalty?.intensity), `${relativePath}: intensité invalide pour ${card.id}`);
       assert.ok(Array.isArray(card.resolution?.supports) && card.resolution.supports.includes("points"), `${relativePath}: alternatives incomplètes pour ${card.id}`);
       assert.ok(Number(card.minPlayers) >= 2, `${relativePath}: nombre minimum invalide pour ${card.id}`);
@@ -59,6 +63,12 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
     }
     cardIds.add(card.id);
     allIds.add(card.id);
+  }
+
+  if (modeId === "drinking") {
+    const personalConditions = data.cards.filter(card => card.resolution?.kind === "personal_condition");
+    assert.equal(personalConditions.length, 73, `${relativePath}: nombre inattendu de conditions personnelles`);
+    assert.ok(personalConditions.every(card => /^\[prénom d'un joueur\], as-tu déjà /i.test(card.prompt)), `${relativePath}: condition personnelle mal typée`);
   }
 
   totalCards += data.cards.length;

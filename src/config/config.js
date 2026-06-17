@@ -1,5 +1,5 @@
-export const APP_VERSION = "0.9.0";
-export const APP_CACHE_NAME = "mdb-v0-9-0";
+export const APP_VERSION = "0.9.1";
+export const APP_CACHE_NAME = "mdb-v0-9-1";
 export const SWIPE_ANIMATION_MS = 180;
 export const DRAW_HOLD_MS = 500;
 export const DRAW_RETURN_COUNTDOWN_SECONDS = 3;
@@ -121,7 +121,7 @@ export const GLOBAL_SETTINGS_KEY = "mdb-global-settings-v2";
 export const LEGACY_SETTINGS_KEY = "mdb-settings-v1";
 export const MULTIPLAYER_SESSION_KEY = "mdb-multiplayer-session-v2";
 export const DRINKING_SESSION_KEY = "mdb-drinking-session-v1";
-export const DRINKING_SESSION_SCHEMA = 1;
+export const DRINKING_SESSION_SCHEMA = 2;
 export const MULTIPLAYER_SESSION_SCHEMA = 3;
 export const MIN_MULTIPLAYER_PLAYERS = 2;
 export const MAX_MULTIPLAYER_PLAYERS = 12;

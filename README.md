@@ -12,23 +12,22 @@ L’interface, les filtres et le planificateur multijoueur reposent sur la confi
 
 ## Version
 
-Version actuelle : **0.9.0**
+Version actuelle : **0.9.1**
 
-La V0.9.0 ajoute **Qui boit, bordel ?**, un mode autonome dans lequel le téléphone reste visible par le groupe :
+La V0.9.1 corrige le moteur d’interaction de **Qui boit, bordel ?** :
 
-- 1 050 cartes réparties entre 14 thèmes et trois niveaux de chaos ;
-- ciblage équilibré des joueurs ;
-- cartes collectives, votes, vérités, défis, duels et règles temporaires ;
-- profils individuels `🥤 Team soft` ;
-- pénalités variables selon un plafond configurable de 1 à 10 ;
-- points de pénalité attribués aussi aux joueurs qui boivent ;
-- alternatives Team soft en points, jetons, mini-défis ou jokers ;
-- choix entre une durée et un nombre exact de cartes ;
-- mode facultatif **Après minuit**, signalé par une flamme rose sur la tuile ;
-- sauvegarde et reprise d’une partie interrompue ;
-- classement final et titres humoristiques.
+- chaque mécanique possède désormais ses propres actions et libellés ;
+- swipe à droite et à gauche disponible sur les cartes ;
+- aucune personne n’est présélectionnée pour les votes et conditions collectives ;
+- les personnes ciblées automatiquement ne sont plus affichées comme un choix inutile ;
+- les questions conditionnelles affichent directement la conséquence adaptée au joueur ;
+- l’interface parle de gorgées pour les buveurs et de pénalités ou alternatives pour Team soft ;
+- les points de classement restent calculés en interne sans encombrer les cartes ;
+- les règles actives sont rappelées dans la carte ;
+- « Oubli de règle » permet réellement de choisir la personne concernée ;
+- les résultats mettent en avant les pénalités et gorgées, plus les réussites utiles, plutôt que les ciblages techniques.
 
-La tuile **Sans le dire !** indique désormais directement si les mots interdits sont activés ou désactivés.
+La V0.9.1 migre automatiquement les cartes officielles V0.9.0 concernées, sans écraser une carte modifiée localement.
 
 ## Bibliothèques
 
@@ -43,48 +42,49 @@ La tuile **Sans le dire !** indique désormais directement si les mots interdits
 
 ## Qui boit, bordel ?
 
-### Niveaux
+### Résolution des cartes
 
-Les filtres globaux de l’accueil restent `F`, `M` et `D`, mais les libellés du mode sont :
+Les comportements sont déterminés par la mécanique de la carte :
 
-- `F` — Pépouze ;
-- `M` — Ça chauffe ;
-- `D` — Demain, on nie tout.
+- vote : sélectionner une personne, puis valider ;
+- condition collective : sélectionner toutes les personnes concernées ;
+- condition personnelle : swipe à droite si oui, à gauche si non ;
+- vérité ou anecdote : répondre ou prendre la conséquence ;
+- défi : réussite sans pénalité, échec ou refus avec pénalité ;
+- duel : sélectionner le perdant ;
+- tribunal : coupable ou non coupable ;
+- règle temporaire : activer ou ignorer.
+
+Le bouton **Passer** reste indépendant et permet de retirer la carte sans appliquer de conséquence.
 
 ### Pénalités
 
 Chaque carte possède une intensité structurée. Le moteur tire une valeur compatible avec le plafond choisi pour la partie.
 
-Un joueur qui boit reçoit :
-
-```text
-X gorgées + X points de pénalité
-```
-
-Un joueur `🥤 Team soft` participe à toutes les cartes, mais reçoit l’alternative choisie et les mêmes points de pénalité.
+- joueur classique : la conséquence visible est exprimée en gorgées ;
+- joueur `🥤 Team soft` : la conséquence visible utilise l’alternative choisie ;
+- la même valeur alimente silencieusement le classement en pénalités.
 
 ### Après minuit
 
-Le thème adulte est désactivé par défaut. Lorsqu’il est activé, ses 75 cartes rejoignent la sélection et une flamme rose apparaît sur la tuile du mode.
+Le thème est désactivé par défaut. Lorsqu’il est activé, ses 75 cartes rejoignent la sélection et une flamme rose apparaît sur la tuile du mode.
 
 ### Mode autonome
 
-Qui boit, bordel ? ne se mélange pas encore aux jeux joués sur le front. Sa mécanique collective, ses règles persistantes et son avancement manuel utilisent un contrôleur séparé.
-
-Une future « playlist de soirée » pourra alterner des blocs complets de modes sans injecter ces cartes une par une dans les manches classiques.
+Qui boit, bordel ? reste autonome. Une future « playlist de soirée » pourra alterner des blocs complets de modes sans injecter ces cartes une par une dans les manches classiques.
 
 ## Compatibilité
 
-La V0.9.0 conserve :
+La V0.9.1 conserve :
 
-- les identifiants et contenus des quatre bibliothèques précédentes ;
+- les 2 368 cartes et leurs identifiants ;
 - les cartes et catégories personnelles ;
 - les cartes officielles modifiées ;
 - les réglages, filtres et sauvegardes existants ;
-- les deux déroulements multijoueurs de la V0.8.0 ;
+- les deux déroulements multijoueurs ;
 - le Dessin autonome et mélangé.
 
-La session temporaire de Qui boit, bordel ? utilise la clé `mdb-drinking-session-v1` et n’est pas exportée dans les sauvegardes permanentes.
+La session temporaire de Qui boit utilise la clé `mdb-drinking-session-v1` avec le schéma interne `2`. Une session V0.9.0 incomplète n’est pas restaurée.
 
 ## Publication
 
@@ -94,13 +94,13 @@ Application :
 
 URL de test :
 
-`https://88miyou88.github.io/mais-devine-bordel-/?v=090`
+`https://88miyou88.github.io/mais-devine-bordel-/?v=091`
 
 Diagnostic attendu :
 
 ```text
-Version : 0.9.0
-Cache attendu : mdb-v0-9-0
+Version : 0.9.1
+Cache attendu : mdb-v0-9-1
 ```
 
 ## Développement local
@@ -113,7 +113,7 @@ python3 -m http.server 8000
 
 Puis ouvrir :
 
-`http://localhost:8000/?v=090`
+`http://localhost:8000/?v=091`
 
 ## Contrôles automatiques
 

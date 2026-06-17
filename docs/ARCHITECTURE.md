@@ -1,8 +1,6 @@
-# Architecture — V0.9.0
+# Architecture — V0.9.1
 
-## Principes
-
-La V0.9.0 conserve la direction des dépendances :
+## Direction des dépendances
 
 ```text
 config / core
@@ -20,18 +18,6 @@ config / core
 - `main.js` orchestre l’initialisation ;
 - aucun import circulaire n’est autorisé.
 
-## Nouveau mode autonome
-
-La configuration du mode est déclarée dans `src/config/config.js` avec :
-
-- son identité visuelle ;
-- sa bibliothèque `data/drinking.json` ;
-- ses clés de stockage ;
-- ses libellés de difficulté spécifiques ;
-- le marqueur `standalone: true`.
-
-Lorsque ce mode est activé, `home.js` désactive les autres modes et force la partie libre. Le multijoueur classique n’est pas modifié.
-
 ## Dossier `drinking-game`
 
 ```text
@@ -39,6 +25,8 @@ src/features/drinking-game/
 ├── drinking-controller.js
 ├── card-engine.js
 ├── targeting.js
+├── interaction.js
+├── swipe.js
 ├── penalties.js
 ├── rules.js
 └── session.js
@@ -46,136 +34,108 @@ src/features/drinking-game/
 
 ### `drinking-controller.js`
 
-Orchestre :
-
-- la préparation des joueurs ;
-- le déroulement manuel des cartes ;
-- les boutons de résolution ;
-- le mini-chronomètre des défis ;
-- le retour à la carte précédente ;
-- les résultats finaux.
-
-Il ne contient ni le filtrage de la bibliothèque ni l’algorithme de ciblage.
+Orchestre les écrans, la préparation, la progression, l’historique, les chronomètres et les résultats. Il délègue le comportement propre à chaque type de carte à `interaction.js` et les gestes à `swipe.js`.
 
 ### `card-engine.js`
 
-- construit le paquet avec les filtres du mode ;
+- construit le paquet filtré ;
 - exclut les cartes incompatibles avec le nombre de joueurs ;
 - recycle le paquet après épuisement ;
-- prépare le texte avec les prénoms ciblés.
+- remplace les placeholders de prénom.
 
 ### `targeting.js`
 
-Le ciblage automatique privilégie les joueurs les moins sollicités et évite autant que possible deux ciblages consécutifs de la même personne.
+- équilibre les ciblages automatiques ;
+- évite les répétitions consécutives autant que possible ;
+- prépare deux joueurs distincts pour les duels.
 
-Pour les duels, deux joueurs distincts sont préparés mais le perdant est sélectionné manuellement avant l’application de la pénalité.
+### `interaction.js`
+
+Décrit, sans dépendre du DOM :
+
+- le mode de sélection des joueurs ;
+- l’action du swipe gauche et droit ;
+- les libellés des boutons ;
+- la personne qui reçoit automatiquement une pénalité ;
+- la formulation visible des conséquences.
+
+Les résolutions reconnues sont :
+
+```text
+vote
+personal_condition
+answer_or_penalty
+collective_condition
+challenge_or_penalty
+duel
+tribunal
+temporary_rule
+```
+
+### `swipe.js`
+
+Gère uniquement :
+
+- les événements `pointer` ;
+- le seuil de geste ;
+- l’animation et les couleurs ;
+- les libellés contextuels gauche/droite.
+
+La décision métier reste dans le contrôleur.
 
 ### `penalties.js`
 
-Les cartes ne stockent pas une phrase rigide comme « boire 2 gorgées ». Elles stockent une intensité :
-
-```text
-light | medium | strong
-```
-
-Le moteur calcule une plage selon le plafond de 1 à 10 puis tire une quantité dans cette plage.
-
-La même quantité alimente toujours `penaltyPoints`. Selon le profil :
-
-- joueur classique : gorgées + points ;
-- Team soft : points, jetons, mini-défi ou joker + points.
+- calcule les plages selon l’intensité et le plafond ;
+- produit la conséquence visible adaptée au profil ;
+- met à jour silencieusement les pénalités de classement ;
+- distingue les gorgées, jetons, mini-défis et jokers.
 
 ### `rules.js`
 
 - ajoute une règle temporaire ;
-- limite l’affichage à trois règles actives ;
-- décrémente leur durée après chaque carte ;
+- conserve son montant de pénalité ;
+- limite à trois règles actives ;
+- décrémente leur durée ;
 - supprime les règles expirées.
 
 ### `session.js`
 
-La partie active est sauvegardée sous :
+Utilise :
 
 ```text
-mdb-drinking-session-v1
-schéma interne : 1
+clé : mdb-drinking-session-v1
+schéma : 2
 ```
 
-La session est supprimée à la fin ou lors d’un abandon volontaire. Elle n’est pas incluse dans la sauvegarde permanente.
+Le changement de schéma empêche de restaurer un état V0.9.0 incompatible avec les nouvelles interactions.
 
-## Structure de `data/drinking.json`
+## Migration de la bibliothèque Qui boit
 
-Le fichier source de 1 050 questions a été migré vers une bibliothèque exploitable par l’application.
+`data/drinking.json` passe à la version `2026.06.17-2`.
 
-Chaque carte contient notamment :
+Les 73 questions officielles commençant par « as-tu déjà » reçoivent la résolution explicite `personal_condition`. Lors du premier chargement :
 
-```text
-id
-boxId
-active
-difficulty
-prompt
-mechanic
-targetType
-penalty.intensity
-resolution.kind
-resolution.supports
-durationSeconds
-ruleDurationCards
-adult
-minPlayers
-```
+- une carte officielle non modifiée est actualisée automatiquement ;
+- son état actif ou désactivé est conservé ;
+- une carte modifiée localement n’est jamais écrasée.
 
-Les conséquences sont donc structurées et extensibles. Les alternatives Team soft ne dépendent pas de la présence d’un chiffre dans une phrase.
+## DOM
 
-## Niveaux et thème Après minuit
+La carte Qui boit contient désormais :
 
-Les trois niveaux restent compatibles avec le filtre global :
+- deux indicateurs de swipe contextuels ;
+- un rappel des règles actives ;
+- un panneau de cibles masqué lorsque la cible est automatique ;
+- deux boutons d’action dont le texte et la couleur suivent la mécanique.
 
-```text
-easy   → Pépouze
-medium → Ça chauffe
-hard   → Demain, on nie tout
-```
-
-La boîte `apres_minuit` porte la métadonnée `adult: true`. Elle est exclue de la sélection initiale et ajoutée ou retirée par l’interrupteur du mode.
-
-## Accueil
-
-`home.js` assure :
-
-- l’exclusivité du mode autonome ;
-- le compteur `cartes filtrées / cartes actives` ;
-- la flamme Après minuit ;
-- la pastille `Mots interdits : ON/OFF` ;
-- les difficultés globales et exceptions existantes.
-
-Chaque tuile possède `data-mode-id`, ce qui facilite les tests et les futures extensions sans dépendre de son texte.
-
-## Gestionnaire de cartes
-
-Le gestionnaire accepte la cinquième bibliothèque. L’éditeur simple permet de modifier ou créer une consigne tout en préservant les métadonnées structurées des cartes officielles.
-
-## Stockage et sauvegardes
-
-Nouvelles clés :
-
-```text
-mdb-drinking-boxes-v1
-mdb-drinking-cards-v1
-mdb-drinking-library-meta-v1
-mdb-drinking-selection-v1
-mdb-drinking-session-v1
-```
-
-Le schéma de sauvegarde permanent passe à `6` et accepte toujours les schémas antérieurs pris en charge.
+Le bouton « Oubli de règle » n’apparaît que lorsqu’une règle est active.
 
 ## PWA
 
-Version : `0.9.0`
+```text
+Version : 0.9.1
+Cache : mdb-v0-9-1
+Jeton des ressources : 091
+```
 
-Cache : `mdb-v0-9-0`
-
-Jeton des ressources critiques : `090`
-
-Le service worker met en cache la cinquième bibliothèque, sa feuille de style et les six modules du nouveau moteur.
+Le service worker met en cache les deux nouveaux modules `interaction.js` et `swipe.js`.

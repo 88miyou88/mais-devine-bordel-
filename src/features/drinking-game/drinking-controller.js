@@ -3,9 +3,21 @@ import { el, requestGameDisplay, showScreen } from "../../core/dom.js";
 import { modeState, state } from "../../core/state.js";
 import { saveGlobalSettings } from "../../services/libraries.js";
 import { buildDeck, drawPreparedCard } from "./card-engine.js";
+import {
+  defaultPenaltyTargetIds,
+  formattedPrompt,
+  interactionForCard,
+  penaltyInstruction,
+  selectablePlayerIds
+} from "./interaction.js";
 import { applyPenalty, describePenalty, penaltyRange, rollPenalty } from "./penalties.js";
 import { addRule, tickRules } from "./rules.js";
 import { clearDrinkingSession, readDrinkingSession, saveDrinkingSession } from "./session.js";
+import {
+  initializeDrinkingSwipe,
+  resetDrinkingSwipe,
+  updateDrinkingSwipeLabels
+} from "./swipe.js";
 
 let callbacks = {};
 let clockTimer = 0;
@@ -33,7 +45,9 @@ function blankStats(player) {
     jokersLost: 0,
     rulesForgotten: 0,
     votesReceived: 0,
-    duelsWon: 0
+    duelsWon: 0,
+    challengesSucceeded: 0,
+    answersGiven: 0
   };
 }
 
@@ -41,8 +55,8 @@ function createGame() {
   const players = clone(options().players);
   const endType = options().endType;
   const durationMs = options().durationMinutes * 60_000;
-  const game = {
-    schema: 1,
+  return {
+    schema: 2,
     players,
     stats: Object.fromEntries(players.map(player => [player.id, blankStats(player)])),
     deck: buildDeck(players.length),
@@ -61,10 +75,10 @@ function createGame() {
     maxPenalty: options().maxPenalty,
     softPenaltyMode: options().softPenaltyMode,
     currentPenalty: 1,
+    rulePenaltyMode: false,
     finished: false,
     startedAt: new Date().toISOString()
   };
-  return game;
 }
 
 function snapshotGame(game) {
@@ -177,6 +191,7 @@ export async function openDrinkingSetup() {
 
 La reprendre ?`)) {
     state.drinkingGame = saved.game;
+    state.drinkingGame.rulePenaltyMode = false;
     await requestGameDisplay();
     resumeGameClock();
     renderGame();
@@ -207,54 +222,126 @@ function drawNextCard() {
     return;
   }
   game.currentPenalty = rollPenalty(game.currentCard.penalty?.intensity, game.maxPenalty);
-  game.selectedTargetIds = defaultTargetIds(game.currentCard);
+  game.selectedTargetIds = defaultPenaltyTargetIds(game.currentCard);
+  game.rulePenaltyMode = false;
   renderGame();
   saveDrinkingSession(game);
 }
 
-function defaultTargetIds(card) {
-  if (card.targetType === "single_player") return [...card.targetIds];
-  // Pour un duel, les deux participants sont affichés mais le perdant est choisi manuellement.
-  if (card.targetType === "two_players") return [];
-  if (card.targetType === "single_and_group") return [...card.targetIds];
-  return [];
-}
-
 function renderGame() {
   const game = state.drinkingGame;
-  const card = game.currentCard;
+  const card = game?.currentCard;
   if (!game || !card) return;
 
   el.drinkingProgress.textContent = game.endType === "cards"
     ? `Carte ${Math.min(game.playedCount + 1, game.cardLimit)} / ${game.cardLimit}`
     : `${game.playedCount} carte${game.playedCount > 1 ? "s" : ""} jouée${game.playedCount > 1 ? "s" : ""}`;
   renderClock();
+
   const box = modeState("drinking").boxes.find(item => item.id === card.boxId);
   el.drinkingTheme.textContent = box?.name || "Qui boit, bordel ?";
   const meta = DIFFICULTY_META[card.difficulty] || DIFFICULTY_META.medium;
   el.drinkingLevel.textContent = card.difficulty === "easy" ? "Pépouze" : card.difficulty === "medium" ? "Ça chauffe" : "Demain, on nie tout";
   el.drinkingLevel.style.setProperty("--difficulty-color", meta.color);
-  el.drinkingPrompt.textContent = card.renderedPrompt;
+  el.drinkingPrompt.textContent = formattedPrompt(card, game.players, game.currentPenalty, game.softPenaltyMode);
   el.drinkingCard.classList.toggle("hot-card", card.adult === true);
-  el.drinkingPenaltyText.textContent = card.resolution?.kind === "temporary_rule"
-    ? `Règle active pendant ${card.ruleDurationCards || 3} cartes · chaque oubli vaut ${game.currentPenalty} point(s)`
-    : `Pénalité de cette carte : ${game.currentPenalty} point${game.currentPenalty > 1 ? "s" : ""} + adaptation boisson/Team soft`;
 
-  renderTargetChoices();
   renderRules();
+  renderResolution();
   el.drinkingBackButton.disabled = game.history.length === 0;
-  el.drinkingRulePenaltyButton.disabled = game.activeRules.length === 0;
-  el.drinkingApplyPenaltyButton.disabled = card.resolution?.kind === "temporary_rule";
   el.drinkingChallengeTimerButton.classList.toggle("hidden", !card.durationSeconds);
   el.drinkingChallengeTimer.classList.add("hidden");
+  resetDrinkingSwipe();
 }
 
-function renderTargetChoices() {
+function renderRules() {
+  const game = state.drinkingGame;
+  el.drinkingRulesSummary.innerHTML = "";
+  el.drinkingRuleReminder.innerHTML = "";
+  const hasRules = game.activeRules.length > 0;
+  el.drinkingRulesSummary.classList.toggle("hidden", !hasRules);
+  el.drinkingRuleReminder.classList.toggle("hidden", !hasRules);
+  el.drinkingRulePenaltyButton.classList.toggle("hidden", !hasRules || game.rulePenaltyMode);
+  if (!hasRules) return;
+
+  game.activeRules.forEach(rule => {
+    const item = document.createElement("span");
+    item.textContent = `${rule.text} · ${rule.remainingCards}`;
+    item.title = `${rule.remainingCards} carte(s) restante(s)`;
+    el.drinkingRulesSummary.append(item);
+  });
+
+  const title = document.createElement("strong");
+  title.textContent = "Règle active" + (game.activeRules.length > 1 ? "s" : "");
+  const list = document.createElement("span");
+  list.textContent = game.activeRules.map(rule => rule.text).join(" · ");
+  el.drinkingRuleReminder.append(title, list);
+}
+
+function renderResolution() {
   const game = state.drinkingGame;
   const card = game.currentCard;
+  const interaction = interactionForCard(card);
+
+  if (game.rulePenaltyMode) {
+    el.drinkingRulePenaltyButton.classList.add("hidden");
+    el.drinkingTargetPanel.classList.remove("hidden");
+    el.drinkingTargetLabel.textContent = "Qui a oublié une règle ?";
+    renderTargetChoices(game.players.map(player => player.id), false);
+    const selectedPlayer = game.players.find(player => player.id === game.selectedTargetIds[0]);
+    const ruleAmount = game.activeRules.at(-1)?.penaltyAmount || 1;
+    el.drinkingPenaltyText.textContent = selectedPlayer
+      ? `${selectedPlayer.name} prend ${describePenalty(selectedPlayer, ruleAmount, game.softPenaltyMode)}.`
+      : "Choisis la personne qui a oublié la règle.";
+    el.drinkingLeftActionButton.classList.add("hidden");
+    el.drinkingRightActionButton.classList.remove("hidden");
+    setActionButton(el.drinkingRightActionButton, "Attribuer l’oubli", "penalty", "right");
+    el.drinkingSkipButton.textContent = "Annuler l’oubli";
+    updateDrinkingSwipeLabels("Annuler", "Attribuer");
+    return;
+  }
+
+  el.drinkingRulePenaltyButton.classList.toggle("hidden", !game.activeRules.length);
+  const selectableIds = selectablePlayerIds(card, game.players);
+  const showTargets = selectableIds.length > 0;
+  el.drinkingTargetPanel.classList.toggle("hidden", !showTargets);
+  if (showTargets) {
+    el.drinkingTargetLabel.textContent = interaction.targetLabel || "Qui est concerné ?";
+    renderTargetChoices(selectableIds, interaction.selection === "multiple_all");
+  } else {
+    el.drinkingTargetChoices.innerHTML = "";
+  }
+
+  el.drinkingPenaltyText.textContent = penaltyInstruction(
+    card,
+    game.players,
+    game.selectedTargetIds,
+    game.currentPenalty,
+    game.softPenaltyMode
+  );
+
+  el.drinkingSkipButton.textContent = "Passer";
+  el.drinkingLeftActionButton.classList.remove("hidden");
+  el.drinkingRightActionButton.classList.remove("hidden");
+  setActionButton(el.drinkingLeftActionButton, interaction.leftLabel, interaction.leftAction, "left");
+  setActionButton(el.drinkingRightActionButton, interaction.rightLabel, interaction.rightAction, "right");
+  updateDrinkingSwipeLabels(interaction.leftLabel, interaction.rightLabel);
+}
+
+function setActionButton(button, label, action, side) {
+  button.textContent = label;
+  button.classList.remove("primary-button", "danger-button", "secondary-button");
+  if (action === "penalty") button.classList.add("danger-button");
+  else if (side === "right") button.classList.add("primary-button");
+  else button.classList.add("secondary-button");
+}
+
+function renderTargetChoices(selectableIds, multiple) {
+  const game = state.drinkingGame;
   el.drinkingTargetChoices.innerHTML = "";
-  const multiple = ["multiple_players", "single_and_group", "group_vote", "group_or_player"].includes(card.targetType);
-  game.players.forEach(player => {
+  selectableIds.forEach(playerId => {
+    const player = game.players.find(item => item.id === playerId);
+    if (!player) return;
     const button = document.createElement("button");
     button.type = "button";
     button.className = `drinking-target-chip${game.selectedTargetIds.includes(player.id) ? " selected" : ""}`;
@@ -268,37 +355,64 @@ function renderTargetChoices() {
         selected.add(player.id);
       }
       game.selectedTargetIds = [...selected];
-      renderTargetChoices();
+      renderResolution();
     });
     el.drinkingTargetChoices.append(button);
   });
 }
 
-function renderRules() {
+function actionForDirection(direction) {
   const game = state.drinkingGame;
-  el.drinkingRulesSummary.innerHTML = "";
-  if (!game.activeRules.length) {
-    el.drinkingRulesSummary.textContent = "Aucune règle active";
-    return;
-  }
-  game.activeRules.forEach(rule => {
-    const item = document.createElement("span");
-    item.textContent = `${rule.text} · ${rule.remainingCards}`;
-    item.title = `${rule.remainingCards} carte(s) restante(s)`;
-    el.drinkingRulesSummary.append(item);
-  });
+  if (game.rulePenaltyMode) return direction === "right" ? "rule_penalty" : null;
+  const interaction = interactionForCard(game.currentCard);
+  return direction === "right" ? interaction.rightAction : interaction.leftAction;
 }
 
-function applySelectedPenalty(reason = "card") {
+function canPerformDirection(direction, showMessage = true) {
+  const game = state.drinkingGame;
+  if (!game || !game.currentCard || game.rulePenaltyMode && direction === "left") return false;
+  if (game.rulePenaltyMode) {
+    if (game.selectedTargetIds.length) return true;
+    if (showMessage) alert("Choisis la personne qui a oublié la règle.");
+    return false;
+  }
+  const interaction = interactionForCard(game.currentCard);
+  if (direction === "right" && interaction.requiresRightSelection && !game.selectedTargetIds.length) {
+    if (showMessage) alert("Sélectionne au moins une personne avant de valider.");
+    return false;
+  }
+  return true;
+}
+
+function performDirection(direction) {
+  if (!canPerformDirection(direction)) return;
+  const game = state.drinkingGame;
+  if (game.rulePenaltyMode) {
+    applyRulePenalty();
+    return;
+  }
+  const action = actionForDirection(direction);
+  if (action === "penalty") advanceCard({ penalized: true, positive: direction === "right" });
+  else if (action === "activate_rule") advanceCard({ activateRule: true, positive: true });
+  else advanceCard({ positive: direction === "right" });
+}
+
+function applySelectedPenalty(reason = "card", amount = null) {
   const game = state.drinkingGame;
   if (!game.selectedTargetIds.length) {
     alert("Sélectionne au moins une personne qui reçoit la pénalité.");
     return false;
   }
+  const value = Math.max(1, Number(amount ?? game.currentPenalty) || 1);
   game.selectedTargetIds.forEach(playerId => {
     const player = game.players.find(item => item.id === playerId);
     if (!player) return;
-    applyPenalty(player, game.stats, game.currentPenalty, game.softPenaltyMode, reason);
+    applyPenalty(player, game.stats, value, game.softPenaltyMode, reason);
+    const wasAutomaticallyTargeted = game.currentCard?.targetIds?.includes(playerId);
+    if (reason === "card" && !wasAutomaticallyTargeted) {
+      game.stats[playerId].targeted += 1;
+      game.stats[playerId].lastTargetedAt = game.playedCount;
+    }
     if (reason === "card" && ["vote", "tribunal"].includes(game.currentCard.resolution?.kind)) {
       game.stats[playerId].votesReceived += 1;
     }
@@ -310,22 +424,33 @@ function applySelectedPenalty(reason = "card") {
   return true;
 }
 
+function recordPositiveOutcome() {
+  const game = state.drinkingGame;
+  const kind = game.currentCard.resolution?.kind;
+  const actorId = defaultPenaltyTargetIds(game.currentCard)[0];
+  if (!actorId || !game.stats[actorId]) return;
+  if (kind === "challenge_or_penalty") game.stats[actorId].challengesSucceeded += 1;
+  if (kind === "answer_or_penalty") game.stats[actorId].answersGiven += 1;
+}
+
 function pushHistory() {
   const game = state.drinkingGame;
   game.history.push(snapshotGame(game));
   if (game.history.length > 40) game.history.shift();
 }
 
-function advanceCard({ penalized = false, skipped = false } = {}) {
+function advanceCard({ penalized = false, skipped = false, activateRule = false, positive = false } = {}) {
   const game = state.drinkingGame;
   pushHistory();
   if (penalized && !applySelectedPenalty("card")) {
     game.history.pop();
     return;
   }
+  if (positive && !penalized) recordPositiveOutcome();
+
   let addedRule = null;
-  if (game.currentCard.resolution?.kind === "temporary_rule") {
-    game.activeRules = addRule(game.activeRules, game.currentCard);
+  if (activateRule || game.currentCard.resolution?.kind === "temporary_rule" && positive) {
+    game.activeRules = addRule(game.activeRules, game.currentCard, game.currentPenalty);
     addedRule = game.activeRules.at(-1);
   }
   game.activeRules = tickRules(game.activeRules, addedRule?.id);
@@ -345,15 +470,37 @@ function goBack() {
   const snapshot = game.history.pop();
   if (!snapshot) return;
   restoreSnapshot(game, snapshot);
+  game.rulePenaltyMode = false;
   renderGame();
   saveDrinkingSession(game);
 }
 
-function applyRulePenalty() {
+function beginRulePenalty() {
   const game = state.drinkingGame;
   if (!game.activeRules.length) return;
-  if (!applySelectedPenalty("rule")) return;
-  renderTargetChoices();
+  game.rulePenaltyMode = true;
+  game.selectedTargetIds = [];
+  renderResolution();
+}
+
+function cancelRulePenalty() {
+  const game = state.drinkingGame;
+  game.rulePenaltyMode = false;
+  game.selectedTargetIds = defaultPenaltyTargetIds(game.currentCard);
+  renderResolution();
+}
+
+function applyRulePenalty() {
+  const game = state.drinkingGame;
+  if (!game.activeRules.length || !game.selectedTargetIds.length) {
+    alert("Choisis la personne qui a oublié la règle.");
+    return;
+  }
+  const penaltyAmount = game.activeRules.at(-1)?.penaltyAmount || 1;
+  if (!applySelectedPenalty("rule", penaltyAmount)) return;
+  game.rulePenaltyMode = false;
+  game.selectedTargetIds = defaultPenaltyTargetIds(game.currentCard);
+  renderResolution();
   saveDrinkingSession(game);
 }
 
@@ -420,10 +567,16 @@ export function finishDrinkingGame() {
 
 function titleFor(stats, rank) {
   if (rank === 0) return "Le survivant officiel";
-  if (stats.targeted >= 5) return "La cible officielle";
   if (stats.rulesForgotten >= 2) return "L’ennemi du règlement";
   if (stats.penaltyPoints >= 10) return "Le dossier ambulant";
+  if (stats.targeted >= 5) return "La cible officielle";
   return "L’innocent autoproclamé";
+}
+
+function appendStatBadge(container, value) {
+  const badge = document.createElement("span");
+  badge.textContent = value;
+  container.append(badge);
 }
 
 function renderResults() {
@@ -433,6 +586,7 @@ function renderResults() {
   );
   el.drinkingResultsSummary.textContent = `${game.playedCount} cartes jouées · ${game.skippedCount} passée${game.skippedCount > 1 ? "s" : ""}`;
   el.drinkingRanking.innerHTML = "";
+
   ranking.forEach((stats, index) => {
     const player = game.players.find(item => item.id === stats.playerId);
     const row = document.createElement("article");
@@ -451,16 +605,11 @@ function renderResults() {
 
     const detail = document.createElement("div");
     detail.className = "drinking-ranking-stats";
-    const values = [
-      `${stats.penaltyPoints} pts`,
-      player?.teamSoft ? "🥤 Team soft" : `${stats.sips} gorgée${stats.sips > 1 ? "s" : ""}`,
-      `${stats.targeted} ciblage${stats.targeted > 1 ? "s" : ""}`
-    ];
-    values.forEach(value => {
-      const badge = document.createElement("span");
-      badge.textContent = value;
-      detail.append(badge);
-    });
+    appendStatBadge(detail, `${stats.penaltyPoints} pénalité${stats.penaltyPoints > 1 ? "s" : ""}`);
+    appendStatBadge(detail, player?.teamSoft ? "🥤 Team soft" : `${stats.sips} gorgée${stats.sips > 1 ? "s" : ""}`);
+    if (stats.challengesSucceeded > 0) appendStatBadge(detail, `${stats.challengesSucceeded} défi${stats.challengesSucceeded > 1 ? "s" : ""} réussi${stats.challengesSucceeded > 1 ? "s" : ""}`);
+    if (stats.duelsWon > 0) appendStatBadge(detail, `${stats.duelsWon} duel${stats.duelsWon > 1 ? "s" : ""} gagné${stats.duelsWon > 1 ? "s" : ""}`);
+    if (stats.rulesForgotten > 0) appendStatBadge(detail, `${stats.rulesForgotten} oubli${stats.rulesForgotten > 1 ? "s" : ""} de règle`);
 
     row.append(rank, identity, detail);
     el.drinkingRanking.append(row);
@@ -487,6 +636,11 @@ function shufflePlayers() {
 
 export function initializeDrinkingGame(optionsCallbacks = {}) {
   callbacks = optionsCallbacks;
+  initializeDrinkingSwipe({
+    canSwipe: direction => canPerformDirection(direction),
+    onSwipe: performDirection
+  });
+
   el.drinkingSetupBackButton.addEventListener("click", () => callbacks.onHome?.());
   el.drinkingAddPlayerButton.addEventListener("click", addPlayer);
   el.drinkingShufflePlayersButton.addEventListener("click", shufflePlayers);
@@ -499,11 +653,14 @@ export function initializeDrinkingGame(optionsCallbacks = {}) {
   el.drinkingMaxPenaltyInput.addEventListener("input", renderPenaltyPreview);
   el.drinkingMaxPenaltyInput.addEventListener("change", saveSettingsFromSetup);
   el.startDrinkingButton.addEventListener("click", startGame);
-  el.drinkingNoPenaltyButton.addEventListener("click", () => advanceCard());
-  el.drinkingApplyPenaltyButton.addEventListener("click", () => advanceCard({ penalized: true }));
-  el.drinkingSkipButton.addEventListener("click", () => advanceCard({ skipped: true }));
+  el.drinkingLeftActionButton.addEventListener("click", () => performDirection("left"));
+  el.drinkingRightActionButton.addEventListener("click", () => performDirection("right"));
+  el.drinkingSkipButton.addEventListener("click", () => {
+    if (state.drinkingGame?.rulePenaltyMode) cancelRulePenalty();
+    else advanceCard({ skipped: true });
+  });
   el.drinkingBackButton.addEventListener("click", goBack);
-  el.drinkingRulePenaltyButton.addEventListener("click", applyRulePenalty);
+  el.drinkingRulePenaltyButton.addEventListener("click", beginRulePenalty);
   el.drinkingChallengeTimerButton.addEventListener("click", startChallengeTimer);
   el.drinkingEndButton.addEventListener("click", () => {
     if (confirm("Terminer la partie maintenant ?")) finishDrinkingGame();
