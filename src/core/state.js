@@ -31,7 +31,7 @@ export const state = {
     globalDifficultyIds: ["easy", "medium", "hard"],
     multiplayer: {
       players: [
-        { id: "player-1", name: "Joueur 1" },
+        { id: "player-1", name: "Camille" },
         { id: "player-2", name: "Joueur 2" }
       ],
       cycles: 1,
@@ -56,7 +56,7 @@ export const state = {
         cardLimit: 30,
         durationMinutes: 30,
         players: [
-          { id: "drink-player-1", name: "Joueur 1", teamSoft: false },
+          { id: "drink-player-1", name: "Camille", teamSoft: false },
           { id: "drink-player-2", name: "Joueur 2", teamSoft: false }
         ]
       }

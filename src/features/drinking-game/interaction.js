@@ -5,7 +5,7 @@ const INTERACTIONS = {
     selection: "single_all",
     targetLabel: "Qui est désigné ?",
     leftLabel: "Personne",
-    rightLabel: "Valider le choix",
+    rightLabel: "Valider",
     leftAction: "no_penalty",
     rightAction: "penalty",
     requiresRightSelection: true
@@ -19,8 +19,8 @@ const INTERACTIONS = {
   },
   answer_or_penalty: {
     selection: "hidden",
-    leftLabel: "Refus / pas répondu",
-    rightLabel: "A répondu",
+    leftLabel: "Refus",
+    rightLabel: "Répondu",
     leftAction: "penalty",
     rightAction: "no_penalty"
   },
@@ -28,23 +28,23 @@ const INTERACTIONS = {
     selection: "multiple_all",
     targetLabel: "Qui est concerné ?",
     leftLabel: "Personne",
-    rightLabel: "Valider les joueurs",
+    rightLabel: "Valider",
     leftAction: "no_penalty",
     rightAction: "penalty",
     requiresRightSelection: true
   },
   challenge_or_penalty: {
     selection: "hidden",
-    leftLabel: "Raté / refusé",
-    rightLabel: "Défi réussi",
+    leftLabel: "Raté",
+    rightLabel: "Réussi",
     leftAction: "penalty",
     rightAction: "no_penalty"
   },
   duel: {
     selection: "single_targets",
     targetLabel: "Qui a perdu ?",
-    leftLabel: "Égalité / personne",
-    rightLabel: "Valider le perdant",
+    leftLabel: "Égalité",
+    rightLabel: "Valider",
     leftAction: "no_penalty",
     rightAction: "penalty",
     requiresRightSelection: true
@@ -59,7 +59,7 @@ const INTERACTIONS = {
   temporary_rule: {
     selection: "hidden",
     leftLabel: "Ignorer",
-    rightLabel: "Activer la règle",
+    rightLabel: "Activer",
     leftAction: "no_penalty",
     rightAction: "activate_rule"
   }
@@ -85,61 +85,99 @@ export function selectablePlayerIds(card, players) {
   return [];
 }
 
-export function formatPenaltyList(players, targetIds, amount, softMode) {
-  return targetIds
-    .map(playerId => players.find(player => player.id === playerId))
-    .filter(Boolean)
-    .map(player => `${player.name} : ${describePenalty(player, amount, softMode)}`)
-    .join(" · ");
+function playerById(players, playerId) {
+  return players.find(player => player.id === playerId) || null;
 }
 
-function singlePenaltySentence(players, targetIds, amount, softMode) {
-  const player = players.find(item => item.id === targetIds[0]);
-  return player ? `${player.name} prend ${describePenalty(player, amount, softMode)}` : "";
+function selectedPlayers(players, targetIds) {
+  return targetIds.map(playerId => playerById(players, playerId)).filter(Boolean);
 }
 
-function conditionalPrompt(card, players, amount, softMode) {
-  const target = players.find(player => player.id === card.targetIds[0]);
+function escaped(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function ensurePeriod(value) {
+  const text = String(value || "").trim();
+  return /[.!?…]$/.test(text) ? text : `${text}.`;
+}
+
+function groupPenaltyDescription(players, amount, softMode) {
+  if (!players.length) return `${amount} gorgée${amount > 1 ? "s" : ""} / pénalité${amount > 1 ? "s" : ""}`;
+  const descriptions = [...new Set(players.map(player => describePenalty(player, amount, softMode)))];
+  return descriptions.length === 1 ? descriptions[0] : descriptions.join(" / ");
+}
+
+function personalConditionPrompt(card, players, amount, softMode) {
+  const target = playerById(players, card.targetIds[0]);
   if (!target) return card.renderedPrompt;
   const consequence = describePenalty(target, amount, softMode);
-  const escapedName = target.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const match = card.renderedPrompt.match(new RegExp(`^${escapedName},\\s*as-tu déjà\\s+(.+?)\\?$`, "i"));
-  if (!match) return card.renderedPrompt;
-  return `${target.name}, ${consequence} si tu as déjà ${match[1]}.`;
+  const match = card.renderedPrompt.match(new RegExp(`^${escaped(target.name)},\\s*as-tu déjà\\s+(.+?)[?？]?$`, "i"));
+  if (!match) return `${ensurePeriod(card.renderedPrompt)} Si oui, prends ${consequence}.`;
+  return `${target.name}, prends ${consequence} si tu as déjà ${match[1]}.`;
 }
 
-export function formattedPrompt(card, players, amount, softMode) {
-  if (card?.resolution?.kind === "personal_condition") {
-    return conditionalPrompt(card, players, amount, softMode);
-  }
-  return card?.renderedPrompt || "";
+function answerPrompt(card, players, amount, softMode) {
+  const target = playerById(players, card.targetIds[0]);
+  if (!target) return ensurePeriod(card.renderedPrompt);
+  return `${ensurePeriod(card.renderedPrompt)} Si tu ne réponds pas, prends ${describePenalty(target, amount, softMode)}.`;
 }
 
-export function penaltyInstruction(card, players, selectedTargetIds, amount, softMode) {
-  const interaction = interactionForCard(card);
-  const automaticIds = defaultPenaltyTargetIds(card);
-  const targetIds = selectedTargetIds.length ? selectedTargetIds : automaticIds;
-  const summary = formatPenaltyList(players, targetIds, amount, softMode);
-  const singleSentence = singlePenaltySentence(players, targetIds, amount, softMode);
+function challengePrompt(card, players, amount, softMode) {
+  const target = playerById(players, defaultPenaltyTargetIds(card)[0]);
+  if (!target) return ensurePeriod(card.renderedPrompt);
+  return `${ensurePeriod(card.renderedPrompt)} Si tu refuses ou rates, prends ${describePenalty(target, amount, softMode)}.`;
+}
 
-  switch (card?.resolution?.kind) {
+function votePrompt(card, players, selectedTargetIds, amount, softMode) {
+  const selected = playerById(players, selectedTargetIds[0]);
+  if (!selected) return `${ensurePeriod(card.renderedPrompt)} Choisis la personne concernée.`;
+  return `${ensurePeriod(card.renderedPrompt)} ${selected.name} prend ${describePenalty(selected, amount, softMode)}.`;
+}
+
+function collectivePrompt(card, players, selectedTargetIds, amount, softMode) {
+  const selected = selectedPlayers(players, selectedTargetIds);
+  const consequence = groupPenaltyDescription(selected.length ? selected : players, amount, softMode);
+  return `${ensurePeriod(card.renderedPrompt)} Les personnes concernées prennent ${consequence}.`;
+}
+
+function duelPrompt(card, players, selectedTargetIds, amount, softMode) {
+  const selected = playerById(players, selectedTargetIds[0]);
+  if (!selected) return `${ensurePeriod(card.renderedPrompt)} Choisis le perdant.`;
+  return `${ensurePeriod(card.renderedPrompt)} ${selected.name} prend ${describePenalty(selected, amount, softMode)}.`;
+}
+
+function tribunalPrompt(card, players, amount, softMode) {
+  const target = playerById(players, card.targetIds[0]);
+  if (!target) return ensurePeriod(card.renderedPrompt);
+  return `${ensurePeriod(card.renderedPrompt)} S’il est déclaré coupable, ${target.name} prend ${describePenalty(target, amount, softMode)}.`;
+}
+
+function temporaryRulePrompt(card) {
+  const duration = Math.max(1, Number(card.ruleDurationCards) || 3);
+  return `${ensurePeriod(card.renderedPrompt)} La règle reste active pendant ${duration} carte${duration > 1 ? "s" : ""}.`;
+}
+
+export function formattedPrompt(card, players, selectedTargetIds, amount, softMode) {
+  if (!card) return "";
+  switch (card.resolution?.kind) {
     case "personal_condition":
-      return "Swipe à droite si oui, à gauche si non.";
+      return personalConditionPrompt(card, players, amount, softMode);
     case "answer_or_penalty":
-      return singleSentence ? `Réponds, sinon ${singleSentence}.` : "Réponds ou prends la pénalité.";
+      return answerPrompt(card, players, amount, softMode);
     case "challenge_or_penalty":
-      return singleSentence ? `Réussi : rien · Raté ou refusé : ${singleSentence}.` : "Réussi : rien · Raté ou refusé : pénalité.";
+      return challengePrompt(card, players, amount, softMode);
     case "vote":
-      return singleSentence ? `${singleSentence}.` : "Choisissez une personne.";
+      return votePrompt(card, players, selectedTargetIds, amount, softMode);
     case "collective_condition":
-      return summary || "Sélectionnez toutes les personnes concernées.";
+      return collectivePrompt(card, players, selectedTargetIds, amount, softMode);
     case "duel":
-      return singleSentence ? `${singleSentence}.` : "Choisissez le perdant.";
+      return duelPrompt(card, players, selectedTargetIds, amount, softMode);
     case "tribunal":
-      return singleSentence ? `Coupable : ${singleSentence} · Non coupable : rien.` : "Votez coupable ou non coupable.";
+      return tribunalPrompt(card, players, amount, softMode);
     case "temporary_rule":
-      return `Active pendant ${card.ruleDurationCards || 3} cartes.`;
+      return temporaryRulePrompt(card);
     default:
-      return interaction.rightLabel;
+      return ensurePeriod(card.renderedPrompt);
   }
 }

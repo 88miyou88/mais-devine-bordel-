@@ -61,7 +61,7 @@ for (const relativePath of legacyFiles) {
 
 const html = await read("index.html");
 assert.match(html, /<script\s+type="module"\s+data-mdb-bootstrap>/);
-assert.match(html, /import\(["']\.\/src\/main\.js\?v=091["']\)/);
+assert.match(html, /import\(["']\.\/src\/main\.js\?v=092["']\)/);
 assert.match(html, /id="bootRecovery"/);
 assert.match(html, /id="bootRepairButton"/);
 assert.match(html, /id="orientationGuard"/);
@@ -95,9 +95,16 @@ for (const id of [
 for (const id of [
   "drinkingSetupScreen", "drinkingGameScreen", "drinkingResultsScreen", "drinkingPlayerList",
   "drinkingMaxPenaltyInput", "drinkingAdultModeInput", "drinkingTargetChoices", "drinkingRanking",
-  "drinkingLeftActionButton", "drinkingRightActionButton", "drinkingRuleReminder",
+  "drinkingRuleReminder", "drinkingRulePenaltyButton", "drinkingBackButton",
   "drinkingSwipeLeftLabel", "drinkingSwipeRightLabel"
 ]) assert.ok(htmlIds.includes(id), `Élément Qui boit absent : #${id}`);
+for (const removedId of ["drinkingSkipButton", "drinkingLeftActionButton", "drinkingRightActionButton", "drinkingPenaltyText"]) {
+  assert.equal(htmlIds.includes(removedId), false, `Commande redondante encore présente : #${removedId}`);
+}
+const drinkingCardMarkup = html.match(/<article id="drinkingCard"[\s\S]*?<\/article>/)?.[0] || "";
+assert.match(drinkingCardMarkup, /id="drinkingTargetPanel"/, "La sélection des joueurs doit être intégrée dans la carte");
+assert.match(drinkingCardMarkup, /id="drinkingRulePenaltyButton"/, "Le bouton Oubli de règle doit être intégré dans la carte");
+assert.match(drinkingCardMarkup, /id="drinkingBackButton"/, "Le bouton Retour doit rester dans la carte");
 
 const manifest = JSON.parse(await read("manifest.webmanifest"));
 assert.equal(manifest.name, "Mais devine, bordel !");
@@ -106,8 +113,8 @@ assert.equal(manifest.orientation, "landscape");
 assert.ok(manifest.icons.every(icon => icon.src.replace(/^\.\//, "").startsWith("assets/icons/")), "Chemins des icônes du manifeste incorrects");
 
 const config = await read("src/config/config.js");
-assert.match(config, /APP_VERSION\s*=\s*"0\.9\.1"/);
-assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-1"/);
+assert.match(config, /APP_VERSION\s*=\s*"0\.9\.2"/);
+assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-2"/);
 assert.match(config, /name:\s*"La suite, maestro !"/);
 assert.match(config, /name:\s*"Ferme-la et mime !"/);
 assert.match(config, /name:\s*"Picasso en PLS"/);
@@ -122,6 +129,9 @@ assert.match(config, /ellipse cx="32" cy="35"/);
 assert.match(config, /m26 41 12 9M38 41l-12 9/);
 assert.match(config, /MULTIPLAYER_SESSION_KEY\s*=\s*"mdb-multiplayer-session-v2"/);
 assert.match(config, /MULTIPLAYER_SESSION_SCHEMA\s*=\s*3/);
+const stateSource = await read("src/core/state.js");
+assert.match(stateSource, /\{ id: "player-1", name: "Camille" \}/);
+assert.match(stateSource, /\{ id: "drink-player-1", name: "Camille", teamSoft: false \}/);
 assert.match(config, /mdb-global-settings-v2/);
 assert.match(config, /mdb-settings-v1/);
 for (const key of [
@@ -132,7 +142,7 @@ for (const key of [
 ]) assert.ok(config.includes(key), `Clé de stockage absente : ${key}`);
 
 const sw = await read("sw.js");
-assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-1"/);
+assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-2"/);
 assert.match(sw, /new Request\(url, \{ cache: "reload" \}\)/);
 assert.match(sw, /SKIP_WAITING/);
 const cachedPaths = new Set([...sw.matchAll(/"(\.\/[^"\n]+)"/g)].map(match => match[1]));
@@ -154,7 +164,7 @@ const expectedStylePaths = [
 const linkedStylePaths = [...html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)]
   .map(match => match[1].split("?")[0]);
 assert.deepEqual(linkedStylePaths, expectedStylePaths, "Ordre ou chemins des feuilles de style incorrects");
-assert.equal((html.match(/\?v=091/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
+assert.equal((html.match(/\?v=092/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
 
 const styleFiles = expectedFiles.filter(file => file.endsWith(".css"));
 for (const relativePath of styleFiles) {
@@ -544,8 +554,38 @@ const interactionPlayers = [{ id: "p1", name: "Camille", teamSoft: false }, { id
 assert.equal(interactionModule.interactionForCard(conditionalCard).rightAction, "penalty");
 assert.equal(interactionModule.interactionForCard(conditionalCard).leftAction, "no_penalty");
 assert.equal(
-  interactionModule.formattedPrompt(conditionalCard, interactionPlayers, 1, "points"),
-  "Camille, 1 gorgée si tu as déjà utilisé la lampe de ton téléphone pour chercher ton téléphone."
+  interactionModule.formattedPrompt(conditionalCard, interactionPlayers, [], 1, "points"),
+  "Camille, prends 1 gorgée si tu as déjà utilisé la lampe de ton téléphone pour chercher ton téléphone."
+);
+const answerCard = {
+  resolution: { kind: "answer_or_penalty" },
+  targetType: "single_player",
+  targetIds: ["p2"],
+  renderedPrompt: "Léa, quel est ton avis sur les déclarations publiques?"
+};
+assert.equal(
+  interactionModule.formattedPrompt(answerCard, interactionPlayers, [], 2, "points"),
+  "Léa, quel est ton avis sur les déclarations publiques? Si tu ne réponds pas, prends 2 pénalités."
+);
+const collectiveCard = {
+  resolution: { kind: "collective_condition" },
+  targetType: "multiple_players",
+  targetIds: [],
+  renderedPrompt: "Jamais je n’ai remis un vêtement sale parce qu’il avait l’air propre."
+};
+assert.equal(
+  interactionModule.formattedPrompt(collectiveCard, interactionPlayers, [], 2, "points"),
+  "Jamais je n’ai remis un vêtement sale parce qu’il avait l’air propre. Les personnes concernées prennent 2 gorgées / 2 pénalités."
+);
+const voteCard = {
+  resolution: { kind: "vote" },
+  targetType: "group_vote",
+  targetIds: [],
+  renderedPrompt: "Qui est le plus relou?"
+};
+assert.equal(
+  interactionModule.formattedPrompt(voteCard, interactionPlayers, ["p2"], 2, "points"),
+  "Qui est le plus relou? Léa prend 2 pénalités."
 );
 assert.equal(penaltyModule.describePenalty(interactionPlayers[0], 3, "points"), "3 gorgées");
 assert.equal(penaltyModule.describePenalty(interactionPlayers[1], 3, "points"), "3 pénalités");
@@ -565,6 +605,14 @@ assert.match(drinkingControllerSource, /challengesSucceeded/);
 assert.doesNotMatch(drinkingControllerSource, /adaptation boisson\/Team soft/);
 assert.doesNotMatch(drinkingControllerSource, /Pénalité de cette carte/);
 assert.doesNotMatch(drinkingControllerSource, /ciblage\$\{stats\.targeted/);
+assert.doesNotMatch(drinkingControllerSource, /drinkingSkipButton|drinkingLeftActionButton|drinkingRightActionButton/);
+assert.match(drinkingControllerSource, /rulePenaltyTargetBackup/);
+assert.match(drinkingControllerSource, /prompt-very-long/);
+const drinkingCss = await read("assets/styles/screens/drinking-game.css");
+assert.match(drinkingCss, /grid-template-columns:\s*repeat\(auto-fit, minmax\(112px, 1fr\)\)/);
+assert.match(drinkingCss, /drinking-card-rule-reminder/);
+assert.match(drinkingCss, /prompt-very-long/);
+assert.doesNotMatch(drinkingCss, /drinking-resolution-panel/);
 const drinkingSwipeSource = await read("src/features/drinking-game/swipe.js");
 assert.match(drinkingSwipeSource, /pointerdown/);
 assert.match(drinkingSwipeSource, /getSwipeThreshold/);
@@ -594,7 +642,7 @@ assert.equal(activeRules.at(-1).remainingCards, 3, "Une nouvelle règle ne perd 
 assert.equal(activeRules[0].remainingCards, 2);
 
 console.log("✓ Moteur Qui boit : pénalités variables, points et ciblage équilibré");
-console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.9.1 cohérents");
+console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.9.2 cohérents");
 console.log("✓ Modules ES résolus, dépendances orientées et aucun cycle d’import");
 console.log("✓ Deux déroulements multijoueurs testés de 1 à 12 modes et de 2 à 12 joueurs");
 console.log("✓ Filtres globaux, exceptions par mode et compteurs sélection/total validés");

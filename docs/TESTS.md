@@ -1,4 +1,4 @@
-# Tests — V0.9.1
+# Tests — V0.9.2
 
 ## Commandes
 
@@ -33,8 +33,8 @@ Le validateur contrôle notamment :
 Il contrôle notamment :
 
 - les 58 fichiers attendus ;
-- la version `0.9.1` ;
-- le cache `mdb-v0-9-1` ;
+- la version `0.9.2` ;
+- le cache `mdb-v0-9-2` ;
 - les chemins HTML, CSS, JS, JSON et manifeste ;
 - la syntaxe des modules ;
 - les imports et l’absence de cycles ;
@@ -44,10 +44,10 @@ Il contrôle notamment :
 - les filtres globaux et compteurs ;
 - le calcul des pénalités ;
 - les libellés visibles gorgées / Team soft ;
-- la logique des interactions contextuelles ;
+- la logique des interactions contextuelles sans boutons redondants ;
 - le ciblage équilibré ;
 - les règles temporaires ;
-- la migration automatique V0.9.0 → V0.9.1 ;
+- la migration automatique V0.9.0 → V0.9.2 ;
 - la préservation d’une carte modifiée localement.
 
 ## Scénarios logiques vérifiés
@@ -63,7 +63,7 @@ Il contrôle notamment :
 
 ## Vérifications Android à effectuer
 
-1. ouvrir l’URL avec `?v=091` ;
+1. ouvrir l’URL avec `?v=092` ;
 2. vérifier la version et le cache dans le diagnostic ;
 3. tester un swipe gauche et droit sur chaque grande famille de carte ;
 4. vérifier qu’un vote ne peut pas être validé sans personne sélectionnée ;
@@ -71,7 +71,7 @@ Il contrôle notamment :
 6. vérifier qu’une cible automatique n’affiche pas tous les joueurs ;
 7. vérifier les formulations gorgées et Team soft ;
 8. activer une règle, vérifier son rappel dans la carte puis tester « Oubli de règle » ;
-9. vérifier Retour, Passer, fin manuelle et reprise ;
-10. vérifier les résultats finaux sans compteur de ciblages principal.
+9. vérifier que Retour est intégré dans la carte et que les anciens boutons de résolution ont disparu ;
+10. vérifier la fin manuelle, la reprise et les résultats finaux.
 
 L’environnement automatisé de cette génération a validé le code et les scénarios purs, mais les gestes tactiles réels, vibrations, plein écran et orientation restent à confirmer sur Android.

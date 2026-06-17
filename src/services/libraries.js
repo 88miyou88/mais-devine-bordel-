@@ -403,17 +403,27 @@ function sameDifficultySelection(first, second) {
   return normalizeDifficultyIds(first).join("|") === normalizeDifficultyIds(second).join("|");
 }
 
+function defaultPlayerName(index) {
+  return index === 0 ? "Camille" : `Joueur ${index + 1}`;
+}
+
+function normalizedPlayerName(value, index) {
+  const fallback = defaultPlayerName(index);
+  const cleaned = String(value || fallback).trim().slice(0, 24) || fallback;
+  return index === 0 && cleaned === "Joueur 1" ? "Camille" : cleaned;
+}
+
 function normalizeMultiplayerPlayers(players) {
   const source = Array.isArray(players) ? players : [];
   const normalized = source
     .slice(0, MAX_MULTIPLAYER_PLAYERS)
     .map((player, index) => ({
       id: String(player?.id || `player-${index + 1}`),
-      name: String(player?.name || `Joueur ${index + 1}`).trim().slice(0, 24) || `Joueur ${index + 1}`
+      name: normalizedPlayerName(player?.name, index)
     }));
   while (normalized.length < MIN_MULTIPLAYER_PLAYERS) {
     const index = normalized.length;
-    normalized.push({ id: `player-${index + 1}`, name: `Joueur ${index + 1}` });
+    normalized.push({ id: `player-${index + 1}`, name: defaultPlayerName(index) });
   }
   const usedIds = new Set();
   normalized.forEach((player, index) => {
@@ -429,12 +439,12 @@ function normalizeDrinkingPlayers(players) {
   const source = Array.isArray(players) ? players : [];
   const normalized = source.slice(0, 12).map((player, index) => ({
     id: String(player?.id || `drink-player-${index + 1}`),
-    name: String(player?.name || `Joueur ${index + 1}`).trim().slice(0, 24) || `Joueur ${index + 1}`,
+    name: normalizedPlayerName(player?.name, index),
     teamSoft: player?.teamSoft === true
   }));
   while (normalized.length < 2) {
     const index = normalized.length;
-    normalized.push({ id: `drink-player-${index + 1}`, name: `Joueur ${index + 1}`, teamSoft: false });
+    normalized.push({ id: `drink-player-${index + 1}`, name: defaultPlayerName(index), teamSoft: false });
   }
   return normalized;
 }

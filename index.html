@@ -9,15 +9,15 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
-  <link rel="stylesheet" href="./assets/styles/foundation.css?v=091">
-  <link rel="stylesheet" href="./assets/styles/components.css?v=091">
-  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=091">
-  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=091">
-  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=091">
-  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=091">
-  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=091">
-  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=091">
-  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=091">
+  <link rel="stylesheet" href="./assets/styles/foundation.css?v=092">
+  <link rel="stylesheet" href="./assets/styles/components.css?v=092">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=092">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=092">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=092">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=092">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=092">
+  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=092">
+  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=092">
 </head>
 <body>
   <main id="app">
@@ -179,7 +179,6 @@
       <div class="drinking-shell drinking-game-shell">
         <header class="drinking-game-header">
           <div><span id="drinkingProgress">Carte 1/30</span><strong id="drinkingClock">—</strong></div>
-          <div id="drinkingRulesSummary" class="drinking-rules-summary"></div>
           <button id="drinkingEndButton" class="danger-button compact-button" type="button">Fin</button>
         </header>
 
@@ -191,25 +190,25 @@
           <div id="drinkingSwipeLeftLabel" class="drinking-swipe-label drinking-swipe-label-left">NON</div>
           <div id="drinkingSwipeRightLabel" class="drinking-swipe-label drinking-swipe-label-right">OUI</div>
           <p id="drinkingPrompt" class="drinking-prompt"></p>
-          <div id="drinkingPenaltyText" class="drinking-penalty-text"></div>
-          <div id="drinkingRuleReminder" class="drinking-card-rule-reminder hidden"></div>
-          <button id="drinkingChallengeTimerButton" class="mini-button hidden" type="button">Lancer le chrono</button>
-          <div id="drinkingChallengeTimer" class="drinking-challenge-timer hidden"></div>
-        </article>
 
-        <section class="drinking-resolution-panel">
-          <div id="drinkingTargetPanel" class="drinking-target-panel">
+          <div id="drinkingTargetPanel" class="drinking-target-panel hidden">
             <p id="drinkingTargetLabel" class="drinking-resolution-label">Qui est concerné ?</p>
             <div id="drinkingTargetChoices" class="drinking-target-choices"></div>
           </div>
-          <div class="drinking-game-actions">
-            <button id="drinkingBackButton" class="secondary-button" type="button">↶ Retour</button>
-            <button id="drinkingSkipButton" class="secondary-button" type="button">Passer</button>
-            <button id="drinkingRulePenaltyButton" class="secondary-button hidden" type="button">Oubli de règle</button>
-            <button id="drinkingLeftActionButton" class="secondary-button" type="button">Non</button>
-            <button id="drinkingRightActionButton" class="primary-button" type="button">Oui</button>
+
+          <div id="drinkingRuleReminder" class="drinking-card-rule-reminder hidden">
+            <div id="drinkingRulesSummary" class="drinking-rules-summary"></div>
+            <button id="drinkingRulePenaltyButton" class="secondary-button compact-button hidden" type="button">Oubli de règle</button>
           </div>
-        </section>
+
+          <button id="drinkingChallengeTimerButton" class="mini-button hidden" type="button">Lancer le chrono</button>
+          <div id="drinkingChallengeTimer" class="drinking-challenge-timer hidden"></div>
+
+          <div class="drinking-card-controls">
+            <button id="drinkingBackButton" class="secondary-button compact-button" type="button">↶ Retour</button>
+            <span class="drinking-swipe-help">Glisse la carte à gauche ou à droite</span>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -943,7 +942,7 @@
     })();
   </script>
   <script type="module" data-mdb-bootstrap>
-    import("./src/main.js?v=091").catch(error => window.MDB_BOOT_FAILURE(error));
+    import("./src/main.js?v=092").catch(error => window.MDB_BOOT_FAILURE(error));
   </script>
 </body>
 </html>

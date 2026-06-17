@@ -1,5 +1,5 @@
-export const APP_VERSION = "0.9.1";
-export const APP_CACHE_NAME = "mdb-v0-9-1";
+export const APP_VERSION = "0.9.2";
+export const APP_CACHE_NAME = "mdb-v0-9-2";
 export const SWIPE_ANIMATION_MS = 180;
 export const DRAW_HOLD_MS = 500;
 export const DRAW_RETURN_COUNTDOWN_SECONDS = 3;
@@ -80,7 +80,7 @@ export const MODE_CONFIG = {
     difficultyLabels: { easy: "Pépouze", medium: "Ça chauffe", hard: "Demain, on nie tout" },
     rules: [
       "Le téléphone reste visible par tout le groupe et les cartes avancent manuellement.",
-      "Les joueurs ciblés sont répartis équitablement ; chacun peut passer une carte sans justification.",
+      "Les joueurs ciblés sont répartis équitablement ; chacun peut répondre, refuser ou ne pas être concerné selon la carte.",
       "Les gorgées ajoutent aussi des points de pénalité. Les joueurs Team soft reçoivent une alternative adaptée."
     ],
     libraryUrl: "./data/drinking.json",

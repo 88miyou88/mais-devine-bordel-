@@ -63,6 +63,10 @@ function selectedModeIds() {
   return [...state.settings.selectedModeIds];
 }
 
+function defaultPlayerName(index) {
+  return index === 0 ? "Camille" : `Joueur ${index + 1}`;
+}
+
 function nextPlayerId() {
   const existing = new Set(multiplayerSettings().players.map(player => player.id));
   let index = multiplayerSettings().players.length + 1;
@@ -118,9 +122,13 @@ function renderPlayerList() {
     input.maxLength = 24;
     input.value = player.name;
     input.setAttribute("aria-label", `Prénom du joueur ${index + 1}`);
+    const defaultName = defaultPlayerName(index);
+    input.addEventListener("focus", () => {
+      if (player.name === defaultName || /^Joueur \d+$/.test(player.name)) input.select();
+    });
     input.addEventListener("input", () => updatePlayer(index, input.value));
     input.addEventListener("blur", () => {
-      const cleaned = input.value.trim() || `Joueur ${index + 1}`;
+      const cleaned = input.value.trim() || defaultName;
       player.name = cleaned;
       input.value = cleaned;
       saveGlobalSettings();
