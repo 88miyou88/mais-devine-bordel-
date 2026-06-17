@@ -1,22 +1,8 @@
-# Architecture — V0.7.2
+# Architecture — V0.8.0
 
-## Objectif
+## Principes
 
-La V0.7.2 conserve la couche multijoueur de la V0.7.1 et ajoute une finition responsive et une gestion explicite de l’orientation, sans modifier les règles de score ou de rotation.
-
-Une manche multijoueur correspond à une **run complète d’un joueur**. Pendant la durée choisie, le joueur garde le téléphone et le moteur alterne les modes de son parcours. L’orchestrateur reçoit ensuite un résultat normalisé, cumule les scores et passe au joueur suivant.
-
-```text
-Orchestrateur multijoueur
-        ↓
-Moteur de manche classique ou Dessin autonome
-        ↓
-Résultat normalisé
-        ↓
-Score, sauvegarde de session, joueur suivant
-```
-
-## Direction des dépendances
+La V0.8.0 conserve l’architecture modulaire de la V0.7.2 :
 
 ```text
 config / core
@@ -28,197 +14,168 @@ config / core
     main.js
 ```
 
-Règles :
-
-- `config/` ne dépend d’aucune fonctionnalité ;
-- `core/` n’importe jamais `services/` ou `features/` ;
-- `services/` peut importer `config/` et `core/` ;
-- `features/` peut importer `config/`, `core/` et `services/` ;
-- `main.js` initialise l’application sans contenir la logique métier ;
+- `config/` et `core/` ne dépendent pas des fonctionnalités ;
+- `services/` peut utiliser `config/` et `core/` ;
+- `features/` peut utiliser les couches inférieures ;
+- `main.js` orchestre uniquement l’initialisation ;
 - aucun import circulaire n’est autorisé.
 
-## Organisation principale
+## Difficultés globales
+
+### Source de vérité
+
+`state.settings.globalDifficultyIds` contient le filtre global de l’accueil.
+
+Les sélections réellement utilisées par chaque mode restent dans :
 
 ```text
-mais-devine-bordel/
-├── index.html
-├── manifest.webmanifest
-├── sw.js
-├── README.md
-├── docs/
-├── assets/
-│   ├── icons/
-│   └── styles/
-│       └── screens/
-│           └── multiplayer.css
-├── data/
-├── src/
-│   ├── main.js
-│   ├── config/
-│   ├── core/
-│   ├── services/
-│   └── features/
-│       ├── home.js
-│       ├── game/
-│       ├── drawing/
-│       ├── card-manager/
-│       └── multiplayer/
-│           ├── multiplayer-controller.js
-│           ├── schedule.js
-│           ├── scoreboard.js
-│           └── session.js
-└── tests/
+state.modes[modeId].selectedDifficultyIds
 ```
 
-## Modules multijoueur
+Ce choix permet de conserver les exceptions par mode sans ajouter une seconde structure de règles complexe.
 
-### `schedule.js`
+### Application globale
 
-Module métier pur, sans DOM.
+`home.js` :
 
-Il :
+1. lit les trois cases globales ;
+2. refuse une sélection vide ;
+3. copie la sélection vers tous les modes ;
+4. sauvegarde les modes et les réglages globaux ;
+5. recalcule immédiatement les compteurs.
 
-- accepte une liste dynamique de modes ;
-- construit une manche par joueur et par cycle ;
-- place tous les modes sélectionnés dans chaque parcours ;
-- fournit un ordre commun ou une rotation équilibrée ;
-- génère exactement `nombre de modes` parcours candidats, correspondant aux rotations d’un ordre de base, au lieu de calculer des permutations factorielles ;
-- répartit chaque mode entre les positions avec un écart maximal d’une occurrence ;
-- décale le point de départ à chaque cycle afin de répartir les restes et d’éviter qu’un joueur conserve le même parcours deux cycles de suite ;
-- valide que chaque joueur possède le même nombre de manches et tous les modes exactement une fois dans son parcours.
+### Exception locale
 
-Le module ne dépend pas de `MODE_ORDER`. L’ajout futur d’un mode n’exige donc aucune modification de l’algorithme.
+Lorsqu’une difficulté est modifiée depuis la fenêtre d’un mode, seule la sélection de ce mode change.
 
-### `scoreboard.js`
-
-Il transforme l’historique d’une manche en statistiques communes :
-
-- score ;
-- réussites, passages et expirations ;
-- détail par mode ;
-- temps de dessin ;
-- classement avec égalités réelles.
-
-Chaque mode conserve notamment :
+Une exception est détectée par comparaison normalisée entre :
 
 ```text
-réussites / tentatives
+mode.selectedDifficultyIds
+state.settings.globalDifficultyIds
 ```
 
-Ces données alimentent les puces compactes avec l’icône du mode sur les écrans de résultats.
+L’accueil affiche uniquement les difficultés sélectionnées dans l’exception, avec les couleurs :
 
-### `session.js`
+- `F` vert ;
+- `M` bleu ;
+- `D` rouge.
 
-Il gère uniquement la session temporaire :
+### Migration
 
-- planning ;
-- index de la prochaine manche ;
-- scores ;
-- cartes déjà utilisées ;
-- validation avant restauration.
+Si une ancienne installation ne possède pas `globalDifficultyIds` :
 
-La session est enregistrée après chaque manche complète. Si l’application est fermée pendant une manche, cette manche recommence au prochain lancement : aucun résultat partiel n’est compté.
+- si tous les modes ont la même sélection, celle-ci devient le filtre global ;
+- sinon, le filtre global devient `Facile + Moyen + Difficile` et les différences existantes restent visibles comme exceptions.
 
-### `multiplayer-controller.js`
+## Comptage des cartes
 
-Il orchestre :
+`libraries.js` sépare trois notions :
 
-- la configuration des joueurs ;
-- la création du planning ;
-- le passage du téléphone ;
-- le compte à rebours ;
-- le lancement du moteur adapté ;
-- l’enregistrement du résultat ;
-- le résumé de manche ;
-- le classement final ;
-- la reprise d’une session.
+- `activeCardCountForMode(modeId)` : toutes les cartes actives du mode ;
+- `filteredCardsForMode(modeId)` : cartes actives correspondant aux catégories et difficultés du mode, même si la tuile est décochée ;
+- `selectedCardsForMode(modeId)` : mêmes cartes, mais uniquement si le mode est coché pour la partie.
 
-Il ne contient ni calcul de swipe, ni canevas, ni calcul détaillé des scores.
+`selectedCardTotals()` calcule le compteur général sur les modes cochés.
 
-## Adaptation des moteurs existants
+Cette séparation évite qu’une tuile désactivée affiche artificiellement `0 / total` alors que sa configuration contient bien des cartes.
 
-### `game/game-controller.js`
+## Planificateur multijoueur
 
-Le contrôleur accepte désormais un contexte multijoueur contenant :
+Le module `src/features/multiplayer/schedule.js` reste indépendant du DOM et du nombre actuel de modes.
 
-- le joueur ;
-- la manche ;
-- la durée ;
-- l’ordre dynamique des modes ;
-- les cartes déjà utilisées ;
-- un callback de fin.
+Il produit deux formes de planning normalisées.
 
-En multijoueur, il prend une carte dans le mode suivant du parcours et recommence le parcours tant que le temps reste disponible.
+### `continuous`
 
-Le mode Dessin utilise toujours le moteur mixte de la V0.6.0. Il peut apparaître en première position du parcours : le chronomètre général est alors immédiatement mis en pause avant l’affichage de la consigne cachée.
+Une manche par joueur et par cycle :
 
-### `drawing/drawing-controller.js`
+```text
+turn.modeOrder = [modeA, modeB, modeC]
+```
 
-Le même moteur gère :
+Le moteur classique alterne ces modes pendant toute la durée.
 
-- Dessin autonome libre ;
-- Dessin autonome multijoueur ;
-- Dessin mélangé dans une manche classique.
+### `mode-blocks`
 
-En Dessin mélangé, le signal d’arrivée est joué directement avant l’écran de révélation. L’écran supplémentaire de récupération du téléphone n’existe plus. Le compte à rebours de retour au front est conservé après le dessin.
+Une manche par joueur, par mode et par cycle :
 
-## Paquets de cartes
+```text
+turn.modeOrder = [modeA]
+turn.playerModeOrder = [modeA, modeC, modeB]
+turn.modePosition = 0
+```
 
-La session conserve une liste d’identifiants utilisés par mode.
+Le contrôleur lance le moteur existant avec un seul mode. Aucun moteur de jeu n’est dupliqué.
 
-Pour chaque mode :
+### Ordre commun
 
-1. seules les cartes actives correspondant aux filtres sont utilisées ;
-2. une carte n’est pas reproposée tant que le paquet contient des cartes inédites ;
-3. lorsque le paquet est épuisé, la liste utilisée pour ce mode est réinitialisée ;
-4. aucun mélange entre les identifiants de deux modes n’est effectué.
+Un ordre aléatoire unique est généré puis réutilisé pour chaque joueur.
 
-## Interface
+En `mode-blocks`, le planning est groupé par position : tous les joueurs jouent le premier mode, puis tous le deuxième, etc.
 
-L’accueil contient :
+### Rotation équilibrée
 
-- un sélecteur compact `Partie libre | Multijoueur` ;
-- les boutons 30, 60 et 90 secondes ;
-- un champ personnalisé compact dans la même rangée.
+Le planificateur construit des classes de rotations :
 
-La grille de modes utilise une variable CSS calculée depuis le nombre réel de modes et autorise un défilement horizontal lorsque de futurs modes ne tiennent plus proprement sur une seule ligne.
+- une classe de `N` rotations place chaque mode exactement une fois à chaque position ;
+- plusieurs bases canoniques fournissent des ordres supplémentaires réellement distincts ;
+- les classes sont consommées progressivement pour conserver l’équilibre des positions ;
+- l’algorithme ne génère pas mécaniquement toutes les permutations quand le nombre de modes devient élevé.
 
+Cela permet d’attribuer des ordres différents autant que possible tout en gardant un coût maîtrisé pour de futurs modes.
 
-## Interface responsive et orientation
+## Contrôleur multijoueur
 
-Les écrans de jeu et de multijoueur demandent le mode paysage. `requestGameDisplay()` tente le verrouillage avant et après l’entrée en plein écran, car les navigateurs Android n’acceptent pas tous la même séquence.
+`multiplayer-controller.js` gère :
 
-Si le verrouillage est refusé, `orientationGuard` affiche une interface dédiée plutôt qu’un écran déformé. Le bouton relance la demande de plein écran et de paysage sans toucher aux données. L’accueil reste utilisable en portrait et sur une fenêtre étroite grâce à une grille adaptative et à un défilement vertical explicite.
+- le choix du déroulement ;
+- le nombre de cycles ;
+- l’ordre commun ou équilibré ;
+- l’estimation du nombre de manches ;
+- l’écran de passage du téléphone ;
+- le lancement du moteur classique ou Dessin ;
+- le score, la session et le classement.
 
-Les récapitulatifs de modes utilisent uniquement les icônes configurées dans `MODE_ICONS`. Aucun texte ni flèche n’est dupliqué dans le contrôleur multijoueur.
+Pour une manche par mode, l’écran de passage affiche le parcours complet du joueur et met en évidence le mode actuel, sans flèche ni libellé encombrant.
 
-## Données et compatibilité
+## Dessin
 
-Clés existantes conservées :
+Une manche dédiée au Dessin réutilise le moteur autonome existant. Une manche continue contenant Dessin réutilise le moteur mixte de la V0.6.0.
+
+Le chrono général, les pénalités, le canevas et le maintien tactile ne sont pas recopiés dans le multijoueur.
+
+## Stockage et sauvegardes
+
+Clés historiques conservées :
 
 - `mdb-global-settings-v2` ;
-- toutes les clés des quatre bibliothèques ;
-- anciennes clés de sélection et de paramètres.
+- clés des quatre bibliothèques ;
+- clés de sélection existantes.
 
-Nouvelle clé temporaire :
+Session multijoueur :
 
-`mdb-multiplayer-session-v2`
+```text
+mdb-multiplayer-session-v2
+schéma interne : 3
+```
 
-Le schéma de sauvegarde permanent passe à `4` pour inclure les réglages multijoueur. La session active n’est volontairement pas exportée.
+Le numéro de clé reste inchangé pour ne pas multiplier les entrées. Le schéma interne invalide proprement les anciennes sessions incompatibles.
+
+Sauvegarde permanente :
+
+```text
+backupSchemaVersion: 5
+```
+
+Elle inclut le filtre global et le type de déroulement, mais jamais la session temporaire active.
 
 ## PWA
 
-### Démarrage et récupération du cache
+Version : `0.8.0`
 
-Les feuilles de style, le module principal et le service worker portent un jeton de version `072`. Le service worker est enregistré avec `updateViaCache: "none"` et son installation recharge explicitement les ressources réseau.
+Cache : `mdb-v0-8-0`
 
-Si un déploiement est incomplet ou si un ancien cache empêche l’initialisation, `index.html` affiche une fenêtre de récupération autonome. Le bouton **Réparer le cache technique** désenregistre les service workers et supprime uniquement les caches dont le nom commence par `mdb-`. Il ne touche jamais au `localStorage`, donc les cartes personnelles, réglages et sauvegardes sont préservés.
+Jeton des ressources critiques : `080`
 
-
-`sw.js` reste à la racine.
-
-Cache de la version :
-
-`mdb-v0-7-2`
-
-Le cache inclut la feuille de style multijoueur et les quatre modules du dossier `src/features/multiplayer/`.
+`sw.js` reste à la racine afin de contrôler l’ensemble de l’application.

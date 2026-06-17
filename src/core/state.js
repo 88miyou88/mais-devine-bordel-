@@ -28,12 +28,14 @@ export const state = {
     selectedModeIds: ["lyrics", "mime", "words"],
     vibrationEnabled: true,
     playType: "free",
+    globalDifficultyIds: ["easy", "medium", "hard"],
     multiplayer: {
       players: [
         { id: "player-1", name: "Joueur 1" },
         { id: "player-2", name: "Joueur 2" }
       ],
       cycles: 1,
+      flowType: "continuous",
       orderType: "balanced"
     },
     lastLibraryCheckAt: "",

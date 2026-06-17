@@ -1,5 +1,5 @@
-export const APP_VERSION = "0.7.2";
-export const APP_CACHE_NAME = "mdb-v0-7-2";
+export const APP_VERSION = "0.8.0";
+export const APP_CACHE_NAME = "mdb-v0-8-0";
 export const SWIPE_ANIMATION_MS = 180;
 export const DRAW_HOLD_MS = 500;
 export const DRAW_RETURN_COUNTDOWN_SECONDS = 3;
@@ -97,7 +97,7 @@ export const MODE_ORDER = ["lyrics", "mime", "words", "draw"];
 export const GLOBAL_SETTINGS_KEY = "mdb-global-settings-v2";
 export const LEGACY_SETTINGS_KEY = "mdb-settings-v1";
 export const MULTIPLAYER_SESSION_KEY = "mdb-multiplayer-session-v2";
-export const MULTIPLAYER_SESSION_SCHEMA = 2;
+export const MULTIPLAYER_SESSION_SCHEMA = 3;
 export const MIN_MULTIPLAYER_PLAYERS = 2;
 export const MAX_MULTIPLAYER_PLAYERS = 12;
 
@@ -114,13 +114,12 @@ export const MODE_ICONS = {
     </svg>`,
   mime: `
     <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <circle cx="32" cy="29" r="17" stroke="currentColor" stroke-width="4"/>
-      <path d="M24 25c2-2 5-2 7 0M37 25c2-2 5-2 7 0" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-      <path d="M25 36h14" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
-      <path d="m28 33 8 6M36 33l-8 6" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" opacity=".9"/>
-      <path d="M17 43c-5-2-9-6-10-11M47 43c5-2 9-6 10-11" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-      <path d="M7 32 5 25M7 32l5-5M7 32l7 1M57 32l2-7M57 32l-5-5M57 32l-7 1" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M22 48c3 4 6 7 10 9 4-2 7-5 10-9" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <ellipse cx="32" cy="35" rx="17" ry="21" stroke="currentColor" stroke-width="4"/>
+      <path d="M15 21c4-9 12-14 22-13 8 0 14 4 18 10-8 3-16 4-25 3-6 0-11 0-15 0Z" fill="currentColor"/>
+      <path d="M27 9c2-4 6-6 10-5 3 1 5 3 6 6" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="25.5" cy="31" r="2.5" fill="currentColor"/>
+      <circle cx="38.5" cy="31" r="2.5" fill="currentColor"/>
+      <path d="m26 41 12 9M38 41l-12 9" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
     </svg>`,
   words: `
     <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
@@ -137,6 +136,15 @@ export const MODE_ICONS = {
       <path d="m11 43-2 10 10-3-8-7Z" fill="currentColor" opacity=".8"/>
       <circle cx="51" cy="47" r="3" fill="currentColor"/><circle cx="57" cy="41" r="2" fill="currentColor" opacity=".8"/>
     </svg>`
+};
+
+
+export const DIFFICULTY_ORDER = ["easy", "medium", "hard"];
+
+export const DIFFICULTY_META = {
+  easy: { shortLabel: "F", label: "Facile", color: "#48e07d" },
+  medium: { shortLabel: "M", label: "Moyen", color: "#58a6ff" },
+  hard: { shortLabel: "D", label: "Difficile", color: "#ff6b72" }
 };
 
 export const DIFFICULTY_LABELS = {

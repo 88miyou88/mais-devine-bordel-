@@ -1,5 +1,7 @@
 import {
   DIFFICULTY_LABELS,
+  DIFFICULTY_META,
+  DIFFICULTY_ORDER,
   MODE_ICONS,
   MODE_ORDER
 } from "../config/config.js";
@@ -10,22 +12,24 @@ import { getMixedDrawingPenaltySeconds } from "./drawing/mixed-drawing.js";
 import { exportBackup, readBackupFile, restoreBackupData } from "../services/backup.js";
 import { copyDiagnostic, openDiagnostic } from "../services/diagnostics.js";
 import {
+  activeCardCountForMode,
   activeCountForBox,
   checkLibraries,
-  getPlayableCards,
+  filteredCardsForMode,
   hasLibraryUpdate,
   modeConfig,
   resetLibraries,
   saveAllData,
   saveGlobalSettings,
   saveMode,
-  selectedCardsForMode,
+  selectedCardTotals,
   updateLibraries
 } from "../services/libraries.js";
 
 let callbacks = {};
 
 export function renderHomeData() {
+  renderGlobalDifficultyFilter();
   renderModeSelection();
   renderAdvancedSettings();
   el.vibrationToggle.checked = state.settings.vibrationEnabled;
@@ -38,9 +42,58 @@ export function renderHomeData() {
   const drawOnly = state.settings.selectedModeIds.length === 1 && state.settings.selectedModeIds[0] === "draw";
   el.globalTimerSettings.classList.toggle("hidden", drawOnly);
   el.homeScreen.classList.toggle("draw-only-home", drawOnly);
-  const count = getPlayableCards().length;
-  el.availableCount.textContent = `${count} carte${count > 1 ? "s" : ""} disponible${count > 1 ? "s" : ""}`;
-  el.startButton.disabled = count === 0;
+  const totals = selectedCardTotals();
+  el.availableCount.textContent = `${totals.selected} / ${totals.total} carte${totals.total > 1 ? "s" : ""}`;
+  el.availableCount.title = `${totals.selected} carte(s) correspondent aux filtres sur ${totals.total} carte(s) active(s)`;
+  el.startButton.disabled = totals.selected === 0;
+}
+
+function normalizedDifficultyIds(ids) {
+  const selected = new Set(Array.isArray(ids) ? ids : []);
+  return DIFFICULTY_ORDER.filter(id => selected.has(id));
+}
+
+function sameDifficultyIds(first, second) {
+  return normalizedDifficultyIds(first).join("|") === normalizedDifficultyIds(second).join("|");
+}
+
+function renderGlobalDifficultyFilter() {
+  const globalIds = normalizedDifficultyIds(state.settings.globalDifficultyIds);
+  el.globalDifficultyInputs.forEach(input => {
+    input.checked = globalIds.includes(input.value);
+  });
+}
+
+function applyGlobalDifficultyFilter(changedInput) {
+  const selected = el.globalDifficultyInputs.filter(input => input.checked).map(input => input.value);
+  if (!selected.length) {
+    changedInput.checked = true;
+    return;
+  }
+  const normalized = normalizedDifficultyIds(selected);
+  state.settings.globalDifficultyIds = [...normalized];
+  MODE_ORDER.forEach(modeId => {
+    modeState(modeId).selectedDifficultyIds = [...normalized];
+  });
+  saveAllData();
+  renderHomeData();
+  if (state.activeModeDialogId) renderModeConfigDialog();
+}
+
+function createDifficultyOverride(modeId) {
+  const mode = modeState(modeId);
+  if (sameDifficultyIds(mode.selectedDifficultyIds, state.settings.globalDifficultyIds)) return null;
+  const wrapper = document.createElement("span");
+  wrapper.className = "mode-difficulty-override";
+  wrapper.setAttribute("aria-label", `Difficultés spécifiques : ${normalizedDifficultyIds(mode.selectedDifficultyIds).map(id => DIFFICULTY_META[id].label).join(", ")}`);
+  wrapper.title = wrapper.getAttribute("aria-label");
+  normalizedDifficultyIds(mode.selectedDifficultyIds).forEach(difficulty => {
+    const badge = document.createElement("span");
+    badge.className = `mode-difficulty-badge difficulty-${difficulty}`;
+    badge.textContent = DIFFICULTY_META[difficulty].shortLabel;
+    wrapper.append(badge);
+  });
+  return wrapper;
 }
 
 function renderModeSelection() {
@@ -49,7 +102,8 @@ function renderModeSelection() {
   MODE_ORDER.forEach(modeId => {
     const config = modeConfig(modeId);
     const selected = state.settings.selectedModeIds.includes(modeId);
-    const playableCount = selectedCardsForMode(modeId).length;
+    const playableCount = filteredCardsForMode(modeId).length;
+    const totalCount = activeCardCountForMode(modeId);
     const tile = document.createElement("article");
     tile.className = `mode-app-tile${selected ? " selected" : ""}`;
     tile.style.setProperty("--mode-color", config.color);
@@ -86,11 +140,15 @@ function renderModeSelection() {
     footer.className = "mode-tile-footer";
     const count = document.createElement("span");
     count.className = "mode-tile-count";
-    count.textContent = `${playableCount} carte${playableCount > 1 ? "s" : ""}`;
+    count.textContent = `${playableCount} / ${totalCount} carte${totalCount > 1 ? "s" : ""}`;
+    count.title = `${playableCount} carte(s) correspondent aux filtres sur ${totalCount} carte(s) active(s)`;
+    const override = createDifficultyOverride(modeId);
     const arrow = document.createElement("span");
     arrow.className = "mode-tile-chevron";
     arrow.textContent = "Configurer ›";
-    footer.append(count, arrow);
+    footer.append(count);
+    if (override) footer.append(override);
+    footer.append(arrow);
     openButton.append(icon, text, footer);
     tile.append(checkbox, openButton);
     el.modeSelectionList.append(tile);
@@ -128,7 +186,7 @@ function closeModeConfig() {
 function updateModeDialogCount() {
   const modeId = state.activeModeDialogId;
   if (!modeId) return;
-  const count = selectedCardsForMode(modeId).length;
+  const count = filteredCardsForMode(modeId).length;
   el.modeDialogCount.textContent = `${count} carte${count > 1 ? "s" : ""} sélectionnée${count > 1 ? "s" : ""}`;
 }
 
@@ -151,7 +209,7 @@ function renderModeConfigDialog() {
   });
 
   el.modeDifficultyChoices.innerHTML = "";
-  ["easy", "medium", "hard"].forEach(difficulty => {
+  DIFFICULTY_ORDER.forEach(difficulty => {
     const label = document.createElement("label");
     label.className = "difficulty-choice";
     const input = document.createElement("input");
@@ -161,8 +219,14 @@ function renderModeConfigDialog() {
       if (input.checked) {
         if (!mode.selectedDifficultyIds.includes(difficulty)) mode.selectedDifficultyIds.push(difficulty);
       } else {
-        mode.selectedDifficultyIds = mode.selectedDifficultyIds.filter(id => id !== difficulty);
+        const remaining = mode.selectedDifficultyIds.filter(id => id !== difficulty);
+        if (!remaining.length) {
+          input.checked = true;
+          return;
+        }
+        mode.selectedDifficultyIds = remaining;
       }
+      mode.selectedDifficultyIds = normalizedDifficultyIds(mode.selectedDifficultyIds);
       saveMode(modeId);
       updateModeDialogCount();
       renderModeSelection();
@@ -215,10 +279,11 @@ function renderModeConfigDialog() {
 
 function selectEverything() {
   state.settings.selectedModeIds = [...MODE_ORDER];
+  state.settings.globalDifficultyIds = [...DIFFICULTY_ORDER];
   MODE_ORDER.forEach(modeId => {
     const mode = modeState(modeId);
     mode.selectedBoxIds = mode.boxes.map(box => box.id);
-    mode.selectedDifficultyIds = ["easy", "medium", "hard"];
+    mode.selectedDifficultyIds = [...DIFFICULTY_ORDER];
   });
   saveAllData();
   renderHomeData();
@@ -382,6 +447,9 @@ export function initializeHome(options = {}) {
   el.manageCardsButton.addEventListener("click", () => callbacks.onManage?.());
   el.selectAllButton.addEventListener("click", selectEverything);
   el.selectNoneButton.addEventListener("click", selectNothing);
+  el.globalDifficultyInputs.forEach(input => {
+    input.addEventListener("change", () => applyGlobalDifficultyFilter(input));
+  });
   el.flipHomeButton.addEventListener("click", () => callbacks.onFlip?.());
 
   el.modeEnabledInput.addEventListener("change", () => {

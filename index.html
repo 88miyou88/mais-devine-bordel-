@@ -9,14 +9,14 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
-  <link rel="stylesheet" href="./assets/styles/foundation.css?v=072">
-  <link rel="stylesheet" href="./assets/styles/components.css?v=072">
-  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=072">
-  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=072">
-  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=072">
-  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=072">
-  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=072">
-  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=072">
+  <link rel="stylesheet" href="./assets/styles/foundation.css?v=080">
+  <link rel="stylesheet" href="./assets/styles/components.css?v=080">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=080">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=080">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=080">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=080">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=080">
+  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=080">
 </head>
 <body>
   <main id="app">
@@ -51,8 +51,24 @@
         <fieldset class="mode-selection-panel">
           <legend>Modes de jeu</legend>
           <div class="selection-topline">
-            <strong id="availableCount">0 carte disponible</strong>
-            <div>
+            <div class="selection-summary">
+              <strong id="availableCount">0 / 0 carte</strong>
+              <div id="globalDifficultyChoices" class="global-difficulty-choices" role="group" aria-label="Difficultés appliquées à tous les modes">
+                <label class="global-difficulty-chip difficulty-easy" title="Facile">
+                  <input type="checkbox" value="easy" checked>
+                  <span>F</span><small>Facile</small>
+                </label>
+                <label class="global-difficulty-chip difficulty-medium" title="Moyen">
+                  <input type="checkbox" value="medium" checked>
+                  <span>M</span><small>Moyen</small>
+                </label>
+                <label class="global-difficulty-chip difficulty-hard" title="Difficile">
+                  <input type="checkbox" value="hard" checked>
+                  <span>D</span><small>Difficile</small>
+                </label>
+              </div>
+            </div>
+            <div class="selection-actions">
               <button id="selectAllButton" class="mini-button" type="button">Tout</button>
               <button id="selectNoneButton" class="mini-button" type="button">Aucun</button>
             </div>
@@ -146,14 +162,31 @@
             <div class="multiplayer-panel-title">
               <div>
                 <h3>Déroulement</h3>
-                <p>Chaque joueur garde le téléphone pendant toute sa manche et enchaîne les modes.</p>
+                <p id="multiplayerFlowIntro">Chaque joueur garde le téléphone pendant toute sa manche et enchaîne les modes.</p>
               </div>
+            </div>
+
+            <div class="multiplayer-flow-choices" role="radiogroup" aria-label="Type de déroulement">
+              <label class="multiplayer-flow-card">
+                <input type="radio" name="multiplayerFlow" value="continuous" checked>
+                <span>
+                  <strong>Modes enchaînés</strong>
+                  <small>Chaque joueur garde le téléphone pendant une seule manche et alterne les modes.</small>
+                </span>
+              </label>
+              <label class="multiplayer-flow-card">
+                <input type="radio" name="multiplayerFlow" value="mode-blocks">
+                <span>
+                  <strong>Manches par mode</strong>
+                  <small>Chaque manche entière est consacrée à un seul mode avant de passer au suivant.</small>
+                </span>
+              </label>
             </div>
 
             <label class="multiplayer-setting-row">
               <span>
                 <strong>Nombre de cycles</strong>
-                <small>Un cycle = une manche complète par joueur.</small>
+                <small id="multiplayerCyclesHelp">Un cycle = une manche complète par joueur.</small>
               </span>
               <select id="multiplayerCyclesInput">
                 <option value="1">1 cycle</option>
@@ -169,14 +202,14 @@
                 <input type="radio" name="multiplayerOrder" value="common">
                 <span>
                   <strong>Ordre commun</strong>
-                  <small>Tous les joueurs suivent le même enchaînement de modes.</small>
+                  <small id="multiplayerCommonOrderHelp">Tous les joueurs suivent le même enchaînement de modes.</small>
                 </span>
               </label>
               <label class="multiplayer-order-card">
                 <input type="radio" name="multiplayerOrder" value="balanced" checked>
                 <span>
                   <strong>Rotation équilibrée</strong>
-                  <small>Chaque joueur reçoit les mêmes modes dans un ordre différent et équitable.</small>
+                  <small id="multiplayerBalancedOrderHelp">Chaque joueur reçoit les mêmes modes dans un ordre différent et équitable.</small>
                 </span>
               </label>
             </div>
@@ -749,7 +782,7 @@
 
   <script>
     (() => {
-      const VERSION_TOKEN = "072";
+      const VERSION_TOKEN = "080";
       const recovery = document.querySelector("#bootRecovery");
       const message = document.querySelector("#bootRecoveryMessage");
       let bootFinished = false;
@@ -803,7 +836,7 @@
     })();
   </script>
   <script type="module" data-mdb-bootstrap>
-    import("./src/main.js?v=072").catch(error => window.MDB_BOOT_FAILURE(error));
+    import("./src/main.js?v=080").catch(error => window.MDB_BOOT_FAILURE(error));
   </script>
 </body>
 </html>

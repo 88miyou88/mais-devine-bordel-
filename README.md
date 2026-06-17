@@ -1,104 +1,122 @@
 # Mais devine, bordel !
 
-Application web mobile installable (PWA) regroupant plusieurs mini-jeux de soirée. La version actuelle contient :
+Application web mobile installable (PWA) regroupant plusieurs mini-jeux de soirée :
 
-- La suite, maestro ! ;
-- Ferme-la et mime ! ;
-- Sans le dire ! ;
-- Picasso en PLS.
+- La suite, maestro !
+- Ferme-la et mime !
+- Sans le dire !
+- Picasso en PLS
 
-L’interface et le moteur multijoueur sont conçus pour accepter de nouveaux modes sans limiter le planning aux quatre modes actuels.
+L’interface, les filtres et le planificateur multijoueur utilisent la configuration des modes. Ils ne supposent pas qu’il existera toujours exactement quatre modes.
 
 ## Version
 
-Version actuelle : **0.7.2**
+Version actuelle : **0.8.0**
 
-La V0.7.2 consolide l’interface de la V0.7.1 sans modifier le moteur multijoueur :
+La V0.8.0 ajoute :
 
-- affichage compact des modes actifs avec leurs icônes uniquement ;
-- suppression des flèches et libellés trop larges dans les récapitulatifs ;
-- nouvel habillage des modes Paroles et Mime ;
-- nouvelle icône PWA « MDB! » ;
-- accueil et configuration multijoueur accessibles sur les fenêtres étroites ;
-- tentative de verrouillage automatique en paysage et écran de rotation propre lorsque le navigateur refuse le verrouillage.
+- un filtre global `Facile / Moyen / Difficile` sur l’accueil, avec toutes les combinaisons possibles, y compris `Facile + Difficile` ;
+- l’application immédiate de ce filtre à tous les modes ;
+- des exceptions par mode toujours possibles depuis « Configurer » ;
+- un indicateur compact coloré `F`, `M` ou `D` uniquement lorsqu’un mode utilise des difficultés différentes du filtre global ;
+- des compteurs `cartes filtrées / cartes actives` sur chaque tuile et sur le total général ;
+- une nouvelle icône Mime avec béret, visage et croix sur la bouche ;
+- un nouveau déroulement multijoueur **Manches par mode** ;
+- un ordre commun aléatoire ou une rotation différente et équilibrée par joueur ;
+- la conservation du déroulement historique **Modes enchaînés**.
 
-Le multijoueur local conserve :
+## Difficultés globales
 
-- de 2 à 12 joueurs ;
-- plusieurs cycles ;
-- ordre commun ou rotation équilibrée ;
-- une manche chronométrée complète par joueur ;
-- enchaînement de tous les modes sélectionnés pendant la même manche ;
-- scores cumulés et détail par mode sous la forme réussites/tentatives ;
-- classement final ;
-- sauvegarde et reprise d’une partie interrompue entre deux manches.
+Les trois commandes de l’accueil sont indépendantes et combinables :
 
-La partie libre de la V0.6.0 reste disponible. Le Dessin peut toujours être joué seul ou mélangé aux autres modes.
+- Facile ;
+- Moyen ;
+- Difficile ;
+- Facile + Moyen ;
+- Facile + Difficile ;
+- Moyen + Difficile ;
+- les trois difficultés.
 
-## Déroulement multijoueur
+Au moins une difficulté reste toujours active.
 
-Chaque joueur garde le téléphone pendant toute sa manche, par exemple 60 secondes, et enchaîne les modes sélectionnés selon son parcours :
+Une modification globale remplace les difficultés de tous les modes. Une modification faite ensuite dans la fenêtre d’un mode devient une exception visible sur sa tuile.
+
+Exemple :
 
 ```text
-Camille : Paroles → Dessin → Mime → Paroles → …
-Léa     : Dessin → Mime → Paroles → Dessin → …
+Filtre global : Facile + Moyen
+Mime : Difficile uniquement
 ```
 
-Le téléphone n’est transmis qu’à la fin de la manche du joueur.
+La tuile Mime affiche alors uniquement une pastille rouge `D`.
 
-### Ordre commun
+## Compteurs de cartes
 
-Tous les joueurs utilisent le même parcours de modes.
+Chaque tuile affiche :
 
-### Rotation équilibrée
+```text
+cartes correspondant aux filtres / cartes actives du mode
+```
 
-Chaque joueur reçoit tous les modes dans un ordre différent lorsque c’est possible. Le planificateur équilibre les ordres et les positions sans calculer toutes les permutations, afin de rester rapide quand de nouveaux modes seront ajoutés.
+Exemple :
 
-## Dessin mélangé
+```text
+125 / 395 cartes
+```
 
-Lorsqu’un dessin arrive pendant une manche mixte :
+Le compteur général additionne uniquement les modes actuellement cochés.
 
-1. le chronomètre général se met en pause ;
-2. le signal sonore et la vibration se déclenchent directement sur l’écran où la consigne est cachée ;
-3. le joueur révèle volontairement le mot ;
-4. il dessine sur le téléphone, sur papier ou passe ;
-5. une pénalité fixe est appliquée ;
-6. un compte à rebours permet de remettre le téléphone sur le front ;
-7. la manche reprend avec le mode suivant.
+## Déroulements multijoueurs
 
-L’ancien écran intermédiaire « Récupère le téléphone » a été supprimé.
+### Modes enchaînés
+
+Chaque joueur garde le téléphone pendant toute sa manche et alterne les modes de son parcours jusqu’à la fin du chronomètre.
+
+### Manches par mode
+
+Chaque manche complète est consacrée à un seul mode. Avec trois joueurs et trois modes, un cycle contient neuf manches.
+
+#### Ordre commun
+
+Un ordre aléatoire est tiré une fois pour la partie, puis tous les joueurs suivent ce même ordre.
+
+#### Rotation équilibrée
+
+Chaque joueur joue exactement les mêmes modes et le même nombre de manches, mais dans un ordre différent autant que possible. Les positions sont réparties équitablement. Si le nombre de joueurs dépasse le nombre d’ordres distincts disponibles, les doublons sont distribués régulièrement.
 
 ## Données locales
 
-La V0.7.2 conserve les clés de stockage existantes et reste compatible avec les données V0.5.x et V0.6.0 :
+La V0.8.0 conserve :
 
-- cartes personnelles ;
-- cartes officielles modifiées ;
-- catégories personnelles ;
-- sélections et réglages ;
-- sauvegardes.
+- les 1 318 cartes officielles ;
+- les cartes et catégories personnelles ;
+- les cartes officielles modifiées ;
+- les sélections de catégories et de difficultés ;
+- les réglages existants ;
+- les sauvegardes des versions précédentes.
 
-La session multijoueur active utilise une clé distincte et n’est pas incluse dans les sauvegardes permanentes.
+La session multijoueur active utilise une clé temporaire séparée et n’est pas incluse dans les sauvegardes permanentes.
 
-## Récupération technique
+## Publication
 
-La V0.7.2 conserve le système de récupération PWA : ressources critiques versionnées, mise à jour forcée du service worker et écran de réparation du cache en cas de chargement incomplet. Cette réparation supprime uniquement le cache technique et conserve le stockage local de l’utilisateur.
-
-## Utilisation
-
-Application publiée :
+Application :
 
 `https://88miyou88.github.io/mais-devine-bordel-/`
 
-URL de test conseillée :
+URL de test :
 
-`https://88miyou88.github.io/mais-devine-bordel-/?v=072`
+`https://88miyou88.github.io/mais-devine-bordel-/?v=080`
 
-L’application est conçue principalement pour Android, en mode paysage et avec des interactions tactiles.
+Diagnostic attendu :
+
+```text
+Version : 0.8.0
+Cache attendu : mdb-v0-8-0
+```
 
 ## Développement local
 
-Les modules ES doivent être servis par HTTP. Ne pas ouvrir directement `index.html` avec une adresse `file://`.
+Les modules ES doivent être servis par HTTP :
 
 ```bash
 python3 -m http.server 8000
@@ -106,15 +124,13 @@ python3 -m http.server 8000
 
 Puis ouvrir :
 
-`http://localhost:8000/?v=072`
+`http://localhost:8000/?v=080`
 
 ## Contrôles automatiques
-
-Depuis la racine du dépôt :
 
 ```bash
 node tests/validate-data.mjs
 node tests/smoke-test.mjs
 ```
 
-Voir aussi `docs/ARCHITECTURE.md` et `docs/TESTS.md`.
+Voir également `docs/ARCHITECTURE.md` et `docs/TESTS.md`.

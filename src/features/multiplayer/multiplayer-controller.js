@@ -51,10 +51,11 @@ function currentTurn() {
   return session?.schedule.turns[session.nextTurnIndex] || null;
 }
 
-function modeRouteHtml(modeIds) {
+function modeRouteHtml(modeIds, activeModeId = null) {
   return modeIds.map(modeId => {
     const config = modeConfig(modeId);
-    return `<span class="mode-route-item" style="--mode-color:${config.color}" role="img" aria-label="${config.name}" title="${config.name}"><span class="mode-route-icon">${MODE_ICONS[config.icon] || ""}</span></span>`;
+    const activeClass = activeModeId === modeId ? " current" : "";
+    return `<span class="mode-route-item${activeClass}" style="--mode-color:${config.color}" role="img" aria-label="${config.name}" title="${config.name}"><span class="mode-route-icon">${MODE_ICONS[config.icon] || ""}</span></span>`;
   }).join("");
 }
 
@@ -161,29 +162,51 @@ function renderSetupModes() {
 }
 
 function renderEstimate() {
-  const players = multiplayerSettings().players.length;
-  const cycles = Number(multiplayerSettings().cycles) || 1;
-  const turns = players * cycles;
+  const settings = multiplayerSettings();
+  const players = settings.players.length;
+  const cycles = Number(settings.cycles) || 1;
   const modes = selectedModeIds();
-  const drawOnly = modes.length === 1 && modes[0] === "draw";
+  const modeBlocks = settings.flowType === "mode-blocks";
+  const turns = players * cycles * (modeBlocks ? modes.length : 1);
   const duration = getRequestedSeconds();
-  const baseSeconds = drawOnly
-    ? state.settings.modeOptions.draw.attemptCount * state.settings.modeOptions.draw.durations.medium
-    : duration;
-  const estimatedMinutes = Math.max(1, Math.ceil(turns * (baseSeconds + 12) / 60));
+  const drawSeconds = state.settings.modeOptions.draw.attemptCount * state.settings.modeOptions.draw.durations.medium;
+  const secondsPerPlayerCycle = modeBlocks
+    ? modes.reduce((sum, modeId) => sum + (modeId === "draw" ? drawSeconds : duration), 0)
+    : (modes.length === 1 && modes[0] === "draw" ? drawSeconds : duration);
+  const transitionSeconds = turns * 12;
+  const estimatedMinutes = Math.max(1, Math.ceil((players * cycles * secondsPerPlayerCycle + transitionSeconds) / 60));
+  const detail = modeBlocks
+    ? `${modes.length} manche${modes.length > 1 ? "s" : ""} par joueur et par cycle`
+    : `${modes.length} mode${modes.length > 1 ? "s" : ""} enchaîné${modes.length > 1 ? "s" : ""} par manche`;
   el.multiplayerEstimate.innerHTML = `
     <strong>${turns} manche${turns > 1 ? "s" : ""} au total</strong>
-    <span>${cycles} cycle${cycles > 1 ? "s" : ""} · environ ${estimatedMinutes} min · ${modes.length} mode${modes.length > 1 ? "s" : ""} par manche</span>
+    <span>${cycles} cycle${cycles > 1 ? "s" : ""} · environ ${estimatedMinutes} min · ${detail}</span>
   `;
 }
-
 function renderSetup() {
+  const settings = multiplayerSettings();
+  const modeBlocks = settings.flowType === "mode-blocks";
   renderPlayerList();
   renderSetupModes();
-  el.multiplayerCyclesInput.value = String(multiplayerSettings().cycles);
-  el.multiplayerOrderInputs.forEach(input => {
-    input.checked = input.value === multiplayerSettings().orderType;
+  el.multiplayerCyclesInput.value = String(settings.cycles);
+  el.multiplayerFlowInputs.forEach(input => {
+    input.checked = input.value === settings.flowType;
   });
+  el.multiplayerOrderInputs.forEach(input => {
+    input.checked = input.value === settings.orderType;
+  });
+  el.multiplayerFlowIntro.textContent = modeBlocks
+    ? "Chaque joueur fait une manche complète par mode, puis le planning passe au mode suivant."
+    : "Chaque joueur garde le téléphone pendant toute sa manche et enchaîne les modes.";
+  el.multiplayerCyclesHelp.textContent = modeBlocks
+    ? "Un cycle = une manche de chaque mode pour chaque joueur."
+    : "Un cycle = une manche complète par joueur.";
+  el.multiplayerCommonOrderHelp.textContent = modeBlocks
+    ? "Un ordre aléatoire est tiré une fois, puis tous les joueurs suivent ce même ordre."
+    : "Tous les joueurs suivent le même enchaînement aléatoire de modes.";
+  el.multiplayerBalancedOrderHelp.textContent = modeBlocks
+    ? "Chaque joueur joue les mêmes modes dans un ordre différent et équilibré."
+    : "Chaque joueur reçoit les mêmes modes dans un ordre différent et équitable.";
   renderEstimate();
 }
 
@@ -208,7 +231,7 @@ function validateSetup() {
   if (unavailable.length) {
     return `Aucune carte jouable pour : ${unavailable.map(modeId => modeConfig(modeId).name).join(", ")}.`;
   }
-  if (modes.includes("draw") && modes.length > 1) {
+  if (multiplayerSettings().flowType !== "mode-blocks" && modes.includes("draw") && modes.length > 1) {
     const drawCards = selectedCardsForMode("draw");
     const requested = Math.min(state.settings.modeOptions.draw.mixedCount, drawCards.length);
     if (getFeasibleMixedDrawingCount(getRequestedSeconds() * 1000, requested) === 0) {
@@ -223,6 +246,7 @@ function buildSessionFromSettings() {
     players: multiplayerSettings().players,
     modeIds: selectedModeIds(),
     cycles: multiplayerSettings().cycles,
+    flowType: multiplayerSettings().flowType,
     orderType: multiplayerSettings().orderType
   });
   return createMultiplayerSession({
@@ -258,13 +282,20 @@ function showCurrentHandoff() {
   }
   const totalTurns = session.schedule.turns.length;
   const playerScore = currentPlayerScore();
-  el.multiplayerHandoffKicker.textContent = `Manche ${turn.turnIndex + 1} sur ${totalTurns} · Cycle ${turn.cycleIndex + 1} sur ${session.schedule.cycles}`;
+  const modeBlocks = session.schedule.flowType === "mode-blocks";
+  const positionText = modeBlocks ? ` · Mode ${turn.modePosition + 1} sur ${session.schedule.modeIds.length}` : "";
+  el.multiplayerHandoffKicker.textContent = `Manche ${turn.turnIndex + 1} sur ${totalTurns}${positionText} · Cycle ${turn.cycleIndex + 1} sur ${session.schedule.cycles}`;
   el.multiplayerHandoffTitle.textContent = `Passe le téléphone à ${turn.playerName}`;
   const drawOnly = turn.modeOrder.length === 1 && turn.modeOrder[0] === "draw";
+  const currentMode = modeConfig(turn.modeOrder[0]);
   el.multiplayerHandoffText.textContent = drawOnly
     ? `${state.settings.modeOptions.draw.attemptCount} dessins pour marquer un maximum de points.`
-    : `Tu as ${session.durationSeconds} secondes pour marquer un maximum de points.`;
-  el.multiplayerHandoffModes.innerHTML = modeRouteHtml(turn.modeOrder);
+    : modeBlocks
+      ? `${session.durationSeconds} secondes de « ${currentMode.name} » pour marquer un maximum de points.`
+      : `Tu as ${session.durationSeconds} secondes pour marquer un maximum de points.`;
+  el.multiplayerHandoffModes.innerHTML = modeBlocks
+    ? modeRouteHtml(turn.playerModeOrder, turn.modeOrder[0])
+    : modeRouteHtml(turn.modeOrder);
   el.multiplayerHandoffScore.textContent = playerScore?.turnsPlayed
     ? `Score actuel : ${playerScore.score} point${playerScore.score > 1 ? "s" : ""}`
     : "Première manche de ce joueur";
@@ -379,6 +410,7 @@ function renderFinalResults() {
     players: session.schedule.players,
     modeIds: session.schedule.modeIds,
     cycles: session.schedule.cycles,
+    flowType: session.schedule.flowType,
     orderType: session.schedule.orderType,
     durationSeconds: session.durationSeconds
   };
@@ -416,6 +448,7 @@ function replayMultiplayer() {
     players: completedConfig.players,
     modeIds: completedConfig.modeIds,
     cycles: completedConfig.cycles,
+    flowType: completedConfig.flowType,
     orderType: completedConfig.orderType
   });
   state.multiplayer = createMultiplayerSession({
@@ -477,6 +510,11 @@ export function initializeMultiplayer(options = {}) {
     multiplayerSettings().cycles = Math.min(10, Math.max(1, Number(el.multiplayerCyclesInput.value) || 1));
     saveSetup();
   });
+  el.multiplayerFlowInputs.forEach(input => input.addEventListener("change", () => {
+    if (!input.checked) return;
+    multiplayerSettings().flowType = input.value === "mode-blocks" ? "mode-blocks" : "continuous";
+    saveSetup();
+  }));
   el.multiplayerOrderInputs.forEach(input => input.addEventListener("change", () => {
     if (!input.checked) return;
     multiplayerSettings().orderType = input.value === "common" ? "common" : "balanced";

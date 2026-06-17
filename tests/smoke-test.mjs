@@ -57,7 +57,7 @@ for (const relativePath of legacyFiles) {
 
 const html = await read("index.html");
 assert.match(html, /<script\s+type="module"\s+data-mdb-bootstrap>/);
-assert.match(html, /import\(["']\.\/src\/main\.js\?v=072["']\)/);
+assert.match(html, /import\(["']\.\/src\/main\.js\?v=080["']\)/);
 assert.match(html, /id="bootRecovery"/);
 assert.match(html, /id="bootRepairButton"/);
 assert.match(html, /id="orientationGuard"/);
@@ -68,6 +68,9 @@ assert.doesNotMatch(html, /css-(?:base|manager|game|dialogs|drawing|home)\.css/)
 assert.match(html, />Partie libre</);
 assert.match(html, />Multijoueur</);
 assert.match(html, /class="custom-duration-chip"/);
+assert.match(html, /id="globalDifficultyChoices"/);
+assert.match(html, /name="multiplayerFlow"/);
+assert.match(html, /value="mode-blocks"/);
 assert.doesNotMatch(html, /Récupère le téléphone/);
 assert.doesNotMatch(html, /id="drawTransitionButton"/);
 
@@ -82,7 +85,8 @@ for (const id of requiredDomIds) {
 for (const id of [
   "freePlayButton", "multiplayerPlayButton", "multiplayerSetupScreen", "multiplayerPlayerList",
   "multiplayerHandoffScreen", "multiplayerTurnSummaryScreen", "multiplayerResultsScreen",
-  "resumeMultiplayerDialog", "multiplayerTurnModeStats", "multiplayerRanking"
+  "resumeMultiplayerDialog", "multiplayerTurnModeStats", "multiplayerRanking",
+  "globalDifficultyChoices", "multiplayerFlowIntro", "multiplayerCyclesHelp"
 ]) assert.ok(htmlIds.includes(id), `Élément multijoueur absent : #${id}`);
 
 const manifest = JSON.parse(await read("manifest.webmanifest"));
@@ -92,13 +96,19 @@ assert.equal(manifest.orientation, "landscape");
 assert.ok(manifest.icons.every(icon => icon.src.replace(/^\.\//, "").startsWith("assets/icons/")), "Chemins des icônes du manifeste incorrects");
 
 const config = await read("src/config/config.js");
-assert.match(config, /APP_VERSION\s*=\s*"0\.7\.2"/);
-assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-7-2"/);
+assert.match(config, /APP_VERSION\s*=\s*"0\.8\.0"/);
+assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-8-0"/);
 assert.match(config, /name:\s*"La suite, maestro !"/);
 assert.match(config, /name:\s*"Ferme-la et mime !"/);
 assert.match(config, /name:\s*"Picasso en PLS"/);
+assert.match(config, /DIFFICULTY_ORDER\s*=\s*\["easy", "medium", "hard"\]/);
+assert.match(config, /easy:\s*\{ shortLabel: "F"/);
+assert.match(config, /medium:\s*\{ shortLabel: "M"/);
+assert.match(config, /hard:\s*\{ shortLabel: "D"/);
+assert.match(config, /ellipse cx="32" cy="35"/);
+assert.match(config, /m26 41 12 9M38 41l-12 9/);
 assert.match(config, /MULTIPLAYER_SESSION_KEY\s*=\s*"mdb-multiplayer-session-v2"/);
-assert.match(config, /MULTIPLAYER_SESSION_SCHEMA\s*=\s*2/);
+assert.match(config, /MULTIPLAYER_SESSION_SCHEMA\s*=\s*3/);
 assert.match(config, /mdb-global-settings-v2/);
 assert.match(config, /mdb-settings-v1/);
 for (const key of [
@@ -109,7 +119,7 @@ for (const key of [
 ]) assert.ok(config.includes(key), `Clé de stockage absente : ${key}`);
 
 const sw = await read("sw.js");
-assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-7-2"/);
+assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-8-0"/);
 assert.match(sw, /new Request\(url, \{ cache: "reload" \}\)/);
 assert.match(sw, /SKIP_WAITING/);
 const cachedPaths = new Set([...sw.matchAll(/"(\.\/[^"\n]+)"/g)].map(match => match[1]));
@@ -130,7 +140,7 @@ const expectedStylePaths = [
 const linkedStylePaths = [...html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)]
   .map(match => match[1].split("?")[0]);
 assert.deepEqual(linkedStylePaths, expectedStylePaths, "Ordre ou chemins des feuilles de style incorrects");
-assert.equal((html.match(/\?v=072/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
+assert.equal((html.match(/\?v=080/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
 
 const styleFiles = expectedFiles.filter(file => file.endsWith(".css"));
 for (const relativePath of styleFiles) {
@@ -198,54 +208,81 @@ assert.match(domOrientationSource, /initializeOrientationGuard/);
 assert.match(domOrientationSource, /screen\.orientation\?\.lock/);
 
 const scheduleModule = await import(pathToFileURL(path.join(root, "src/features/multiplayer/schedule.js")).href);
-const deterministicRandom = (() => {
-  let value = 0;
-  return () => ((value += 0.173) % 1);
-})();
+function seededRandom(seed = 1) {
+  let value = seed >>> 0;
+  return () => ((value = (value * 1664525 + 1013904223) >>> 0) / 4294967296);
+}
+
 for (const modeCount of [1, 2, 3, 4, 5, 8, 12]) {
   const modeIds = Array.from({ length: modeCount }, (_, index) => index === modeCount - 1 && modeCount > 1 ? "draw" : `mode-${index + 1}`);
   for (const playerCount of [2, 3, 5, 12]) {
     const players = Array.from({ length: playerCount }, (_, index) => ({ id: `p${index + 1}`, name: `Joueur ${index + 1}` }));
-    const common = scheduleModule.buildMultiplayerSchedule({ players, modeIds, cycles: 3, orderType: "common", random: deterministicRandom });
-    assert.equal(scheduleModule.validateMultiplayerSchedule(common).valid, true);
-    assert.equal(common.turns.length, playerCount * 3);
-    assert.ok(common.turns.every(turn => turn.modeOrder.join("|") === common.turns[0].modeOrder.join("|")), "L’ordre commun doit être identique pour tous");
-
-    const balanced = scheduleModule.buildMultiplayerSchedule({ players, modeIds, cycles: 3, orderType: "balanced", random: deterministicRandom });
-    const validation = scheduleModule.validateMultiplayerSchedule(balanced);
-    assert.equal(validation.valid, true, validation.errors.join("\n"));
-    balanced.turns.forEach(turn => {
-      assert.equal(turn.modeOrder.length, modeIds.length);
-      assert.deepEqual([...turn.modeOrder].sort(), [...modeIds].sort());
-    });
-    if (modeCount > 1 && playerCount > 1) {
-      const firstCycleOrders = balanced.turns.slice(0, playerCount).map(turn => turn.modeOrder.join("|"));
-      assert.ok(new Set(firstCycleOrders).size > 1, "La rotation équilibrée doit produire plusieurs ordres quand c’est possible");
-
-      const countsByModeAndPosition = new Map(modeIds.map(modeId => [modeId, Array(modeCount).fill(0)]));
-      balanced.turns.forEach(turn => {
-        turn.modeOrder.forEach((modeId, position) => {
-          countsByModeAndPosition.get(modeId)[position] += 1;
-        });
+    for (const flowType of ["continuous", "mode-blocks"]) {
+      const common = scheduleModule.buildMultiplayerSchedule({
+        players, modeIds, cycles: 3, flowType, orderType: "common",
+        random: seededRandom(modeCount * 1000 + playerCount * 100 + (flowType === "mode-blocks" ? 7 : 3))
       });
-      countsByModeAndPosition.forEach(positionCounts => {
-        assert.ok(
-          Math.max(...positionCounts) - Math.min(...positionCounts) <= 1,
-          `Les positions d’un mode doivent rester équilibrées : ${positionCounts.join("/")}`
-        );
-      });
+      const commonValidation = scheduleModule.validateMultiplayerSchedule(common);
+      assert.equal(commonValidation.valid, true, commonValidation.errors.join("\n"));
+      const expectedTurns = playerCount * 3 * (flowType === "mode-blocks" ? modeCount : 1);
+      assert.equal(common.turns.length, expectedTurns);
 
-      for (const player of players) {
-        const playerOrders = balanced.turns
-          .filter(turn => turn.playerId === player.id)
-          .map(turn => turn.modeOrder.join("|"));
-        for (let cycleIndex = 1; cycleIndex < playerOrders.length; cycleIndex += 1) {
-          assert.notEqual(
-            playerOrders[cycleIndex],
-            playerOrders[cycleIndex - 1],
-            `${player.name} ne doit pas recevoir le même parcours deux cycles de suite`
-          );
+      if (flowType === "continuous") {
+        assert.ok(common.turns.every(turn => turn.modeOrder.join("|") === common.turns[0].modeOrder.join("|")), "L’ordre commun continu doit être identique pour tous");
+      } else {
+        for (let cycleIndex = 0; cycleIndex < 3; cycleIndex += 1) {
+          for (let position = 0; position < modeCount; position += 1) {
+            const modesAtPosition = common.turns
+              .filter(turn => turn.cycleIndex === cycleIndex && turn.modePosition === position)
+              .map(turn => turn.modeOrder[0]);
+            assert.equal(new Set(modesAtPosition).size, 1, "Tous les joueurs doivent jouer le même mode à une position donnée en ordre commun");
+          }
         }
+      }
+
+      const balanced = scheduleModule.buildMultiplayerSchedule({
+        players, modeIds, cycles: 3, flowType, orderType: "balanced",
+        random: seededRandom(modeCount * 2000 + playerCount * 200 + (flowType === "mode-blocks" ? 11 : 5))
+      });
+      const validation = scheduleModule.validateMultiplayerSchedule(balanced);
+      assert.equal(validation.valid, true, validation.errors.join("\n"));
+      assert.equal(balanced.turns.length, expectedTurns);
+
+      const routesForCycle = (cycleIndex) => players.map(player => {
+        const turns = balanced.turns.filter(turn => turn.playerId === player.id && turn.cycleIndex === cycleIndex);
+        return flowType === "continuous"
+          ? turns[0].modeOrder
+          : turns.map(turn => turn.modeOrder[0]);
+      });
+
+      for (let cycleIndex = 0; cycleIndex < 3; cycleIndex += 1) {
+        const routes = routesForCycle(cycleIndex);
+        routes.forEach(route => {
+          assert.equal(route.length, modeIds.length);
+          assert.deepEqual([...route].sort(), [...modeIds].sort());
+        });
+        if (modeCount > 1 && playerCount > 1) {
+          const distinctCount = new Set(routes.map(route => route.join("|"))).size;
+          assert.ok(distinctCount > 1, "La rotation équilibrée doit produire plusieurs ordres quand c’est possible");
+          if (playerCount <= modeCount) {
+            assert.equal(distinctCount, playerCount, "Les ordres doivent être distincts pour tous les joueurs tant que les rotations disponibles suffisent");
+          }
+        }
+      }
+
+      if (modeCount > 1) {
+        const countsByModeAndPosition = new Map(modeIds.map(modeId => [modeId, Array(modeCount).fill(0)]));
+        for (let cycleIndex = 0; cycleIndex < 3; cycleIndex += 1) {
+          routesForCycle(cycleIndex).forEach(route => {
+            route.forEach((modeId, position) => countsByModeAndPosition.get(modeId)[position] += 1);
+          });
+        }
+        countsByModeAndPosition.forEach(positionCounts => {
+          assert.ok(
+            Math.max(...positionCounts) - Math.min(...positionCounts) <= 1,
+            `Les positions d’un mode doivent rester équilibrées : ${positionCounts.join("/")}`
+          );
+        });
       }
     }
   }
@@ -297,7 +334,7 @@ globalThis.fetch = async url => {
 const configModule = await import(pathToFileURL(path.join(root, "src/config/config.js")).href);
 const sessionModule = await import(pathToFileURL(path.join(root, "src/features/multiplayer/session.js")).href);
 const sessionSchedule = scheduleModule.buildMultiplayerSchedule({
-  players, modeIds: ["mime", "draw", "lyrics"], cycles: 2, orderType: "balanced", random: deterministicRandom
+  players, modeIds: ["mime", "draw", "lyrics"], cycles: 2, flowType: "mode-blocks", orderType: "balanced", random: seededRandom(42)
 });
 const session = sessionModule.createMultiplayerSession({ schedule: sessionSchedule, durationSeconds: 60 });
 session.nextTurnIndex = 1;
@@ -332,6 +369,7 @@ for (const [modeId, modeConfig] of Object.entries(configModule.MODE_CONFIG)) {
 memoryStorage.set(configModule.GLOBAL_SETTINGS_KEY, JSON.stringify({
   selectedModeIds: ["lyrics", "draw"],
   vibrationEnabled: false,
+  globalDifficultyIds: ["easy", "hard"],
   modeOptions: {
     words: { showForbiddenWords: false },
     draw: { attemptCount: 5, durations: { easy: 35, medium: 50, hard: 70 }, soundEnabled: false }
@@ -350,17 +388,25 @@ assert.equal(stateModule.state.settings.modeOptions.draw.mixedCount, 2);
 assert.equal(stateModule.state.settings.playType, "free");
 assert.equal(stateModule.state.settings.multiplayer.players.length, 2);
 assert.equal(stateModule.state.settings.multiplayer.orderType, "balanced");
+assert.equal(stateModule.state.settings.multiplayer.flowType, "continuous");
+assert.deepEqual(stateModule.state.settings.globalDifficultyIds, ["easy", "hard"]);
+assert.equal(librariesModule.activeCardCountForMode("lyrics") >= librariesModule.filteredCardsForMode("lyrics").length, true);
+const selectedTotals = librariesModule.selectedCardTotals();
+assert.equal(selectedTotals.selected <= selectedTotals.total, true);
 
 stateModule.state.settings.playType = "multiplayer";
 stateModule.state.settings.multiplayer = {
   players: [{ id: "camille", name: "Camille" }, { id: "lea", name: "Léa" }],
   cycles: 3,
+  flowType: "mode-blocks",
   orderType: "common"
 };
 const backupModule = await import(pathToFileURL(path.join(root, "src/services/backup.js")).href);
 const newBackup = backupModule.createBackupData();
-assert.equal(newBackup.backupSchemaVersion, 4);
+assert.equal(newBackup.backupSchemaVersion, 5);
 assert.equal(newBackup.settings.multiplayer.cycles, 3);
+assert.equal(newBackup.settings.multiplayer.flowType, "mode-blocks");
+assert.deepEqual(newBackup.settings.globalDifficultyIds, ["easy", "hard"]);
 assert.equal(Object.hasOwn(newBackup, "multiplayerSession"), false, "La session temporaire ne doit pas être exportée");
 
 const legacyBackup = {
@@ -386,6 +432,7 @@ const legacyBackup = {
 backupModule.restoreBackupData(legacyBackup);
 assert.equal(stateModule.state.settings.modeOptions.draw.attemptCount, 7);
 assert.equal(stateModule.state.settings.multiplayer.cycles, 3, "Une ancienne sauvegarde ne doit pas effacer les réglages multijoueur actuels");
+assert.equal(stateModule.state.settings.multiplayer.flowType, "mode-blocks", "Une ancienne sauvegarde ne doit pas effacer le type de déroulement actuel");
 
 const drawingSource = await read("src/features/drawing/drawing-controller.js");
 assert.match(drawingSource, /playDrawingArrivalSignal\(\);\s*showNextDrawingPrompt\(\);/);
@@ -396,6 +443,15 @@ assert.match(gameSource, /if \(step\.type === "draw"\)[\s\S]*pauseRoundClock\("d
 const scheduleSource = await read("src/features/multiplayer/schedule.js");
 assert.doesNotMatch(scheduleSource, /MODE_ORDER/);
 assert.doesNotMatch(scheduleSource, /length\s*===\s*4/);
+assert.match(scheduleSource, /FLOW_MODE_BLOCKS/);
+assert.match(scheduleSource, /buildRotationClasses/);
+const homeSource = await read("src/features/home.js");
+assert.match(homeSource, /applyGlobalDifficultyFilter/);
+assert.match(homeSource, /mode-difficulty-override/);
+assert.match(homeSource, /selectedCardTotals/);
+const homeCss = await read("assets/styles/screens/home.css");
+assert.match(homeCss, /global-difficulty-chip\.difficulty-easy/);
+assert.match(homeCss, /mode-difficulty-badge\.difficulty-hard/);
 
 const mixedRules = await import(pathToFileURL(path.join(root, "src/features/drawing/mixed-drawing.js")).href);
 assert.equal(mixedRules.getMixedDrawingPenaltySeconds(60, 1), 7);
@@ -408,9 +464,10 @@ const originalFetchRestore = originalFetch;
 globalThis.localStorage = originalStorageRestore;
 globalThis.fetch = originalFetchRestore;
 
-console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.7.2 cohérents");
+console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.8.0 cohérents");
 console.log("✓ Modules ES résolus, dépendances orientées et aucun cycle d’import");
-console.log("✓ Planning dynamique testé de 1 à 12 modes et de 2 à 12 joueurs");
+console.log("✓ Deux déroulements multijoueurs testés de 1 à 12 modes et de 2 à 12 joueurs");
+console.log("✓ Filtres globaux, exceptions par mode et compteurs sélection/total validés");
 console.log("✓ Scores par mode, classement et sauvegarde de session validés");
 console.log("✓ Dessin direct, dessin en première position et fin de série validés");
 console.log("✓ Données locales et sauvegardes V0.6.0 compatibles");

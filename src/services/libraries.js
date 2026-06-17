@@ -1,4 +1,5 @@
 import {
+  DIFFICULTY_ORDER,
   GLOBAL_SETTINGS_KEY,
   LEGACY_SETTINGS_KEY,
   MODE_CONFIG,
@@ -324,6 +325,15 @@ async function loadMode(modeId, legacySettings) {
 }
 
 
+function normalizeDifficultyIds(difficultyIds, fallback = DIFFICULTY_ORDER) {
+  const normalized = cleanIdList(difficultyIds).filter(id => DIFFICULTY_ORDER.includes(id));
+  return normalized.length ? DIFFICULTY_ORDER.filter(id => normalized.includes(id)) : [...fallback];
+}
+
+function sameDifficultySelection(first, second) {
+  return normalizeDifficultyIds(first).join("|") === normalizeDifficultyIds(second).join("|");
+}
+
 function normalizeMultiplayerPlayers(players) {
   const source = Array.isArray(players) ? players : [];
   const normalized = source
@@ -356,9 +366,11 @@ export async function loadContent() {
       : MODE_ORDER.filter(id => id !== "draw"),
     vibrationEnabled: globalSettings?.vibrationEnabled ?? legacySettings?.vibrationEnabled ?? true,
     playType: globalSettings?.playType === "multiplayer" ? "multiplayer" : "free",
+    globalDifficultyIds: normalizeDifficultyIds(globalSettings?.globalDifficultyIds),
     multiplayer: {
       players: normalizeMultiplayerPlayers(globalSettings?.multiplayer?.players),
       cycles: Math.min(10, Math.max(1, Number(globalSettings?.multiplayer?.cycles) || 1)),
+      flowType: globalSettings?.multiplayer?.flowType === "mode-blocks" ? "mode-blocks" : "continuous",
       orderType: globalSettings?.multiplayer?.orderType === "common" ? "common" : "balanced"
     },
     lastLibraryCheckAt: String(globalSettings?.lastLibraryCheckAt || ""),
@@ -388,6 +400,13 @@ export async function loadContent() {
 
   if (freshModes.words && !state.settings.selectedModeIds.includes("words")) {
     state.settings.selectedModeIds.push("words");
+  }
+
+  if (!Array.isArray(globalSettings?.globalDifficultyIds) || !globalSettings.globalDifficultyIds.length) {
+    const selections = MODE_ORDER.map(modeId => normalizeDifficultyIds(modeState(modeId).selectedDifficultyIds));
+    state.settings.globalDifficultyIds = selections.every(selection => sameDifficultySelection(selection, selections[0]))
+      ? [...selections[0]]
+      : [...DIFFICULTY_ORDER];
   }
 
   state.flipped = readTextStorage("mdb-flipped") === "1";
@@ -423,11 +442,10 @@ export function activeCountForBox(modeId, boxId) {
   return modeState(modeId).cards.filter(card => card.boxId === boxId && card.active).length;
 }
 
-export function selectedCardsForMode(modeId) {
-  if (!state.settings.selectedModeIds.includes(modeId)) return [];
+export function filteredCardsForMode(modeId) {
   const mode = modeState(modeId);
   const selectedBoxes = new Set(mode.selectedBoxIds);
-  const selectedDifficulties = new Set(mode.selectedDifficultyIds);
+  const selectedDifficulties = new Set(normalizeDifficultyIds(mode.selectedDifficultyIds));
   return mode.cards
     .filter(card =>
       card.active &&
@@ -435,6 +453,21 @@ export function selectedCardsForMode(modeId) {
       selectedDifficulties.has(normalizeDifficulty(card.difficulty, modeId, card))
     )
     .map(card => ({ ...card, modeId }));
+}
+
+export function selectedCardsForMode(modeId) {
+  return state.settings.selectedModeIds.includes(modeId) ? filteredCardsForMode(modeId) : [];
+}
+
+export function activeCardCountForMode(modeId) {
+  return modeState(modeId).cards.filter(card => card.active).length;
+}
+
+export function selectedCardTotals() {
+  return state.settings.selectedModeIds.reduce((totals, modeId) => ({
+    selected: totals.selected + filteredCardsForMode(modeId).length,
+    total: totals.total + activeCardCountForMode(modeId)
+  }), { selected: 0, total: 0 });
 }
 
 export function getPlayableCards({ excludeModeIds = [] } = {}) {
