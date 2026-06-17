@@ -1,4 +1,4 @@
-# Architecture — V0.9.2
+# Architecture — V0.9.3
 
 ## Direction des dépendances
 
@@ -132,12 +132,32 @@ La carte Qui boit contient désormais toute l’interaction utile :
 
 Les anciens boutons de résolution et le bouton Passer ont été supprimés. La logique métier reste décrite dans `interaction.js`, tandis que le contrôleur applique l’effet correspondant au swipe.
 
+
+## Couche responsive V0.9.3
+
+La densité mobile n’est pas activée selon un modèle de téléphone, mais selon la contrainte réelle :
+
+```css
+@media (orientation: landscape) and (max-height: 540px) and (min-width: 600px)
+```
+
+Les règles restent dans les feuilles correspondant à leur responsabilité :
+
+- `components.css` : dialogues, contrôles et bloc repliable « Comment jouer ? » ;
+- `home.css` : accueil, tuiles et barre d’actions ;
+- `drawing.css` : réglages du Dessin ;
+- `drinking-game.css` : préparation et résultats Qui boit ;
+- `multiplayer.css` : préparation multijoueur ;
+- `manager.css` : gestionnaire de cartes.
+
+La vue compacte ne change aucun état métier. Le défilement global est évité ; lorsqu’un contenu ne peut réellement pas tenir, seule sa zone centrale défile.
+
 ## PWA
 
 ```text
-Version : 0.9.2
-Cache : mdb-v0-9-2
-Jeton des ressources : 092
+Version : 0.9.3
+Cache : mdb-v0-9-3
+Jeton des ressources : 093
 ```
 
 Le service worker met en cache les deux nouveaux modules `interaction.js` et `swipe.js`.

@@ -112,3 +112,18 @@
   0%{transform:scale(.96);filter:brightness(1.35)}
   100%{transform:scale(1);filter:brightness(1)}
 }
+
+
+/* V0.9.3 — réglages Dessin compacts sur téléphone paysage */
+@media (orientation:landscape) and (max-height:540px) and (min-width:600px){
+  .draw-config-group{padding:6px;border-radius:9px}
+  .draw-config-group+.draw-config-group{margin-top:5px}
+  .draw-config-heading{margin-bottom:4px}
+  .draw-config-heading h4{font-size:.74rem}
+  .draw-config-heading p{display:none}
+  .draw-attempt-setting,.draw-mixed-grid label,.draw-config-grid label{gap:3px;font-size:.68rem}
+  .draw-config-grid,.draw-mixed-grid{gap:5px}
+  .draw-config-grid input,.draw-config-grid select,.draw-attempt-setting select,.draw-mixed-grid select{min-height:30px;padding:4px 6px;border-radius:8px}
+  .draw-penalty-preview{min-height:30px;padding:4px 7px;font-size:.66rem}
+  .draw-arrival-option,.draw-sound-option{margin-top:5px}
+}

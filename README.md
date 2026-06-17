@@ -12,20 +12,17 @@ L’interface, les filtres et le planificateur multijoueur reposent sur la confi
 
 ## Version
 
-Version actuelle : **0.9.2**
+Version actuelle : **0.9.3**
 
-La V0.9.2 simplifie l’interface de **Qui boit, bordel ?** autour d’une seule action principale : le swipe.
+La V0.9.3 est un correctif exclusivement responsive pour les téléphones en paysage :
 
-- les boutons « Passer », « A répondu », « Refus », « Réussi » et équivalents ont été supprimés ;
-- la carte indique directement ce que signifie la conséquence : gorgées pour un buveur, pénalités ou alternative pour Team soft ;
-- swipe à droite confirme l’action positive ou attribue la conséquence selon la mécanique ;
-- swipe à gauche signifie non, refus, échec, égalité ou personne concernée selon la carte ;
-- les joueurs à sélectionner apparaissent directement dans la carte, en grille, sans barre horizontale séparée ;
-- le bouton « Oubli de règle » et les règles actives sont intégrés dans la carte ;
-- le bouton Retour reste disponible dans la carte ;
-- les questions longues utilisent automatiquement une taille adaptée ;
-- le premier prénom proposé est désormais Camille ;
-- les noms générés sont automatiquement sélectionnés au clic afin de pouvoir les remplacer sans les effacer manuellement.
+- l’accueil utilise toute la hauteur disponible sans scroll global ;
+- les cinq tuiles restent visibles sur une ligne sur les formats courants 800 × 360 et 915 × 412 ;
+- les fenêtres de configuration possèdent un en-tête et un pied compacts ;
+- « Comment jouer ? » est replié par défaut sur les écrans peu hauts ;
+- seule la zone centrale d’une fenêtre défile lorsque son contenu est réellement trop long ;
+- la préparation multijoueur, Qui boit et le gestionnaire utilisent une densité adaptée aux écrans peu hauts ;
+- la vue ordinateur, les règles de jeu, les bibliothèques et les données locales restent inchangées.
 
 ## Bibliothèques
 
@@ -72,7 +69,7 @@ Qui boit, bordel ? reste autonome. Une future « playlist de soirée » pourra a
 
 ## Compatibilité
 
-La V0.9.2 conserve :
+La V0.9.3 conserve :
 
 - les 2 368 cartes et leurs identifiants ;
 - les cartes et catégories personnelles ;
@@ -91,13 +88,13 @@ Application :
 
 URL de test :
 
-`https://88miyou88.github.io/mais-devine-bordel-/?v=092`
+`https://88miyou88.github.io/mais-devine-bordel-/?v=093`
 
 Diagnostic attendu :
 
 ```text
-Version : 0.9.2
-Cache attendu : mdb-v0-9-2
+Version : 0.9.3
+Cache attendu : mdb-v0-9-3
 ```
 
 ## Développement local
@@ -110,7 +107,7 @@ python3 -m http.server 8000
 
 Puis ouvrir :
 
-`http://localhost:8000/?v=092`
+`http://localhost:8000/?v=093`
 
 ## Contrôles automatiques
 

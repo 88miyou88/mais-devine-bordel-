@@ -22,3 +22,16 @@
 .icon-button{min-height:34px;padding:6px 9px;border-radius:10px;background:var(--panel-3);color:var(--text);border:1px solid var(--outline);font-size:.78rem;font-weight:800}
 .icon-button.danger{color:var(--red)}
 .empty-list{margin:0;padding:24px;color:var(--muted);text-align:center}
+
+
+/* V0.9.3 — gestionnaire compact sur téléphone paysage */
+@media (orientation:landscape) and (max-height:540px) and (min-width:600px){
+  #manageScreen{padding:max(3px,var(--safe-top)) max(5px,var(--safe-right)) max(3px,var(--safe-bottom)) max(5px,var(--safe-left))}
+  .manage-card{padding:6px 8px;border-radius:14px}
+  .manage-card h2{font-size:1.25rem}
+  .mode-tab{min-height:31px;font-size:.68rem}
+  .manage-stats{margin:4px 2px;font-size:.7rem}
+  .manage-card-row{gap:6px;padding:5px 7px}
+  .manage-card-main{font-size:.7rem}
+  .icon-button{min-height:27px;padding:3px 6px;font-size:.64rem}
+}

@@ -201,6 +201,8 @@ function setModeEnabled(modeId, enabled) {
 function openModeConfig(modeId) {
   state.activeModeDialogId = modeId;
   renderModeConfigDialog();
+  const compactLandscape = window.matchMedia("(orientation: landscape) and (max-height: 540px)").matches;
+  el.modeRuleDetails.open = !compactLandscape;
   el.modeConfigDialog.showModal();
 }
 

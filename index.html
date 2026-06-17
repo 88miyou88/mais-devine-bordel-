@@ -9,15 +9,15 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
-  <link rel="stylesheet" href="./assets/styles/foundation.css?v=092">
-  <link rel="stylesheet" href="./assets/styles/components.css?v=092">
-  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=092">
-  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=092">
-  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=092">
-  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=092">
-  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=092">
-  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=092">
-  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=092">
+  <link rel="stylesheet" href="./assets/styles/foundation.css?v=093">
+  <link rel="stylesheet" href="./assets/styles/components.css?v=093">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=093">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=093">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=093">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=093">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=093">
+  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=093">
+  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=093">
 </head>
 <body>
   <main id="app">
@@ -616,10 +616,10 @@
           <input id="modeEnabledInput" type="checkbox" checked>
         </label>
 
-        <section class="mode-rule-card">
-          <h3>Comment jouer ?</h3>
+        <details id="modeRuleDetails" class="mode-rule-card" open>
+          <summary><h3>Comment jouer ?</h3></summary>
           <ul id="modeRulesList"></ul>
-        </section>
+        </details>
 
         <section class="mode-setting-section">
           <div class="section-title-row">
@@ -942,7 +942,7 @@
     })();
   </script>
   <script type="module" data-mdb-bootstrap>
-    import("./src/main.js?v=092").catch(error => window.MDB_BOOT_FAILURE(error));
+    import("./src/main.js?v=093").catch(error => window.MDB_BOOT_FAILURE(error));
   </script>
 </body>
 </html>

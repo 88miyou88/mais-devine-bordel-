@@ -61,7 +61,7 @@ for (const relativePath of legacyFiles) {
 
 const html = await read("index.html");
 assert.match(html, /<script\s+type="module"\s+data-mdb-bootstrap>/);
-assert.match(html, /import\(["']\.\/src\/main\.js\?v=092["']\)/);
+assert.match(html, /import\(["']\.\/src\/main\.js\?v=093["']\)/);
 assert.match(html, /id="bootRecovery"/);
 assert.match(html, /id="bootRepairButton"/);
 assert.match(html, /id="orientationGuard"/);
@@ -106,6 +106,16 @@ assert.match(drinkingCardMarkup, /id="drinkingTargetPanel"/, "La sélection des 
 assert.match(drinkingCardMarkup, /id="drinkingRulePenaltyButton"/, "Le bouton Oubli de règle doit être intégré dans la carte");
 assert.match(drinkingCardMarkup, /id="drinkingBackButton"/, "Le bouton Retour doit rester dans la carte");
 
+
+assert.match(html, /id="modeRuleDetails"[\s\S]*?<summary><h3>Comment jouer \?<\/h3><\/summary>/, "Le bloc Comment jouer doit être repliable");
+const responsiveCss = [
+  await read("assets/styles/components.css"),
+  await read("assets/styles/screens/home.css"),
+  await read("assets/styles/screens/drinking-game.css"),
+  await read("assets/styles/screens/multiplayer.css")
+].join("\n");
+assert.match(responsiveCss, /orientation:landscape[\s\S]*max-height:540px/, "Le profil téléphone paysage compact est absent");
+
 const manifest = JSON.parse(await read("manifest.webmanifest"));
 assert.equal(manifest.name, "Mais devine, bordel !");
 assert.equal(manifest.short_name, "MDB!");
@@ -113,8 +123,8 @@ assert.equal(manifest.orientation, "landscape");
 assert.ok(manifest.icons.every(icon => icon.src.replace(/^\.\//, "").startsWith("assets/icons/")), "Chemins des icônes du manifeste incorrects");
 
 const config = await read("src/config/config.js");
-assert.match(config, /APP_VERSION\s*=\s*"0\.9\.2"/);
-assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-2"/);
+assert.match(config, /APP_VERSION\s*=\s*"0\.9\.3"/);
+assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-3"/);
 assert.match(config, /name:\s*"La suite, maestro !"/);
 assert.match(config, /name:\s*"Ferme-la et mime !"/);
 assert.match(config, /name:\s*"Picasso en PLS"/);
@@ -142,7 +152,7 @@ for (const key of [
 ]) assert.ok(config.includes(key), `Clé de stockage absente : ${key}`);
 
 const sw = await read("sw.js");
-assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-2"/);
+assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-3"/);
 assert.match(sw, /new Request\(url, \{ cache: "reload" \}\)/);
 assert.match(sw, /SKIP_WAITING/);
 const cachedPaths = new Set([...sw.matchAll(/"(\.\/[^"\n]+)"/g)].map(match => match[1]));
@@ -164,7 +174,7 @@ const expectedStylePaths = [
 const linkedStylePaths = [...html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)]
   .map(match => match[1].split("?")[0]);
 assert.deepEqual(linkedStylePaths, expectedStylePaths, "Ordre ou chemins des feuilles de style incorrects");
-assert.equal((html.match(/\?v=092/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
+assert.equal((html.match(/\?v=093/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
 
 const styleFiles = expectedFiles.filter(file => file.endsWith(".css"));
 for (const relativePath of styleFiles) {
@@ -642,7 +652,7 @@ assert.equal(activeRules.at(-1).remainingCards, 3, "Une nouvelle règle ne perd 
 assert.equal(activeRules[0].remainingCards, 2);
 
 console.log("✓ Moteur Qui boit : pénalités variables, points et ciblage équilibré");
-console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.9.2 cohérents");
+console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.9.3 cohérents");
 console.log("✓ Modules ES résolus, dépendances orientées et aucun cycle d’import");
 console.log("✓ Deux déroulements multijoueurs testés de 1 à 12 modes et de 2 à 12 joueurs");
 console.log("✓ Filtres globaux, exceptions par mode et compteurs sélection/total validés");

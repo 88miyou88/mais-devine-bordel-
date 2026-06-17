@@ -182,6 +182,7 @@ export const el = {
   doneModeDialogButton: document.querySelector("#doneModeDialogButton"),
   modeEnabledInput: document.querySelector("#modeEnabledInput"),
   modeDialogCount: document.querySelector("#modeDialogCount"),
+  modeRuleDetails: document.querySelector("#modeRuleDetails"),
   modeRulesList: document.querySelector("#modeRulesList"),
   modeDifficultyChoices: document.querySelector("#modeDifficultyChoices"),
   wordsSpecialSettings: document.querySelector("#wordsSpecialSettings"),

@@ -1,5 +1,5 @@
-export const APP_VERSION = "0.9.2";
-export const APP_CACHE_NAME = "mdb-v0-9-2";
+export const APP_VERSION = "0.9.3";
+export const APP_CACHE_NAME = "mdb-v0-9-3";
 export const SWIPE_ANIMATION_MS = 180;
 export const DRAW_HOLD_MS = 500;
 export const DRAW_RETURN_COUNTDOWN_SECONDS = 3;

@@ -1,4 +1,4 @@
-# Tests — V0.9.2
+# Tests — V0.9.3
 
 ## Commandes
 
@@ -33,8 +33,8 @@ Le validateur contrôle notamment :
 Il contrôle notamment :
 
 - les 58 fichiers attendus ;
-- la version `0.9.2` ;
-- le cache `mdb-v0-9-2` ;
+- la version `0.9.3` ;
+- le cache `mdb-v0-9-3` ;
 - les chemins HTML, CSS, JS, JSON et manifeste ;
 - la syntaxe des modules ;
 - les imports et l’absence de cycles ;
@@ -47,7 +47,9 @@ Il contrôle notamment :
 - la logique des interactions contextuelles sans boutons redondants ;
 - le ciblage équilibré ;
 - les règles temporaires ;
-- la migration automatique V0.9.0 → V0.9.2 ;
+- la migration automatique V0.9.0 → V0.9.3 ;
+- la présence du profil compact téléphone paysage ;
+- le bloc « Comment jouer ? » repliable ;
 - la préservation d’une carte modifiée localement.
 
 ## Scénarios logiques vérifiés
@@ -63,7 +65,7 @@ Il contrôle notamment :
 
 ## Vérifications Android à effectuer
 
-1. ouvrir l’URL avec `?v=092` ;
+1. ouvrir l’URL avec `?v=093` ;
 2. vérifier la version et le cache dans le diagnostic ;
 3. tester un swipe gauche et droit sur chaque grande famille de carte ;
 4. vérifier qu’un vote ne peut pas être validé sans personne sélectionnée ;
@@ -75,3 +77,20 @@ Il contrôle notamment :
 10. vérifier la fin manuelle, la reprise et les résultats finaux.
 
 L’environnement automatisé de cette génération a validé le code et les scénarios purs, mais les gestes tactiles réels, vibrations, plein écran et orientation restent à confirmer sur Android.
+
+## Vérifications visuelles V0.9.3
+
+Des montages DOM utilisant les feuilles de style finales ont été rendus dans Chromium aux formats :
+
+- 915 × 412 ;
+- 800 × 360.
+
+Les contrôles vérifient :
+
+- absence de débordement horizontal et vertical global sur l’accueil ;
+- cinq tuiles visibles sur une ligne ;
+- fenêtre de configuration contenue dans le viewport ;
+- « Comment jouer ? » replié sur téléphone paysage ;
+- catégories réparties sur plusieurs colonnes ;
+- préparation Qui boit en deux panneaux sans scroll global ;
+- défilement limité au contenu central lorsque nécessaire.
