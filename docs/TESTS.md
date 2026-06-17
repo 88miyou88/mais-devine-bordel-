@@ -1,4 +1,4 @@
-# Tests — V0.8.0
+# Tests — V0.9.0
 
 ## Commandes
 
@@ -15,95 +15,97 @@ Résultat attendu :
 - Mime : 395 cartes ;
 - Sans le dire : 360 cartes ;
 - Dessin : 420 cartes ;
-- total : 1 318 cartes.
+- Qui boit, bordel ? : 1 050 cartes ;
+- total : 2 368 cartes.
 
-Le validateur contrôle les identifiants, catégories, difficultés, champs obligatoires et les cinq mots interdits de chaque carte concernée.
+Le validateur contrôle notamment :
+
+- les identifiants uniques ;
+- les catégories et difficultés ;
+- les champs obligatoires ;
+- les cinq mots interdits des cartes concernées ;
+- les 1 050 textes uniques de Qui boit ;
+- les intensités, mécaniques et résolutions structurées ;
+- les ciblages compatibles avec les placeholders ;
+- l’absence des erreurs d’élision automatiquement détectables ;
+- les 75 cartes Après minuit correctement isolées.
 
 ## Smoke test
 
 Il contrôle notamment :
 
 - l’arborescence ;
-- la version `0.8.0` ;
-- le cache `mdb-v0-8-0` ;
+- la version `0.9.0` ;
+- le cache `mdb-v0-9-0` ;
 - les chemins HTML, CSS, JS, JSON et manifeste ;
 - la syntaxe des modules et du service worker ;
 - la résolution des imports ;
 - l’absence de cycles ;
 - la direction des dépendances ;
 - les anciennes clés de stockage ;
-- le schéma de session multijoueur `3` ;
-- le schéma de sauvegarde `5` ;
-- les filtres globaux de difficulté ;
-- les exceptions par mode ;
-- les compteurs filtré/total ;
+- le schéma de sauvegarde `6` ;
+- les filtres globaux et exceptions par mode ;
 - les deux déroulements multijoueurs ;
-- les ordres communs et équilibrés ;
 - les scores par mode ;
-- la restauration des anciennes sauvegardes.
+- les plages de pénalité de 1 à 10 ;
+- les points attribués aux buveurs et aux profils Team soft ;
+- le ciblage équilibré et l’absence de doublon dans un duel.
 
-## Matrice du planificateur
+## Test fonctionnel dans Chromium
 
-Les tests utilisent :
-
-- 1, 2, 3, 4, 5, 8 et 12 modes synthétiques ;
-- 2, 3, 5 et 12 joueurs ;
-- plusieurs cycles ;
-- `continuous` et `mode-blocks` ;
-- ordre commun et rotation équilibrée.
-
-Ils vérifient :
-
-- le nombre exact de manches ;
-- le même nombre de modes pour tous ;
-- chaque mode exactement une fois par joueur et par cycle en manches dédiées ;
-- le regroupement par mode en ordre commun ;
-- des ordres distincts autant que possible en rotation équilibrée ;
-- un écart maximal de 1 entre les positions d’un mode ;
-- l’absence de dépendance aux quatre modes actuels.
-
-## Test navigateur réalisé avant livraison
-
-Un harnais temporaire charge l’interface dans Chromium avec :
+Un harnais temporaire injecte dans une page Chromium vierge :
 
 - le vrai HTML ;
-- les vrais styles ;
-- le JavaScript regroupé temporairement à partir des modules sources ;
-- les quatre vrais JSON ;
+- l’ensemble des vrais styles ;
+- les modules ES originaux, conservés dans leurs portées de module ;
+- les cinq vrais JSON ;
 - un stockage local simulé.
 
 Le harnais n’est pas livré dans le dépôt.
 
 Vérifications réalisées :
 
-- démarrage en version `0.8.0` sans erreur JavaScript ;
-- affichage des quatre tuiles ;
-- compteurs initiaux ;
-- combinaison `Facile + Difficile` ;
-- recalcul immédiat des compteurs ;
-- exception Mime en `Difficile` uniquement et affichage de la seule pastille `D` ;
-- ouverture de la configuration multijoueur ;
-- activation de « Manches par mode » ;
-- estimation correcte du nombre de manches ;
-- création d’une session dédiée par mode ;
-- parcours complet visible et mode courant mis en évidence ;
-- absence d’erreur de console ;
-- absence de débordement horizontal en 800 × 450, 850 × 430 et 430 × 850.
+- démarrage en version `0.9.0` sans erreur JavaScript ;
+- affichage des cinq tuiles et des 2 368 cartes ;
+- pastille `Mots interdits : ON` ;
+- sélection exclusive de Qui boit, bordel ? ;
+- 975 cartes sans Après minuit et 1 050 avec Après minuit ;
+- flamme rose visible après activation ;
+- deux joueurs chargés dans la préparation ;
+- profil Team soft activable individuellement ;
+- plafond à trois et pénalités variables ;
+- ciblage automatique simple ;
+- duel sans perdant présélectionné ;
+- ajout et expiration des règles temporaires ;
+- passage de 30 cartes jusqu’au classement final ;
+- gorgées et points enregistrés séparément ;
+- Team soft classée avec les mêmes points de pénalité ;
+- aucune erreur de console ni promesse rejetée.
+
+## Responsive
+
+Vérifications Chromium :
+
+- accueil en 1 280 × 720 ;
+- accueil en 800 × 450 ;
+- accueil en 430 × 850 ;
+- préparation du mode en 800 × 450 ;
+- garde d’orientation visible en portrait ;
+- aucun débordement horizontal sur ces formats.
 
 ## Vérifications Android à effectuer
 
-1. ouvrir l’URL avec `?v=080` ;
-2. vérifier la version et le cache dans le diagnostic ;
-3. tester toutes les combinaisons de difficultés, notamment `Facile + Difficile` ;
-4. créer une exception sur un seul mode ;
-5. vérifier les compteurs de chaque tuile et le compteur général ;
-6. tester « Modes enchaînés » ;
-7. tester « Manches par mode » en ordre commun ;
-8. vérifier que tous les joueurs font le même mode avant le passage au suivant ;
-9. tester « Manches par mode » en rotation équilibrée ;
-10. vérifier que les joueurs reçoivent des ordres différents mais les mêmes modes ;
-11. tester plusieurs cycles ;
-12. tester une manche Dessin dédiée ;
-13. vérifier scores, reprise de session, vibration, son, plein écran et paysage.
+1. ouvrir l’URL avec `?v=090` ;
+2. contrôler la version et le cache dans le diagnostic ;
+3. vérifier `Mots interdits : ON/OFF` sur la tuile Sans le dire ;
+4. sélectionner Qui boit, bordel ? et vérifier que les autres modes se désactivent ;
+5. tester Après minuit et la flamme rose ;
+6. créer plusieurs joueurs et activer Team soft pour certains ;
+7. tester plusieurs plafonds entre 1 et 10 ;
+8. tester les quatre alternatives Team soft ;
+9. tester votes, duels, défis chronométrés et règles temporaires ;
+10. tester Retour, Passer, fin manuelle et reprise d’une session ;
+11. vérifier le classement final, les gorgées et les points ;
+12. confirmer vibrations, plein écran, paysage et installation PWA.
 
-Les vibrations, sons, maintien tactile et verrouillage réel de l’orientation restent nécessairement à confirmer sur un téléphone Android.
+Les vibrations et le verrouillage réel de l’orientation restent nécessairement à confirmer sur un téléphone Android.

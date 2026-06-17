@@ -33,7 +33,8 @@ export function normalizeLibrary(modeId, raw) {
   const boxes = raw.boxes.map(box => ({
     id: String(box.id),
     name: String(box.name),
-    protected: box.id === UNCATEGORIZED_ID || box.protected === true
+    protected: box.id === UNCATEGORIZED_ID || box.protected === true,
+    adult: box.adult === true
   }));
   const boxIds = new Set(boxes.map(box => box.id));
 
@@ -62,6 +63,30 @@ export function normalizeLibrary(modeId, raw) {
         forbiddenWords: Array.isArray(card.forbiddenWords)
           ? card.forbiddenWords.map(String).filter(Boolean)
           : []
+      };
+    }
+
+    if (config.type === "drinking") {
+      return {
+        ...common,
+        prompt: String(card.prompt || ""),
+        mechanic: String(card.mechanic || "manual"),
+        targetType: String(card.targetType || "group"),
+        penalty: {
+          intensity: ["light", "medium", "strong"].includes(card.penalty?.intensity)
+            ? card.penalty.intensity : "medium",
+          scoreMultiplier: Number(card.penalty?.scoreMultiplier) || 1
+        },
+        resolution: {
+          kind: String(card.resolution?.kind || "manual"),
+          supports: Array.isArray(card.resolution?.supports)
+            ? card.resolution.supports.map(String)
+            : ["drink", "points"]
+        },
+        durationSeconds: Number(card.durationSeconds) || null,
+        ruleDurationCards: Number(card.ruleDurationCards) || null,
+        adult: card.adult === true,
+        minPlayers: Math.max(2, Number(card.minPlayers) || 2)
       };
     }
 
@@ -133,7 +158,8 @@ export function officialCardFrom(card) {
 
 function sameBoxAsOfficial(localBox, officialBox) {
   return localBox.name === officialBox.name &&
-    Boolean(localBox.protected) === Boolean(officialBox.protected);
+    Boolean(localBox.protected) === Boolean(officialBox.protected) &&
+    Boolean(localBox.adult) === Boolean(officialBox.adult);
 }
 
 function sameCardAsOfficial(modeId, localCard, officialCard) {
@@ -156,6 +182,17 @@ function sameCardAsOfficial(modeId, localCard, officialCard) {
       JSON.stringify(officialCard.forbiddenWords || []);
   }
 
+  if (config.type === "drinking") {
+    return localCard.mechanic === officialCard.mechanic &&
+      localCard.targetType === officialCard.targetType &&
+      JSON.stringify(localCard.penalty || {}) === JSON.stringify(officialCard.penalty || {}) &&
+      JSON.stringify(localCard.resolution || {}) === JSON.stringify(officialCard.resolution || {}) &&
+      Number(localCard.durationSeconds || 0) === Number(officialCard.durationSeconds || 0) &&
+      Number(localCard.ruleDurationCards || 0) === Number(officialCard.ruleDurationCards || 0) &&
+      Boolean(localCard.adult) === Boolean(officialCard.adult) &&
+      Number(localCard.minPlayers || 2) === Number(officialCard.minPlayers || 2);
+  }
+
   return true;
 }
 
@@ -164,7 +201,9 @@ function freshModeState(library) {
     officialLibrary: library,
     boxes: library.boxes.map(officialBoxFrom),
     cards: library.cards.map(officialCardFrom),
-    selectedBoxIds: library.boxes.map(box => box.id),
+    selectedBoxIds: library.modeId === "drinking"
+      ? library.boxes.filter(box => box.adult !== true).map(box => box.id)
+      : library.boxes.map(box => box.id),
     selectedDifficultyIds: ["easy", "medium", "hard"],
     libraryMeta: {
       installedVersion: library.libraryVersion,
@@ -211,6 +250,25 @@ export function sanitizeMode(modeId, mode, library) {
       normalized.forbiddenWords = Array.isArray(card.forbiddenWords)
         ? card.forbiddenWords.map(String).filter(Boolean)
         : [];
+    }
+    if (config.type === "drinking") {
+      normalized.mechanic = String(card.mechanic || "manual");
+      normalized.targetType = String(card.targetType || "group");
+      normalized.penalty = {
+        intensity: ["light", "medium", "strong"].includes(card.penalty?.intensity)
+          ? card.penalty.intensity : "medium",
+        scoreMultiplier: Number(card.penalty?.scoreMultiplier) || 1
+      };
+      normalized.resolution = {
+        kind: String(card.resolution?.kind || "manual"),
+        supports: Array.isArray(card.resolution?.supports)
+          ? card.resolution.supports.map(String)
+          : ["drink", "points"]
+      };
+      normalized.durationSeconds = Number(card.durationSeconds) || null;
+      normalized.ruleDurationCards = Number(card.ruleDurationCards) || null;
+      normalized.adult = card.adult === true;
+      normalized.minPlayers = Math.max(2, Number(card.minPlayers) || 2);
     }
     return normalized;
   });
@@ -294,7 +352,7 @@ async function loadMode(modeId, legacySettings) {
           ? selectionObject.boxIds
           : (modeId === "lyrics" && Array.isArray(legacySettings?.selectedBoxIds)
               ? legacySettings.selectedBoxIds
-              : boxes.map(box => box.id))
+              : (modeId === "drinking" ? boxes.filter(box => box.adult !== true).map(box => box.id) : boxes.map(box => box.id)))
       );
 
   state.modes[modeId] = {
@@ -356,6 +414,20 @@ function normalizeMultiplayerPlayers(players) {
   return normalized;
 }
 
+function normalizeDrinkingPlayers(players) {
+  const source = Array.isArray(players) ? players : [];
+  const normalized = source.slice(0, 12).map((player, index) => ({
+    id: String(player?.id || `drink-player-${index + 1}`),
+    name: String(player?.name || `Joueur ${index + 1}`).trim().slice(0, 24) || `Joueur ${index + 1}`,
+    teamSoft: player?.teamSoft === true
+  }));
+  while (normalized.length < 2) {
+    const index = normalized.length;
+    normalized.push({ id: `drink-player-${index + 1}`, name: `Joueur ${index + 1}`, teamSoft: false });
+  }
+  return normalized;
+}
+
 export async function loadContent() {
   const legacySettings = readJsonStorage(LEGACY_SETTINGS_KEY, null, recordError);
   const globalSettings = readJsonStorage(GLOBAL_SETTINGS_KEY, null, recordError);
@@ -363,7 +435,7 @@ export async function loadContent() {
   state.settings = {
     selectedModeIds: Array.isArray(globalSettings?.selectedModeIds)
       ? globalSettings.selectedModeIds.filter(id => MODE_ORDER.includes(id))
-      : MODE_ORDER.filter(id => id !== "draw"),
+      : MODE_ORDER.filter(id => !["draw", "drinking"].includes(id)),
     vibrationEnabled: globalSettings?.vibrationEnabled ?? legacySettings?.vibrationEnabled ?? true,
     playType: globalSettings?.playType === "multiplayer" ? "multiplayer" : "free",
     globalDifficultyIds: normalizeDifficultyIds(globalSettings?.globalDifficultyIds),
@@ -389,6 +461,17 @@ export async function loadContent() {
         soundEnabled: globalSettings?.modeOptions?.draw?.soundEnabled !== false,
         mixedCount: Math.min(5, Math.max(1, Number(globalSettings?.modeOptions?.draw?.mixedCount) || 2)),
         arrivalSoundEnabled: globalSettings?.modeOptions?.draw?.arrivalSoundEnabled !== false
+      },
+      drinking: {
+        adultMode: globalSettings?.modeOptions?.drinking?.adultMode === true,
+        maxPenalty: Math.min(10, Math.max(1, Number(globalSettings?.modeOptions?.drinking?.maxPenalty) || 3)),
+        softPenaltyMode: ["points", "tokens", "mini_challenge", "joker"].includes(globalSettings?.modeOptions?.drinking?.softPenaltyMode)
+          ? globalSettings.modeOptions.drinking.softPenaltyMode : "points",
+        endType: globalSettings?.modeOptions?.drinking?.endType === "minutes" ? "minutes" : "cards",
+        cardLimit: Math.min(250, Math.max(5, Number(globalSettings?.modeOptions?.drinking?.cardLimit) || 30)),
+        durationMinutes: [15, 30, 45, 60].includes(Number(globalSettings?.modeOptions?.drinking?.durationMinutes))
+          ? Number(globalSettings.modeOptions.drinking.durationMinutes) : 30,
+        players: normalizeDrinkingPlayers(globalSettings?.modeOptions?.drinking?.players)
       }
     }
   };
@@ -400,6 +483,14 @@ export async function loadContent() {
 
   if (freshModes.words && !state.settings.selectedModeIds.includes("words")) {
     state.settings.selectedModeIds.push("words");
+  }
+
+  const drinkingMode = modeState("drinking");
+  const adultBoxId = drinkingMode.boxes.find(box => box.adult === true)?.id || "apres_minuit";
+  if (state.settings.modeOptions.drinking.adultMode) {
+    if (!drinkingMode.selectedBoxIds.includes(adultBoxId)) drinkingMode.selectedBoxIds.push(adultBoxId);
+  } else {
+    drinkingMode.selectedBoxIds = drinkingMode.selectedBoxIds.filter(id => id !== adultBoxId);
   }
 
   if (!Array.isArray(globalSettings?.globalDifficultyIds) || !globalSettings.globalDifficultyIds.length) {
@@ -519,7 +610,8 @@ export function mergeModeLibrary(modeId, library) {
       const created = officialBoxFrom(officialBox);
       mode.boxes.splice(Math.max(0, mode.boxes.length - 1), 0, created);
       localBoxes.set(created.id, created);
-      if (!mode.selectedBoxIds.includes(created.id)) mode.selectedBoxIds.push(created.id);
+      if (!(modeId === "drinking" && created.adult === true && !state.settings.modeOptions.drinking.adultMode) &&
+          !mode.selectedBoxIds.includes(created.id)) mode.selectedBoxIds.push(created.id);
       stats.boxesAdded += 1;
     } else if (existing.origin === "official" && !existing.locallyModified) {
       Object.assign(existing, officialBoxFrom(officialBox));
@@ -613,6 +705,7 @@ export async function resetLibraries() {
     };
     mode.selectedBoxIds = mode.selectedBoxIds.filter(id => validBoxIds.has(id));
     library.boxes.forEach(box => {
+      if (modeId === "drinking" && box.adult === true && !state.settings.modeOptions.drinking.adultMode) return;
       if (!mode.selectedBoxIds.includes(box.id)) mode.selectedBoxIds.push(box.id);
     });
     saveMode(modeId);

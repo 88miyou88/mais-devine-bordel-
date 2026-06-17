@@ -47,13 +47,26 @@ export const state = {
         soundEnabled: true,
         mixedCount: 2,
         arrivalSoundEnabled: true
+      },
+      drinking: {
+        adultMode: false,
+        maxPenalty: 3,
+        softPenaltyMode: "points",
+        endType: "cards",
+        cardLimit: 30,
+        durationMinutes: 30,
+        players: [
+          { id: "drink-player-1", name: "Joueur 1", teamSoft: false },
+          { id: "drink-player-2", name: "Joueur 2", teamSoft: false }
+        ]
       }
     }
   },
   modes: {},
   drawRound: null,
   drawPointer: null,
-  drawAudioContext: null
+  drawAudioContext: null,
+  drinkingGame: null
 };
 
 export function modeState(modeId) {

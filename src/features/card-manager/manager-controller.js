@@ -62,6 +62,7 @@ function getFilteredCards() {
     let values;
     if (config.type === "lyrics") values = [card.prompt, card.answer, card.title, card.source];
     else if (config.type === "words") values = [card.prompt, ...(card.forbiddenWords || [])];
+    else if (config.type === "drinking") values = [card.prompt, card.mechanic, card.targetType];
     else values = [card.prompt];
     values.push(DIFFICULTY_LABELS[card.difficulty], getBoxName(modeId, card.boxId));
     return values.join(" ").toLocaleLowerCase("fr").includes(search);
@@ -86,7 +87,9 @@ function renderCardList() {
       ? "Rechercher un mot ou un interdit…"
       : config.type === "draw"
         ? "Rechercher une consigne à dessiner…"
-        : "Rechercher une consigne de mime…";
+        : config.type === "drinking"
+          ? "Rechercher une question, un défi, un thème…"
+          : "Rechercher une consigne de mime…";
   el.manageStats.textContent = `${mode.cards.length} carte${mode.cards.length > 1 ? "s" : ""} · ` +
     `${activeTotal} active${activeTotal > 1 ? "s" : ""} · ` +
     `${cards.length} affichée${cards.length > 1 ? "s" : ""}`;
@@ -116,7 +119,9 @@ function renderCardList() {
       subtitle.textContent = `Interdits : ${(card.forbiddenWords || []).join(", ") || "aucun"}`;
     } else {
       title.textContent = card.prompt;
-      subtitle.textContent = config.name;
+      subtitle.textContent = config.type === "drinking"
+        ? `${card.mechanic || "Carte"} · ${card.targetType || "groupe"}`
+        : config.name;
     }
 
     const badges = document.createElement("div");

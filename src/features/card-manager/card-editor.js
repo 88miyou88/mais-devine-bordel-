@@ -37,8 +37,11 @@ export function openCardEditor(modeId, cardId = null) {
   el.cardModeInput.value = modeId;
   el.cardActiveInput.checked = card?.active !== false;
   el.cardDifficultyInput.value = normalizeDifficulty(card?.difficulty, modeId, card || {});
+  [...el.cardDifficultyInput.options].forEach(option => {
+    option.textContent = config.difficultyLabels?.[option.value] || ({ easy: "Facile", medium: "Moyen", hard: "Difficile" }[option.value]);
+  });
   el.lyricsEditorFields.classList.toggle("hidden", config.type !== "lyrics");
-  el.mimeEditorFields.classList.toggle("hidden", !["mime", "draw"].includes(config.type));
+  el.mimeEditorFields.classList.toggle("hidden", !["mime", "draw", "drinking"].includes(config.type));
   el.wordsEditorFields.classList.toggle("hidden", config.type !== "words");
 
   if (config.type === "lyrics") {
@@ -50,10 +53,12 @@ export function openCardEditor(modeId, cardId = null) {
     el.wordPromptInput.value = card?.prompt || "";
     el.forbiddenWordsInput.value = (card?.forbiddenWords || []).join(", ");
   } else {
-    el.simplePromptLabel.textContent = config.type === "draw" ? "Consigne à dessiner" : "Consigne à mimer";
+    el.simplePromptLabel.textContent = config.type === "draw"
+      ? "Consigne à dessiner"
+      : config.type === "drinking" ? "Question ou consigne" : "Consigne à mimer";
     el.mimePromptInput.placeholder = config.type === "draw"
       ? "Un cactus portant des moufles"
-      : "Un pigeon qui vole une frite";
+      : config.type === "drinking" ? "[prénom d'un joueur], raconte ton pire mensonge ridicule." : "Un pigeon qui vole une frite";
     el.mimePromptInput.value = card?.prompt || "";
   }
 
@@ -68,6 +73,10 @@ export function openCardEditor(modeId, cardId = null) {
 
 function closeCardEditor() {
   el.cardDialog.close();
+}
+
+function cardForDefaults(mode, id) {
+  return id ? mode.cards.find(card => card.id === id) : null;
 }
 
 function saveCard(event) {
@@ -109,8 +118,21 @@ function saveCard(event) {
     }
   } else {
     data = { ...common, prompt: el.mimePromptInput.value.trim() };
+    if (config.type === "drinking") {
+      data = {
+        ...data,
+        mechanic: cardForDefaults(mode, el.cardIdInput.value)?.mechanic || "manual",
+        targetType: cardForDefaults(mode, el.cardIdInput.value)?.targetType || "group_vote",
+        penalty: cardForDefaults(mode, el.cardIdInput.value)?.penalty || { intensity: "medium", scoreMultiplier: 1 },
+        resolution: cardForDefaults(mode, el.cardIdInput.value)?.resolution || { kind: "manual", supports: ["drink", "points", "tokens", "mini_challenge", "joker"] },
+        durationSeconds: cardForDefaults(mode, el.cardIdInput.value)?.durationSeconds || null,
+        ruleDurationCards: cardForDefaults(mode, el.cardIdInput.value)?.ruleDurationCards || null,
+        adult: cardForDefaults(mode, el.cardIdInput.value)?.adult === true,
+        minPlayers: cardForDefaults(mode, el.cardIdInput.value)?.minPlayers || 2
+      };
+    }
     if (!data.prompt) {
-      alert(config.type === "draw" ? "Écris une consigne à dessiner." : "Écris une consigne à mimer.");
+      alert(config.type === "draw" ? "Écris une consigne à dessiner." : config.type === "drinking" ? "Écris une question ou une consigne." : "Écris une consigne à mimer.");
       return;
     }
   }

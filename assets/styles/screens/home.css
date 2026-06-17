@@ -613,3 +613,46 @@
   .mode-tile-footer{flex-wrap:wrap}
   .mode-tile-chevron{margin-left:0;width:100%}
 }
+
+/* V0.9.0 — statuts de mode et mode autonome Qui boit, bordel ? */
+.mode-tile-status-badges{
+  position:absolute;
+  top:10px;
+  left:66px;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  pointer-events:none;
+}
+.mode-status-badge{
+  padding:4px 7px;
+  border:1px solid var(--outline);
+  border-radius:999px;
+  font-size:.62rem;
+  font-weight:900;
+  letter-spacing:.02em;
+  background:rgba(0,0,0,.26);
+  color:var(--muted);
+}
+.mode-status-badge.on{color:#6ff0a0;border-color:rgba(72,224,125,.45)}
+.mode-status-badge.off{color:#ff9fa8;border-color:rgba(255,107,114,.45)}
+.mode-hot-badge{
+  display:grid;
+  place-items:center;
+  width:31px;
+  height:31px;
+  border-radius:50%;
+  color:#ff5ca8;
+  background:rgba(255,55,145,.14);
+  border:1px solid rgba(255,82,164,.58);
+  box-shadow:0 0 14px rgba(255,55,145,.55), inset 0 0 10px rgba(255,55,145,.18);
+  font-size:1.05rem;
+}
+.drinking-only-home .home-topbar{grid-template-columns:minmax(0,1fr) auto}
+.drinking-only-home .home-top-controls{grid-template-columns:auto}
+.play-type-button:disabled{opacity:.42;cursor:not-allowed}
+@media (max-width:920px){
+  .mode-tile-status-badges{left:54px;top:8px}
+  .mode-status-badge{font-size:.55rem;padding:3px 5px}
+}

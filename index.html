@@ -9,14 +9,15 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
-  <link rel="stylesheet" href="./assets/styles/foundation.css?v=080">
-  <link rel="stylesheet" href="./assets/styles/components.css?v=080">
-  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=080">
-  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=080">
-  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=080">
-  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=080">
-  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=080">
-  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=080">
+  <link rel="stylesheet" href="./assets/styles/foundation.css?v=090">
+  <link rel="stylesheet" href="./assets/styles/components.css?v=090">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=090">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=090">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=090">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=090">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=090">
+  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=090">
+  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=090">
 </head>
 <body>
   <main id="app">
@@ -128,6 +129,98 @@
           </details>
 
           <button id="flipHomeButton" class="secondary-button home-compact-button" type="button">↻ Retourner</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="drinkingSetupScreen" class="screen drinking-screen">
+      <div class="drinking-shell drinking-setup-shell">
+        <header class="drinking-header">
+          <button id="drinkingSetupBackButton" class="secondary-button compact-button" type="button">← Accueil</button>
+          <div>
+            <p class="eyebrow">Préparation du chaos</p>
+            <h2>Qui boit, bordel ?</h2>
+          </div>
+          <div class="drinking-hot-badge hidden" id="drinkingSetupHotBadge">🔥 Après minuit</div>
+        </header>
+
+        <div class="drinking-setup-grid">
+          <section class="drinking-panel drinking-players-panel">
+            <div class="section-title-row">
+              <div><h3>Joueurs</h3><p>Les profils Team soft participent à tout, sans alcool.</p></div>
+              <div class="section-mini-actions">
+                <button id="drinkingShufflePlayersButton" class="mini-button" type="button">Mélanger</button>
+                <button id="drinkingAddPlayerButton" class="mini-button" type="button">+ Ajouter</button>
+              </div>
+            </div>
+            <div id="drinkingPlayerList" class="drinking-player-list"></div>
+          </section>
+
+          <section class="drinking-panel drinking-options-panel">
+            <h3>Format de la partie</h3>
+            <div class="drinking-end-type" role="radiogroup" aria-label="Fin de partie">
+              <label><input type="radio" name="drinkingEndType" value="cards" checked><span>Nombre de cartes</span></label>
+              <label><input type="radio" name="drinkingEndType" value="minutes"><span>Durée</span></label>
+            </div>
+            <div class="drinking-format-grid">
+              <label id="drinkingCardLimitField">Cartes<input id="drinkingCardLimitInput" type="number" min="5" max="250" step="5" value="30"></label>
+              <label id="drinkingDurationField" class="hidden">Durée<select id="drinkingDurationInput"><option value="15">15 min</option><option value="30" selected>30 min</option><option value="45">45 min</option><option value="60">60 min</option></select></label>
+              <label>Plafond par carte<input id="drinkingMaxPenaltyInput" type="number" min="1" max="10" step="1" value="3"></label>
+              <label>Alternative Team soft<select id="drinkingSoftModeInput"><option value="points">Points</option><option value="tokens">Jetons</option><option value="mini_challenge">Mini-défi</option><option value="joker">Joker perdu</option></select></label>
+            </div>
+            <div id="drinkingPenaltyPreview" class="drinking-penalty-preview"></div>
+            <button id="startDrinkingButton" class="primary-button" type="button">Lancer le chaos</button>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="drinkingGameScreen" class="screen drinking-screen">
+      <div class="drinking-shell drinking-game-shell">
+        <header class="drinking-game-header">
+          <div><span id="drinkingProgress">Carte 1/30</span><strong id="drinkingClock">—</strong></div>
+          <div id="drinkingRulesSummary" class="drinking-rules-summary"></div>
+          <button id="drinkingEndButton" class="danger-button compact-button" type="button">Fin</button>
+        </header>
+
+        <article id="drinkingCard" class="drinking-card">
+          <div class="drinking-card-topline">
+            <span id="drinkingTheme" class="drinking-theme">Thème</span>
+            <span id="drinkingLevel" class="drinking-level">Pépouze</span>
+          </div>
+          <p id="drinkingPrompt" class="drinking-prompt"></p>
+          <div id="drinkingPenaltyText" class="drinking-penalty-text"></div>
+          <button id="drinkingChallengeTimerButton" class="mini-button hidden" type="button">Lancer le chrono</button>
+          <div id="drinkingChallengeTimer" class="drinking-challenge-timer hidden"></div>
+        </article>
+
+        <section class="drinking-resolution-panel">
+          <div>
+            <p class="drinking-resolution-label">Qui prend la pénalité ?</p>
+            <div id="drinkingTargetChoices" class="drinking-target-choices"></div>
+          </div>
+          <div class="drinking-game-actions">
+            <button id="drinkingBackButton" class="secondary-button" type="button">↶ Retour</button>
+            <button id="drinkingSkipButton" class="secondary-button" type="button">Passer</button>
+            <button id="drinkingRulePenaltyButton" class="secondary-button" type="button">Oubli de règle</button>
+            <button id="drinkingNoPenaltyButton" class="primary-button" type="button">Validé · suivant</button>
+            <button id="drinkingApplyPenaltyButton" class="danger-button" type="button">Pénalité · suivant</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="drinkingResultsScreen" class="screen drinking-screen">
+      <div class="drinking-shell drinking-results-shell">
+        <header class="drinking-results-header">
+          <p class="eyebrow">Fin du carnage</p>
+          <h2>Résultats</h2>
+          <p id="drinkingResultsSummary"></p>
+        </header>
+        <div id="drinkingRanking" class="drinking-ranking"></div>
+        <div class="drinking-results-actions">
+          <button id="drinkingReplayButton" class="primary-button" type="button">Rejouer</button>
+          <button id="drinkingResultsHomeButton" class="secondary-button" type="button">Accueil</button>
         </div>
       </div>
     </section>
@@ -620,6 +713,17 @@
           </label>
         </section>
 
+        <section id="drinkingSpecialSettings" class="mode-setting-section hidden">
+          <label class="special-option-row drinking-hot-option">
+            <span>
+              <strong>🔥 Après minuit</strong>
+              <small>Ajoute les 75 cartes adultes et affiche une flamme rose sur la tuile.</small>
+            </span>
+            <input id="drinkingAdultModeInput" type="checkbox">
+          </label>
+          <p class="dialog-note">Les niveaux correspondent à Pépouze, Ça chauffe et Demain, on nie tout. Le mode reste autonome.</p>
+        </section>
+
         <section class="mode-setting-section">
           <div class="section-title-row">
             <div>
@@ -782,7 +886,7 @@
 
   <script>
     (() => {
-      const VERSION_TOKEN = "080";
+      const VERSION_TOKEN = "090";
       const recovery = document.querySelector("#bootRecovery");
       const message = document.querySelector("#bootRecoveryMessage");
       let bootFinished = false;
@@ -836,7 +940,7 @@
     })();
   </script>
   <script type="module" data-mdb-bootstrap>
-    import("./src/main.js?v=080").catch(error => window.MDB_BOOT_FAILURE(error));
+    import("./src/main.js?v=090").catch(error => window.MDB_BOOT_FAILURE(error));
   </script>
 </body>
 </html>

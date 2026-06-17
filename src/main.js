@@ -31,12 +31,27 @@ import {
   initializeMultiplayer,
   openMultiplayerSetup
 } from "./features/multiplayer/multiplayer-controller.js";
+import {
+  initializeDrinkingGame,
+  openDrinkingSetup,
+  stopDrinkingGame
+} from "./features/drinking-game/drinking-controller.js";
 import { registerServiceWorker } from "./services/diagnostics.js";
 import { getPlayableCards, loadContent } from "./services/libraries.js";
 
 async function startFlow() {
   if (getPlayableCards().length === 0) {
     alert("Sélectionne au moins un mode contenant une boîte et une carte active.");
+    return;
+  }
+
+  const drinkingOnly = state.settings.selectedModeIds.length === 1 && state.settings.selectedModeIds[0] === "drinking";
+  if (drinkingOnly) {
+    // Afficher immédiatement la préparation : certains navigateurs peuvent tarder
+    // à résoudre la demande de plein écran ou de verrouillage d’orientation.
+    const setupPromise = openDrinkingSetup();
+    await requestGameDisplay();
+    await setupPromise;
     return;
   }
 
@@ -55,6 +70,7 @@ async function startFlow() {
 function returnHome() {
   stopDrawingRound();
   stopClassicGame();
+  stopDrinkingGame();
   releaseWakeLock();
   renderHomeData();
   showScreen(el.homeScreen);
@@ -80,6 +96,7 @@ async function init() {
   initializeDrawing({ onAbortMixed: () => finishGame("manual") });
   initializeGame({ onReplay: startFlow, onHome: returnHome });
   initializeMultiplayer({ onHome: returnHome });
+  initializeDrinkingGame({ onHome: returnHome });
   initializeHome({
     onStart: startFlow,
     onManage: openManageScreen,

@@ -22,8 +22,8 @@ const expectedFiles = [
   "assets/styles/foundation.css", "assets/styles/components.css",
   "assets/styles/screens/home.css", "assets/styles/screens/game.css",
   "assets/styles/screens/drawing.css", "assets/styles/screens/manager.css",
-  "assets/styles/screens/results.css", "assets/styles/screens/multiplayer.css",
-  "data/lyrics.json", "data/mimes.json", "data/words.json", "data/drawings.json",
+  "assets/styles/screens/results.css", "assets/styles/screens/multiplayer.css", "assets/styles/screens/drinking-game.css",
+  "data/lyrics.json", "data/mimes.json", "data/words.json", "data/drawings.json", "data/drinking.json",
   "src/main.js", "src/config/config.js",
   "src/core/state.js", "src/core/dom.js", "src/core/storage.js", "src/core/utils.js",
   "src/services/libraries.js", "src/services/backup.js", "src/services/diagnostics.js",
@@ -36,6 +36,9 @@ const expectedFiles = [
   "src/features/card-manager/category-manager.js",
   "src/features/multiplayer/multiplayer-controller.js", "src/features/multiplayer/schedule.js",
   "src/features/multiplayer/scoreboard.js", "src/features/multiplayer/session.js",
+  "src/features/drinking-game/drinking-controller.js", "src/features/drinking-game/card-engine.js",
+  "src/features/drinking-game/targeting.js", "src/features/drinking-game/penalties.js",
+  "src/features/drinking-game/rules.js", "src/features/drinking-game/session.js",
   "tests/validate-data.mjs", "tests/smoke-test.mjs"
 ];
 
@@ -57,7 +60,7 @@ for (const relativePath of legacyFiles) {
 
 const html = await read("index.html");
 assert.match(html, /<script\s+type="module"\s+data-mdb-bootstrap>/);
-assert.match(html, /import\(["']\.\/src\/main\.js\?v=080["']\)/);
+assert.match(html, /import\(["']\.\/src\/main\.js\?v=090["']\)/);
 assert.match(html, /id="bootRecovery"/);
 assert.match(html, /id="bootRepairButton"/);
 assert.match(html, /id="orientationGuard"/);
@@ -88,6 +91,10 @@ for (const id of [
   "resumeMultiplayerDialog", "multiplayerTurnModeStats", "multiplayerRanking",
   "globalDifficultyChoices", "multiplayerFlowIntro", "multiplayerCyclesHelp"
 ]) assert.ok(htmlIds.includes(id), `Élément multijoueur absent : #${id}`);
+for (const id of [
+  "drinkingSetupScreen", "drinkingGameScreen", "drinkingResultsScreen", "drinkingPlayerList",
+  "drinkingMaxPenaltyInput", "drinkingAdultModeInput", "drinkingTargetChoices", "drinkingRanking"
+]) assert.ok(htmlIds.includes(id), `Élément Qui boit absent : #${id}`);
 
 const manifest = JSON.parse(await read("manifest.webmanifest"));
 assert.equal(manifest.name, "Mais devine, bordel !");
@@ -96,11 +103,14 @@ assert.equal(manifest.orientation, "landscape");
 assert.ok(manifest.icons.every(icon => icon.src.replace(/^\.\//, "").startsWith("assets/icons/")), "Chemins des icônes du manifeste incorrects");
 
 const config = await read("src/config/config.js");
-assert.match(config, /APP_VERSION\s*=\s*"0\.8\.0"/);
-assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-8-0"/);
+assert.match(config, /APP_VERSION\s*=\s*"0\.9\.0"/);
+assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-0"/);
 assert.match(config, /name:\s*"La suite, maestro !"/);
 assert.match(config, /name:\s*"Ferme-la et mime !"/);
 assert.match(config, /name:\s*"Picasso en PLS"/);
+assert.match(config, /name:\s*"Qui boit, bordel \?"/);
+assert.match(config, /mdb-drinking-boxes-v1/);
+assert.match(config, /DRINKING_SESSION_KEY/);
 assert.match(config, /DIFFICULTY_ORDER\s*=\s*\["easy", "medium", "hard"\]/);
 assert.match(config, /easy:\s*\{ shortLabel: "F"/);
 assert.match(config, /medium:\s*\{ shortLabel: "M"/);
@@ -119,7 +129,7 @@ for (const key of [
 ]) assert.ok(config.includes(key), `Clé de stockage absente : ${key}`);
 
 const sw = await read("sw.js");
-assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-8-0"/);
+assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-0"/);
 assert.match(sw, /new Request\(url, \{ cache: "reload" \}\)/);
 assert.match(sw, /SKIP_WAITING/);
 const cachedPaths = new Set([...sw.matchAll(/"(\.\/[^"\n]+)"/g)].map(match => match[1]));
@@ -135,12 +145,13 @@ const expectedStylePaths = [
   "./assets/styles/screens/game.css",
   "./assets/styles/screens/results.css",
   "./assets/styles/screens/drawing.css",
-  "./assets/styles/screens/multiplayer.css"
+  "./assets/styles/screens/multiplayer.css",
+  "./assets/styles/screens/drinking-game.css"
 ];
 const linkedStylePaths = [...html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)]
   .map(match => match[1].split("?")[0]);
 assert.deepEqual(linkedStylePaths, expectedStylePaths, "Ordre ou chemins des feuilles de style incorrects");
-assert.equal((html.match(/\?v=080/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
+assert.equal((html.match(/\?v=090/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
 
 const styleFiles = expectedFiles.filter(file => file.endsWith(".css"));
 for (const relativePath of styleFiles) {
@@ -403,7 +414,7 @@ stateModule.state.settings.multiplayer = {
 };
 const backupModule = await import(pathToFileURL(path.join(root, "src/services/backup.js")).href);
 const newBackup = backupModule.createBackupData();
-assert.equal(newBackup.backupSchemaVersion, 5);
+assert.equal(newBackup.backupSchemaVersion, 6);
 assert.equal(newBackup.settings.multiplayer.cycles, 3);
 assert.equal(newBackup.settings.multiplayer.flowType, "mode-blocks");
 assert.deepEqual(newBackup.settings.globalDifficultyIds, ["easy", "hard"]);
@@ -464,7 +475,54 @@ const originalFetchRestore = originalFetch;
 globalThis.localStorage = originalStorageRestore;
 globalThis.fetch = originalFetchRestore;
 
-console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.8.0 cohérents");
+
+const penaltyModule = await import(pathToFileURL(path.join(root, "src/features/drinking-game/penalties.js")).href);
+assert.deepEqual(penaltyModule.penaltyRange("light", 3), [1, 1]);
+assert.deepEqual(penaltyModule.penaltyRange("medium", 3), [2, 2]);
+assert.deepEqual(penaltyModule.penaltyRange("strong", 3), [3, 3]);
+assert.deepEqual(penaltyModule.penaltyRange("light", 10), [1, 4]);
+assert.deepEqual(penaltyModule.penaltyRange("medium", 10), [4, 7]);
+assert.deepEqual(penaltyModule.penaltyRange("strong", 10), [7, 10]);
+const drinkStats = { p1: { penaltyPoints: 0, penaltiesReceived: 0, rulesForgotten: 0, sips: 0, tokens: 0, miniChallenges: 0, jokersLost: 0 } };
+penaltyModule.applyPenalty({ id: "p1", teamSoft: false }, drinkStats, 3, "points");
+assert.equal(drinkStats.p1.penaltyPoints, 3);
+assert.equal(drinkStats.p1.sips, 3);
+const softStats = { p2: { penaltyPoints: 0, penaltiesReceived: 0, rulesForgotten: 0, sips: 0, tokens: 0, miniChallenges: 0, jokersLost: 0 } };
+penaltyModule.applyPenalty({ id: "p2", teamSoft: true }, softStats, 4, "tokens");
+assert.equal(softStats.p2.penaltyPoints, 4);
+assert.equal(softStats.p2.tokens, 4);
+assert.equal(softStats.p2.sips, 0);
+penaltyModule.applyPenalty({ id: "p2", teamSoft: true }, softStats, 4, "mini_challenge");
+assert.equal(softStats.p2.miniChallenges, 1);
+penaltyModule.applyPenalty({ id: "p2", teamSoft: true }, softStats, 4, "joker");
+assert.equal(softStats.p2.jokersLost, 2);
+
+const targetModule = await import(pathToFileURL(path.join(root, "src/features/drinking-game/targeting.js")).href);
+const targetPlayers = [{ id: "a", name: "A" }, { id: "b", name: "B" }, { id: "c", name: "C" }];
+const targetStats = Object.fromEntries(targetPlayers.map(player => [player.id, { targeted: 0, lastTargetedAt: -10 }]));
+for (let index = 0; index < 30; index += 1) {
+  targetModule.assignTargets({ targetType: "single_player" }, targetPlayers, targetStats, index, seededRandom(index + 1));
+}
+const targetCounts = Object.values(targetStats).map(stats => stats.targeted);
+assert.ok(Math.max(...targetCounts) - Math.min(...targetCounts) <= 1, `Ciblage déséquilibré : ${targetCounts.join("/")}`);
+const duelTargets = targetModule.assignTargets({ targetType: "two_players" }, targetPlayers, targetStats, 31, seededRandom(32));
+assert.equal(duelTargets.length, 2);
+assert.notEqual(duelTargets[0], duelTargets[1], "Un duel doit désigner deux joueurs différents");
+
+const rulesModule = await import(pathToFileURL(path.join(root, "src/features/drinking-game/rules.js")).href);
+let activeRules = [];
+activeRules = rulesModule.addRule(activeRules, { id: "rule-1", prompt: "Règle 1", ruleDurationCards: 3 });
+activeRules = rulesModule.addRule(activeRules, { id: "rule-2", prompt: "Règle 2", ruleDurationCards: 3 });
+activeRules = rulesModule.addRule(activeRules, { id: "rule-3", prompt: "Règle 3", ruleDurationCards: 3 });
+activeRules = rulesModule.addRule(activeRules, { id: "rule-4", prompt: "Règle 4", ruleDurationCards: 3 });
+assert.equal(activeRules.length, 3, "Trois règles temporaires maximum");
+const newestRuleId = activeRules.at(-1).id;
+activeRules = rulesModule.tickRules(activeRules, newestRuleId);
+assert.equal(activeRules.at(-1).remainingCards, 3, "Une nouvelle règle ne perd pas une carte dès son ajout");
+assert.equal(activeRules[0].remainingCards, 2);
+
+console.log("✓ Moteur Qui boit : pénalités variables, points et ciblage équilibré");
+console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.9.0 cohérents");
 console.log("✓ Modules ES résolus, dépendances orientées et aucun cycle d’import");
 console.log("✓ Deux déroulements multijoueurs testés de 1 à 12 modes et de 2 à 12 joueurs");
 console.log("✓ Filtres globaux, exceptions par mode et compteurs sélection/total validés");

@@ -1,8 +1,8 @@
-# Architecture — V0.8.0
+# Architecture — V0.9.0
 
 ## Principes
 
-La V0.8.0 conserve l’architecture modulaire de la V0.7.2 :
+La V0.9.0 conserve la direction des dépendances :
 
 ```text
 config / core
@@ -17,165 +17,165 @@ config / core
 - `config/` et `core/` ne dépendent pas des fonctionnalités ;
 - `services/` peut utiliser `config/` et `core/` ;
 - `features/` peut utiliser les couches inférieures ;
-- `main.js` orchestre uniquement l’initialisation ;
+- `main.js` orchestre l’initialisation ;
 - aucun import circulaire n’est autorisé.
 
-## Difficultés globales
+## Nouveau mode autonome
 
-### Source de vérité
+La configuration du mode est déclarée dans `src/config/config.js` avec :
 
-`state.settings.globalDifficultyIds` contient le filtre global de l’accueil.
+- son identité visuelle ;
+- sa bibliothèque `data/drinking.json` ;
+- ses clés de stockage ;
+- ses libellés de difficulté spécifiques ;
+- le marqueur `standalone: true`.
 
-Les sélections réellement utilisées par chaque mode restent dans :
+Lorsque ce mode est activé, `home.js` désactive les autres modes et force la partie libre. Le multijoueur classique n’est pas modifié.
 
-```text
-state.modes[modeId].selectedDifficultyIds
-```
-
-Ce choix permet de conserver les exceptions par mode sans ajouter une seconde structure de règles complexe.
-
-### Application globale
-
-`home.js` :
-
-1. lit les trois cases globales ;
-2. refuse une sélection vide ;
-3. copie la sélection vers tous les modes ;
-4. sauvegarde les modes et les réglages globaux ;
-5. recalcule immédiatement les compteurs.
-
-### Exception locale
-
-Lorsqu’une difficulté est modifiée depuis la fenêtre d’un mode, seule la sélection de ce mode change.
-
-Une exception est détectée par comparaison normalisée entre :
+## Dossier `drinking-game`
 
 ```text
-mode.selectedDifficultyIds
-state.settings.globalDifficultyIds
+src/features/drinking-game/
+├── drinking-controller.js
+├── card-engine.js
+├── targeting.js
+├── penalties.js
+├── rules.js
+└── session.js
 ```
 
-L’accueil affiche uniquement les difficultés sélectionnées dans l’exception, avec les couleurs :
+### `drinking-controller.js`
 
-- `F` vert ;
-- `M` bleu ;
-- `D` rouge.
+Orchestre :
 
-### Migration
+- la préparation des joueurs ;
+- le déroulement manuel des cartes ;
+- les boutons de résolution ;
+- le mini-chronomètre des défis ;
+- le retour à la carte précédente ;
+- les résultats finaux.
 
-Si une ancienne installation ne possède pas `globalDifficultyIds` :
+Il ne contient ni le filtrage de la bibliothèque ni l’algorithme de ciblage.
 
-- si tous les modes ont la même sélection, celle-ci devient le filtre global ;
-- sinon, le filtre global devient `Facile + Moyen + Difficile` et les différences existantes restent visibles comme exceptions.
+### `card-engine.js`
 
-## Comptage des cartes
+- construit le paquet avec les filtres du mode ;
+- exclut les cartes incompatibles avec le nombre de joueurs ;
+- recycle le paquet après épuisement ;
+- prépare le texte avec les prénoms ciblés.
 
-`libraries.js` sépare trois notions :
+### `targeting.js`
 
-- `activeCardCountForMode(modeId)` : toutes les cartes actives du mode ;
-- `filteredCardsForMode(modeId)` : cartes actives correspondant aux catégories et difficultés du mode, même si la tuile est décochée ;
-- `selectedCardsForMode(modeId)` : mêmes cartes, mais uniquement si le mode est coché pour la partie.
+Le ciblage automatique privilégie les joueurs les moins sollicités et évite autant que possible deux ciblages consécutifs de la même personne.
 
-`selectedCardTotals()` calcule le compteur général sur les modes cochés.
+Pour les duels, deux joueurs distincts sont préparés mais le perdant est sélectionné manuellement avant l’application de la pénalité.
 
-Cette séparation évite qu’une tuile désactivée affiche artificiellement `0 / total` alors que sa configuration contient bien des cartes.
+### `penalties.js`
 
-## Planificateur multijoueur
-
-Le module `src/features/multiplayer/schedule.js` reste indépendant du DOM et du nombre actuel de modes.
-
-Il produit deux formes de planning normalisées.
-
-### `continuous`
-
-Une manche par joueur et par cycle :
+Les cartes ne stockent pas une phrase rigide comme « boire 2 gorgées ». Elles stockent une intensité :
 
 ```text
-turn.modeOrder = [modeA, modeB, modeC]
+light | medium | strong
 ```
 
-Le moteur classique alterne ces modes pendant toute la durée.
+Le moteur calcule une plage selon le plafond de 1 à 10 puis tire une quantité dans cette plage.
 
-### `mode-blocks`
+La même quantité alimente toujours `penaltyPoints`. Selon le profil :
 
-Une manche par joueur, par mode et par cycle :
+- joueur classique : gorgées + points ;
+- Team soft : points, jetons, mini-défi ou joker + points.
+
+### `rules.js`
+
+- ajoute une règle temporaire ;
+- limite l’affichage à trois règles actives ;
+- décrémente leur durée après chaque carte ;
+- supprime les règles expirées.
+
+### `session.js`
+
+La partie active est sauvegardée sous :
 
 ```text
-turn.modeOrder = [modeA]
-turn.playerModeOrder = [modeA, modeC, modeB]
-turn.modePosition = 0
+mdb-drinking-session-v1
+schéma interne : 1
 ```
 
-Le contrôleur lance le moteur existant avec un seul mode. Aucun moteur de jeu n’est dupliqué.
+La session est supprimée à la fin ou lors d’un abandon volontaire. Elle n’est pas incluse dans la sauvegarde permanente.
 
-### Ordre commun
+## Structure de `data/drinking.json`
 
-Un ordre aléatoire unique est généré puis réutilisé pour chaque joueur.
+Le fichier source de 1 050 questions a été migré vers une bibliothèque exploitable par l’application.
 
-En `mode-blocks`, le planning est groupé par position : tous les joueurs jouent le premier mode, puis tous le deuxième, etc.
+Chaque carte contient notamment :
 
-### Rotation équilibrée
+```text
+id
+boxId
+active
+difficulty
+prompt
+mechanic
+targetType
+penalty.intensity
+resolution.kind
+resolution.supports
+durationSeconds
+ruleDurationCards
+adult
+minPlayers
+```
 
-Le planificateur construit des classes de rotations :
+Les conséquences sont donc structurées et extensibles. Les alternatives Team soft ne dépendent pas de la présence d’un chiffre dans une phrase.
 
-- une classe de `N` rotations place chaque mode exactement une fois à chaque position ;
-- plusieurs bases canoniques fournissent des ordres supplémentaires réellement distincts ;
-- les classes sont consommées progressivement pour conserver l’équilibre des positions ;
-- l’algorithme ne génère pas mécaniquement toutes les permutations quand le nombre de modes devient élevé.
+## Niveaux et thème Après minuit
 
-Cela permet d’attribuer des ordres différents autant que possible tout en gardant un coût maîtrisé pour de futurs modes.
+Les trois niveaux restent compatibles avec le filtre global :
 
-## Contrôleur multijoueur
+```text
+easy   → Pépouze
+medium → Ça chauffe
+hard   → Demain, on nie tout
+```
 
-`multiplayer-controller.js` gère :
+La boîte `apres_minuit` porte la métadonnée `adult: true`. Elle est exclue de la sélection initiale et ajoutée ou retirée par l’interrupteur du mode.
 
-- le choix du déroulement ;
-- le nombre de cycles ;
-- l’ordre commun ou équilibré ;
-- l’estimation du nombre de manches ;
-- l’écran de passage du téléphone ;
-- le lancement du moteur classique ou Dessin ;
-- le score, la session et le classement.
+## Accueil
 
-Pour une manche par mode, l’écran de passage affiche le parcours complet du joueur et met en évidence le mode actuel, sans flèche ni libellé encombrant.
+`home.js` assure :
 
-## Dessin
+- l’exclusivité du mode autonome ;
+- le compteur `cartes filtrées / cartes actives` ;
+- la flamme Après minuit ;
+- la pastille `Mots interdits : ON/OFF` ;
+- les difficultés globales et exceptions existantes.
 
-Une manche dédiée au Dessin réutilise le moteur autonome existant. Une manche continue contenant Dessin réutilise le moteur mixte de la V0.6.0.
+Chaque tuile possède `data-mode-id`, ce qui facilite les tests et les futures extensions sans dépendre de son texte.
 
-Le chrono général, les pénalités, le canevas et le maintien tactile ne sont pas recopiés dans le multijoueur.
+## Gestionnaire de cartes
+
+Le gestionnaire accepte la cinquième bibliothèque. L’éditeur simple permet de modifier ou créer une consigne tout en préservant les métadonnées structurées des cartes officielles.
 
 ## Stockage et sauvegardes
 
-Clés historiques conservées :
-
-- `mdb-global-settings-v2` ;
-- clés des quatre bibliothèques ;
-- clés de sélection existantes.
-
-Session multijoueur :
+Nouvelles clés :
 
 ```text
-mdb-multiplayer-session-v2
-schéma interne : 3
+mdb-drinking-boxes-v1
+mdb-drinking-cards-v1
+mdb-drinking-library-meta-v1
+mdb-drinking-selection-v1
+mdb-drinking-session-v1
 ```
 
-Le numéro de clé reste inchangé pour ne pas multiplier les entrées. Le schéma interne invalide proprement les anciennes sessions incompatibles.
-
-Sauvegarde permanente :
-
-```text
-backupSchemaVersion: 5
-```
-
-Elle inclut le filtre global et le type de déroulement, mais jamais la session temporaire active.
+Le schéma de sauvegarde permanent passe à `6` et accepte toujours les schémas antérieurs pris en charge.
 
 ## PWA
 
-Version : `0.8.0`
+Version : `0.9.0`
 
-Cache : `mdb-v0-8-0`
+Cache : `mdb-v0-9-0`
 
-Jeton des ressources critiques : `080`
+Jeton des ressources critiques : `090`
 
-`sw.js` reste à la racine afin de contrôler l’ensemble de l’application.
+Le service worker met en cache la cinquième bibliothèque, sa feuille de style et les six modules du nouveau moteur.

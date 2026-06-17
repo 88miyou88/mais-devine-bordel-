@@ -5,7 +5,7 @@ import { sanitizeMode, saveAllData } from "./libraries.js";
 
 export function createBackupData() {
   return {
-    backupSchemaVersion: 5,
+    backupSchemaVersion: 6,
     appVersion: APP_VERSION,
     exportedAt: new Date().toISOString(),
     settings: clone(state.settings),
@@ -38,7 +38,7 @@ export function exportBackup() {
 }
 
 export function validBackup(data) {
-  if ([2, 3, 4, 5].includes(Number(data?.backupSchemaVersion))) {
+  if ([2, 3, 4, 5, 6].includes(Number(data?.backupSchemaVersion))) {
     return data.settings && data.modes && Object.values(data.modes).some(mode =>
       Array.isArray(mode?.boxes) && Array.isArray(mode?.cards)
     );
@@ -86,6 +86,19 @@ function mergeRestoredSettings(settings = {}) {
         arrivalSoundEnabled: typeof settings.modeOptions?.draw?.arrivalSoundEnabled === "boolean"
           ? settings.modeOptions.draw.arrivalSoundEnabled
           : state.settings.modeOptions.draw.arrivalSoundEnabled
+      },
+      drinking: {
+        adultMode: settings.modeOptions?.drinking?.adultMode === true,
+        maxPenalty: Math.min(10, Math.max(1, Number(settings.modeOptions?.drinking?.maxPenalty) || state.settings.modeOptions.drinking.maxPenalty)),
+        softPenaltyMode: ["points", "tokens", "mini_challenge", "joker"].includes(settings.modeOptions?.drinking?.softPenaltyMode)
+          ? settings.modeOptions.drinking.softPenaltyMode : state.settings.modeOptions.drinking.softPenaltyMode,
+        endType: settings.modeOptions?.drinking?.endType === "minutes" ? "minutes" : "cards",
+        cardLimit: Math.min(250, Math.max(5, Number(settings.modeOptions?.drinking?.cardLimit) || state.settings.modeOptions.drinking.cardLimit)),
+        durationMinutes: [15, 30, 45, 60].includes(Number(settings.modeOptions?.drinking?.durationMinutes))
+          ? Number(settings.modeOptions.drinking.durationMinutes) : state.settings.modeOptions.drinking.durationMinutes,
+        players: Array.isArray(settings.modeOptions?.drinking?.players)
+          ? clone(settings.modeOptions.drinking.players)
+          : clone(state.settings.modeOptions.drinking.players)
       }
     }
   };
@@ -105,7 +118,7 @@ export function restoreBackupData(data) {
     throw new Error("Ce fichier n’est pas une sauvegarde MDB valide.");
   }
 
-  if ([2, 3, 4, 5].includes(Number(data.backupSchemaVersion))) {
+  if ([2, 3, 4, 5, 6].includes(Number(data.backupSchemaVersion))) {
     mergeRestoredSettings(data.settings);
     MODE_ORDER.forEach(modeId => {
       const restored = data.modes[modeId];

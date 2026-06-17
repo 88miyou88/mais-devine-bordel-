@@ -38,10 +38,15 @@ export function renderHomeData() {
   el.multiplayerPlayButton.classList.toggle("selected", multiplayer);
   el.freePlayButton.setAttribute("aria-pressed", String(!multiplayer));
   el.multiplayerPlayButton.setAttribute("aria-pressed", String(multiplayer));
-  el.startButton.textContent = multiplayer ? "Configurer le multijoueur" : "Lancer la partie";
+  const drinkingOnly = state.settings.selectedModeIds.length === 1 && state.settings.selectedModeIds[0] === "drinking";
+  el.startButton.textContent = drinkingOnly
+    ? "Configurer Qui boit, bordel ?"
+    : (multiplayer ? "Configurer le multijoueur" : "Lancer la partie");
   const drawOnly = state.settings.selectedModeIds.length === 1 && state.settings.selectedModeIds[0] === "draw";
-  el.globalTimerSettings.classList.toggle("hidden", drawOnly);
+  el.globalTimerSettings.classList.toggle("hidden", drawOnly || drinkingOnly);
   el.homeScreen.classList.toggle("draw-only-home", drawOnly);
+  el.homeScreen.classList.toggle("drinking-only-home", drinkingOnly);
+  el.multiplayerPlayButton.disabled = drinkingOnly;
   const totals = selectedCardTotals();
   el.availableCount.textContent = `${totals.selected} / ${totals.total} carte${totals.total > 1 ? "s" : ""}`;
   el.availableCount.title = `${totals.selected} carte(s) correspondent aux filtres sur ${totals.total} carte(s) active(s)`;
@@ -82,10 +87,11 @@ function applyGlobalDifficultyFilter(changedInput) {
 
 function createDifficultyOverride(modeId) {
   const mode = modeState(modeId);
+  const config = modeConfig(modeId);
   if (sameDifficultyIds(mode.selectedDifficultyIds, state.settings.globalDifficultyIds)) return null;
   const wrapper = document.createElement("span");
   wrapper.className = "mode-difficulty-override";
-  wrapper.setAttribute("aria-label", `Difficultés spécifiques : ${normalizedDifficultyIds(mode.selectedDifficultyIds).map(id => DIFFICULTY_META[id].label).join(", ")}`);
+  wrapper.setAttribute("aria-label", `Difficultés spécifiques : ${normalizedDifficultyIds(mode.selectedDifficultyIds).map(id => config.difficultyLabels?.[id] || DIFFICULTY_META[id].label).join(", ")}`);
   wrapper.title = wrapper.getAttribute("aria-label");
   normalizedDifficultyIds(mode.selectedDifficultyIds).forEach(difficulty => {
     const badge = document.createElement("span");
@@ -106,6 +112,7 @@ function renderModeSelection() {
     const totalCount = activeCardCountForMode(modeId);
     const tile = document.createElement("article");
     tile.className = `mode-app-tile${selected ? " selected" : ""}`;
+    tile.dataset.modeId = modeId;
     tile.style.setProperty("--mode-color", config.color);
 
     const checkbox = document.createElement("input");
@@ -128,6 +135,21 @@ function renderModeSelection() {
     const icon = document.createElement("div");
     icon.className = "mode-tile-icon";
     icon.innerHTML = MODE_ICONS[config.icon] || "";
+    const statusBadges = document.createElement("div");
+    statusBadges.className = "mode-tile-status-badges";
+    if (modeId === "words") {
+      const badge = document.createElement("span");
+      badge.className = `mode-status-badge ${state.settings.modeOptions.words.showForbiddenWords ? "on" : "off"}`;
+      badge.textContent = `Mots interdits : ${state.settings.modeOptions.words.showForbiddenWords ? "ON" : "OFF"}`;
+      statusBadges.append(badge);
+    }
+    if (modeId === "drinking" && state.settings.modeOptions.drinking.adultMode) {
+      const hot = document.createElement("span");
+      hot.className = "mode-hot-badge";
+      hot.textContent = "🔥";
+      hot.title = "Après minuit activé";
+      statusBadges.append(hot);
+    }
     const text = document.createElement("div");
     text.className = "mode-tile-text";
     const name = document.createElement("strong");
@@ -149,7 +171,7 @@ function renderModeSelection() {
     footer.append(count);
     if (override) footer.append(override);
     footer.append(arrow);
-    openButton.append(icon, text, footer);
+    openButton.append(icon, statusBadges, text, footer);
     tile.append(checkbox, openButton);
     el.modeSelectionList.append(tile);
   });
@@ -157,13 +179,18 @@ function renderModeSelection() {
 
 
 function setPlayType(playType) {
+  if (state.settings.selectedModeIds.includes("drinking") && playType === "multiplayer") return;
   state.settings.playType = playType === "multiplayer" ? "multiplayer" : "free";
   saveGlobalSettings();
   renderHomeData();
 }
 
 function setModeEnabled(modeId, enabled) {
-  if (enabled) {
+  if (enabled && modeId === "drinking") {
+    state.settings.selectedModeIds = ["drinking"];
+    state.settings.playType = "free";
+  } else if (enabled) {
+    state.settings.selectedModeIds = state.settings.selectedModeIds.filter(id => id !== "drinking");
     if (!state.settings.selectedModeIds.includes(modeId)) state.settings.selectedModeIds.push(modeId);
   } else {
     state.settings.selectedModeIds = state.settings.selectedModeIds.filter(id => id !== modeId);
@@ -232,14 +259,16 @@ function renderModeConfigDialog() {
       renderModeSelection();
     });
     const span = document.createElement("span");
-    span.textContent = DIFFICULTY_LABELS[difficulty];
+    span.textContent = config.difficultyLabels?.[difficulty] || DIFFICULTY_LABELS[difficulty];
     label.append(input, span);
     el.modeDifficultyChoices.append(label);
   });
 
   el.wordsSpecialSettings.classList.toggle("hidden", config.type !== "words");
   el.showForbiddenWordsInput.checked = state.settings.modeOptions.words.showForbiddenWords;
+  el.drinkingAdultModeInput.checked = state.settings.modeOptions.drinking.adultMode;
   el.drawSpecialSettings.classList.toggle("hidden", config.type !== "draw");
+  el.drinkingSpecialSettings.classList.toggle("hidden", config.type !== "drinking");
   const drawOptions = state.settings.modeOptions.draw;
   el.drawAttemptCountInput.value = String(drawOptions.attemptCount);
   el.drawMixedCountInput.value = String(drawOptions.mixedCount);
@@ -252,6 +281,7 @@ function renderModeConfigDialog() {
 
   el.modeBoxChoices.innerHTML = "";
   mode.boxes.forEach(box => {
+    if (modeId === "drinking" && box.adult === true) return;
     const label = document.createElement("label");
     label.className = "mode-dialog-box-choice";
     const input = document.createElement("input");
@@ -278,11 +308,13 @@ function renderModeConfigDialog() {
 }
 
 function selectEverything() {
-  state.settings.selectedModeIds = [...MODE_ORDER];
+  state.settings.selectedModeIds = MODE_ORDER.filter(modeId => modeId !== "drinking");
   state.settings.globalDifficultyIds = [...DIFFICULTY_ORDER];
   MODE_ORDER.forEach(modeId => {
     const mode = modeState(modeId);
-    mode.selectedBoxIds = mode.boxes.map(box => box.id);
+    mode.selectedBoxIds = mode.boxes
+      .filter(box => !(modeId === "drinking" && box.adult === true && !state.settings.modeOptions.drinking.adultMode))
+      .map(box => box.id);
     mode.selectedDifficultyIds = [...DIFFICULTY_ORDER];
   });
   saveAllData();
@@ -465,7 +497,9 @@ export function initializeHome(options = {}) {
     const modeId = state.activeModeDialogId;
     if (!modeId) return;
     const mode = modeState(modeId);
-    mode.selectedBoxIds = mode.boxes.map(box => box.id);
+    mode.selectedBoxIds = mode.boxes
+      .filter(box => !(modeId === "drinking" && box.adult === true && !state.settings.modeOptions.drinking.adultMode))
+      .map(box => box.id);
     saveMode(modeId);
     renderModeConfigDialog();
     renderModeSelection();
@@ -481,6 +515,19 @@ export function initializeHome(options = {}) {
   el.showForbiddenWordsInput.addEventListener("change", () => {
     state.settings.modeOptions.words.showForbiddenWords = el.showForbiddenWordsInput.checked;
     saveGlobalSettings();
+    renderModeSelection();
+  });
+  el.drinkingAdultModeInput.addEventListener("change", () => {
+    const enabled = el.drinkingAdultModeInput.checked;
+    state.settings.modeOptions.drinking.adultMode = enabled;
+    const mode = modeState("drinking");
+    const adultBoxId = mode.boxes.find(box => box.adult === true)?.id || "apres_minuit";
+    if (enabled && !mode.selectedBoxIds.includes(adultBoxId)) mode.selectedBoxIds.push(adultBoxId);
+    if (!enabled) mode.selectedBoxIds = mode.selectedBoxIds.filter(id => id !== adultBoxId);
+    saveMode("drinking");
+    saveGlobalSettings();
+    updateModeDialogCount();
+    renderModeSelection();
   });
   [
     el.drawAttemptCountInput,

@@ -1,7 +1,7 @@
 {
   "name": "Mais devine, bordel !",
   "short_name": "MDB!",
-  "description": "Jeu de cartes à poser sur le front.",
+  "description": "Application de jeux de soirée : devinettes, mime, dessin et cartes de groupe.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

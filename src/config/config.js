@@ -1,5 +1,5 @@
-export const APP_VERSION = "0.8.0";
-export const APP_CACHE_NAME = "mdb-v0-8-0";
+export const APP_VERSION = "0.9.0";
+export const APP_CACHE_NAME = "mdb-v0-9-0";
 export const SWIPE_ANIMATION_MS = 180;
 export const DRAW_HOLD_MS = 500;
 export const DRAW_RETURN_COUNTDOWN_SECONDS = 3;
@@ -69,6 +69,29 @@ export const MODE_CONFIG = {
       selection: "mdb-words-selection-v1"
     }
   },
+  drinking: {
+    id: "drinking",
+    name: "Qui boit, bordel ?",
+    gameLabel: "QUI BOIT, BORDEL ?",
+    description: "Votes, défis, dossiers et chaos de soirée",
+    color: "#ff477e",
+    icon: "drinking",
+    standalone: true,
+    difficultyLabels: { easy: "Pépouze", medium: "Ça chauffe", hard: "Demain, on nie tout" },
+    rules: [
+      "Le téléphone reste visible par tout le groupe et les cartes avancent manuellement.",
+      "Les joueurs ciblés sont répartis équitablement ; chacun peut passer une carte sans justification.",
+      "Les gorgées ajoutent aussi des points de pénalité. Les joueurs Team soft reçoivent une alternative adaptée."
+    ],
+    libraryUrl: "./data/drinking.json",
+    type: "drinking",
+    storage: {
+      boxes: "mdb-drinking-boxes-v1",
+      cards: "mdb-drinking-cards-v1",
+      meta: "mdb-drinking-library-meta-v1",
+      selection: "mdb-drinking-selection-v1"
+    }
+  },
   draw: {
     id: "draw",
     name: "Picasso en PLS",
@@ -93,10 +116,12 @@ export const MODE_CONFIG = {
   }
 };
 
-export const MODE_ORDER = ["lyrics", "mime", "words", "draw"];
+export const MODE_ORDER = ["lyrics", "mime", "words", "draw", "drinking"];
 export const GLOBAL_SETTINGS_KEY = "mdb-global-settings-v2";
 export const LEGACY_SETTINGS_KEY = "mdb-settings-v1";
 export const MULTIPLAYER_SESSION_KEY = "mdb-multiplayer-session-v2";
+export const DRINKING_SESSION_KEY = "mdb-drinking-session-v1";
+export const DRINKING_SESSION_SCHEMA = 1;
 export const MULTIPLAYER_SESSION_SCHEMA = 3;
 export const MIN_MULTIPLAYER_PLAYERS = 2;
 export const MAX_MULTIPLAYER_PLAYERS = 12;
@@ -127,6 +152,14 @@ export const MODE_ICONS = {
       <circle cx="22" cy="27" r="3" fill="currentColor"/><circle cx="32" cy="27" r="3" fill="currentColor"/><circle cx="42" cy="27" r="3" fill="currentColor"/>
       <circle cx="49" cy="48" r="10" fill="#111318" stroke="currentColor" stroke-width="3"/>
       <path d="m43 54 12-12" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+    </svg>`,
+  drinking: `
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M18 8h28l-3 37a11 11 0 0 1-11 10 11 11 0 0 1-11-10L18 8Z" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M21 23h22l-2 21a9 9 0 0 1-18 0l-2-21Z" fill="currentColor" opacity=".3"/>
+      <path d="M24 28c4 3 12 3 16 0" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M32 2v9M28 6h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <path d="M49 16l4-4M52 21h6M47 11V5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
     </svg>`,
   draw: `
     <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">

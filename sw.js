@@ -1,4 +1,4 @@
-const CACHE_NAME = "mdb-v0-8-0";
+const CACHE_NAME = "mdb-v0-9-0";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -13,10 +13,12 @@ const APP_FILES = [
   "./assets/styles/screens/results.css",
   "./assets/styles/screens/drawing.css",
   "./assets/styles/screens/multiplayer.css",
+  "./assets/styles/screens/drinking-game.css",
   "./data/lyrics.json",
   "./data/mimes.json",
   "./data/words.json",
   "./data/drawings.json",
+  "./data/drinking.json",
   "./src/main.js",
   "./src/config/config.js",
   "./src/core/state.js",
@@ -42,7 +44,13 @@ const APP_FILES = [
   "./src/features/multiplayer/multiplayer-controller.js",
   "./src/features/multiplayer/schedule.js",
   "./src/features/multiplayer/scoreboard.js",
-  "./src/features/multiplayer/session.js"
+  "./src/features/multiplayer/session.js",
+  "./src/features/drinking-game/drinking-controller.js",
+  "./src/features/drinking-game/card-engine.js",
+  "./src/features/drinking-game/targeting.js",
+  "./src/features/drinking-game/penalties.js",
+  "./src/features/drinking-game/rules.js",
+  "./src/features/drinking-game/session.js"
 ];
 
 self.addEventListener("install", event => {

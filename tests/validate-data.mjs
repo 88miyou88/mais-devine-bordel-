@@ -8,7 +8,8 @@ const libraries = [
   ["lyrics", "data/lyrics.json", 143],
   ["mime", "data/mimes.json", 395],
   ["words", "data/words.json", 360],
-  ["draw", "data/drawings.json", 420]
+  ["draw", "data/drawings.json", 420],
+  ["drinking", "data/drinking.json", 1050]
 ];
 
 const allIds = new Set();
@@ -30,6 +31,7 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
   }
 
   const cardIds = new Set();
+  const texts = new Set();
   for (const card of data.cards) {
     assert.ok(card.id, `${relativePath}: carte sans identifiant`);
     assert.ok(!cardIds.has(card.id), `${relativePath}: carte dupliquée ${card.id}`);
@@ -44,6 +46,17 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
     if (modeId === "words") {
       assert.equal(card.forbiddenWords?.length, 5, `${relativePath}: ${card.id} doit avoir cinq mots interdits`);
     }
+    if (modeId === "drinking") {
+      assert.ok(card.mechanic, `${relativePath}: mécanique absente pour ${card.id}`);
+      assert.ok(card.targetType, `${relativePath}: cible absente pour ${card.id}`);
+      assert.ok(["light", "medium", "strong"].includes(card.penalty?.intensity), `${relativePath}: intensité invalide pour ${card.id}`);
+      assert.ok(Array.isArray(card.resolution?.supports) && card.resolution.supports.includes("points"), `${relativePath}: alternatives incomplètes pour ${card.id}`);
+      assert.ok(Number(card.minPlayers) >= 2, `${relativePath}: nombre minimum invalide pour ${card.id}`);
+      const normalizedText = card.prompt.toLocaleLowerCase("fr").replace(/\s+/g, " ").trim();
+      assert.ok(!texts.has(normalizedText), `${relativePath}: texte dupliqué pour ${card.id}`);
+      texts.add(normalizedText);
+      assert.doesNotMatch(card.prompt, /\bde (?:avoir|arriver|oublier|envoyer|embrasser|être|aller|inventer|applaudir)\b/i, `${relativePath}: élision à corriger pour ${card.id}`);
+    }
     cardIds.add(card.id);
     allIds.add(card.id);
   }
@@ -52,5 +65,5 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
   console.log(`✓ ${modeId}: ${data.cards.length} cartes, ${data.boxes.length} catégories`);
 }
 
-assert.equal(totalCards, 1318, "Total de cartes inattendu");
+assert.equal(totalCards, 2368, "Total de cartes inattendu");
 console.log(`✓ Total: ${totalCards} cartes`);
