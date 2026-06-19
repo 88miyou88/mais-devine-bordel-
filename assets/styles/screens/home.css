@@ -123,7 +123,7 @@
   border-radius:18px;
 }
 .mode-tile-open{min-height:0;height:100%;gap:5px}
-.mode-tile-check{top:8px;right:8px;width:22px;height:22px}
+.mode-tile-selector{top:4px;right:4px}.mode-tile-check-visual{width:22px;height:22px}
 .mode-tile-icon{width:48px;height:48px}
 .mode-tile-text strong{font-size:clamp(.88rem,1.8vw,1.08rem)}
 .mode-tile-text small{margin-top:3px;font-size:clamp(.64rem,1.2vw,.74rem);line-height:1.15}
@@ -714,7 +714,7 @@
     border-radius:12px;
   }
   .mode-tile-open{min-height:0;height:100%;gap:2px}
-  .mode-tile-check{top:5px;right:5px;width:18px;height:18px}
+  .mode-tile-selector{top:1px;right:1px;width:44px;height:44px}.mode-tile-check-visual{width:19px;height:19px;border-radius:6px;font-size:.7rem}
   .mode-tile-icon{width:30px;height:30px}
   .mode-tile-status-badges{top:5px;left:39px;gap:3px}
   .mode-status-badge{padding:2px 4px;font-size:.48rem}
@@ -736,3 +736,15 @@
   }
   .home-action-bar .settings-panel[open]{inset:max(4px,var(--safe-top)) max(5px,var(--safe-right)) max(4px,var(--safe-bottom)) max(5px,var(--safe-left))}
 }
+
+.card-removal-report-panel{
+  margin:12px 0;
+  padding:11px;
+  border:1px solid rgba(255,107,114,.28);
+  border-radius:12px;
+  background:rgba(255,91,103,.055);
+}
+.card-removal-report-status{margin:0 0 8px;font-weight:900;color:#ffc0c5}
+.card-removal-report-actions{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(120px,.7fr);gap:8px}
+.card-removal-report-panel small{display:block;margin-top:8px;color:var(--muted);line-height:1.35}
+@media(max-width:620px){.card-removal-report-actions{grid-template-columns:1fr}}

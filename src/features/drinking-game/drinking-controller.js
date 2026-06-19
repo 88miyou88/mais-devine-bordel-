@@ -2,6 +2,7 @@ import { DIFFICULTY_META } from "../../config/config.js";
 import { el, requestGameDisplay, showScreen } from "../../core/dom.js";
 import { modeState, state } from "../../core/state.js";
 import { saveGlobalSettings } from "../../services/libraries.js";
+import { removeCardDuringGame } from "../../services/card-removals.js";
 import { buildDeck, drawPreparedCard } from "./card-engine.js";
 import {
   defaultPenaltyTargetIds,
@@ -247,9 +248,10 @@ function renderGame() {
   const card = game?.currentCard;
   if (!game || !card) return;
 
+  const playedLabel = `${game.playedCount} jouée${game.playedCount > 1 ? "s" : ""}`;
   el.drinkingProgress.textContent = game.endType === "cards"
-    ? `Carte ${Math.min(game.playedCount + 1, game.cardLimit)} / ${game.cardLimit}`
-    : `${game.playedCount} carte${game.playedCount > 1 ? "s" : ""} jouée${game.playedCount > 1 ? "s" : ""}`;
+    ? `${Math.min(game.playedCount + 1, game.cardLimit)} / ${game.cardLimit} · ${playedLabel}`
+    : playedLabel;
   renderClock();
 
   const box = modeState("drinking").boxes.find(item => item.id === card.boxId);
@@ -345,6 +347,7 @@ function renderTargetChoices(selectableIds, multiple) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = `drinking-target-chip${game.selectedTargetIds.includes(player.id) ? " selected" : ""}`;
+    button.dataset.swipeTap = "player";
     button.textContent = `${player.name}${player.teamSoft ? " · 🥤" : ""}`;
     button.title = describePenalty(player, game.currentPenalty, game.softPenaltyMode);
     button.addEventListener("click", () => {
@@ -470,6 +473,28 @@ function shouldFinish(game) {
   return game.remainingMs <= 0;
 }
 
+function deleteCurrentDrinkingCard() {
+  const game = state.drinkingGame;
+  const card = game?.currentCard;
+  if (!game || !card) return;
+  if (!confirm(
+    `Supprimer définitivement cette carte ?\n\n${card.prompt}\n\n` +
+    "Elle disparaîtra immédiatement de ce téléphone et sera ajoutée au fichier des cartes supprimées. " +
+    "Le bouton Retour ne pourra pas annuler cette suppression."
+  )) return;
+
+  clearInterval(challengeTimer);
+  challengeTimer = 0;
+  if (!removeCardDuringGame("drinking", card.id, { source: "drinking_game" })) return;
+  game.deck = game.deck.filter(item => item.id !== card.id);
+  game.usedCards = game.usedCards.filter(item => item.id !== card.id);
+  game.history = [];
+  game.currentCard = null;
+  game.rulePenaltyMode = false;
+  game.rulePenaltyTargetBackup = [];
+  drawNextCard();
+}
+
 function goBack() {
   const game = state.drinkingGame;
   const snapshot = game.history.pop();
@@ -542,8 +567,10 @@ function resumeGameClock() {
 
 function renderClock() {
   const game = state.drinkingGame;
-  if (game.endType !== "minutes") {
-    el.drinkingClock.textContent = `${game.playedCount} jouée${game.playedCount > 1 ? "s" : ""}`;
+  const timed = game.endType === "minutes";
+  el.drinkingClock.classList.toggle("hidden", !timed);
+  if (!timed) {
+    el.drinkingClock.textContent = "";
     return;
   }
   const totalSeconds = Math.ceil(game.remainingMs / 1000);
@@ -666,6 +693,7 @@ export function initializeDrinkingGame(optionsCallbacks = {}) {
   el.drinkingBackButton.addEventListener("click", goBack);
   el.drinkingRulePenaltyButton.addEventListener("click", beginRulePenalty);
   el.drinkingChallengeTimerButton.addEventListener("click", startChallengeTimer);
+  el.drinkingDeleteCardButton.addEventListener("click", deleteCurrentDrinkingCard);
   el.drinkingEndButton.addEventListener("click", () => {
     if (confirm("Terminer la partie maintenant ?")) finishDrinkingGame();
   });

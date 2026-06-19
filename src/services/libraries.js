@@ -196,6 +196,68 @@ function sameCardAsOfficial(modeId, localCard, officialCard) {
   return true;
 }
 
+const AUTO_LIBRARY_MIGRATIONS = {
+  mime: new Set([
+    "2026.06.15-1",
+    "0.9.4-content-mimes-1000-final"
+  ]),
+  drinking: new Set([
+    "2026.06.17-1",
+    "2026.06.17-2"
+  ])
+};
+
+function shouldAutoMigrateLibrary(modeId, installedVersion, libraryVersion) {
+  if (!installedVersion || installedVersion === libraryVersion) return false;
+  return AUTO_LIBRARY_MIGRATIONS[modeId]?.has(String(installedVersion)) === true &&
+    String(libraryVersion) === "2026.06.19-1";
+}
+
+const MIME_LEGACY_CARD_COUNT = 395;
+const MIME_REPAIR_LIBRARY_VERSION = "2026.06.19-1";
+
+function legacyMimeRepairPlan(modeId, storedCards, storedMeta, library) {
+  if (
+    modeId !== "mime" ||
+    String(library.libraryVersion) !== MIME_REPAIR_LIBRARY_VERSION ||
+    !Array.isArray(storedCards)
+  ) return { needed: false, deletedCardIds: [], deletedBoxIds: [] };
+
+  const officialIds = new Set(library.cards.map(card => card.id));
+  const legacyCards = library.cards.slice(0, MIME_LEGACY_CARD_COUNT);
+  const legacyIds = new Set(legacyCards.map(card => card.id));
+  const legacyBoxIds = new Set([
+    ...legacyCards.map(card => card.boxId),
+    UNCATEGORIZED_ID
+  ]);
+  const storedOfficialIds = new Set(
+    storedCards.map(card => String(card.id)).filter(id => officialIds.has(id))
+  );
+  const storedNewOfficialIds = [...storedOfficialIds].filter(id => !legacyIds.has(id));
+  const missingNewOfficialCount = library.cards
+    .slice(MIME_LEGACY_CARD_COUNT)
+    .filter(card => !storedOfficialIds.has(card.id))
+    .length;
+
+  // Répare l’état intermédiaire observé sur certains téléphones : la version
+  // 2026.06.19-1 a été mémorisée alors que seules les 395 anciennes cartes
+  // étaient encore présentes, parfois avec les 605 nouveautés marquées à tort
+  // comme supprimées.
+  const needed = storedOfficialIds.size <= MIME_LEGACY_CARD_COUNT &&
+    storedNewOfficialIds.length === 0 &&
+    missingNewOfficialCount >= 500;
+  if (!needed) return { needed: false, deletedCardIds: [], deletedBoxIds: [] };
+
+  const explicitlyDeletedCards = new Set(cleanIdList(storedMeta?.deletedOfficialCardIds));
+  const deletedCardIds = legacyCards
+    .filter(card => !storedOfficialIds.has(card.id) || explicitlyDeletedCards.has(card.id))
+    .map(card => card.id);
+  const deletedBoxIds = cleanIdList(storedMeta?.deletedOfficialBoxIds)
+    .filter(id => legacyBoxIds.has(id));
+
+  return { needed: true, deletedCardIds, deletedBoxIds };
+}
+
 function freshModeState(library) {
   return {
     officialLibrary: library,
@@ -305,9 +367,13 @@ async function loadMode(modeId, legacySettings) {
 
   const officialBoxes = new Map(library.boxes.map(box => [box.id, box]));
   const officialCards = new Map(library.cards.map(card => [card.id, card]));
-  const migrateDrinkingInteractions = modeId === "drinking" &&
-    String(storedMeta?.installedVersion || "") === "2026.06.17-1" &&
-    String(library.libraryVersion) === "2026.06.17-2";
+  const installedVersion = String(storedMeta?.installedVersion || "");
+  const mimeRepair = legacyMimeRepairPlan(modeId, storedCards, storedMeta, library);
+  const autoMigrateOfficialContent = mimeRepair.needed || shouldAutoMigrateLibrary(
+    modeId,
+    installedVersion,
+    library.libraryVersion
+  );
 
   const boxes = storedBoxes.map(box => {
     const official = officialBoxes.get(box.id);
@@ -320,19 +386,14 @@ async function loadMode(modeId, legacySettings) {
     return {
       ...box,
       origin: "official",
-      locallyModified: box.locallyModified === true || !sameBoxAsOfficial(box, official),
+      locallyModified: box.locallyModified === true ||
+        (!autoMigrateOfficialContent && !sameBoxAsOfficial(box, official)),
       protected: box.id === UNCATEGORIZED_ID || box.protected === true
     };
   });
 
   const cards = storedCards.map(card => {
     const official = officialCards.get(card.id);
-    if (migrateDrinkingInteractions && official && card.origin === "official" && card.locallyModified !== true) {
-      return {
-        ...officialCardFrom(official),
-        active: card.active !== false
-      };
-    }
     const normalizedCard = {
       ...card,
       difficulty: normalizeDifficulty(card.difficulty, modeId, card)
@@ -347,7 +408,8 @@ async function loadMode(modeId, legacySettings) {
       ...normalizedCard,
       active: card.active !== false,
       origin: "official",
-      locallyModified: card.locallyModified === true || !sameCardAsOfficial(modeId, normalizedCard, official)
+      locallyModified: card.locallyModified === true ||
+        (!autoMigrateOfficialContent && !sameCardAsOfficial(modeId, normalizedCard, official))
     };
   });
 
@@ -373,23 +435,30 @@ async function loadMode(modeId, legacySettings) {
       ? selectionObject.difficultyIds
       : ["easy", "medium", "hard"],
     libraryMeta: {
-      installedVersion: migrateDrinkingInteractions
-        ? library.libraryVersion
-        : (storedMeta?.installedVersion || library.libraryVersion),
+      installedVersion: storedMeta?.installedVersion || library.libraryVersion,
       availableVersion: library.libraryVersion,
       lastCheckedAt: storedMeta?.lastCheckedAt || "",
-      deletedOfficialCardIds: cleanIdList(
-        storedMeta?.deletedOfficialCardIds ||
-        library.cards.filter(card => !localCardIds.has(card.id)).map(card => card.id)
-      ),
-      deletedOfficialBoxIds: cleanIdList(
-        storedMeta?.deletedOfficialBoxIds ||
-        library.boxes.filter(box => box.id !== UNCATEGORIZED_ID && !localBoxIds.has(box.id)).map(box => box.id)
-      )
+      deletedOfficialCardIds: mimeRepair.needed
+        ? mimeRepair.deletedCardIds
+        : (autoMigrateOfficialContent
+            ? cleanIdList(storedMeta?.deletedOfficialCardIds)
+            : cleanIdList(
+                storedMeta?.deletedOfficialCardIds ||
+                library.cards.filter(card => !localCardIds.has(card.id)).map(card => card.id)
+              )),
+      deletedOfficialBoxIds: mimeRepair.needed
+        ? mimeRepair.deletedBoxIds
+        : (autoMigrateOfficialContent
+            ? cleanIdList(storedMeta?.deletedOfficialBoxIds)
+            : cleanIdList(
+                storedMeta?.deletedOfficialBoxIds ||
+                library.boxes.filter(box => box.id !== UNCATEGORIZED_ID && !localBoxIds.has(box.id)).map(box => box.id)
+              ))
     }
   };
 
   sanitizeMode(modeId, state.modes[modeId], library);
+  if (autoMigrateOfficialContent) mergeModeLibrary(modeId, library);
   return { fresh: false };
 }
 

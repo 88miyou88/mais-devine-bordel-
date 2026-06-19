@@ -9,6 +9,7 @@ import {
 } from "../../core/dom.js";
 import { state } from "../../core/state.js";
 import { shuffle } from "../../core/utils.js";
+import { removeCardDuringGame } from "../../services/card-removals.js";
 import {
   getBoxName,
   getPlayableCards,
@@ -110,6 +111,36 @@ function takeCardForMode(modeId) {
   const usedIds = usedIdsForMode(modeId);
   if (usedIds && !usedIds.includes(card.id)) usedIds.push(card.id);
   return card;
+}
+
+function sameCard(first, second) {
+  return Boolean(first && second && first.modeId === second.modeId && first.id === second.id);
+}
+
+function prepareNextFreeCard() {
+  if (state.queue.length === 0) refillQueue();
+  return state.queue[0] || null;
+}
+
+function restorePreparedCardAfterUndo(entry) {
+  const preparedCard = entry?._nextCard || null;
+  if (!preparedCard) return;
+
+  if (!isMultiplayerRound()) {
+    if (!state.queue.some(card => sameCard(card, preparedCard))) {
+      state.queue.unshift(preparedCard);
+    }
+    return;
+  }
+
+  const queue = modeQueues.get(preparedCard.modeId) || [];
+  if (!queue.some(card => sameCard(card, preparedCard))) {
+    modeQueues.set(preparedCard.modeId, [preparedCard, ...queue]);
+  }
+
+  const usedIds = usedIdsForMode(preparedCard.modeId);
+  const usedIndex = usedIds?.lastIndexOf(preparedCard.id) ?? -1;
+  if (usedIndex >= 0) usedIds.splice(usedIndex, 1);
 }
 
 function drawNextCard() {
@@ -405,6 +436,14 @@ function beginMixedDrawingBreak() {
 function completeMixedDrawingBreak(entry) {
   const plan = state.mixedDrawing;
   if (!state.running || !plan) return;
+  if (entry.result === "deleted") {
+    plan.active = false;
+    plan.removedCount = (plan.removedCount || 0) + 1;
+    plan.nextIndex += 1;
+    renderTime();
+    resumeAfterDrawingBreak();
+    return;
+  }
   state.history.push(entry);
   state.score += entry.points;
   plan.points += entry.points;
@@ -434,11 +473,41 @@ function resumeAfterDrawingBreak() {
   requestWakeLock();
 }
 
+function deleteCurrentClassicCard() {
+  if (!state.running || state.paused || !state.currentCard) return;
+  const card = state.currentCard;
+  const config = modeConfig(card.modeId);
+  const label = config.type === "lyrics" ? card.title : card.prompt;
+  if (!confirm(
+    `Supprimer définitivement cette carte ?\n\n${label}\n\n` +
+    "Elle disparaîtra immédiatement de ce téléphone et sera ajoutée au fichier des cartes supprimées."
+  )) return;
+
+  if (!removeCardDuringGame(card.modeId, card.id, { source: "classic_game" })) return;
+  state.queue = state.queue.filter(item => !(item.modeId === card.modeId && item.id === card.id));
+  const modeQueue = modeQueues.get(card.modeId);
+  if (modeQueue) {
+    modeQueues.set(card.modeId, modeQueue.filter(item => item.id !== card.id));
+  }
+  state.currentCard = null;
+  resetCardPosition();
+  if (isMultiplayerRound()) executeSequenceStep(nextSequenceStep());
+  else drawNextCard();
+}
+
 export function commitSwipe(result) {
   if (!state.running || state.paused || !state.currentCard) return;
   const judgedCard = state.currentCard;
   const points = result === "valid" ? 1 : 0;
-  state.history.push({ kind: "classic", card: judgedCard, result, points });
+  const historyEntry = {
+    kind: "classic",
+    card: judgedCard,
+    result,
+    points,
+    _nextCard: null,
+    _sequenceCursorBeforeNext: null
+  };
+  state.history.push(historyEntry);
   if (result === "valid") {
     state.valid += 1;
     state.score += 1;
@@ -449,10 +518,13 @@ export function commitSwipe(result) {
   let nextStep = null;
   let startsDrawing = false;
   if (isMultiplayerRound()) {
+    historyEntry._sequenceCursorBeforeNext = sequenceCursor;
     nextStep = nextSequenceStep();
+    if (nextStep?.type === "classic") historyEntry._nextCard = nextStep.card;
     startsDrawing = nextStep?.type === "draw";
   } else {
     startsDrawing = drawingBreakDueAfterCurrentCard();
+    if (!startsDrawing) historyEntry._nextCard = prepareNextFreeCard();
   }
   if (startsDrawing) {
     pauseRoundClock("drawing");
@@ -480,10 +552,11 @@ export function undoLast() {
   } else {
     state.passed = Math.max(0, state.passed - 1);
   }
+  restorePreparedCardAfterUndo(last);
   if (isMultiplayerRound()) {
-    sequenceCursor = Math.max(0, sequenceCursor - 1);
-  } else if (state.currentCard) {
-    state.queue.unshift(state.currentCard);
+    sequenceCursor = Number.isInteger(last._sequenceCursorBeforeNext)
+      ? Math.max(0, last._sequenceCursorBeforeNext)
+      : Math.max(0, sequenceCursor - 1);
   }
   state.currentCard = last.card;
   updateScores();
@@ -511,10 +584,13 @@ function currentRoundResult(reason) {
     score: state.score,
     valid: state.valid,
     passed: state.passed,
-    history: state.history.map(entry => ({
-      ...entry,
-      card: entry.card ? { ...entry.card } : null
-    }))
+    history: state.history.map(entry => {
+      const { _nextCard, _sequenceCursorBeforeNext, ...publicEntry } = entry;
+      return {
+        ...publicEntry,
+        card: entry.card ? { ...entry.card } : null
+      };
+    })
   };
 }
 
@@ -571,6 +647,7 @@ export function initializeGame(callbacks = {}) {
   el.pauseButton.addEventListener("click", () => togglePause());
   el.resumeOverlayButton.addEventListener("click", () => togglePause(false));
   el.endButton.addEventListener("click", () => finishGame("manual"));
+  el.deleteCurrentCardButton.addEventListener("click", deleteCurrentClassicCard);
   el.replayButton.addEventListener("click", () => onReplay?.());
   el.homeButton.addEventListener("click", () => onHome?.());
 

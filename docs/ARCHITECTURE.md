@@ -1,4 +1,4 @@
-# Architecture — V0.9.3
+# Architecture — base V0.9.5.1
 
 ## Direction des dépendances
 
@@ -109,15 +109,22 @@ schéma : 2
 
 Le changement de schéma empêche de restaurer un état V0.9.0 incompatible avec les nouvelles interactions.
 
-## Migration de la bibliothèque Qui boit
+## Migration des bibliothèques V0.9.5.1
 
-`data/drinking.json` passe à la version `2026.06.17-2`.
+`data/mimes.json` et `data/drinking.json` utilisent la version `2026.06.19-1`.
 
-Les 73 questions officielles commençant par « as-tu déjà » reçoivent la résolution explicite `personal_condition`. Lors du premier chargement :
+La migration automatique couvre :
 
-- une carte officielle non modifiée est actualisée automatiquement ;
-- son état actif ou désactivé est conservé ;
-- une carte modifiée localement n’est jamais écrasée.
+- Mime depuis `2026.06.15-1` vers la bibliothèque de 1 000 cartes et 21 catégories ;
+- Qui boit depuis `2026.06.17-1` ou `2026.06.17-2` vers les 1 050 cartes révisées.
+
+Lors du premier chargement :
+
+- les cartes officielles non modifiées sont actualisées ;
+- les nouvelles cartes et catégories sont ajoutées et sélectionnées ;
+- les cartes personnelles sont conservées ;
+- les cartes officielles modifiées localement ne sont jamais écrasées ;
+- les identifiants présents dans `deletedOfficialCardIds` ne sont jamais restaurés.
 
 ## DOM
 
@@ -133,7 +140,7 @@ La carte Qui boit contient désormais toute l’interaction utile :
 Les anciens boutons de résolution et le bouton Passer ont été supprimés. La logique métier reste décrite dans `interaction.js`, tandis que le contrôleur applique l’effet correspondant au swipe.
 
 
-## Couche responsive V0.9.3
+## Couche responsive V0.9.4
 
 La densité mobile n’est pas activée selon un modèle de téléphone, mais selon la contrainte réelle :
 
@@ -143,10 +150,11 @@ La densité mobile n’est pas activée selon un modèle de téléphone, mais se
 
 Les règles restent dans les feuilles correspondant à leur responsabilité :
 
-- `components.css` : dialogues, contrôles et bloc repliable « Comment jouer ? » ;
+- `components.css` : dialogues, contrôles et cible tactile de sélection ;
 - `home.css` : accueil, tuiles et barre d’actions ;
+- `game.css` : HUD et commandes superposés des modes classiques ;
 - `drawing.css` : réglages du Dessin ;
-- `drinking-game.css` : préparation et résultats Qui boit ;
+- `drinking-game.css` : préparation, jeu et résultats Qui boit ;
 - `multiplayer.css` : préparation multijoueur ;
 - `manager.css` : gestionnaire de cartes.
 
@@ -155,9 +163,59 @@ La vue compacte ne change aucun état métier. Le défilement global est évité
 ## PWA
 
 ```text
-Version : 0.9.3
-Cache : mdb-v0-9-3
-Jeton des ressources : 093
+Version : 0.9.5.1
+Cache : mdb-v0-9-5-1
+Jeton des ressources : 095
 ```
 
-Le service worker met en cache les deux nouveaux modules `interaction.js` et `swipe.js`.
+Le service worker continue de mettre en cache l’ensemble des modules, styles, icônes et bibliothèques nécessaires au fonctionnement hors ligne.
+
+
+## Ergonomie tactile V0.9.4
+
+- `home.js` génère une zone de sélection de mode distincte de 44 × 44 px, contenant la case accessible ; la grande zone restante ouvre uniquement la configuration.
+- `game.css` superpose le HUD et les quatre commandes à la carte classique uniquement sous le profil paysage compact. `main.js` relie explicitement le bouton Retourner à la logique de retournement déjà utilisée sur l’accueil.
+- l’écran de jeu Qui boit conserve un seul cadre : la carte. Sa progression et ses métadonnées sont intégrées dans `drinking-card-hud`.
+- les règles utilisent une grille multi-ligne sans troncature ni défilement horizontal.
+- `drinking-game/swipe.js` distingue le tap court sur `[data-swipe-tap]` du glissement horizontal ; les vrais boutons d’action restent exclus du swipe.
+
+
+## Historique des cartes classiques
+
+Chaque résultat classique mémorise aussi la carte qui avait déjà été préparée ensuite. Lors d’un retour :
+
+- le score du dernier résultat est annulé ;
+- la carte précédente redevient la carte courante ;
+- la carte déplacée par le retour est réinsérée en tête de sa file ;
+- en multijoueur, le curseur de rotation et `usedCardIdsByMode` sont restaurés ;
+- plusieurs retours successifs reconstruisent donc toute la séquence dans l’ordre exact.
+
+Ces métadonnées internes (`_nextCard` et `_sequenceCursorBeforeNext`) ne sont pas exposées dans les résultats de manche.
+
+## Suppression et signalement des cartes
+
+`src/services/card-removals.js` centralise la suppression pendant une partie. Les contrôleurs de jeu ne manipulent pas directement le stockage des bibliothèques.
+
+Le service :
+
+- conserve une copie nettoyée de la carte et de sa version officielle ;
+- retire la carte du mode local et alimente `deletedOfficialCardIds` pour une carte officielle ;
+- déduplique les signalements par couple `modeId + cardId` ;
+- exporte un rapport de schéma `mdb-deleted-cards-report` version 1 ;
+- exclut les prénoms, les cibles calculées et le texte rendu avec les joueurs ;
+- déclenche l’événement `mdb:card-removals-changed` afin que l’accueil actualise son compteur.
+
+La clé locale est `mdb-card-removal-reports-v1`. Le motif par défaut `quality_rejection` est volontairement structuré afin de permettre plus tard d’autres motifs sans casser les anciens rapports.
+
+La sauvegarde générale utilise désormais le schéma 7 et inclut ce journal. Les sauvegardes de schémas 2 à 6 restent compatibles.
+
+## Correctif V0.9.5.1
+
+La V0.9.5.1 ajoute une réparation ciblée pour un état local incomplet observé après la V0.9.5 :
+
+- la bibliothèque Mime pouvait être marquée `2026.06.19-1` tout en ne contenant encore que les 395 anciennes cartes ;
+- les 605 nouvelles cartes et les nouvelles catégories pouvaient alors être enregistrées à tort comme supprimées ;
+- `legacyMimeRepairPlan()` reconnaît cette signature, conserve les suppressions réelles parmi les 395 anciennes cartes et réinstalle uniquement les nouveautés manquantes ;
+- les catégories ajoutées par cette réparation sont automatiquement sélectionnées.
+
+Les boutons de suppression des modes classiques et de Qui boit utilisent désormais un libellé visible `Suppr.` en plus de l’icône, tout en conservant un nom accessible complet.

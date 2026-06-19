@@ -48,3 +48,103 @@
 .pause-overlay{position:fixed;inset:0;z-index:20;background:rgba(4,5,8,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
 .pause-overlay p{margin:0;font-size:clamp(4rem,20vw,10rem);font-weight:1000}
 
+
+
+/* V0.9.4 — HUD superposé et carte presque plein écran sur téléphone paysage */
+@media (orientation:landscape) and (max-height:540px) and (min-width:600px){
+  #gameScreen{
+    position:relative;
+    display:grid;
+    grid-template: minmax(0,1fr) / minmax(0,1fr);
+    gap:0;
+    padding:max(3px,var(--safe-top)) max(5px,var(--safe-right)) max(3px,var(--safe-bottom)) max(5px,var(--safe-left));
+    overflow:hidden;
+  }
+  #gameScreen>.swipe-stage,
+  #gameScreen>.game-header,
+  #gameScreen>.game-controls{grid-area:1/1}
+  #gameScreen>.swipe-stage{z-index:1;min-width:0;min-height:0;overflow:hidden}
+  .game-card{
+    width:100%;
+    max-width:none;
+    height:100%;
+    border-radius:16px;
+    padding:50px 60px 54px;
+  }
+  .game-header{
+    z-index:4;
+    align-self:start;
+    justify-self:start;
+    width:auto;
+    min-height:0;
+    display:flex;
+    gap:4px;
+    padding:5px;
+    pointer-events:none;
+  }
+  .time-block,.score-block{
+    min-width:54px;
+    min-height:34px;
+    padding:3px 7px;
+    gap:4px;
+    border-radius:10px;
+    background:rgba(13,16,22,.76);
+    box-shadow:0 4px 14px rgba(0,0,0,.24);
+    backdrop-filter:blur(5px);
+  }
+  .header-label{font-size:.52rem;letter-spacing:.05em}
+  .time-display,.score-block>span:last-child{font-size:.92rem;line-height:1}
+  .mode-label{
+    top:10px;
+    left:190px;
+    right:12px;
+    text-align:right;
+    font-size:clamp(.68rem,1.6vw,.86rem);
+    letter-spacing:.08em;
+  }
+  .card-meta{
+    left:64px;
+    right:64px;
+    bottom:53px;
+    gap:0;
+    font-size:clamp(.58rem,1.25vw,.72rem);
+  }
+  .game-controls{
+    z-index:5;
+    align-self:end;
+    justify-self:center;
+    width:min(630px,calc(100% - 10px));
+    min-height:0;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:4px;
+    padding:5px;
+    pointer-events:none;
+  }
+  .control-button{
+    min-height:44px;
+    padding:4px 7px;
+    border-radius:10px;
+    background:rgba(18,22,30,.84);
+    box-shadow:0 4px 14px rgba(0,0,0,.24);
+    backdrop-filter:blur(5px);
+    font-size:clamp(.62rem,1.45vw,.76rem);
+    pointer-events:auto;
+  }
+  .swipe-guide{width:clamp(42px,7vw,62px)}
+  .swipe-guide-left{padding-left:6px}.swipe-guide-right{padding-right:6px}
+  .guide-word{font-size:.58rem}
+}
+
+@media (orientation:landscape) and (max-height:390px) and (min-width:600px){
+  .game-card{padding:47px 54px 51px}
+  .time-block,.score-block{min-width:50px;min-height:32px;padding:2px 6px}
+  .mode-label{left:174px;top:9px}
+  .card-meta{bottom:50px;font-size:.56rem}
+  .control-button{min-height:44px}
+}
+
+.game-delete-card-button{position:absolute;z-index:7;top:9px;right:9px}
+@media (orientation:landscape) and (max-height:540px) and (min-width:600px){
+  .game-delete-card-button{top:5px;right:5px;min-width:70px;height:44px;padding:8px 9px;border-radius:10px}
+  .mode-label{right:82px}
+}

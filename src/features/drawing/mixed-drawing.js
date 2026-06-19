@@ -42,6 +42,7 @@ export function createMixedDrawingPlan(durationMs, requestedCount) {
     completedCount: 0,
     skippedForTime: 0,
     cancelledCount: 0,
+    removedCount: 0,
     active: false,
     minimumRemainingMs: penaltyMs + 5000
   };

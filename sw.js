@@ -1,4 +1,4 @@
-const CACHE_NAME = "mdb-v0-9-3";
+const CACHE_NAME = "mdb-v0-9-5-1";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -27,6 +27,7 @@ const APP_FILES = [
   "./src/core/utils.js",
   "./src/services/libraries.js",
   "./src/services/backup.js",
+  "./src/services/card-removals.js",
   "./src/services/diagnostics.js",
   "./src/features/home.js",
   "./src/features/game/game-controller.js",

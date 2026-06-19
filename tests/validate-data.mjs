@@ -6,7 +6,7 @@ import path from "node:path";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const libraries = [
   ["lyrics", "data/lyrics.json", 143],
-  ["mime", "data/mimes.json", 395],
+  ["mime", "data/mimes.json", 1000],
   ["words", "data/words.json", 360],
   ["draw", "data/drawings.json", 420],
   ["drinking", "data/drinking.json", 1050]
@@ -19,6 +19,10 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
   const data = JSON.parse(await readFile(path.join(root, relativePath), "utf8"));
   assert.equal(data.modeId, modeId, `${relativePath}: modeId incorrect`);
   assert.ok(data.libraryVersion, `${relativePath}: libraryVersion manquante`);
+  if (["mime", "drinking"].includes(modeId)) {
+    assert.equal(data.libraryVersion, "2026.06.19-1", `${relativePath}: version de bibliothèque V0.9.5 incorrecte`);
+    assert.equal(data.updatedAt, "2026-06-19", `${relativePath}: date de bibliothèque V0.9.5 incorrecte`);
+  }
   assert.ok(Array.isArray(data.boxes) && data.boxes.length > 0, `${relativePath}: catégories absentes`);
   assert.ok(Array.isArray(data.cards), `${relativePath}: cartes absentes`);
   assert.equal(data.cards.length, expectedCount, `${relativePath}: nombre de cartes inattendu`);
@@ -46,6 +50,11 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
     if (modeId === "words") {
       assert.equal(card.forbiddenWords?.length, 5, `${relativePath}: ${card.id} doit avoir cinq mots interdits`);
     }
+    if (["mime", "drinking"].includes(modeId)) {
+      const normalizedText = card.prompt.toLocaleLowerCase("fr").replace(/\s+/g, " ").trim();
+      assert.ok(!texts.has(normalizedText), `${relativePath}: texte dupliqué pour ${card.id}`);
+      texts.add(normalizedText);
+    }
     if (modeId === "drinking") {
       assert.ok(card.mechanic, `${relativePath}: mécanique absente pour ${card.id}`);
       assert.ok(card.targetType, `${relativePath}: cible absente pour ${card.id}`);
@@ -56,9 +65,6 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
       assert.ok(["light", "medium", "strong"].includes(card.penalty?.intensity), `${relativePath}: intensité invalide pour ${card.id}`);
       assert.ok(Array.isArray(card.resolution?.supports) && card.resolution.supports.includes("points"), `${relativePath}: alternatives incomplètes pour ${card.id}`);
       assert.ok(Number(card.minPlayers) >= 2, `${relativePath}: nombre minimum invalide pour ${card.id}`);
-      const normalizedText = card.prompt.toLocaleLowerCase("fr").replace(/\s+/g, " ").trim();
-      assert.ok(!texts.has(normalizedText), `${relativePath}: texte dupliqué pour ${card.id}`);
-      texts.add(normalizedText);
       assert.doesNotMatch(card.prompt, /\bde (?:avoir|arriver|oublier|envoyer|embrasser|être|aller|inventer|applaudir)\b/i, `${relativePath}: élision à corriger pour ${card.id}`);
     }
     cardIds.add(card.id);
@@ -71,9 +77,15 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
     assert.ok(personalConditions.every(card => /^\[prénom d'un joueur\], as-tu déjà /i.test(card.prompt)), `${relativePath}: condition personnelle mal typée`);
   }
 
+  if (modeId === "mime") {
+    assert.equal(data.boxes.length, 21, `${relativePath}: nombre de catégories inattendu`);
+    assert.equal(data.cards[0]?.id, "mime-001", `${relativePath}: premier identifiant inattendu`);
+    assert.equal(data.cards.at(-1)?.id, "mime-1000", `${relativePath}: dernier identifiant inattendu`);
+  }
+
   totalCards += data.cards.length;
   console.log(`✓ ${modeId}: ${data.cards.length} cartes, ${data.boxes.length} catégories`);
 }
 
-assert.equal(totalCards, 2368, "Total de cartes inattendu");
+assert.equal(totalCards, 2973, "Total de cartes inattendu");
 console.log(`✓ Total: ${totalCards} cartes`);

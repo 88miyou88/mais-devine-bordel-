@@ -95,6 +95,7 @@ async function init() {
   initializeCardManager({ onHomeDataChanged: renderHomeData });
   initializeDrawing({ onAbortMixed: () => finishGame("manual") });
   initializeGame({ onReplay: startFlow, onHome: returnHome });
+  el.flipGameButton.addEventListener("click", toggleFlipped);
   initializeMultiplayer({ onHome: returnHome });
   initializeDrinkingGame({ onHome: returnHome });
   initializeHome({

@@ -13,6 +13,7 @@ import {
 import { recordError, state } from "../../core/state.js";
 import { shuffle } from "../../core/utils.js";
 import { getBoxName, selectedCardsForMode } from "../../services/libraries.js";
+import { removeCardDuringGame } from "../../services/card-removals.js";
 import {
   initializeDrawingCanvas,
   resizeDrawingCanvas,
@@ -217,7 +218,7 @@ function setDrawingPromptRevealed(revealed) {
   el.drawRevealPromptButton.setAttribute("aria-pressed", String(revealed));
   el.drawRevealPrompt.textContent = revealed ? round.currentCard.prompt : "Appuie pour révéler le mot";
   el.drawRevealMeta.classList.toggle("hidden", !revealed);
-  [el.drawOnPhoneButton, el.drawOnPaperButton, el.drawSkipRevealButton].forEach(button => {
+  [el.drawOnPhoneButton, el.drawOnPaperButton, el.drawSkipRevealButton, el.drawDeleteCardButton].forEach(button => {
     button.disabled = !revealed;
   });
 }
@@ -226,6 +227,51 @@ function revealDrawingPrompt() {
   if (!state.drawRound?.currentCard || state.drawRound.promptRevealed) return;
   setDrawingPromptRevealed(true);
   if (state.settings.vibrationEnabled && "vibrate" in navigator) navigator.vibrate(22);
+}
+
+function deleteCurrentDrawingCard() {
+  const round = state.drawRound;
+  const card = round?.currentCard;
+  if (!round || !card || !round.promptRevealed) return;
+  if (!confirm(
+    `Supprimer définitivement cette carte ?\n\n${card.prompt}\n\n` +
+    "Elle disparaîtra immédiatement de ce téléphone et sera ajoutée au fichier des cartes supprimées."
+  )) return;
+
+  if (!removeCardDuringGame("draw", card.id, {
+    source: round.kind === "mixed" ? "mixed_drawing" : "drawing_game"
+  })) return;
+
+  round.resultLocked = true;
+  cancelAnimationFrame(round.timerRaf);
+  if (round.kind === "mixed") {
+    const complete = round.onComplete;
+    state.drawRound = null;
+    complete?.({
+      kind: "draw",
+      card,
+      result: "deleted",
+      points: 0,
+      usedMs: 0,
+      support: "deleted",
+      penaltySeconds: 0
+    });
+    return;
+  }
+
+  round.queue.splice(round.attemptIndex, 1);
+  const unavailableIds = new Set([
+    ...round.queue.map(item => item.id),
+    ...round.history.map(entry => entry.card.id)
+  ]);
+  const replacement = shuffle(
+    selectedCardsForMode("draw").filter(item => !unavailableIds.has(item.id))
+  )[0];
+  if (replacement) round.queue.push({ ...replacement, modeId: "draw" });
+  round.totalAttempts = round.queue.length;
+  round.currentCard = null;
+  round.resultLocked = false;
+  showNextDrawingPrompt();
 }
 
 function skipDrawingBeforeStart() {
@@ -482,6 +528,7 @@ export function initializeDrawing(options = {}) {
   });
   el.drawRevealPromptButton.addEventListener("click", revealDrawingPrompt);
   el.drawSkipRevealButton.addEventListener("click", skipDrawingBeforeStart);
+  el.drawDeleteCardButton.addEventListener("click", deleteCurrentDrawingCard);
   el.drawOnPhoneButton.addEventListener("click", () => startDrawingPlay("phone"));
   el.drawOnPaperButton.addEventListener("click", () => startDrawingPlay("paper"));
   el.drawPauseButton.addEventListener("click", () => toggleDrawingPause());

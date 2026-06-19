@@ -9,15 +9,15 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
-  <link rel="stylesheet" href="./assets/styles/foundation.css?v=093">
-  <link rel="stylesheet" href="./assets/styles/components.css?v=093">
-  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=093">
-  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=093">
-  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=093">
-  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=093">
-  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=093">
-  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=093">
-  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=093">
+  <link rel="stylesheet" href="./assets/styles/foundation.css?v=0951">
+  <link rel="stylesheet" href="./assets/styles/components.css?v=0951">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=0951">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=0951">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=0951">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=0951">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=0951">
+  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=0951">
+  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=0951">
 </head>
 <body>
   <main id="app">
@@ -110,6 +110,15 @@
                   <p id="libraryLastChecked" class="library-last-checked">Dernière vérification : jamais</p>
                   <p id="libraryStatusMessage" class="library-status-message">Bibliothèques chargées.</p>
 
+                  <div class="card-removal-report-panel">
+                    <p id="cardRemovalReportStatus" class="card-removal-report-status">Aucune carte supprimée en jeu.</p>
+                    <div class="card-removal-report-actions">
+                      <button id="exportCardRemovalReportButton" class="secondary-button compact-button" type="button" disabled>Télécharger les cartes supprimées</button>
+                      <button id="clearCardRemovalReportButton" class="danger-button compact-button" type="button" disabled>Vider la liste</button>
+                    </div>
+                    <small>Le fichier ne contient aucun prénom de joueur. Il permet seulement d’identifier les cartes à revoir ou à retirer des JSON officiels.</small>
+                  </div>
+
                   <div class="advanced-actions">
                     <button id="checkLibrariesButton" class="secondary-button compact-button" type="button">Vérifier les mises à jour</button>
                     <button id="updateLibrariesButton" class="primary-button compact-button" type="button" disabled>Mettre à jour les bibliothèques</button>
@@ -177,15 +186,23 @@
 
     <section id="drinkingGameScreen" class="screen drinking-screen">
       <div class="drinking-shell drinking-game-shell">
-        <header class="drinking-game-header">
-          <div><span id="drinkingProgress">Carte 1/30</span><strong id="drinkingClock">—</strong></div>
-          <button id="drinkingEndButton" class="danger-button compact-button" type="button">Fin</button>
-        </header>
-
         <article id="drinkingCard" class="drinking-card">
-          <div class="drinking-card-topline">
-            <span id="drinkingTheme" class="drinking-theme">Thème</span>
-            <span id="drinkingLevel" class="drinking-level">Pépouze</span>
+          <div class="drinking-card-hud">
+            <div class="drinking-progress-hud" aria-live="polite">
+              <span id="drinkingProgress">1 / 30 · 0 jouée</span>
+              <strong id="drinkingClock" class="hidden">—</strong>
+            </div>
+            <div class="drinking-card-topline">
+              <span id="drinkingTheme" class="drinking-theme">Thème</span>
+              <span id="drinkingLevel" class="drinking-level">Pépouze</span>
+            </div>
+            <div class="drinking-card-admin-actions">
+              <button id="drinkingDeleteCardButton" class="card-delete-button drinking-delete-card-button" type="button" aria-label="Supprimer cette carte" title="Supprimer cette carte">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-1 11H8L7 9Zm3 2v7m4-7v7"/></svg>
+                <span class="card-delete-label">Suppr.</span>
+              </button>
+              <button id="drinkingEndButton" class="danger-button compact-button drinking-end-button" type="button">Fin</button>
+            </div>
           </div>
           <div id="drinkingSwipeLeftLabel" class="drinking-swipe-label drinking-swipe-label-left">NON</div>
           <div id="drinkingSwipeRightLabel" class="drinking-swipe-label drinking-swipe-label-right">OUI</div>
@@ -198,7 +215,7 @@
 
           <div id="drinkingRuleReminder" class="drinking-card-rule-reminder hidden">
             <div id="drinkingRulesSummary" class="drinking-rules-summary"></div>
-            <button id="drinkingRulePenaltyButton" class="secondary-button compact-button hidden" type="button">Oubli de règle</button>
+            <button id="drinkingRulePenaltyButton" class="secondary-button compact-button drinking-rule-penalty-button hidden" type="button" aria-label="Signaler un oubli de règle">Règle oubliée</button>
           </div>
 
           <button id="drinkingChallengeTimerButton" class="mini-button hidden" type="button">Lancer le chrono</button>
@@ -418,6 +435,10 @@
           </div>
 
           <p id="gameModeLabel" class="mode-label">DEVINER LES PAROLES</p>
+          <button id="deleteCurrentCardButton" class="card-delete-button game-delete-card-button" type="button" aria-label="Supprimer cette carte" title="Supprimer cette carte">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-1 11H8L7 9Zm3 2v7m4-7v7"/></svg>
+            <span class="card-delete-label">Suppr.</span>
+          </button>
 
           <div id="lyricsGameContent" class="mode-card-content">
             <p id="promptText" class="prompt-text"></p>
@@ -484,6 +505,7 @@
             <button id="drawOnPhoneButton" class="primary-button draw-primary" type="button" disabled>Je gribouille ici</button>
             <button id="drawOnPaperButton" class="secondary-button" type="button" disabled>Je massacre une feuille</button>
             <button id="drawSkipRevealButton" class="danger-button" type="button" disabled>Passer ce dessin</button>
+            <button id="drawDeleteCardButton" class="danger-button draw-delete-card-button" type="button" disabled>Supprimer la carte</button>
           </div>
           <p class="draw-choice-note">Le chrono démarre seulement après le choix du support.</p>
         </div>
@@ -888,7 +910,7 @@
 
   <script>
     (() => {
-      const VERSION_TOKEN = "090";
+      const VERSION_TOKEN = "0951";
       const recovery = document.querySelector("#bootRecovery");
       const message = document.querySelector("#bootRecoveryMessage");
       let bootFinished = false;
@@ -942,7 +964,7 @@
     })();
   </script>
   <script type="module" data-mdb-bootstrap>
-    import("./src/main.js?v=093").catch(error => window.MDB_BOOT_FAILURE(error));
+    import("./src/main.js?v=0951").catch(error => window.MDB_BOOT_FAILURE(error));
   </script>
 </body>
 </html>

@@ -12,6 +12,11 @@ import { getMixedDrawingPenaltySeconds } from "./drawing/mixed-drawing.js";
 import { exportBackup, readBackupFile, restoreBackupData } from "../services/backup.js";
 import { copyDiagnostic, openDiagnostic } from "../services/diagnostics.js";
 import {
+  clearCardRemovalReports,
+  exportCardRemovalReport,
+  getCardRemovalCount
+} from "../services/card-removals.js";
+import {
   activeCardCountForMode,
   activeCountForBox,
   checkLibraries,
@@ -115,16 +120,26 @@ function renderModeSelection() {
     tile.dataset.modeId = modeId;
     tile.style.setProperty("--mode-color", config.color);
 
+    const selector = document.createElement("label");
+    selector.className = "mode-tile-selector";
+    selector.title = selected ? `Désélectionner ${config.name}` : `Sélectionner ${config.name}`;
+    selector.addEventListener("pointerdown", event => event.stopPropagation());
+    selector.addEventListener("click", event => event.stopPropagation());
+
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.className = "mode-tile-check";
     checkbox.checked = selected;
     checkbox.setAttribute("aria-label", `Inclure ${config.name}`);
-    checkbox.addEventListener("click", event => event.stopPropagation());
     checkbox.addEventListener("change", () => {
       setModeEnabled(modeId, checkbox.checked);
       renderHomeData();
     });
+
+    const checkVisual = document.createElement("span");
+    checkVisual.className = "mode-tile-check-visual";
+    checkVisual.setAttribute("aria-hidden", "true");
+    selector.append(checkbox, checkVisual);
 
     const openButton = document.createElement("button");
     openButton.type = "button";
@@ -172,7 +187,7 @@ function renderModeSelection() {
     if (override) footer.append(override);
     footer.append(arrow);
     openButton.append(icon, statusBadges, text, footer);
-    tile.append(checkbox, openButton);
+    tile.append(selector, openButton);
     el.modeSelectionList.append(tile);
   });
 }
@@ -329,7 +344,34 @@ function selectNothing() {
   renderHomeData();
 }
 
+function renderCardRemovalReportStatus() {
+  const count = getCardRemovalCount();
+  el.cardRemovalReportStatus.textContent = count
+    ? `${count} carte${count > 1 ? "s" : ""} supprimée${count > 1 ? "s" : ""} en jeu, prête${count > 1 ? "s" : ""} à être exportée${count > 1 ? "s" : ""}.`
+    : "Aucune carte supprimée en jeu.";
+  el.exportCardRemovalReportButton.disabled = count === 0;
+  el.clearCardRemovalReportButton.disabled = count === 0;
+}
+
+function handleExportCardRemovalReport() {
+  if (!exportCardRemovalReport()) {
+    alert("Aucune carte supprimée à télécharger.");
+  }
+}
+
+function handleClearCardRemovalReport() {
+  const count = getCardRemovalCount();
+  if (!count) return;
+  if (!confirm(
+    `Vider la liste des ${count} carte${count > 1 ? "s" : ""} supprimée${count > 1 ? "s" : ""} ?\n\n` +
+    "Les cartes resteront supprimées de ce téléphone, mais elles ne figureront plus dans le prochain fichier à envoyer."
+  )) return;
+  clearCardRemovalReports();
+  renderCardRemovalReportStatus();
+}
+
 export function renderAdvancedSettings(message = "") {
+  renderCardRemovalReportStatus();
   el.libraryVersionList.innerHTML = "";
   MODE_ORDER.forEach(modeId => {
     const config = modeConfig(modeId);
@@ -551,10 +593,13 @@ export function initializeHome(options = {}) {
   el.checkLibrariesButton.addEventListener("click", handleCheckLibraries);
   el.updateLibrariesButton.addEventListener("click", handleUpdateLibraries);
   el.exportBackupButton.addEventListener("click", exportBackup);
+  el.exportCardRemovalReportButton.addEventListener("click", handleExportCardRemovalReport);
+  el.clearCardRemovalReportButton.addEventListener("click", handleClearCardRemovalReport);
   el.restoreBackupButton.addEventListener("click", () => el.restoreBackupInput.click());
   el.restoreBackupInput.addEventListener("change", handleRestoreBackup);
   el.resetLibrariesButton.addEventListener("click", handleResetLibraries);
   el.diagnosticButton.addEventListener("click", openDiagnostic);
   el.copyDiagnosticButton.addEventListener("click", copyDiagnostic);
+  window.addEventListener("mdb:card-removals-changed", renderCardRemovalReportStatus);
   initializeInstallPrompt();
 }

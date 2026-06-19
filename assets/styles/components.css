@@ -96,14 +96,61 @@
   filter: saturate(.55);
 }
 
+.mode-tile-selector {
+  position: absolute;
+  z-index: 4;
+  top: 4px;
+  right: 4px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.mode-tile-selector:hover {
+  background: color-mix(in srgb, var(--mode-color) 11%, transparent);
+}
+
 .mode-tile-check {
   position: absolute;
-  z-index: 3;
-  top: 10px;
-  right: 10px;
-  width: 25px;
-  height: 25px;
-  accent-color: var(--mode-color);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.mode-tile-check-visual {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 2px solid color-mix(in srgb, var(--mode-color) 72%, #fff 12%);
+  border-radius: 8px;
+  color: #130d1d;
+  background: rgba(8, 10, 14, .72);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .24);
+  font-size: .88rem;
+  font-weight: 1000;
+  pointer-events: none;
+}
+
+.mode-tile-check:checked + .mode-tile-check-visual {
+  background: var(--mode-color);
+  border-color: var(--mode-color);
+}
+
+.mode-tile-check:checked + .mode-tile-check-visual::after {
+  content: "✓";
+}
+
+.mode-tile-check:focus-visible + .mode-tile-check-visual {
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
 }
 
 .mode-tile-open {
@@ -702,3 +749,30 @@
   .mode-dialog-actions{padding:4px 7px max(4px,var(--safe-bottom))}
   .mode-dialog-actions .primary-button{min-height:36px;padding:5px 12px;border-radius:10px;font-size:.84rem}
 }
+
+/* Signalement/suppression d’une carte depuis une partie */
+.card-delete-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  width:auto;
+  min-width:72px;
+  height:44px;
+  min-height:44px;
+  padding:8px 10px;
+  border:1px solid rgba(255,91,103,.72);
+  border-radius:12px;
+  color:#ffd4d8;
+  background:rgba(120,25,35,.88);
+  box-shadow:0 5px 16px rgba(0,0,0,.25);
+  backdrop-filter:blur(6px);
+  font-size:.72rem;
+  font-weight:950;
+  letter-spacing:.01em;
+  touch-action:manipulation;
+}
+.card-delete-button:hover,.card-delete-button:focus-visible{border-color:#ff9aa3;color:#fff;background:rgba(165,34,48,.94)}
+.card-delete-button:active{transform:scale(.95)}
+.card-delete-button svg{width:20px;height:20px;flex:0 0 20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.card-delete-label{display:inline;white-space:nowrap;pointer-events:none}

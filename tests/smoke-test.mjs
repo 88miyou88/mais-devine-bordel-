@@ -17,7 +17,7 @@ const exists = async relativePath => {
 
 const expectedFiles = [
   "index.html", "manifest.webmanifest", "sw.js", "README.md",
-  "docs/ARCHITECTURE.md", "docs/TESTS.md",
+  "docs/ARCHITECTURE.md", "docs/TESTS.md", "docs/CARD-REMOVAL-REPORTS.md",
   "assets/icons/icon-192.png", "assets/icons/icon-512.png",
   "assets/styles/foundation.css", "assets/styles/components.css",
   "assets/styles/screens/home.css", "assets/styles/screens/game.css",
@@ -26,7 +26,7 @@ const expectedFiles = [
   "data/lyrics.json", "data/mimes.json", "data/words.json", "data/drawings.json", "data/drinking.json",
   "src/main.js", "src/config/config.js",
   "src/core/state.js", "src/core/dom.js", "src/core/storage.js", "src/core/utils.js",
-  "src/services/libraries.js", "src/services/backup.js", "src/services/diagnostics.js",
+  "src/services/libraries.js", "src/services/backup.js", "src/services/card-removals.js", "src/services/diagnostics.js",
   "src/features/home.js",
   "src/features/game/game-controller.js", "src/features/game/timer.js",
   "src/features/game/swipe.js", "src/features/game/results.js",
@@ -61,7 +61,7 @@ for (const relativePath of legacyFiles) {
 
 const html = await read("index.html");
 assert.match(html, /<script\s+type="module"\s+data-mdb-bootstrap>/);
-assert.match(html, /import\(["']\.\/src\/main\.js\?v=093["']\)/);
+assert.match(html, /import\(["']\.\/src\/main\.js\?v=0951["']\)/);
 assert.match(html, /id="bootRecovery"/);
 assert.match(html, /id="bootRepairButton"/);
 assert.match(html, /id="orientationGuard"/);
@@ -96,7 +96,7 @@ for (const id of [
   "drinkingSetupScreen", "drinkingGameScreen", "drinkingResultsScreen", "drinkingPlayerList",
   "drinkingMaxPenaltyInput", "drinkingAdultModeInput", "drinkingTargetChoices", "drinkingRanking",
   "drinkingRuleReminder", "drinkingRulePenaltyButton", "drinkingBackButton",
-  "drinkingSwipeLeftLabel", "drinkingSwipeRightLabel"
+  "drinkingSwipeLeftLabel", "drinkingSwipeRightLabel", "drinkingDeleteCardButton"
 ]) assert.ok(htmlIds.includes(id), `Élément Qui boit absent : #${id}`);
 for (const removedId of ["drinkingSkipButton", "drinkingLeftActionButton", "drinkingRightActionButton", "drinkingPenaltyText"]) {
   assert.equal(htmlIds.includes(removedId), false, `Commande redondante encore présente : #${removedId}`);
@@ -105,16 +105,29 @@ const drinkingCardMarkup = html.match(/<article id="drinkingCard"[\s\S]*?<\/arti
 assert.match(drinkingCardMarkup, /id="drinkingTargetPanel"/, "La sélection des joueurs doit être intégrée dans la carte");
 assert.match(drinkingCardMarkup, /id="drinkingRulePenaltyButton"/, "Le bouton Oubli de règle doit être intégré dans la carte");
 assert.match(drinkingCardMarkup, /id="drinkingBackButton"/, "Le bouton Retour doit rester dans la carte");
+assert.match(drinkingCardMarkup, /class="drinking-card-hud"/, "La progression doit être intégrée dans la carte");
+assert.match(drinkingCardMarkup, /id="drinkingProgress"/, "La progression Qui boit doit rester visible");
+assert.match(drinkingCardMarkup, /id="drinkingEndButton"/, "Le bouton Fin doit être intégré dans la carte");
+assert.match(drinkingCardMarkup, /aria-label="Signaler un oubli de règle"[^>]*>Règle oubliée</, "Le bouton de règle doit être compact et explicite");
+assert.doesNotMatch(html, /<header class="drinking-game-header">/, "Le cadre supérieur redondant de Qui boit ne doit plus être présent");
+for (const id of [
+  "deleteCurrentCardButton", "drawDeleteCardButton", "drinkingDeleteCardButton",
+  "cardRemovalReportStatus", "exportCardRemovalReportButton", "clearCardRemovalReportButton"
+]) assert.ok(htmlIds.includes(id), `Commande de suppression absente : #${id}`);
+assert.match(html, />Télécharger les cartes supprimées</);
+assert.equal((html.match(/class="card-delete-label">Suppr\.<\/span>/g) || []).length, 2, "Les boutons de suppression classiques et Qui boit doivent afficher un libellé visible");
 
 
 assert.match(html, /id="modeRuleDetails"[\s\S]*?<summary><h3>Comment jouer \?<\/h3><\/summary>/, "Le bloc Comment jouer doit être repliable");
 const responsiveCss = [
   await read("assets/styles/components.css"),
   await read("assets/styles/screens/home.css"),
+  await read("assets/styles/screens/game.css"),
   await read("assets/styles/screens/drinking-game.css"),
   await read("assets/styles/screens/multiplayer.css")
 ].join("\n");
 assert.match(responsiveCss, /orientation:landscape[\s\S]*max-height:540px/, "Le profil téléphone paysage compact est absent");
+assert.match(responsiveCss, /\.card-delete-button\{[\s\S]*?min-width:72px[\s\S]*?height:44px/, "La suppression en jeu doit rester visible avec une cible tactile suffisante");
 
 const manifest = JSON.parse(await read("manifest.webmanifest"));
 assert.equal(manifest.name, "Mais devine, bordel !");
@@ -123,14 +136,16 @@ assert.equal(manifest.orientation, "landscape");
 assert.ok(manifest.icons.every(icon => icon.src.replace(/^\.\//, "").startsWith("assets/icons/")), "Chemins des icônes du manifeste incorrects");
 
 const config = await read("src/config/config.js");
-assert.match(config, /APP_VERSION\s*=\s*"0\.9\.3"/);
-assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-3"/);
+assert.match(config, /APP_VERSION\s*=\s*"0\.9\.5\.1"/);
+assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-5-1"/);
 assert.match(config, /name:\s*"La suite, maestro !"/);
 assert.match(config, /name:\s*"Ferme-la et mime !"/);
 assert.match(config, /name:\s*"Picasso en PLS"/);
 assert.match(config, /name:\s*"Qui boit, bordel \?"/);
 assert.match(config, /mdb-drinking-boxes-v1/);
 assert.match(config, /DRINKING_SESSION_KEY/);
+assert.match(config, /CARD_REMOVAL_REPORTS_KEY\s*=\s*"mdb-card-removal-reports-v1"/);
+assert.match(config, /CARD_REMOVAL_REPORT_SCHEMA\s*=\s*1/);
 assert.match(config, /DIFFICULTY_ORDER\s*=\s*\["easy", "medium", "hard"\]/);
 assert.match(config, /easy:\s*\{ shortLabel: "F"/);
 assert.match(config, /medium:\s*\{ shortLabel: "M"/);
@@ -152,7 +167,7 @@ for (const key of [
 ]) assert.ok(config.includes(key), `Clé de stockage absente : ${key}`);
 
 const sw = await read("sw.js");
-assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-3"/);
+assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-5-1"/);
 assert.match(sw, /new Request\(url, \{ cache: "reload" \}\)/);
 assert.match(sw, /SKIP_WAITING/);
 const cachedPaths = new Set([...sw.matchAll(/"(\.\/[^"\n]+)"/g)].map(match => match[1]));
@@ -174,7 +189,7 @@ const expectedStylePaths = [
 const linkedStylePaths = [...html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)]
   .map(match => match[1].split("?")[0]);
 assert.deepEqual(linkedStylePaths, expectedStylePaths, "Ordre ou chemins des feuilles de style incorrects");
-assert.equal((html.match(/\?v=093/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
+assert.equal((html.match(/\?v=0951/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
 
 const styleFiles = expectedFiles.filter(file => file.endsWith(".css"));
 for (const relativePath of styleFiles) {
@@ -428,6 +443,82 @@ assert.equal(librariesModule.activeCardCountForMode("lyrics") >= librariesModule
 const selectedTotals = librariesModule.selectedCardTotals();
 assert.equal(selectedTotals.selected <= selectedTotals.total, true);
 
+const mimeConfig = configModule.MODE_CONFIG.mime;
+const currentMimeLibrary = JSON.parse(await read("data/mimes.json"));
+const legacyMimeCards = currentMimeLibrary.cards.slice(0, 395).map(card => ({
+  ...structuredClone(card),
+  origin: "official",
+  locallyModified: false
+}));
+const locallyEditedMime = legacyMimeCards.find(card => card.id === "mime-001");
+locallyEditedMime.prompt = "Modification locale du premier mime";
+locallyEditedMime.locallyModified = true;
+const deletedLegacyMimeId = "mime-020";
+const storedLegacyMimeCards = legacyMimeCards.filter(card => card.id !== deletedLegacyMimeId);
+const legacyMimeBoxIds = new Set(storedLegacyMimeCards.map(card => card.boxId));
+legacyMimeBoxIds.add("uncategorized");
+const legacyMimeBoxes = currentMimeLibrary.boxes
+  .filter(box => legacyMimeBoxIds.has(box.id))
+  .map(box => ({ ...box, origin: "official", locallyModified: false }));
+memoryStorage.set(mimeConfig.storage.boxes, JSON.stringify(legacyMimeBoxes));
+memoryStorage.set(mimeConfig.storage.cards, JSON.stringify(storedLegacyMimeCards));
+memoryStorage.set(mimeConfig.storage.meta, JSON.stringify({
+  installedVersion: "2026.06.15-1",
+  deletedOfficialCardIds: [deletedLegacyMimeId],
+  deletedOfficialBoxIds: []
+}));
+memoryStorage.set(mimeConfig.storage.selection, JSON.stringify({
+  boxIds: legacyMimeBoxes.map(box => box.id), difficultyIds: ["easy", "medium", "hard"]
+}));
+await librariesModule.loadContent();
+assert.equal(stateModule.state.modes.mime.libraryMeta.installedVersion, "2026.06.19-1");
+assert.equal(stateModule.state.modes.mime.cards.length, 999, "La migration doit ajouter les nouveaux mimes sans restaurer une suppression locale");
+assert.equal(stateModule.state.modes.mime.cards.some(card => card.id === "mime-1000"), true, "Les nouvelles cartes de mime doivent être ajoutées automatiquement");
+assert.equal(stateModule.state.modes.mime.cards.some(card => card.id === deletedLegacyMimeId), false, "Une carte supprimée localement ne doit pas réapparaître");
+assert.equal(
+  stateModule.state.modes.mime.cards.find(card => card.id === "mime-001").prompt,
+  "Modification locale du premier mime",
+  "La migration des mimes ne doit pas écraser une carte modifiée localement"
+);
+assert.equal(stateModule.state.modes.mime.boxes.length, 21, "Les nouvelles catégories de mime doivent être installées");
+
+// Réparation V0.9.5.1 : certains téléphones ont mémorisé la nouvelle version
+// alors que seules les 395 anciennes cartes étaient présentes et que les
+// 605 nouveautés avaient été marquées à tort comme supprimées.
+const brokenMimeCards = currentMimeLibrary.cards.slice(0, 395).map(card => ({
+  ...structuredClone(card),
+  origin: "official",
+  locallyModified: false
+}));
+const legacyMimeIds = new Set(brokenMimeCards.map(card => card.id));
+const falseDeletedNewMimeIds = currentMimeLibrary.cards
+  .filter(card => !legacyMimeIds.has(card.id))
+  .map(card => card.id);
+const brokenMimeBoxIds = new Set(brokenMimeCards.map(card => card.boxId));
+brokenMimeBoxIds.add("uncategorized");
+const brokenMimeBoxes = currentMimeLibrary.boxes
+  .filter(box => brokenMimeBoxIds.has(box.id))
+  .map(box => ({ ...box, origin: "official", locallyModified: false }));
+memoryStorage.set(mimeConfig.storage.boxes, JSON.stringify(brokenMimeBoxes));
+memoryStorage.set(mimeConfig.storage.cards, JSON.stringify(brokenMimeCards));
+memoryStorage.set(mimeConfig.storage.meta, JSON.stringify({
+  installedVersion: "2026.06.19-1",
+  availableVersion: "2026.06.19-1",
+  deletedOfficialCardIds: falseDeletedNewMimeIds,
+  deletedOfficialBoxIds: currentMimeLibrary.boxes
+    .filter(box => !brokenMimeBoxIds.has(box.id) && box.id !== "uncategorized")
+    .map(box => box.id)
+}));
+memoryStorage.set(mimeConfig.storage.selection, JSON.stringify({
+  boxIds: brokenMimeBoxes.map(box => box.id),
+  difficultyIds: ["easy", "medium", "hard"]
+}));
+await librariesModule.loadContent();
+assert.equal(stateModule.state.modes.mime.cards.length, 1000, "La réparation doit restaurer les 605 nouveaux mimes marqués à tort comme supprimés");
+assert.equal(stateModule.state.modes.mime.boxes.length, 21, "La réparation doit restaurer les nouvelles catégories de mime");
+assert.equal(stateModule.state.modes.mime.selectedBoxIds.length, 21, "Les nouvelles catégories réparées doivent être sélectionnées automatiquement");
+assert.equal(stateModule.state.modes.mime.libraryMeta.deletedOfficialCardIds.includes("mime-1000"), false, "Une fausse suppression de migration ne doit pas survivre");
+
 const drinkingConfig = configModule.MODE_CONFIG.drinking;
 const currentDrinkingLibrary = JSON.parse(await read("data/drinking.json"));
 const oldDrinkingCards = currentDrinkingLibrary.cards.map(card => ({
@@ -459,7 +550,7 @@ assert.equal(
   "Modification personnelle à conserver",
   "La migration ne doit pas écraser une carte modifiée localement"
 );
-assert.equal(stateModule.state.modes.drinking.libraryMeta.installedVersion, "2026.06.17-2");
+assert.equal(stateModule.state.modes.drinking.libraryMeta.installedVersion, "2026.06.19-1");
 
 stateModule.state.settings.playType = "multiplayer";
 stateModule.state.settings.multiplayer = {
@@ -470,11 +561,50 @@ stateModule.state.settings.multiplayer = {
 };
 const backupModule = await import(pathToFileURL(path.join(root, "src/services/backup.js")).href);
 const newBackup = backupModule.createBackupData();
-assert.equal(newBackup.backupSchemaVersion, 6);
+assert.equal(newBackup.backupSchemaVersion, 7);
 assert.equal(newBackup.settings.multiplayer.cycles, 3);
 assert.equal(newBackup.settings.multiplayer.flowType, "mode-blocks");
 assert.deepEqual(newBackup.settings.globalDifficultyIds, ["easy", "hard"]);
 assert.equal(Object.hasOwn(newBackup, "multiplayerSession"), false, "La session temporaire ne doit pas être exportée");
+assert.ok(newBackup.cardRemovalReports, "Les signalements de cartes doivent être inclus dans la sauvegarde V7");
+
+const cardRemovalModule = await import(pathToFileURL(path.join(root, "src/services/card-removals.js")).href);
+cardRemovalModule.clearCardRemovalReports();
+const removedFixtures = [];
+for (const modeId of ["lyrics", "mime", "words", "draw", "drinking"]) {
+  const mode = stateModule.state.modes[modeId];
+  const removableCard = structuredClone(mode.cards[0]);
+  const cardsBeforeRemoval = mode.cards.length;
+  if (modeId === "drinking") {
+    mode.cards[0].targetIds = ["camille", "lea"];
+    mode.cards[0].renderedPrompt = "Texte rendu avec des prénoms privés";
+  }
+  const removedCard = cardRemovalModule.removeCardDuringGame(modeId, removableCard.id, { source: "smoke_test" });
+  assert.equal(removedCard.id, removableCard.id);
+  assert.equal(mode.cards.length, cardsBeforeRemoval - 1);
+  assert.equal(mode.cards.some(card => card.id === removableCard.id), false);
+  assert.ok(mode.libraryMeta.deletedOfficialCardIds.includes(removableCard.id));
+  removedFixtures.push({ modeId, card: removableCard });
+}
+const removalReport = cardRemovalModule.createCardRemovalReport();
+assert.equal(removalReport.kind, "mdb-deleted-cards-report");
+assert.equal(removalReport.summary.uniqueCards, 5);
+assert.deepEqual(Object.values(removalReport.summary.byMode), [1, 1, 1, 1, 1]);
+for (const deletion of removalReport.deletions) {
+  assert.equal(deletion.reason, "quality_rejection");
+  assert.equal(Object.hasOwn(deletion.card, "modeId"), false);
+  assert.equal(Object.hasOwn(deletion.card, "targetIds"), false);
+  assert.equal(Object.hasOwn(deletion.card, "renderedPrompt"), false);
+}
+const backupWithRemoval = backupModule.createBackupData();
+assert.equal(backupWithRemoval.cardRemovalReports.entries.length, 5);
+for (const fixture of removedFixtures) {
+  const mode = stateModule.state.modes[fixture.modeId];
+  mode.cards.unshift(fixture.card);
+  mode.libraryMeta.deletedOfficialCardIds = mode.libraryMeta.deletedOfficialCardIds.filter(id => id !== fixture.card.id);
+  librariesModule.saveMode(fixture.modeId);
+}
+cardRemovalModule.clearCardRemovalReports();
 
 const legacyBackup = {
   backupSchemaVersion: 3,
@@ -505,8 +635,24 @@ const drawingSource = await read("src/features/drawing/drawing-controller.js");
 assert.match(drawingSource, /playDrawingArrivalSignal\(\);\s*showNextDrawingPrompt\(\);/);
 assert.doesNotMatch(drawingSource, /showPickupTransition/);
 assert.match(drawingSource, /round\?\.kind !== "mixed"/);
+const mainSource = await read("src/main.js");
+assert.match(mainSource, /flipGameButton\.addEventListener\("click", toggleFlipped\)/, "Le bouton Retourner en jeu doit conserver son action");
 const gameSource = await read("src/features/game/game-controller.js");
 assert.match(gameSource, /if \(step\.type === "draw"\)[\s\S]*pauseRoundClock\("drawing"\)[\s\S]*markMixedDrawingStarted/);
+assert.match(gameSource, /removeCardDuringGame\(card\.modeId, card\.id/);
+assert.match(gameSource, /function restorePreparedCardAfterUndo\(/, "L’historique doit réinsérer la carte préparée après un retour");
+assert.match(gameSource, /_nextCard:\s*null/, "Chaque résultat classique doit mémoriser la carte préparée ensuite");
+assert.match(gameSource, /_sequenceCursorBeforeNext:\s*null/, "Le multijoueur doit mémoriser le curseur avant de préparer la carte suivante");
+assert.match(gameSource, /modeQueues\.set\(preparedCard\.modeId, \[preparedCard, \.\.\.queue\]\)/, "La carte déplacée doit revenir en tête de sa file multijoueur");
+assert.match(gameSource, /usedIds\.splice\(usedIndex, 1\)/, "Une carte réinsérée ne doit plus rester marquée comme déjà utilisée");
+assert.match(gameSource, /const \{ _nextCard, _sequenceCursorBeforeNext, \.\.\.publicEntry \} = entry/, "Les métadonnées internes de retour ne doivent pas sortir dans les résultats");
+const cardRemovalSource = await read("src/services/card-removals.js");
+assert.match(cardRemovalSource, /kind:\s*REPORT_KIND/);
+assert.match(cardRemovalSource, /privacy:/);
+assert.match(cardRemovalSource, /delete snapshot\.targetIds/);
+assert.match(cardRemovalSource, /removeCardDuringGame/);
+assert.match(cardRemovalSource, /exportCardRemovalReport/);
+assert.match(cardRemovalSource, /quality_rejection/);
 const scheduleSource = await read("src/features/multiplayer/schedule.js");
 assert.doesNotMatch(scheduleSource, /MODE_ORDER/);
 assert.doesNotMatch(scheduleSource, /length\s*===\s*4/);
@@ -516,9 +662,17 @@ const homeSource = await read("src/features/home.js");
 assert.match(homeSource, /applyGlobalDifficultyFilter/);
 assert.match(homeSource, /mode-difficulty-override/);
 assert.match(homeSource, /selectedCardTotals/);
+assert.match(homeSource, /mode-tile-selector/, "La grande cible tactile des modes doit être créée dynamiquement");
+assert.match(homeSource, /tile\.append\(selector, openButton\)/, "La sélection et l’ouverture de configuration doivent être deux zones distinctes");
+assert.match(homeSource, /selector\.addEventListener\("pointerdown", event => event\.stopPropagation\(\)\)/, "La cible tactile doit maîtriser la propagation des événements");
 const homeCss = await read("assets/styles/screens/home.css");
 assert.match(homeCss, /global-difficulty-chip\.difficulty-easy/);
 assert.match(homeCss, /mode-difficulty-badge\.difficulty-hard/);
+const componentsCss = await read("assets/styles/components.css");
+assert.match(componentsCss, /\.mode-tile-selector\s*\{[\s\S]*?width:\s*44px;[\s\S]*?height:\s*44px;/, "La cible tactile de sélection doit mesurer au moins 44 × 44 px");
+const gameCss = await read("assets/styles/screens/game.css");
+assert.match(gameCss, /V0\.9\.4[\s\S]*?#gameScreen[\s\S]*?display:\s*grid;/, "Le profil compact des modes classiques doit superposer le HUD et les commandes à la carte");
+assert.match(gameCss, /#gameScreen>\.swipe-stage,[\s\S]*?#gameScreen>\.game-header,[\s\S]*?#gameScreen>\.game-controls\s*\{grid-area:\s*1\s*\/\s*1\}/, "Le HUD et les commandes classiques doivent être intégrés visuellement à la carte");
 
 const mixedRules = await import(pathToFileURL(path.join(root, "src/features/drawing/mixed-drawing.js")).href);
 assert.equal(mixedRules.getMixedDrawingPenaltySeconds(60, 1), 7);
@@ -618,14 +772,23 @@ assert.doesNotMatch(drinkingControllerSource, /ciblage\$\{stats\.targeted/);
 assert.doesNotMatch(drinkingControllerSource, /drinkingSkipButton|drinkingLeftActionButton|drinkingRightActionButton/);
 assert.match(drinkingControllerSource, /rulePenaltyTargetBackup/);
 assert.match(drinkingControllerSource, /prompt-very-long/);
+assert.match(drinkingControllerSource, /dataset\.swipeTap\s*=\s*"player"/, "Les choix de joueurs doivent autoriser l’arbitrage tap/swipe");
 const drinkingCss = await read("assets/styles/screens/drinking-game.css");
 assert.match(drinkingCss, /grid-template-columns:\s*repeat\(auto-fit, minmax\(112px, 1fr\)\)/);
 assert.match(drinkingCss, /drinking-card-rule-reminder/);
 assert.match(drinkingCss, /prompt-very-long/);
+assert.match(drinkingCss, /\.drinking-game-shell\s*\{[\s\S]*?border:\s*0;/, "Le cadre extérieur redondant de Qui boit doit être supprimé");
+assert.match(drinkingCss, /\.drinking-rule-chip\s*\{[\s\S]*?white-space:\s*normal;/, "Les règles actives doivent revenir à la ligne");
+assert.doesNotMatch(drinkingCss, /\.drinking-rule-chip\s*\{[^}]*text-overflow:\s*ellipsis/s, "Les règles actives ne doivent plus être tronquées");
+assert.doesNotMatch(drinkingCss, /\.drinking-rules-summary\s*\{[^}]*overflow-x:\s*auto/s, "Les règles actives ne doivent plus défiler horizontalement");
+assert.match(drinkingCss, /\.drinking-rule-penalty-button\s*\{[\s\S]*?max-width:/, "Le bouton Règle oubliée doit garder une largeur limitée");
 assert.doesNotMatch(drinkingCss, /drinking-resolution-panel/);
 const drinkingSwipeSource = await read("src/features/drinking-game/swipe.js");
 assert.match(drinkingSwipeSource, /pointerdown/);
 assert.match(drinkingSwipeSource, /getSwipeThreshold/);
+assert.match(drinkingSwipeSource, /SWIPEABLE_TAP_SELECTOR/, "Le swipe doit reconnaître les éléments tap/swipe");
+assert.match(drinkingSwipeSource, /button:not\(\[data-swipe-tap\]\)/, "Les vrais boutons doivent rester exclus du swipe");
+assert.match(drinkingSwipeSource, /addEventListener\("click", onClickCapture, true\)/, "Un swipe démarré sur un joueur doit supprimer le clic final");
 
 const targetModule = await import(pathToFileURL(path.join(root, "src/features/drinking-game/targeting.js")).href);
 const targetPlayers = [{ id: "a", name: "A" }, { id: "b", name: "B" }, { id: "c", name: "C" }];
@@ -652,7 +815,7 @@ assert.equal(activeRules.at(-1).remainingCards, 3, "Une nouvelle règle ne perd 
 assert.equal(activeRules[0].remainingCards, 2);
 
 console.log("✓ Moteur Qui boit : pénalités variables, points et ciblage équilibré");
-console.log("✓ Arborescence, DOM, CSS, manifeste et cache V0.9.3 cohérents");
+console.log("✓ Arborescence, DOM, CSS, manifeste et cache de la V0.9.5.1 cohérents");
 console.log("✓ Modules ES résolus, dépendances orientées et aucun cycle d’import");
 console.log("✓ Deux déroulements multijoueurs testés de 1 à 12 modes et de 2 à 12 joueurs");
 console.log("✓ Filtres globaux, exceptions par mode et compteurs sélection/total validés");

@@ -36,6 +36,9 @@ function renderMixedBreakdown() {
   if (drawing.skippedForTime) {
     addBreakdownItem("non déclenchés faute de temps", drawing.skippedForTime, "neutral");
   }
+  if (drawing.removedCount) {
+    addBreakdownItem("cartes dessin supprimées", drawing.removedCount, "neutral");
+  }
   if (drawing.cancelledCount) {
     addBreakdownItem("non joués après fin manuelle", drawing.cancelledCount, "neutral");
   }

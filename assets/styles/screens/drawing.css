@@ -37,7 +37,7 @@
 .draw-reveal-prompt-button.revealed small{display:none}
 .draw-reveal-meta{min-height:1.2em;margin:0;color:#b9fff8;font-weight:850}
 .draw-rule-reminder{margin:13px auto 0;color:var(--muted);font-size:.9rem}
-.draw-reveal-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}
+.draw-reveal-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}
 .draw-reveal-actions button:disabled{opacity:.32;filter:saturate(.25);cursor:not-allowed}
 .draw-choice-note{margin:10px 0 0;color:var(--muted);font-size:.78rem}
 
@@ -127,3 +127,5 @@
   .draw-penalty-preview{min-height:30px;padding:4px 7px;font-size:.66rem}
   .draw-arrival-option,.draw-sound-option{margin-top:5px}
 }
+
+.draw-delete-card-button{color:#ffd4d7;border-color:rgba(255,91,103,.58);background:rgba(120,25,35,.72)}

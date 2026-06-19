@@ -2,13 +2,15 @@ import { APP_VERSION, MODE_ORDER } from "../config/config.js";
 import { modeState, state } from "../core/state.js";
 import { clone } from "../core/utils.js";
 import { sanitizeMode, saveAllData } from "./libraries.js";
+import { readCardRemovalStore, restoreCardRemovalStore } from "./card-removals.js";
 
 export function createBackupData() {
   return {
-    backupSchemaVersion: 6,
+    backupSchemaVersion: 7,
     appVersion: APP_VERSION,
     exportedAt: new Date().toISOString(),
     settings: clone(state.settings),
+    cardRemovalReports: clone(readCardRemovalStore()),
     modes: Object.fromEntries(MODE_ORDER.map(modeId => {
       const mode = modeState(modeId);
       return [modeId, {
@@ -38,7 +40,7 @@ export function exportBackup() {
 }
 
 export function validBackup(data) {
-  if ([2, 3, 4, 5, 6].includes(Number(data?.backupSchemaVersion))) {
+  if ([2, 3, 4, 5, 6, 7].includes(Number(data?.backupSchemaVersion))) {
     return data.settings && data.modes && Object.values(data.modes).some(mode =>
       Array.isArray(mode?.boxes) && Array.isArray(mode?.cards)
     );
@@ -118,8 +120,11 @@ export function restoreBackupData(data) {
     throw new Error("Ce fichier n’est pas une sauvegarde MDB valide.");
   }
 
-  if ([2, 3, 4, 5, 6].includes(Number(data.backupSchemaVersion))) {
+  if ([2, 3, 4, 5, 6, 7].includes(Number(data.backupSchemaVersion))) {
     mergeRestoredSettings(data.settings);
+    if (Number(data.backupSchemaVersion) >= 7 && data.cardRemovalReports) {
+      restoreCardRemovalStore(data.cardRemovalReports);
+    }
     MODE_ORDER.forEach(modeId => {
       const restored = data.modes[modeId];
       if (!restored) return;

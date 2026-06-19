@@ -12,28 +12,33 @@ L’interface, les filtres et le planificateur multijoueur reposent sur la confi
 
 ## Version
 
-Version actuelle : **0.9.3**
+Base technique actuelle : **0.9.5.1**
 
-La V0.9.3 est un correctif exclusivement responsive pour les téléphones en paysage :
+La V0.9.5.1 stable ajoute :
 
-- l’accueil utilise toute la hauteur disponible sans scroll global ;
-- les cinq tuiles restent visibles sur une ligne sur les formats courants 800 × 360 et 915 × 412 ;
-- les fenêtres de configuration possèdent un en-tête et un pied compacts ;
-- « Comment jouer ? » est replié par défaut sur les écrans peu hauts ;
-- seule la zone centrale d’une fenêtre défile lorsque son contenu est réellement trop long ;
-- la préparation multijoueur, Qui boit et le gestionnaire utilisent une densité adaptée aux écrans peu hauts ;
-- la vue ordinateur, les règles de jeu, les bibliothèques et les données locales restent inchangées.
+- la suppression d’une carte directement pendant une partie dans les cinq modes ;
+- une confirmation avant suppression et une cible tactile de 44 × 44 px ;
+- le passage immédiat à la carte suivante sans modifier le score ;
+- la conservation locale des suppressions afin que la carte ne ressorte plus ;
+- un rapport JSON dédupliqué téléchargeable depuis les paramètres avancés ;
+- l’intégration de ce journal aux sauvegardes générales ;
+- l’absence de prénoms, de réponses ou d’autres données de partie dans le rapport exporté ;
+- un historique corrigé : après un ou plusieurs retours, les cartes qui avaient déjà été préparées reviennent dans le même ordre ;
+- la nouvelle bibliothèque de 1 000 mimes ;
+- la bibliothèque Qui boit révisée sans changement d’identifiants ;
+- la réparation automatique des téléphones restés bloqués à 395 mimes ;
+- un bouton de suppression désormais libellé « Suppr. » pour être clairement visible en jeu.
 
 ## Bibliothèques
 
 | Mode | Fichier | Cartes |
 |---|---|---:|
 | La suite, maestro ! | `data/lyrics.json` | 143 |
-| Ferme-la et mime ! | `data/mimes.json` | 395 |
+| Ferme-la et mime ! | `data/mimes.json` | 1 000 |
 | Sans le dire ! | `data/words.json` | 360 |
 | Picasso en PLS | `data/drawings.json` | 420 |
 | Qui boit, bordel ? | `data/drinking.json` | 1 050 |
-| **Total** | | **2 368** |
+| **Total** | | **2 973** |
 
 ## Qui boit, bordel ?
 
@@ -69,11 +74,12 @@ Qui boit, bordel ? reste autonome. Une future « playlist de soirée » pourra a
 
 ## Compatibilité
 
-La V0.9.3 conserve :
+La V0.9.5.1 conserve :
 
-- les 2 368 cartes et leurs identifiants ;
+- les identifiants des 1 050 cartes Qui boit et des 395 premiers mimes ;
 - les cartes et catégories personnelles ;
-- les cartes officielles modifiées ;
+- les cartes officielles modifiées localement ;
+- les cartes supprimées localement, qui ne sont pas restaurées par la migration ;
 - les réglages, filtres et sauvegardes existants ;
 - les deux déroulements multijoueurs ;
 - le Dessin autonome et mélangé.
@@ -82,19 +88,21 @@ La session temporaire de Qui boit utilise la clé `mdb-drinking-session-v1` avec
 
 ## Publication
 
-Application :
+Cette archive constitue la version stable V0.9.5.1. Les autres bibliothèques révisées seront intégrées dans une mise à jour ultérieure.
+
+Application de référence :
 
 `https://88miyou88.github.io/mais-devine-bordel-/`
 
 URL de test :
 
-`https://88miyou88.github.io/mais-devine-bordel-/?v=093`
+`https://88miyou88.github.io/mais-devine-bordel-/?v=0951`
 
 Diagnostic attendu :
 
 ```text
-Version : 0.9.3
-Cache attendu : mdb-v0-9-3
+Version : 0.9.5.1
+Cache attendu : mdb-v0-9-5-1
 ```
 
 ## Développement local
@@ -107,7 +115,7 @@ python3 -m http.server 8000
 
 Puis ouvrir :
 
-`http://localhost:8000/?v=093`
+`http://localhost:8000/?v=0951`
 
 ## Contrôles automatiques
 
@@ -116,4 +124,4 @@ node tests/validate-data.mjs
 node tests/smoke-test.mjs
 ```
 
-Voir également `docs/ARCHITECTURE.md` et `docs/TESTS.md`.
+Voir également `docs/ARCHITECTURE.md`, `docs/TESTS.md` et `docs/CARD-REMOVAL-REPORTS.md`.
