@@ -1,0 +1,5104 @@
+{
+  "schemaVersion": 1,
+  "libraryVersion": "2026.06.15-1",
+  "updatedAt": "2026-06-15",
+  "modeId": "words",
+  "modeName": "Sans le dire !",
+  "boxes": [
+    {
+      "id": "animals",
+      "name": "Animaux"
+    },
+    {
+      "id": "jobs",
+      "name": "Métiers"
+    },
+    {
+      "id": "objects",
+      "name": "Objets du quotidien"
+    },
+    {
+      "id": "food",
+      "name": "Nourriture et boissons"
+    },
+    {
+      "id": "places",
+      "name": "Lieux et transports"
+    },
+    {
+      "id": "health",
+      "name": "Corps, santé et sport"
+    },
+    {
+      "id": "daily",
+      "name": "Actions et situations quotidiennes"
+    },
+    {
+      "id": "emotions",
+      "name": "Émotions, personnalité et relations"
+    },
+    {
+      "id": "technology",
+      "name": "Technologie et Internet"
+    },
+    {
+      "id": "culture",
+      "name": "Culture populaire et divertissement"
+    },
+    {
+      "id": "nature",
+      "name": "Nature et monde"
+    },
+    {
+      "id": "expressions",
+      "name": "Expressions françaises"
+    },
+    {
+      "id": "uncategorized",
+      "name": "Sans catégorie",
+      "protected": true
+    }
+  ],
+  "cards": [
+    {
+      "id": "words-001",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Chien",
+      "forbiddenWords": [
+        "aboyer",
+        "laisse",
+        "maître",
+        "chat",
+        "niche"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-002",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Chat",
+      "forbiddenWords": [
+        "miauler",
+        "moustaches",
+        "souris",
+        "chien",
+        "litière"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-003",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Lion",
+      "forbiddenWords": [
+        "jungle",
+        "crinière",
+        "rugir",
+        "roi",
+        "félin"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-004",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Éléphant",
+      "forbiddenWords": [
+        "trompe",
+        "défenses",
+        "Afrique",
+        "gros",
+        "gris"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-005",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Lapin",
+      "forbiddenWords": [
+        "carotte",
+        "oreilles",
+        "Pâques",
+        "terrier",
+        "sauter"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-006",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Cheval",
+      "forbiddenWords": [
+        "galoper",
+        "selle",
+        "crinière",
+        "écurie",
+        "sabots"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-007",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Vache",
+      "forbiddenWords": [
+        "lait",
+        "ferme",
+        "meugler",
+        "cornes",
+        "prairie"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-008",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Poule",
+      "forbiddenWords": [
+        "œuf",
+        "coq",
+        "ferme",
+        "plume",
+        "caqueter"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-009",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Poisson",
+      "forbiddenWords": [
+        "eau",
+        "nager",
+        "aquarium",
+        "nageoires",
+        "mer"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-010",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Singe",
+      "forbiddenWords": [
+        "banane",
+        "arbre",
+        "grimper",
+        "primate",
+        "zoo"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-011",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Kangourou",
+      "forbiddenWords": [
+        "Australie",
+        "poche",
+        "sauter",
+        "bébé",
+        "boxe"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-012",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Girafe",
+      "forbiddenWords": [
+        "cou",
+        "taches",
+        "Afrique",
+        "grande",
+        "savane"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-013",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Crocodile",
+      "forbiddenWords": [
+        "dents",
+        "reptile",
+        "marais",
+        "vert",
+        "Nil"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-014",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Hérisson",
+      "forbiddenWords": [
+        "piquants",
+        "boule",
+        "jardin",
+        "petit",
+        "dos"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-015",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Flamant rose",
+      "forbiddenWords": [
+        "oiseau",
+        "patte",
+        "couleur",
+        "bec",
+        "eau"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-016",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Dauphin",
+      "forbiddenWords": [
+        "mer",
+        "intelligent",
+        "sauter",
+        "mammifère",
+        "nageoire"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-017",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Renard",
+      "forbiddenWords": [
+        "roux",
+        "rusé",
+        "poule",
+        "forêt",
+        "terrier"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-018",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Gorille",
+      "forbiddenWords": [
+        "singe",
+        "poitrine",
+        "jungle",
+        "primate",
+        "puissant"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-019",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Paresseux",
+      "forbiddenWords": [
+        "lent",
+        "arbre",
+        "dormir",
+        "accroché",
+        "griffes"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-020",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Caméléon",
+      "forbiddenWords": [
+        "couleur",
+        "camouflage",
+        "lézard",
+        "langue",
+        "changer"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-021",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Ornithorynque",
+      "forbiddenWords": [
+        "bec",
+        "canard",
+        "Australie",
+        "mammifère",
+        "castor"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-022",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Hippocampe",
+      "forbiddenWords": [
+        "mer",
+        "cheval",
+        "queue",
+        "poisson",
+        "petit"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-023",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Suricate",
+      "forbiddenWords": [
+        "debout",
+        "désert",
+        "garde",
+        "groupe",
+        "terrier"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-024",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Pélican",
+      "forbiddenWords": [
+        "bec",
+        "poche",
+        "poisson",
+        "oiseau",
+        "mer"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-025",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Tatou",
+      "forbiddenWords": [
+        "carapace",
+        "boule",
+        "blindé",
+        "animal",
+        "Amérique"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-026",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Méduse",
+      "forbiddenWords": [
+        "tentacules",
+        "piquer",
+        "transparente",
+        "mer",
+        "nager"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-027",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Panda roux",
+      "forbiddenWords": [
+        "bambou",
+        "Chine",
+        "roux",
+        "arbre",
+        "panda"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-028",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Loutre",
+      "forbiddenWords": [
+        "rivière",
+        "coquillage",
+        "nager",
+        "moustaches",
+        "ventre"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-029",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Narval",
+      "forbiddenWords": [
+        "licorne",
+        "mer",
+        "défense",
+        "baleine",
+        "Arctique"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-030",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Axolotl",
+      "forbiddenWords": [
+        "rose",
+        "amphibien",
+        "branchies",
+        "Mexique",
+        "salamandre"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-031",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Médecin",
+      "forbiddenWords": [
+        "hôpital",
+        "malade",
+        "soigner",
+        "docteur",
+        "santé"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-032",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Pompier",
+      "forbiddenWords": [
+        "feu",
+        "incendie",
+        "camion",
+        "éteindre",
+        "secours"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-033",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Professeur",
+      "forbiddenWords": [
+        "école",
+        "élèves",
+        "cours",
+        "classe",
+        "enseigner"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-034",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Policier",
+      "forbiddenWords": [
+        "arrestation",
+        "uniforme",
+        "voleur",
+        "enquête",
+        "commissariat"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-035",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Cuisinier",
+      "forbiddenWords": [
+        "cuisine",
+        "plat",
+        "restaurant",
+        "chef",
+        "repas"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-036",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Coiffeur",
+      "forbiddenWords": [
+        "cheveux",
+        "couper",
+        "salon",
+        "ciseaux",
+        "coiffure"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-037",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Serveur",
+      "forbiddenWords": [
+        "restaurant",
+        "plateau",
+        "client",
+        "commande",
+        "table"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-038",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Facteur",
+      "forbiddenWords": [
+        "courrier",
+        "lettre",
+        "poste",
+        "colis",
+        "boîte"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-039",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Infirmier",
+      "forbiddenWords": [
+        "hôpital",
+        "patient",
+        "soin",
+        "piqûre",
+        "médecin"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-040",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Boulanger",
+      "forbiddenWords": [
+        "pain",
+        "farine",
+        "baguette",
+        "four",
+        "pâtisserie"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-041",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Dentiste",
+      "forbiddenWords": [
+        "dents",
+        "bouche",
+        "carie",
+        "fraise",
+        "cabinet"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-042",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Photographe",
+      "forbiddenWords": [
+        "photo",
+        "appareil",
+        "image",
+        "objectif",
+        "poser"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-043",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Mécanicien",
+      "forbiddenWords": [
+        "voiture",
+        "garage",
+        "moteur",
+        "panne",
+        "réparer"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-044",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Vétérinaire",
+      "forbiddenWords": [
+        "animaux",
+        "chien",
+        "chat",
+        "soigner",
+        "clinique"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-045",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Jardinier",
+      "forbiddenWords": [
+        "jardin",
+        "fleurs",
+        "plantes",
+        "arroser",
+        "terre"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-046",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Journaliste",
+      "forbiddenWords": [
+        "information",
+        "article",
+        "interview",
+        "journal",
+        "télévision"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-047",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Astronaute",
+      "forbiddenWords": [
+        "espace",
+        "Lune",
+        "fusée",
+        "combinaison",
+        "planète"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-048",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Architecte",
+      "forbiddenWords": [
+        "bâtiment",
+        "plan",
+        "maison",
+        "dessiner",
+        "construction"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-049",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Psychologue",
+      "forbiddenWords": [
+        "écouter",
+        "patient",
+        "émotions",
+        "thérapie",
+        "parler"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-050",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Chauffeur de taxi",
+      "forbiddenWords": [
+        "voiture",
+        "client",
+        "conduire",
+        "course",
+        "compteur"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-051",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Apiculteur",
+      "forbiddenWords": [
+        "abeilles",
+        "miel",
+        "ruche",
+        "combinaison",
+        "essaim"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-052",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Serrurier",
+      "forbiddenWords": [
+        "clé",
+        "porte",
+        "serrure",
+        "ouvrir",
+        "dépannage"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-053",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Notaire",
+      "forbiddenWords": [
+        "contrat",
+        "signature",
+        "héritage",
+        "immobilier",
+        "acte"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-054",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Scénariste",
+      "forbiddenWords": [
+        "film",
+        "histoire",
+        "écrire",
+        "dialogue",
+        "cinéma"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-055",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Archéologue",
+      "forbiddenWords": [
+        "fouilles",
+        "passé",
+        "trésor",
+        "histoire",
+        "os"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-056",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Douanier",
+      "forbiddenWords": [
+        "frontière",
+        "contrôle",
+        "passeport",
+        "valise",
+        "marchandises"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-057",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Cascadeur",
+      "forbiddenWords": [
+        "cinéma",
+        "danger",
+        "chute",
+        "doublure",
+        "acteur"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-058",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Œnologue",
+      "forbiddenWords": [
+        "vin",
+        "raisin",
+        "bouteille",
+        "cave",
+        "goûter"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-059",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Cartographe",
+      "forbiddenWords": [
+        "carte",
+        "géographie",
+        "territoire",
+        "pays",
+        "dessiner"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-060",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Commissaire-priseur",
+      "forbiddenWords": [
+        "enchères",
+        "marteau",
+        "vendre",
+        "prix",
+        "objet"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-061",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Téléphone",
+      "forbiddenWords": [
+        "appeler",
+        "écran",
+        "portable",
+        "message",
+        "smartphone"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-062",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Chaise",
+      "forbiddenWords": [
+        "s’asseoir",
+        "meuble",
+        "table",
+        "pieds",
+        "dossier"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-063",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Miroir",
+      "forbiddenWords": [
+        "reflet",
+        "visage",
+        "regarder",
+        "verre",
+        "salle de bain"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-064",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Ciseaux",
+      "forbiddenWords": [
+        "couper",
+        "papier",
+        "lames",
+        "pointu",
+        "coiffure"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-065",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Valise",
+      "forbiddenWords": [
+        "voyage",
+        "vêtements",
+        "vacances",
+        "roulettes",
+        "bagages"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-066",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Parapluie",
+      "forbiddenWords": [
+        "pluie",
+        "mouillé",
+        "ouvrir",
+        "protéger",
+        "météo"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-067",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Oreiller",
+      "forbiddenWords": [
+        "dormir",
+        "lit",
+        "tête",
+        "nuit",
+        "coussin"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-068",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Fourchette",
+      "forbiddenWords": [
+        "manger",
+        "dents",
+        "couvert",
+        "assiette",
+        "couteau"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-069",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Bougie",
+      "forbiddenWords": [
+        "flamme",
+        "cire",
+        "anniversaire",
+        "souffler",
+        "lumière"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-070",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Télécommande",
+      "forbiddenWords": [
+        "télévision",
+        "bouton",
+        "chaîne",
+        "canapé",
+        "changer"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-071",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Tire-bouchon",
+      "forbiddenWords": [
+        "bouteille",
+        "vin",
+        "bouchon",
+        "ouvrir",
+        "vis"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-072",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Agrafeuse",
+      "forbiddenWords": [
+        "papier",
+        "bureau",
+        "attacher",
+        "métal",
+        "feuille"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-073",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Passoire",
+      "forbiddenWords": [
+        "pâtes",
+        "trous",
+        "eau",
+        "égoutter",
+        "cuisine"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-074",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Extincteur",
+      "forbiddenWords": [
+        "feu",
+        "incendie",
+        "rouge",
+        "éteindre",
+        "sécurité"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-075",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Bouillotte",
+      "forbiddenWords": [
+        "chaud",
+        "eau",
+        "lit",
+        "hiver",
+        "réchauffer"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-076",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Cadenas",
+      "forbiddenWords": [
+        "clé",
+        "fermer",
+        "serrure",
+        "sécurité",
+        "code"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-077",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Entonnoir",
+      "forbiddenWords": [
+        "verser",
+        "liquide",
+        "bouteille",
+        "trou",
+        "récipient"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-078",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Thermomètre",
+      "forbiddenWords": [
+        "température",
+        "fièvre",
+        "degrés",
+        "malade",
+        "mesurer"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-079",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Lampe torche",
+      "forbiddenWords": [
+        "lumière",
+        "nuit",
+        "piles",
+        "sombre",
+        "éclairer"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-080",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Casque audio",
+      "forbiddenWords": [
+        "musique",
+        "oreilles",
+        "écouter",
+        "son",
+        "écouteurs"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-081",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Niveau à bulle",
+      "forbiddenWords": [
+        "droit",
+        "outil",
+        "travaux",
+        "horizontal",
+        "mesurer"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-082",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Moustiquaire",
+      "forbiddenWords": [
+        "moustique",
+        "fenêtre",
+        "filet",
+        "insecte",
+        "protéger"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-083",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Pied-de-biche",
+      "forbiddenWords": [
+        "outil",
+        "porte",
+        "forcer",
+        "métal",
+        "levier"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-084",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Décapsuleur",
+      "forbiddenWords": [
+        "bouteille",
+        "capsule",
+        "bière",
+        "ouvrir",
+        "métal"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-085",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Pince à épiler",
+      "forbiddenWords": [
+        "poil",
+        "sourcil",
+        "retirer",
+        "beauté",
+        "petit"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-086",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Sablier",
+      "forbiddenWords": [
+        "sable",
+        "temps",
+        "verre",
+        "retourner",
+        "minute"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-087",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Escabeau",
+      "forbiddenWords": [
+        "monter",
+        "hauteur",
+        "marches",
+        "échelle",
+        "travaux"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-088",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Perforatrice",
+      "forbiddenWords": [
+        "papier",
+        "trous",
+        "feuilles",
+        "classeur",
+        "bureau"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-089",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Mousqueton",
+      "forbiddenWords": [
+        "escalade",
+        "corde",
+        "accrocher",
+        "métal",
+        "sécurité"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-090",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Essuie-glace",
+      "forbiddenWords": [
+        "voiture",
+        "pluie",
+        "pare-brise",
+        "nettoyer",
+        "balayer"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-091",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Pizza",
+      "forbiddenWords": [
+        "Italie",
+        "fromage",
+        "tomate",
+        "pâte",
+        "part"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-092",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Chocolat",
+      "forbiddenWords": [
+        "cacao",
+        "tablette",
+        "sucré",
+        "noir",
+        "bonbon"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-093",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Banane",
+      "forbiddenWords": [
+        "fruit",
+        "jaune",
+        "singe",
+        "peau",
+        "éplucher"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-094",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Hamburger",
+      "forbiddenWords": [
+        "pain",
+        "viande",
+        "fast-food",
+        "frites",
+        "sandwich"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-095",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Café",
+      "forbiddenWords": [
+        "boire",
+        "chaud",
+        "matin",
+        "tasse",
+        "caféine"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-096",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Glace",
+      "forbiddenWords": [
+        "froid",
+        "été",
+        "cornet",
+        "parfum",
+        "fondre"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-097",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Pomme",
+      "forbiddenWords": [
+        "fruit",
+        "rouge",
+        "arbre",
+        "croquer",
+        "compote"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-098",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Fromage",
+      "forbiddenWords": [
+        "lait",
+        "souris",
+        "odeur",
+        "plateau",
+        "manger"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-099",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Œuf",
+      "forbiddenWords": [
+        "poule",
+        "coquille",
+        "jaune",
+        "omelette",
+        "cuire"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-100",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Frites",
+      "forbiddenWords": [
+        "pomme de terre",
+        "huile",
+        "sel",
+        "ketchup",
+        "fast-food"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-101",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Raclette",
+      "forbiddenWords": [
+        "fromage",
+        "hiver",
+        "charcuterie",
+        "fondre",
+        "pomme de terre"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-102",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Sushi",
+      "forbiddenWords": [
+        "Japon",
+        "poisson",
+        "riz",
+        "cru",
+        "baguettes"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-103",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Guacamole",
+      "forbiddenWords": [
+        "avocat",
+        "Mexique",
+        "vert",
+        "sauce",
+        "chips"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-104",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Tiramisu",
+      "forbiddenWords": [
+        "dessert",
+        "café",
+        "mascarpone",
+        "biscuit",
+        "Italie"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-105",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Croissant",
+      "forbiddenWords": [
+        "boulangerie",
+        "beurre",
+        "matin",
+        "viennoiserie",
+        "lune"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-106",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Mojito",
+      "forbiddenWords": [
+        "cocktail",
+        "menthe",
+        "rhum",
+        "citron",
+        "alcool"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-107",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Fondue",
+      "forbiddenWords": [
+        "fromage",
+        "pain",
+        "tremper",
+        "montagne",
+        "casserole"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-108",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Lasagnes",
+      "forbiddenWords": [
+        "pâtes",
+        "couches",
+        "Italie",
+        "viande",
+        "fromage"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-109",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Couscous",
+      "forbiddenWords": [
+        "semoule",
+        "légumes",
+        "merguez",
+        "Maghreb",
+        "plat"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-110",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Omelette",
+      "forbiddenWords": [
+        "œufs",
+        "poêle",
+        "battre",
+        "cuire",
+        "repas"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-111",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Crème brûlée",
+      "forbiddenWords": [
+        "dessert",
+        "caramel",
+        "sucre",
+        "casser",
+        "cuillère"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-112",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Œuf à la coque",
+      "forbiddenWords": [
+        "mouillette",
+        "jaune",
+        "coquille",
+        "cuire",
+        "matin"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-113",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Bœuf bourguignon",
+      "forbiddenWords": [
+        "viande",
+        "vin",
+        "sauce",
+        "France",
+        "mijoter"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-114",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Île flottante",
+      "forbiddenWords": [
+        "dessert",
+        "œuf",
+        "neige",
+        "crème",
+        "caramel"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-115",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Chouquette",
+      "forbiddenWords": [
+        "sucre",
+        "pâtisserie",
+        "chou",
+        "petite",
+        "boulangerie"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-116",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Cordon-bleu",
+      "forbiddenWords": [
+        "poulet",
+        "jambon",
+        "fromage",
+        "pané",
+        "viande"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-117",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Pain perdu",
+      "forbiddenWords": [
+        "lait",
+        "œuf",
+        "tranche",
+        "dessert",
+        "vieux"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-118",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Ratatouille",
+      "forbiddenWords": [
+        "légumes",
+        "courgette",
+        "aubergine",
+        "tomate",
+        "Provence"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-119",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Profiteroles",
+      "forbiddenWords": [
+        "dessert",
+        "chocolat",
+        "glace",
+        "choux",
+        "sauce"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-120",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Risotto",
+      "forbiddenWords": [
+        "riz",
+        "Italie",
+        "crémeux",
+        "parmesan",
+        "cuisson"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-121",
+      "boxId": "places",
+      "active": true,
+      "prompt": "École",
+      "forbiddenWords": [
+        "élèves",
+        "professeur",
+        "classe",
+        "apprendre",
+        "récréation"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-122",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Plage",
+      "forbiddenWords": [
+        "sable",
+        "mer",
+        "soleil",
+        "vacances",
+        "nager"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-123",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Hôpital",
+      "forbiddenWords": [
+        "médecin",
+        "malade",
+        "soins",
+        "urgence",
+        "infirmier"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-124",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Cinéma",
+      "forbiddenWords": [
+        "film",
+        "écran",
+        "pop-corn",
+        "salle",
+        "regarder"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-125",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Avion",
+      "forbiddenWords": [
+        "voler",
+        "ciel",
+        "pilote",
+        "aéroport",
+        "ailes"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-126",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Train",
+      "forbiddenWords": [
+        "gare",
+        "rails",
+        "wagon",
+        "voyage",
+        "locomotive"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-127",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Supermarché",
+      "forbiddenWords": [
+        "courses",
+        "magasin",
+        "caisse",
+        "chariot",
+        "produits"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-128",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Restaurant",
+      "forbiddenWords": [
+        "manger",
+        "serveur",
+        "table",
+        "menu",
+        "cuisine"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-129",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Zoo",
+      "forbiddenWords": [
+        "animaux",
+        "cages",
+        "visiter",
+        "parc",
+        "sauvages"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-130",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Bus",
+      "forbiddenWords": [
+        "transport",
+        "arrêt",
+        "conducteur",
+        "ticket",
+        "ville"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-131",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Aéroport",
+      "forbiddenWords": [
+        "avion",
+        "valise",
+        "passeport",
+        "voyage",
+        "décoller"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-132",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Camping",
+      "forbiddenWords": [
+        "tente",
+        "vacances",
+        "nature",
+        "caravane",
+        "dormir"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-133",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Musée",
+      "forbiddenWords": [
+        "art",
+        "tableau",
+        "exposition",
+        "visite",
+        "histoire"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-134",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Métro",
+      "forbiddenWords": [
+        "souterrain",
+        "station",
+        "ville",
+        "train",
+        "transport"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-135",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Parc d’attractions",
+      "forbiddenWords": [
+        "manège",
+        "montagnes russes",
+        "billet",
+        "sensations",
+        "parc"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-136",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Commissariat",
+      "forbiddenWords": [
+        "police",
+        "plainte",
+        "policier",
+        "enquête",
+        "arrestation"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-137",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Désert",
+      "forbiddenWords": [
+        "sable",
+        "chaud",
+        "chameau",
+        "Sahara",
+        "eau"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-138",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Phare",
+      "forbiddenWords": [
+        "mer",
+        "lumière",
+        "bateau",
+        "tour",
+        "côte"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-139",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Gare",
+      "forbiddenWords": [
+        "train",
+        "quai",
+        "billet",
+        "départ",
+        "voyage"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-140",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Bibliothèque",
+      "forbiddenWords": [
+        "livres",
+        "lire",
+        "silence",
+        "emprunter",
+        "rayons"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-141",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Aire d’autoroute",
+      "forbiddenWords": [
+        "voiture",
+        "pause",
+        "route",
+        "toilettes",
+        "station-service"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-142",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Salle d’attente",
+      "forbiddenWords": [
+        "patienter",
+        "médecin",
+        "chaise",
+        "rendez-vous",
+        "attendre"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-143",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Péage",
+      "forbiddenWords": [
+        "autoroute",
+        "payer",
+        "barrière",
+        "ticket",
+        "voiture"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-144",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Consigne à bagages",
+      "forbiddenWords": [
+        "valise",
+        "casier",
+        "gare",
+        "déposer",
+        "voyage"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-145",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Funiculaire",
+      "forbiddenWords": [
+        "montagne",
+        "rail",
+        "cabine",
+        "monter",
+        "transport"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-146",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Rond-point",
+      "forbiddenWords": [
+        "voiture",
+        "tourner",
+        "route",
+        "sortie",
+        "giratoire"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-147",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Passage piéton",
+      "forbiddenWords": [
+        "traverser",
+        "route",
+        "blanc",
+        "voiture",
+        "marcher"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-148",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Station-service",
+      "forbiddenWords": [
+        "essence",
+        "voiture",
+        "carburant",
+        "pompe",
+        "autoroute"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-149",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Auberge de jeunesse",
+      "forbiddenWords": [
+        "dormir",
+        "voyage",
+        "chambre",
+        "hôtel",
+        "jeunes"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-150",
+      "boxId": "places",
+      "active": true,
+      "prompt": "Téléphérique",
+      "forbiddenWords": [
+        "montagne",
+        "cabine",
+        "câble",
+        "monter",
+        "hauteur"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-151",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Main",
+      "forbiddenWords": [
+        "doigts",
+        "bras",
+        "toucher",
+        "paume",
+        "cinq"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-152",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Cœur",
+      "forbiddenWords": [
+        "battre",
+        "amour",
+        "sang",
+        "poitrine",
+        "organe"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-153",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Dent",
+      "forbiddenWords": [
+        "bouche",
+        "mâcher",
+        "dentiste",
+        "blanc",
+        "carie"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-154",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Football",
+      "forbiddenWords": [
+        "ballon",
+        "but",
+        "pied",
+        "équipe",
+        "stade"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-155",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Natation",
+      "forbiddenWords": [
+        "piscine",
+        "nager",
+        "eau",
+        "maillot",
+        "crawl"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-156",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Mal de tête",
+      "forbiddenWords": [
+        "douleur",
+        "migraine",
+        "crâne",
+        "médicament",
+        "front"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-157",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Rhume",
+      "forbiddenWords": [
+        "nez",
+        "mouchoir",
+        "malade",
+        "éternuer",
+        "froid"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-158",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Muscle",
+      "forbiddenWords": [
+        "force",
+        "corps",
+        "sport",
+        "contracter",
+        "bras"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-159",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Genou",
+      "forbiddenWords": [
+        "jambe",
+        "articulation",
+        "plier",
+        "rotule",
+        "marcher"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-160",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Épaule",
+      "forbiddenWords": [
+        "bras",
+        "articulation",
+        "porter",
+        "cou",
+        "corps"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-161",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Entorse",
+      "forbiddenWords": [
+        "cheville",
+        "blessure",
+        "douleur",
+        "tordre",
+        "sport"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-162",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Allergie",
+      "forbiddenWords": [
+        "pollen",
+        "réaction",
+        "éternuer",
+        "médicament",
+        "peau"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-163",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Insomnie",
+      "forbiddenWords": [
+        "dormir",
+        "nuit",
+        "sommeil",
+        "fatigue",
+        "réveillé"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-164",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Plâtre",
+      "forbiddenWords": [
+        "fracture",
+        "bras",
+        "jambe",
+        "cassé",
+        "hôpital"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-165",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Escalade",
+      "forbiddenWords": [
+        "grimper",
+        "mur",
+        "corde",
+        "hauteur",
+        "rocher"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-166",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Marathon",
+      "forbiddenWords": [
+        "courir",
+        "kilomètres",
+        "course",
+        "fatigue",
+        "sportif"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-167",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Échauffement",
+      "forbiddenWords": [
+        "sport",
+        "muscles",
+        "préparer",
+        "avant",
+        "exercice"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-168",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Hoquet",
+      "forbiddenWords": [
+        "bruit",
+        "respirer",
+        "boire",
+        "diaphragme",
+        "arrêter"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-169",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Crampe",
+      "forbiddenWords": [
+        "muscle",
+        "douleur",
+        "sport",
+        "contracter",
+        "jambe"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-170",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Fièvre",
+      "forbiddenWords": [
+        "température",
+        "chaud",
+        "malade",
+        "thermomètre",
+        "degrés"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-171",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Claustrophobie",
+      "forbiddenWords": [
+        "peur",
+        "enfermé",
+        "ascenseur",
+        "petit",
+        "espace"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-172",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Courbatures",
+      "forbiddenWords": [
+        "muscles",
+        "douleur",
+        "sport",
+        "lendemain",
+        "corps"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-173",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Somnambulisme",
+      "forbiddenWords": [
+        "dormir",
+        "marcher",
+        "nuit",
+        "inconscient",
+        "lit"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-174",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Déshydratation",
+      "forbiddenWords": [
+        "eau",
+        "boire",
+        "soif",
+        "chaleur",
+        "corps"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-175",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Tendinite",
+      "forbiddenWords": [
+        "tendon",
+        "douleur",
+        "sport",
+        "inflammation",
+        "mouvement"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-176",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Point de côté",
+      "forbiddenWords": [
+        "courir",
+        "douleur",
+        "ventre",
+        "respirer",
+        "sport"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-177",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Crise d’angoisse",
+      "forbiddenWords": [
+        "peur",
+        "panique",
+        "respirer",
+        "stress",
+        "cœur"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-178",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Hypertension",
+      "forbiddenWords": [
+        "tension",
+        "sang",
+        "pression",
+        "cœur",
+        "médecin"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-179",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Commotion cérébrale",
+      "forbiddenWords": [
+        "tête",
+        "choc",
+        "cerveau",
+        "accident",
+        "sport"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-180",
+      "boxId": "health",
+      "active": true,
+      "prompt": "Apnée du sommeil",
+      "forbiddenWords": [
+        "dormir",
+        "respirer",
+        "nuit",
+        "arrêt",
+        "ronfler"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-181",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Dormir",
+      "forbiddenWords": [
+        "lit",
+        "nuit",
+        "yeux",
+        "fatigue",
+        "réveil"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-182",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Cuisiner",
+      "forbiddenWords": [
+        "repas",
+        "cuisine",
+        "préparer",
+        "casserole",
+        "manger"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-183",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Téléphoner",
+      "forbiddenWords": [
+        "appeler",
+        "portable",
+        "numéro",
+        "parler",
+        "téléphone"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-184",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Danser",
+      "forbiddenWords": [
+        "musique",
+        "bouger",
+        "soirée",
+        "rythme",
+        "corps"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-185",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire les courses",
+      "forbiddenWords": [
+        "magasin",
+        "chariot",
+        "acheter",
+        "liste",
+        "supermarché"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-186",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Prendre une douche",
+      "forbiddenWords": [
+        "eau",
+        "savon",
+        "laver",
+        "propre",
+        "salle de bain"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-187",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Se maquiller",
+      "forbiddenWords": [
+        "visage",
+        "miroir",
+        "beauté",
+        "rouge à lèvres",
+        "fond de teint"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-188",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire le ménage",
+      "forbiddenWords": [
+        "nettoyer",
+        "aspirateur",
+        "maison",
+        "poussière",
+        "propre"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-189",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Éternuer",
+      "forbiddenWords": [
+        "nez",
+        "mouchoir",
+        "allergie",
+        "rhume",
+        "bruit"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-190",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire un câlin",
+      "forbiddenWords": [
+        "bras",
+        "serrer",
+        "affection",
+        "personne",
+        "tendresse"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-191",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Rater son réveil",
+      "forbiddenWords": [
+        "dormir",
+        "retard",
+        "matin",
+        "alarme",
+        "heure"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-192",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Perdre ses clés",
+      "forbiddenWords": [
+        "chercher",
+        "porte",
+        "trousseau",
+        "serrure",
+        "retrouver"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-193",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Monter un meuble",
+      "forbiddenWords": [
+        "notice",
+        "vis",
+        "assembler",
+        "bois",
+        "outil"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-194",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire une sieste",
+      "forbiddenWords": [
+        "dormir",
+        "après-midi",
+        "repos",
+        "lit",
+        "court"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-195",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Rater son bus",
+      "forbiddenWords": [
+        "transport",
+        "courir",
+        "retard",
+        "arrêt",
+        "partir"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-196",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Oublier un anniversaire",
+      "forbiddenWords": [
+        "date",
+        "cadeau",
+        "fête",
+        "souvenir",
+        "personne"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-197",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire la queue",
+      "forbiddenWords": [
+        "attendre",
+        "file",
+        "magasin",
+        "personnes",
+        "tour"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-198",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Changer une ampoule",
+      "forbiddenWords": [
+        "lumière",
+        "lampe",
+        "plafond",
+        "visser",
+        "électricité"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-199",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Annuler un rendez-vous",
+      "forbiddenWords": [
+        "prévenir",
+        "date",
+        "téléphone",
+        "venir",
+        "empêchement"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-200",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Se perdre",
+      "forbiddenWords": [
+        "chemin",
+        "carte",
+        "direction",
+        "retrouver",
+        "lieu"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-201",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire semblant de travailler",
+      "forbiddenWords": [
+        "patron",
+        "ordinateur",
+        "bureau",
+        "cacher",
+        "arriver"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-202",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Envoyer un message à la mauvaise personne",
+      "forbiddenWords": [
+        "téléphone",
+        "destinataire",
+        "erreur",
+        "SMS",
+        "honte"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-203",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Se tromper de porte",
+      "forbiddenWords": [
+        "entrer",
+        "maison",
+        "erreur",
+        "pièce",
+        "ouvrir"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-204",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Oublier pourquoi on est entré dans une pièce",
+      "forbiddenWords": [
+        "mémoire",
+        "porte",
+        "raison",
+        "chercher",
+        "oublier"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-205",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Croiser quelqu’un qu’on évite",
+      "forbiddenWords": [
+        "rencontrer",
+        "personne",
+        "fuir",
+        "cacher",
+        "regard"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-206",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Manger quelque chose tombé par terre",
+      "forbiddenWords": [
+        "nourriture",
+        "sol",
+        "sale",
+        "ramasser",
+        "secondes"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-207",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire tomber son téléphone sur son visage",
+      "forbiddenWords": [
+        "lit",
+        "portable",
+        "nez",
+        "main",
+        "douleur"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-208",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Inventer une excuse",
+      "forbiddenWords": [
+        "mentir",
+        "raison",
+        "expliquer",
+        "faux",
+        "éviter"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-209",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Oublier son code PIN",
+      "forbiddenWords": [
+        "téléphone",
+        "chiffres",
+        "débloquer",
+        "mémoire",
+        "carte"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-210",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire semblant de dormir",
+      "forbiddenWords": [
+        "yeux",
+        "lit",
+        "réveillé",
+        "ronfler",
+        "faux"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-211",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Joie",
+      "forbiddenWords": [
+        "heureux",
+        "sourire",
+        "bonheur",
+        "content",
+        "émotion"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-212",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Colère",
+      "forbiddenWords": [
+        "énervé",
+        "crier",
+        "fâché",
+        "rouge",
+        "émotion"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-213",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Peur",
+      "forbiddenWords": [
+        "effrayé",
+        "danger",
+        "trembler",
+        "horreur",
+        "émotion"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-214",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Tristesse",
+      "forbiddenWords": [
+        "pleurer",
+        "larmes",
+        "malheureux",
+        "émotion",
+        "déprimé"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-215",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Amour",
+      "forbiddenWords": [
+        "cœur",
+        "couple",
+        "amoureux",
+        "sentiment",
+        "relation"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-216",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Timidité",
+      "forbiddenWords": [
+        "gêné",
+        "parler",
+        "rouge",
+        "discret",
+        "personnes"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-217",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Jalousie",
+      "forbiddenWords": [
+        "envier",
+        "couple",
+        "possessif",
+        "autre",
+        "sentiment"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-218",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Courage",
+      "forbiddenWords": [
+        "peur",
+        "brave",
+        "affronter",
+        "héros",
+        "oser"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-219",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Honte",
+      "forbiddenWords": [
+        "gêné",
+        "rouge",
+        "embarrassé",
+        "cacher",
+        "sentiment"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-220",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Surprise",
+      "forbiddenWords": [
+        "inattendu",
+        "cadeau",
+        "étonné",
+        "réaction",
+        "découvrir"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-221",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Mauvaise foi",
+      "forbiddenWords": [
+        "tort",
+        "reconnaître",
+        "excuse",
+        "raison",
+        "mentir"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-222",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Hypocrisie",
+      "forbiddenWords": [
+        "faux",
+        "gentil",
+        "derrière",
+        "penser",
+        "personne"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-223",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Impatience",
+      "forbiddenWords": [
+        "attendre",
+        "vite",
+        "temps",
+        "agacé",
+        "pressé"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-224",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Nostalgie",
+      "forbiddenWords": [
+        "passé",
+        "souvenir",
+        "enfance",
+        "ancien",
+        "regret"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-225",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Culpabilité",
+      "forbiddenWords": [
+        "faute",
+        "mal",
+        "regret",
+        "responsable",
+        "conscience"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-226",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Soulagement",
+      "forbiddenWords": [
+        "peur",
+        "terminé",
+        "respirer",
+        "rassuré",
+        "stress"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-227",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Fierté",
+      "forbiddenWords": [
+        "réussite",
+        "content",
+        "soi",
+        "victoire",
+        "honneur"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-228",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Solitude",
+      "forbiddenWords": [
+        "seul",
+        "personne",
+        "isolement",
+        "compagnie",
+        "triste"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-229",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Frustration",
+      "forbiddenWords": [
+        "énervé",
+        "échec",
+        "bloqué",
+        "obtenir",
+        "sentiment"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-230",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Admiration",
+      "forbiddenWords": [
+        "impressionné",
+        "modèle",
+        "talent",
+        "apprécier",
+        "personne"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-231",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Passif-agressif",
+      "forbiddenWords": [
+        "colère",
+        "indirect",
+        "remarque",
+        "gentil",
+        "reproche"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-232",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Rancunier",
+      "forbiddenWords": [
+        "pardonner",
+        "oublier",
+        "vengeance",
+        "longtemps",
+        "colère"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-233",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Susceptible",
+      "forbiddenWords": [
+        "vexé",
+        "critique",
+        "remarque",
+        "facilement",
+        "prendre mal"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-234",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Perfectionniste",
+      "forbiddenWords": [
+        "parfait",
+        "détail",
+        "erreur",
+        "exigeant",
+        "travail"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-235",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Manipulateur",
+      "forbiddenWords": [
+        "contrôler",
+        "influencer",
+        "mensonge",
+        "personne",
+        "convaincre"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-236",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Indécis",
+      "forbiddenWords": [
+        "choisir",
+        "hésiter",
+        "décision",
+        "option",
+        "savoir"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-237",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Maladroit",
+      "forbiddenWords": [
+        "tomber",
+        "casser",
+        "geste",
+        "accident",
+        "gauche"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-238",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Lunatique",
+      "forbiddenWords": [
+        "humeur",
+        "changer",
+        "rapidement",
+        "caractère",
+        "émotion"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-239",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Empathie",
+      "forbiddenWords": [
+        "comprendre",
+        "émotions",
+        "ressentir",
+        "autre",
+        "compassion"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-240",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Procrastination",
+      "forbiddenWords": [
+        "reporter",
+        "demain",
+        "travail",
+        "tâche",
+        "attendre"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-241",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Ordinateur",
+      "forbiddenWords": [
+        "écran",
+        "clavier",
+        "souris",
+        "PC",
+        "travailler"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-242",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Internet",
+      "forbiddenWords": [
+        "réseau",
+        "connexion",
+        "site",
+        "Wi-Fi",
+        "en ligne"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-243",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Mot de passe",
+      "forbiddenWords": [
+        "secret",
+        "compte",
+        "code",
+        "connexion",
+        "lettres"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-244",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Selfie",
+      "forbiddenWords": [
+        "photo",
+        "téléphone",
+        "visage",
+        "bras",
+        "caméra"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-245",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Wi-Fi",
+      "forbiddenWords": [
+        "Internet",
+        "connexion",
+        "réseau",
+        "box",
+        "sans fil"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-246",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Jeu vidéo",
+      "forbiddenWords": [
+        "console",
+        "jouer",
+        "manette",
+        "écran",
+        "gamer"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-247",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Réseau social",
+      "forbiddenWords": [
+        "Internet",
+        "publier",
+        "abonnés",
+        "profil",
+        "application"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-248",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Chargeur",
+      "forbiddenWords": [
+        "batterie",
+        "téléphone",
+        "câble",
+        "prise",
+        "brancher"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-249",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Clavier",
+      "forbiddenWords": [
+        "touches",
+        "ordinateur",
+        "écrire",
+        "lettres",
+        "taper"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-250",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Imprimante",
+      "forbiddenWords": [
+        "papier",
+        "encre",
+        "document",
+        "feuille",
+        "ordinateur"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-251",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Reconnaissance faciale",
+      "forbiddenWords": [
+        "visage",
+        "déverrouiller",
+        "téléphone",
+        "caméra",
+        "identifier"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-252",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Intelligence artificielle",
+      "forbiddenWords": [
+        "robot",
+        "ChatGPT",
+        "ordinateur",
+        "humain",
+        "technologie"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-253",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Capture d’écran",
+      "forbiddenWords": [
+        "photo",
+        "écran",
+        "téléphone",
+        "image",
+        "enregistrer"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-254",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Mode avion",
+      "forbiddenWords": [
+        "téléphone",
+        "connexion",
+        "réseau",
+        "voler",
+        "activer"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-255",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Mise à jour",
+      "forbiddenWords": [
+        "logiciel",
+        "installer",
+        "nouvelle",
+        "version",
+        "attendre"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-256",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Bug informatique",
+      "forbiddenWords": [
+        "problème",
+        "ordinateur",
+        "erreur",
+        "logiciel",
+        "fonctionner"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-257",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Virus informatique",
+      "forbiddenWords": [
+        "ordinateur",
+        "piratage",
+        "programme",
+        "antivirus",
+        "infecté"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-258",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Visioconférence",
+      "forbiddenWords": [
+        "caméra",
+        "réunion",
+        "écran",
+        "distance",
+        "parler"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-259",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "QR code",
+      "forbiddenWords": [
+        "carré",
+        "scanner",
+        "téléphone",
+        "lien",
+        "noir"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-260",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Notification",
+      "forbiddenWords": [
+        "téléphone",
+        "message",
+        "alerte",
+        "écran",
+        "son"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-261",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Authentification à deux facteurs",
+      "forbiddenWords": [
+        "code",
+        "téléphone",
+        "sécurité",
+        "compte",
+        "connexion"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-262",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Algorithme",
+      "forbiddenWords": [
+        "calcul",
+        "programme",
+        "recommandations",
+        "données",
+        "informatique"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-263",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Stockage dans le cloud",
+      "forbiddenWords": [
+        "Internet",
+        "fichiers",
+        "sauvegarde",
+        "serveur",
+        "nuage"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-264",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Navigation privée",
+      "forbiddenWords": [
+        "Internet",
+        "historique",
+        "navigateur",
+        "secret",
+        "onglet"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-265",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Hameçonnage",
+      "forbiddenWords": [
+        "arnaque",
+        "mail",
+        "lien",
+        "pirate",
+        "mot de passe"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-266",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Géolocalisation",
+      "forbiddenWords": [
+        "position",
+        "GPS",
+        "téléphone",
+        "carte",
+        "lieu"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-267",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Reconnaissance vocale",
+      "forbiddenWords": [
+        "voix",
+        "parler",
+        "téléphone",
+        "assistant",
+        "comprendre"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-268",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Contrôle parental",
+      "forbiddenWords": [
+        "enfant",
+        "Internet",
+        "parents",
+        "bloquer",
+        "contenu"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-269",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Pare-feu",
+      "forbiddenWords": [
+        "sécurité",
+        "ordinateur",
+        "réseau",
+        "protection",
+        "bloquer"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-270",
+      "boxId": "technology",
+      "active": true,
+      "prompt": "Deepfake",
+      "forbiddenWords": [
+        "vidéo",
+        "faux",
+        "visage",
+        "truqué",
+        "intelligence artificielle"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-271",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Harry Potter",
+      "forbiddenWords": [
+        "sorcier",
+        "magie",
+        "Poudlard",
+        "baguette",
+        "lunettes"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-272",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Spider-Man",
+      "forbiddenWords": [
+        "araignée",
+        "toile",
+        "héros",
+        "Marvel",
+        "mur"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-273",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Dark Vador",
+      "forbiddenWords": [
+        "Star Wars",
+        "masque",
+        "père",
+        "noir",
+        "sabre"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-274",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Mario",
+      "forbiddenWords": [
+        "Nintendo",
+        "plombier",
+        "Luigi",
+        "moustache",
+        "jeu vidéo"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-275",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Barbie",
+      "forbiddenWords": [
+        "poupée",
+        "rose",
+        "Ken",
+        "blonde",
+        "jouet"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-276",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Mickey",
+      "forbiddenWords": [
+        "souris",
+        "Disney",
+        "oreilles",
+        "Minnie",
+        "dessin animé"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-277",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Batman",
+      "forbiddenWords": [
+        "chauve-souris",
+        "Gotham",
+        "héros",
+        "Joker",
+        "noir"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-278",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "La Reine des Neiges",
+      "forbiddenWords": [
+        "Elsa",
+        "Disney",
+        "neige",
+        "sœur",
+        "libérée"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-279",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Pokémon",
+      "forbiddenWords": [
+        "Pikachu",
+        "attraper",
+        "créature",
+        "jeu",
+        "dessin animé"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-280",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Cendrillon",
+      "forbiddenWords": [
+        "princesse",
+        "chaussure",
+        "minuit",
+        "bal",
+        "Disney"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-281",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Shrek",
+      "forbiddenWords": [
+        "ogre",
+        "vert",
+        "Fiona",
+        "âne",
+        "marais"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-282",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Le Seigneur des anneaux",
+      "forbiddenWords": [
+        "Frodon",
+        "anneau",
+        "Hobbit",
+        "Gandalf",
+        "Tolkien"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-283",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Pirates des Caraïbes",
+      "forbiddenWords": [
+        "Jack Sparrow",
+        "bateau",
+        "pirate",
+        "mer",
+        "rhum"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-284",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Titanic",
+      "forbiddenWords": [
+        "bateau",
+        "iceberg",
+        "couler",
+        "Rose",
+        "Jack"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-285",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Jurassic Park",
+      "forbiddenWords": [
+        "dinosaure",
+        "parc",
+        "T-Rex",
+        "île",
+        "film"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-286",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Mercredi Addams",
+      "forbiddenWords": [
+        "famille",
+        "noire",
+        "école",
+        "danse",
+        "main"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-287",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Avengers",
+      "forbiddenWords": [
+        "Marvel",
+        "super-héros",
+        "équipe",
+        "Thanos",
+        "film"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-288",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Dragon Ball",
+      "forbiddenWords": [
+        "Goku",
+        "manga",
+        "combat",
+        "boules",
+        "Super Saiyan"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-289",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Toy Story",
+      "forbiddenWords": [
+        "jouets",
+        "Woody",
+        "Buzz",
+        "Pixar",
+        "film"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-290",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Le Roi Lion",
+      "forbiddenWords": [
+        "Simba",
+        "Mufasa",
+        "Disney",
+        "Afrique",
+        "lion"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-291",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Matrix",
+      "forbiddenWords": [
+        "Neo",
+        "pilule",
+        "réalité",
+        "ordinateur",
+        "lunettes"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-292",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Retour vers le futur",
+      "forbiddenWords": [
+        "voiture",
+        "temps",
+        "Marty",
+        "passé",
+        "DeLorean"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-293",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Le Truman Show",
+      "forbiddenWords": [
+        "télévision",
+        "caméra",
+        "vie",
+        "faux",
+        "Jim Carrey"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-294",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Charlie et la chocolaterie",
+      "forbiddenWords": [
+        "chocolat",
+        "usine",
+        "Wonka",
+        "enfant",
+        "ticket"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-295",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "SOS Fantômes",
+      "forbiddenWords": [
+        "fantôme",
+        "chasseurs",
+        "paranormal",
+        "film",
+        "aspirateur"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-296",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Les Dents de la mer",
+      "forbiddenWords": [
+        "requin",
+        "plage",
+        "attaque",
+        "océan",
+        "film"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-297",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Kaamelott",
+      "forbiddenWords": [
+        "Arthur",
+        "chevaliers",
+        "Table ronde",
+        "Perceval",
+        "série"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-298",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Hunger Games",
+      "forbiddenWords": [
+        "Katniss",
+        "arène",
+        "district",
+        "arc",
+        "compétition"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-299",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Breaking Bad",
+      "forbiddenWords": [
+        "Walter White",
+        "chimie",
+        "drogue",
+        "professeur",
+        "série"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-300",
+      "boxId": "culture",
+      "active": true,
+      "prompt": "Inception",
+      "forbiddenWords": [
+        "rêve",
+        "toupie",
+        "esprit",
+        "DiCaprio",
+        "film"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-301",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Soleil",
+      "forbiddenWords": [
+        "chaud",
+        "ciel",
+        "lumière",
+        "étoile",
+        "jour"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-302",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Lune",
+      "forbiddenWords": [
+        "nuit",
+        "ciel",
+        "satellite",
+        "espace",
+        "ronde"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-303",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Pluie",
+      "forbiddenWords": [
+        "eau",
+        "nuage",
+        "mouillé",
+        "parapluie",
+        "tomber"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-304",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Montagne",
+      "forbiddenWords": [
+        "sommet",
+        "neige",
+        "grimper",
+        "Alpes",
+        "haut"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-305",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Océan",
+      "forbiddenWords": [
+        "mer",
+        "eau",
+        "poisson",
+        "profond",
+        "vague"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-306",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Forêt",
+      "forbiddenWords": [
+        "arbres",
+        "bois",
+        "nature",
+        "animaux",
+        "promenade"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-307",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Volcan",
+      "forbiddenWords": [
+        "lave",
+        "éruption",
+        "montagne",
+        "feu",
+        "fumée"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-308",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Arc-en-ciel",
+      "forbiddenWords": [
+        "couleurs",
+        "pluie",
+        "ciel",
+        "soleil",
+        "sept"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-309",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Neige",
+      "forbiddenWords": [
+        "blanc",
+        "froid",
+        "hiver",
+        "flocon",
+        "montagne"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-310",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Rivière",
+      "forbiddenWords": [
+        "eau",
+        "couler",
+        "fleuve",
+        "poisson",
+        "rive"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-311",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Tornade",
+      "forbiddenWords": [
+        "vent",
+        "tourner",
+        "tempête",
+        "destruction",
+        "cyclone"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-312",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Avalanche",
+      "forbiddenWords": [
+        "neige",
+        "montagne",
+        "tomber",
+        "danger",
+        "ski"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-313",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Éclipse",
+      "forbiddenWords": [
+        "Soleil",
+        "Lune",
+        "cacher",
+        "ciel",
+        "ombre"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-314",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Marée",
+      "forbiddenWords": [
+        "mer",
+        "monter",
+        "descendre",
+        "Lune",
+        "plage"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-315",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Geyser",
+      "forbiddenWords": [
+        "eau",
+        "chaud",
+        "jaillir",
+        "Islande",
+        "sol"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-316",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Banquise",
+      "forbiddenWords": [
+        "glace",
+        "froid",
+        "pôle",
+        "ours",
+        "fondre"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-317",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Sécheresse",
+      "forbiddenWords": [
+        "eau",
+        "pluie",
+        "chaleur",
+        "manque",
+        "terre"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-318",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Tremblement de terre",
+      "forbiddenWords": [
+        "sol",
+        "secouer",
+        "séisme",
+        "catastrophe",
+        "fissure"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-319",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Iceberg",
+      "forbiddenWords": [
+        "glace",
+        "mer",
+        "Titanic",
+        "froid",
+        "flotter"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-320",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Oasis",
+      "forbiddenWords": [
+        "désert",
+        "eau",
+        "palmier",
+        "chaleur",
+        "voyageurs"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-321",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Aurore boréale",
+      "forbiddenWords": [
+        "ciel",
+        "couleurs",
+        "Nord",
+        "lumière",
+        "nuit"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-322",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Sables mouvants",
+      "forbiddenWords": [
+        "sable",
+        "enfoncer",
+        "sol",
+        "piège",
+        "désert"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-323",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Récif corallien",
+      "forbiddenWords": [
+        "mer",
+        "corail",
+        "poissons",
+        "couleurs",
+        "océan"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-324",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Glissement de terrain",
+      "forbiddenWords": [
+        "terre",
+        "montagne",
+        "pluie",
+        "tomber",
+        "catastrophe"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-325",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Étoile filante",
+      "forbiddenWords": [
+        "ciel",
+        "vœu",
+        "nuit",
+        "lumière",
+        "tomber"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-326",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Trou noir",
+      "forbiddenWords": [
+        "espace",
+        "aspirer",
+        "lumière",
+        "galaxie",
+        "gravité"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-327",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Effet de serre",
+      "forbiddenWords": [
+        "climat",
+        "chaleur",
+        "planète",
+        "gaz",
+        "réchauffement"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-328",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Mousson",
+      "forbiddenWords": [
+        "pluie",
+        "saison",
+        "Asie",
+        "abondante",
+        "climat"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-329",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Stalactite",
+      "forbiddenWords": [
+        "grotte",
+        "plafond",
+        "pierre",
+        "calcaire",
+        "pointe"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-330",
+      "boxId": "nature",
+      "active": true,
+      "prompt": "Mangrove",
+      "forbiddenWords": [
+        "arbres",
+        "eau",
+        "racines",
+        "tropical",
+        "marais"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-331",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir la pêche",
+      "forbiddenWords": [
+        "énergie",
+        "forme",
+        "fruit",
+        "motivé",
+        "bien"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-332",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Casser les pieds",
+      "forbiddenWords": [
+        "énerver",
+        "déranger",
+        "agacer",
+        "corps",
+        "personne"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-333",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Être rouge comme une tomate",
+      "forbiddenWords": [
+        "gêné",
+        "couleur",
+        "légume",
+        "visage",
+        "honte"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-334",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir la tête dans les nuages",
+      "forbiddenWords": [
+        "rêver",
+        "inattentif",
+        "ciel",
+        "penser",
+        "ailleurs"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-335",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir un chat dans la gorge",
+      "forbiddenWords": [
+        "voix",
+        "tousser",
+        "animal",
+        "parler",
+        "gorge"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-336",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Tomber dans les pommes",
+      "forbiddenWords": [
+        "évanouir",
+        "fruit",
+        "malaise",
+        "sol",
+        "conscience"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-337",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Dormir comme un bébé",
+      "forbiddenWords": [
+        "sommeil",
+        "nuit",
+        "enfant",
+        "profondément",
+        "lit"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-338",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Être dans la lune",
+      "forbiddenWords": [
+        "rêver",
+        "inattentif",
+        "ciel",
+        "penser",
+        "ailleurs"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-339",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir le coup de foudre",
+      "forbiddenWords": [
+        "amour",
+        "éclair",
+        "amoureux",
+        "rencontrer",
+        "immédiatement"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-340",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Donner sa langue au chat",
+      "forbiddenWords": [
+        "réponse",
+        "deviner",
+        "animal",
+        "abandonner",
+        "question"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "words-341",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Mettre les pieds dans le plat",
+      "forbiddenWords": [
+        "maladroit",
+        "parler",
+        "gêner",
+        "sujet",
+        "nourriture"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-342",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Prendre ses jambes à son cou",
+      "forbiddenWords": [
+        "courir",
+        "fuir",
+        "peur",
+        "partir",
+        "corps"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-343",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir un poil dans la main",
+      "forbiddenWords": [
+        "paresseux",
+        "travailler",
+        "fainéant",
+        "effort",
+        "corps"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-344",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Chercher une aiguille dans une botte de foin",
+      "forbiddenWords": [
+        "trouver",
+        "petit",
+        "difficile",
+        "paille",
+        "couture"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-345",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Marcher sur des œufs",
+      "forbiddenWords": [
+        "prudent",
+        "fragile",
+        "avancer",
+        "poule",
+        "attention"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-346",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Jeter de l’huile sur le feu",
+      "forbiddenWords": [
+        "aggraver",
+        "dispute",
+        "incendie",
+        "colère",
+        "liquide"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-347",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Couper les cheveux en quatre",
+      "forbiddenWords": [
+        "compliquer",
+        "détail",
+        "réfléchir",
+        "inutile",
+        "coiffeur"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-348",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Prendre le taureau par les cornes",
+      "forbiddenWords": [
+        "affronter",
+        "problème",
+        "animal",
+        "courage",
+        "agir"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-349",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Prendre la grosse tête",
+      "forbiddenWords": [
+        "prétentieux",
+        "succès",
+        "ego",
+        "fier",
+        "crâne"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-350",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Être sur son trente-et-un",
+      "forbiddenWords": [
+        "élégant",
+        "habillé",
+        "costume",
+        "chic",
+        "vêtements"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "words-351",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Noyer le poisson",
+      "forbiddenWords": [
+        "éviter",
+        "sujet",
+        "réponse",
+        "détourner",
+        "eau"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-352",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir le cul entre deux chaises",
+      "forbiddenWords": [
+        "choisir",
+        "hésiter",
+        "décision",
+        "assis",
+        "deux"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-353",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Mettre la puce à l’oreille",
+      "forbiddenWords": [
+        "soupçon",
+        "insecte",
+        "doute",
+        "comprendre",
+        "alerter"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-354",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Tirer les vers du nez",
+      "forbiddenWords": [
+        "question",
+        "avouer",
+        "parler",
+        "information",
+        "obtenir"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-355",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Retourner sa veste",
+      "forbiddenWords": [
+        "changer",
+        "opinion",
+        "camp",
+        "trahir",
+        "vêtement"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-356",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Se faire rouler dans la farine",
+      "forbiddenWords": [
+        "arnaquer",
+        "tromper",
+        "poudre",
+        "naïf",
+        "mensonge"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-357",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir plusieurs cordes à son arc",
+      "forbiddenWords": [
+        "talents",
+        "compétences",
+        "flèche",
+        "plusieurs",
+        "savoir-faire"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-358",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Faire chou blanc",
+      "forbiddenWords": [
+        "échouer",
+        "résultat",
+        "réussir",
+        "légume",
+        "rien"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-359",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Ne pas être sorti de l’auberge",
+      "forbiddenWords": [
+        "problème",
+        "difficulté",
+        "terminé",
+        "hôtel",
+        "encore"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "words-360",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Pousser mémé dans les orties",
+      "forbiddenWords": [
+        "exagérer",
+        "grand-mère",
+        "plante",
+        "limite",
+        "trop"
+      ],
+      "difficulty": "hard"
+    }
+  ]
+}
