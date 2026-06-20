@@ -3,6 +3,7 @@ import { el, requestGameDisplay, showScreen } from "../../core/dom.js";
 import { modeState, state } from "../../core/state.js";
 import { saveGlobalSettings } from "../../services/libraries.js";
 import { removeCardDuringGame } from "../../services/card-removals.js";
+import { recordGameplayShown } from "../../services/gameplay-feedback.js";
 import { buildDeck, drawPreparedCard } from "./card-engine.js";
 import {
   defaultPenaltyTargetIds,
@@ -235,6 +236,7 @@ function drawNextCard() {
     finishDrinkingGame();
     return;
   }
+  recordGameplayShown("drinking", game.currentCard);
   game.currentPenalty = rollPenalty(game.currentCard.penalty?.intensity, game.maxPenalty);
   game.selectedTargetIds = defaultPenaltyTargetIds(game.currentCard);
   game.rulePenaltyMode = false;

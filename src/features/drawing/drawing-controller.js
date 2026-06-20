@@ -1,6 +1,7 @@
 import {
   DIFFICULTY_LABELS,
-  DRAW_RETURN_COUNTDOWN_SECONDS
+  DRAW_RETURN_COUNTDOWN_SECONDS,
+  POINTS_BY_DIFFICULTY
 } from "../../config/config.js";
 import {
   el,
@@ -15,6 +16,10 @@ import { shuffle } from "../../core/utils.js";
 import { getBoxName, selectedCardsForMode } from "../../services/libraries.js";
 import { removeCardDuringGame } from "../../services/card-removals.js";
 import {
+  recordGameplayOutcome,
+  recordGameplayShown
+} from "../../services/gameplay-feedback.js";
+import {
   initializeDrawingCanvas,
   resizeDrawingCanvas,
   updateDrawToolButton
@@ -25,7 +30,7 @@ import { displayDrawingSupport } from "./paper-mode.js";
 let callbacks = {};
 
 function drawPointValue(difficulty) {
-  return difficulty === "hard" ? 3 : difficulty === "medium" ? 2 : 1;
+  return POINTS_BY_DIFFICULTY[difficulty] || 1;
 }
 
 export function buildBalancedDrawQueue(cards, wanted) {
@@ -190,6 +195,7 @@ function showNextDrawingPrompt() {
     return;
   }
   round.currentCard = round.queue[round.attemptIndex];
+  recordGameplayShown("draw", round.currentCard);
   if (round.usedCardIds && !round.usedCardIds.includes(round.currentCard.id)) {
     round.usedCardIds.push(round.currentCard.id);
   }
@@ -414,6 +420,12 @@ function recordDrawingResult(result, elapsedMs = null, fromReveal = false) {
     vibrateForResult("pass");
   }
 
+  const gameplayEventId = recordGameplayOutcome(
+    "draw",
+    round.currentCard,
+    result === "valid" ? "valid" : result === "expired" ? "expired" : "passed",
+    { usedMs: used }
+  );
   const entry = {
     kind: "draw",
     card: round.currentCard,
@@ -421,7 +433,8 @@ function recordDrawingResult(result, elapsedMs = null, fromReveal = false) {
     points: gained,
     usedMs: used,
     support: round.support || "skipped",
-    penaltySeconds: round.kind === "mixed" ? round.penaltySeconds : 0
+    penaltySeconds: round.kind === "mixed" ? round.penaltySeconds : 0,
+    _gameplayEventId: gameplayEventId
   };
 
   round.totalUsedMs += used;
@@ -452,7 +465,10 @@ function finishDrawingRound(reason = "completed") {
       score: round.points,
       valid: round.successes,
       passed: round.history.filter(entry => entry.result === "passed").length,
-      history: round.history.map(entry => ({ ...entry, card: { ...entry.card } }))
+      history: round.history.map(entry => {
+        const { _gameplayEventId, ...publicEntry } = entry;
+        return { ...publicEntry, card: { ...entry.card } };
+      })
     };
     state.drawRound = null;
     releaseWakeLock();

@@ -6,7 +6,7 @@ import path from "node:path";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const libraries = [
   ["lyrics", "data/lyrics.json", 172],
-  ["mime", "data/mimes.json", 1000],
+  ["mime", "data/mimes.json", 644],
   ["words", "data/words.json", 360],
   ["draw", "data/drawings.json", 420],
   ["drinking", "data/drinking.json", 1050]
@@ -24,8 +24,8 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
     assert.equal(data.updatedAt, "2026-06-20", `${relativePath}: date Maestro incorrecte`);
   }
   if (modeId === "mime") {
-    assert.equal(data.libraryVersion, "2026.06.19-1", `${relativePath}: version Mime incorrecte`);
-    assert.equal(data.updatedAt, "2026-06-19", `${relativePath}: date Mime incorrecte`);
+    assert.equal(data.libraryVersion, "2026.06.20-audit-1", `${relativePath}: version Mime incorrecte`);
+    assert.equal(data.updatedAt, "2026-06-20", `${relativePath}: date Mime incorrecte`);
   }
   if (modeId === "drinking") {
     assert.equal(data.libraryVersion, "2026.06.20-2", `${relativePath}: version Qui boit incorrecte`);
@@ -34,6 +34,11 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
   assert.ok(Array.isArray(data.boxes) && data.boxes.length > 0, `${relativePath}: catégories absentes`);
   assert.ok(Array.isArray(data.cards), `${relativePath}: cartes absentes`);
   assert.equal(data.cards.length, expectedCount, `${relativePath}: nombre de cartes inattendu`);
+  if (modeId === "mime") {
+    assert.equal(data.schemaVersion, 2, `${relativePath}: schéma Mime incorrect`);
+    assert.equal(data.auditPolicy?.newCardsRequireAudit, true, `${relativePath}: politique d’audit absente`);
+    assert.deepEqual(data.retiredOfficialCardIds, ["mime-322", "mime-923"], `${relativePath}: retraits techniques inattendus`);
+  }
 
   const boxIds = new Set();
   for (const box of data.boxes) {
@@ -51,6 +56,10 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
     assert.ok(boxIds.has(card.boxId), `${relativePath}: catégorie inconnue ${card.boxId}`);
     assert.ok(["easy", "medium", "hard"].includes(card.difficulty), `${relativePath}: difficulté invalide pour ${card.id}`);
     assert.ok(String(card.prompt || "").trim(), `${relativePath}: consigne vide pour ${card.id}`);
+    if (modeId === "mime") {
+      assert.ok(["approved", "review"].includes(card.auditStatus), `${relativePath}: statut d’audit invalide pour ${card.id}`);
+      assert.match(String(card.auditFingerprint || ""), /^[a-f0-9]{16}$/, `${relativePath}: empreinte d’audit invalide pour ${card.id}`);
+    }
     if (modeId === "lyrics") {
       assert.ok(String(card.answer || "").trim(), `${relativePath}: réponse vide pour ${card.id}`);
       assert.ok(String(card.title || "").trim(), `${relativePath}: titre vide pour ${card.id}`);
@@ -89,12 +98,14 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
   if (modeId === "mime") {
     assert.equal(data.boxes.length, 21, `${relativePath}: nombre de catégories inattendu`);
     assert.equal(data.cards[0]?.id, "mime-001", `${relativePath}: premier identifiant inattendu`);
-    assert.equal(data.cards.at(-1)?.id, "mime-1000", `${relativePath}: dernier identifiant inattendu`);
+    assert.equal(data.cards.some(card => card.id === "mime-1000"), true, `${relativePath}: mime-1000 doit être conservé`);
+    assert.equal(data.cards.filter(card => card.auditStatus === "approved").length, 636, `${relativePath}: nombre de mimes validés inattendu`);
+    assert.equal(data.cards.filter(card => card.auditStatus === "review").length, 8, `${relativePath}: nombre de mimes à revoir inattendu`);
   }
 
   totalCards += data.cards.length;
   console.log(`✓ ${modeId}: ${data.cards.length} cartes, ${data.boxes.length} catégories`);
 }
 
-assert.equal(totalCards, 3002, "Total de cartes inattendu");
+assert.equal(totalCards, 2646, "Total de cartes inattendu");
 console.log(`✓ Total: ${totalCards} cartes`);

@@ -18,8 +18,11 @@ import {
   deleteCardFromAudit,
   entryForCard,
   exportAuditReport,
+  exportAuditState,
   exportCleanLibrary,
+  importAuditState,
   markCardSeen,
+  readAuditStateFile,
   readAuditStore,
   recordCardAuditEdit,
   restoreAuditEntrySnapshot,
@@ -122,7 +125,12 @@ function currentAuditCard() {
 }
 
 function statusFor(modeId, cardId) {
-  return auditEntryMap().get(`${modeId}::${cardId}`)?.status || "seen";
+  const local = auditEntryMap().get(`${modeId}::${cardId}`)?.status;
+  if (local) return local;
+  const card = modeCard(modeId, cardId);
+  if (card?.auditStatus === "review") return "review";
+  if (card?.auditStatus === "pending") return "seen";
+  return "seen";
 }
 
 function renderModeOptions() {
@@ -196,8 +204,13 @@ function selectedSetupCards() {
   return modeState(modeId).cards.filter(card => {
     if (!card.active || !boxIds.has(card.boxId)) return false;
     if (!difficultyIds.has(normalizeDifficulty(card.difficulty, modeId, card))) return false;
-    const status = entries.get(`${modeId}::${card.id}`)?.status || "unseen";
+    const localStatus = entries.get(`${modeId}::${card.id}`)?.status || "";
+    const officialAuditStatus = String(card.auditStatus || "approved");
+    const status = localStatus || (officialAuditStatus === "review"
+      ? "review"
+      : (officialAuditStatus === "pending" ? "pending" : "unseen"));
     if (scope === "unseen") return status === "unseen" || status === "seen";
+    if (scope === "pending") return status === "pending";
     if (scope === "neutral") return status === "neutral";
     if (scope === "liked") return status === "liked";
     if (scope === "review") return status === "review";
@@ -256,7 +269,7 @@ function renderSetupSummary() {
     ? `Reprendre ${modeConfig(storedSession.modeId).name} · ${remaining} restante${remaining > 1 ? "s" : ""}`
     : "Reprendre l’audit";
   el.exportAuditButton.disabled = summary.totalSeen === 0;
-  el.exportCleanLibraryButton.disabled = modeState(modeId).libraryMeta.deletedOfficialCardIds.length === 0;
+  el.exportCleanLibraryButton.disabled = modeState(modeId).cards.length === 0;
   renderDeletedCardsList();
 }
 
@@ -500,6 +513,22 @@ function handleAuditKeydown(event) {
   }
 }
 
+async function handleImportAuditState(event) {
+  const file = event.target.files?.[0];
+  event.target.value = "";
+  if (!file) return;
+  try {
+    const data = await readAuditStateFile(file);
+    if (!confirm("Importer cet état d’audit ?\n\nLa progression et les décisions locales d’audit seront remplacées par celles du fichier.")) return;
+    importAuditState(data);
+    renderAuditSetup();
+    onHomeDataChanged?.();
+    alert("État d’audit importé.");
+  } catch (error) {
+    alert(error?.message || "Impossible d’importer cet état d’audit.");
+  }
+}
+
 function clearSelectedModeAudit() {
   const modeId = el.auditModeSelect.value;
   if (!confirm(`Effacer les statuts d’audit de « ${modeConfig(modeId).name} » ?\n\nLes cartes supprimées restent supprimées tant qu’elles ne sont pas restaurées séparément.`)) return;
@@ -528,6 +557,9 @@ export function initializeAudit({ onHomeDataChanged: changed } = {}) {
     if (!exportAuditReport()) alert("Aucune carte auditée à exporter.");
   });
   el.exportCleanLibraryButton.addEventListener("click", () => exportCleanLibrary(el.auditModeSelect.value));
+  el.exportAuditStateButton.addEventListener("click", exportAuditState);
+  el.importAuditStateButton.addEventListener("click", () => el.importAuditStateInput.click());
+  el.importAuditStateInput.addEventListener("change", handleImportAuditState);
   el.clearAuditModeButton.addEventListener("click", clearSelectedModeAudit);
   el.auditExitButton.addEventListener("click", exitAudit);
   el.auditBackButton.addEventListener("click", undoAuditAction);

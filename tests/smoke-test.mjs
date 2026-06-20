@@ -17,10 +17,13 @@ const exists = async relativePath => {
 
 const expectedFiles = [
   "index.html", "manifest.webmanifest", "sw.js", "README.md",
-  "docs/ARCHITECTURE.md", "docs/TESTS.md", "docs/CARD-REMOVAL-REPORTS.md", "docs/CARD-AUDIT.md",
+  "docs/ARCHITECTURE.md", "docs/TESTS.md", "docs/CARD-REMOVAL-REPORTS.md", "docs/CARD-AUDIT.md", "docs/GAMEPLAY-FEEDBACK.md",
   "docs/editorial/MAESTRO_EDITORIAL_GUIDE.md", "docs/editorial/MAESTRO_VALIDATION_REPORT.md",
   "docs/editorial/PROMPT_AUDIT_MAESTRO.md", "docs/editorial/deleted-cards-journal.json",
   "docs/editorial/CARD-QUALITY-LESSONS.md",
+  "docs/editorial/MIME_EDITORIAL_GUIDE.md", "docs/editorial/MIME_VALIDATION_REPORT.md",
+  "docs/editorial/MIME_AUDIT_HANDOFF_2026-06-20.md", "docs/editorial/MIME_AUDIT_DECISIONS_2026-06-20.json",
+  "docs/editorial/MIME_DRAWING_CANDIDATES_2026-06-20.json", "docs/editorial/mdb-audit-mimes-1000-final.json",
   "assets/icons/icon-192.png", "assets/icons/icon-512.png",
   "assets/styles/foundation.css", "assets/styles/components.css",
   "assets/styles/screens/home.css", "assets/styles/screens/game.css",
@@ -30,7 +33,7 @@ const expectedFiles = [
   "data/lyrics.json", "data/mimes.json", "data/words.json", "data/drawings.json", "data/drinking.json",
   "src/main.js", "src/config/config.js",
   "src/core/state.js", "src/core/dom.js", "src/core/storage.js", "src/core/utils.js",
-  "src/services/libraries.js", "src/services/backup.js", "src/services/card-removals.js", "src/services/card-audit.js", "src/services/diagnostics.js",
+  "src/services/libraries.js", "src/services/backup.js", "src/services/card-removals.js", "src/services/card-audit.js", "src/services/gameplay-feedback.js", "src/services/diagnostics.js",
   "src/features/home.js", "src/features/audit/audit-controller.js",
   "src/features/game/game-controller.js", "src/features/game/timer.js",
   "src/features/game/swipe.js", "src/features/game/results.js",
@@ -65,7 +68,7 @@ for (const relativePath of legacyFiles) {
 
 const html = await read("index.html");
 assert.match(html, /<script\s+type="module"\s+data-mdb-bootstrap>/);
-assert.match(html, /import\(["']\.\/src\/main\.js\?v=0961["']\)/);
+assert.match(html, /import\(["']\.\/src\/main\.js\?v=097["']\)/);
 assert.match(html, /id="bootRecovery"/);
 assert.match(html, /id="bootRepairButton"/);
 assert.match(html, /id="orientationGuard"/);
@@ -128,7 +131,8 @@ for (const id of [
   "auditCategoryChoices", "auditDifficultyChoices", "startAuditButton", "resumeAuditButton",
   "exportAuditButton", "exportCleanLibraryButton", "auditActionBar", "auditKeyboardHelp",
   "auditBackButton", "auditNeutralButton", "auditLikeButton", "auditReviewButton", "auditEditButton", "auditDeleteButton",
-  "auditReasonDialog", "auditCustomReasonInput", "auditReasonUnknownButton", "auditReasonCustomButton", "lyricsContextText", "cardContextInput"
+  "auditReasonDialog", "auditCustomReasonInput", "auditReasonUnknownButton", "auditReasonCustomButton", "lyricsContextText", "cardContextInput",
+  "pauseDifficultyChoices", "exportAuditStateButton", "importAuditStateButton", "importAuditStateInput"
 ]) assert.ok(htmlIds.includes(id), `Élément Audit ou contexte absent : #${id}`);
 assert.match(html, /Clavier :[\s\S]*Espace[\s\S]*excellente[\s\S]*à revoir[\s\S]*corriger[\s\S]*supprimer[\s\S]*Échap/);
 assert.match(html, /<kbd>Espace \/ →<\/kbd><span>Neutre · suivante<\/span>/);
@@ -138,6 +142,8 @@ assert.match(html, /<kbd>M<\/kbd><span>Corriger<\/span>/);
 assert.match(html, /<kbd>S \/ Suppr<\/kbd><span>Supprimer<\/span>/);
 assert.match(html, /id="auditCustomReasonInput"/);
 assert.match(html, /id="auditReasonCustomButton"/);
+assert.match(html, /value="pending">Nouvelles cartes à auditer/);
+assert.match(html, /id="pauseDifficultyChoices"/);
 
 assert.match(html, /id="modeRuleDetails"[\s\S]*?<summary><h3>Comment jouer \?<\/h3><\/summary>/, "Le bloc Comment jouer doit être repliable");
 const responsiveCss = [
@@ -160,8 +166,8 @@ assert.equal(manifest.orientation, "landscape");
 assert.ok(manifest.icons.every(icon => icon.src.replace(/^\.\//, "").startsWith("assets/icons/")), "Chemins des icônes du manifeste incorrects");
 
 const config = await read("src/config/config.js");
-assert.match(config, /APP_VERSION\s*=\s*"0\.9\.6\.1"/);
-assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-6-1"/);
+assert.match(config, /APP_VERSION\s*=\s*"0\.9\.7"/);
+assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-7"/);
 assert.match(config, /name:\s*"La suite, maestro !"/);
 assert.match(config, /name:\s*"Ferme-la et mime !"/);
 assert.match(config, /name:\s*"Picasso en PLS"/);
@@ -172,7 +178,9 @@ assert.match(config, /CARD_REMOVAL_REPORTS_KEY\s*=\s*"mdb-card-removal-reports-v
 assert.match(config, /CARD_REMOVAL_REPORT_SCHEMA\s*=\s*1/);
 assert.match(config, /AUDIT_STORE_KEY\s*=\s*"mdb-card-audit-v1"/);
 assert.match(config, /AUDIT_INSTALLATION_ID_KEY\s*=\s*"mdb-card-audit-installation-v1"/);
-assert.match(config, /AUDIT_STORE_SCHEMA\s*=\s*2/);
+assert.match(config, /AUDIT_STORE_SCHEMA\s*=\s*3/);
+assert.match(config, /GAMEPLAY_FEEDBACK_KEY\s*=\s*"mdb-card-gameplay-v1"/);
+assert.match(config, /POINTS_BY_DIFFICULTY[\s\S]*easy:\s*1[\s\S]*medium:\s*2[\s\S]*hard:\s*3/);
 assert.match(config, /DIFFICULTY_ORDER\s*=\s*\["easy", "medium", "hard"\]/);
 assert.match(config, /easy:\s*\{ shortLabel: "F"/);
 assert.match(config, /medium:\s*\{ shortLabel: "M"/);
@@ -194,7 +202,7 @@ for (const key of [
 ]) assert.ok(config.includes(key), `Clé de stockage absente : ${key}`);
 
 const sw = await read("sw.js");
-assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-6-1"/);
+assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-7"/);
 assert.match(sw, /new Request\(url, \{ cache: "reload" \}\)/);
 assert.match(sw, /SKIP_WAITING/);
 const cachedPaths = new Set([...sw.matchAll(/"(\.\/[^"\n]+)"/g)].map(match => match[1]));
@@ -217,7 +225,7 @@ const expectedStylePaths = [
 const linkedStylePaths = [...html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)]
   .map(match => match[1].split("?")[0]);
 assert.deepEqual(linkedStylePaths, expectedStylePaths, "Ordre ou chemins des feuilles de style incorrects");
-assert.equal((html.match(/\?v=0961/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
+assert.equal((html.match(/\?v=097/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
 
 const styleFiles = expectedFiles.filter(file => file.endsWith(".css"));
 for (const relativePath of styleFiles) {
@@ -523,6 +531,16 @@ locallyEditedMime.prompt = "Modification locale du premier mime";
 locallyEditedMime.locallyModified = true;
 const deletedLegacyMimeId = "mime-020";
 const storedLegacyMimeCards = legacyMimeCards.filter(card => card.id !== deletedLegacyMimeId);
+storedLegacyMimeCards.push(
+  {
+    id: "mime-322", boxId: "parties", active: true, difficulty: "easy",
+    prompt: "Chanter au karaoké", origin: "official", locallyModified: true
+  },
+  {
+    id: "mime-923", boxId: "music_stage", active: true, difficulty: "easy",
+    prompt: "Jouer du piano", origin: "official", locallyModified: true
+  }
+);
 const legacyMimeBoxIds = new Set(storedLegacyMimeCards.map(card => card.boxId));
 legacyMimeBoxIds.add("uncategorized");
 const legacyMimeBoxes = currentMimeLibrary.boxes
@@ -539,9 +557,9 @@ memoryStorage.set(mimeConfig.storage.selection, JSON.stringify({
   boxIds: legacyMimeBoxes.map(box => box.id), difficultyIds: ["easy", "medium", "hard"]
 }));
 await librariesModule.loadContent();
-assert.equal(stateModule.state.modes.mime.libraryMeta.installedVersion, "2026.06.19-1");
-assert.equal(stateModule.state.modes.mime.cards.length, 999, "La migration doit ajouter les nouveaux mimes sans restaurer une suppression locale");
-assert.equal(stateModule.state.modes.mime.cards.some(card => card.id === "mime-1000"), true, "Les nouvelles cartes de mime doivent être ajoutées automatiquement");
+assert.equal(stateModule.state.modes.mime.libraryMeta.installedVersion, "2026.06.20-audit-1");
+assert.equal(stateModule.state.modes.mime.cards.length, 643, "La migration doit appliquer les 354 suppressions officielles sans restaurer une suppression locale");
+assert.equal(stateModule.state.modes.mime.cards.some(card => card.id === "mime-1000"), true, "Les cartes Mime conservées doivent être ajoutées automatiquement");
 assert.equal(stateModule.state.modes.mime.cards.some(card => card.id === deletedLegacyMimeId), false, "Une carte supprimée localement ne doit pas réapparaître");
 assert.equal(
   stateModule.state.modes.mime.cards.find(card => card.id === "mime-001").prompt,
@@ -549,43 +567,22 @@ assert.equal(
   "La migration des mimes ne doit pas écraser une carte modifiée localement"
 );
 assert.equal(stateModule.state.modes.mime.boxes.length, 21, "Les nouvelles catégories de mime doivent être installées");
+assert.equal(stateModule.state.modes.mime.cards.some(card => card.id === "mime-923"), false, "Le doublon Jouer du piano doit être retiré");
+assert.equal(stateModule.state.modes.mime.cards.some(card => card.id === "mime-322"), false, "Le doublon Chanter au karaoké doit être retiré");
 
-// Réparation V0.9.6 : certains téléphones ont mémorisé la nouvelle version
-// alors que seules les 395 anciennes cartes étaient présentes et que les
-// 605 nouveautés avaient été marquées à tort comme supprimées.
-const brokenMimeCards = currentMimeLibrary.cards.slice(0, 395).map(card => ({
-  ...structuredClone(card),
-  origin: "official",
-  locallyModified: false
-}));
-const legacyMimeIds = new Set(brokenMimeCards.map(card => card.id));
-const falseDeletedNewMimeIds = currentMimeLibrary.cards
-  .filter(card => !legacyMimeIds.has(card.id))
-  .map(card => card.id);
-const brokenMimeBoxIds = new Set(brokenMimeCards.map(card => card.boxId));
-brokenMimeBoxIds.add("uncategorized");
-const brokenMimeBoxes = currentMimeLibrary.boxes
-  .filter(box => brokenMimeBoxIds.has(box.id))
-  .map(box => ({ ...box, origin: "official", locallyModified: false }));
-memoryStorage.set(mimeConfig.storage.boxes, JSON.stringify(brokenMimeBoxes));
-memoryStorage.set(mimeConfig.storage.cards, JSON.stringify(brokenMimeCards));
-memoryStorage.set(mimeConfig.storage.meta, JSON.stringify({
-  installedVersion: "2026.06.19-1",
-  availableVersion: "2026.06.19-1",
-  deletedOfficialCardIds: falseDeletedNewMimeIds,
-  deletedOfficialBoxIds: currentMimeLibrary.boxes
-    .filter(box => !brokenMimeBoxIds.has(box.id) && box.id !== "uncategorized")
-    .map(box => box.id)
-}));
-memoryStorage.set(mimeConfig.storage.selection, JSON.stringify({
-  boxIds: brokenMimeBoxes.map(box => box.id),
-  difficultyIds: ["easy", "medium", "hard"]
-}));
-await librariesModule.loadContent();
-assert.equal(stateModule.state.modes.mime.cards.length, 1000, "La réparation doit restaurer les 605 nouveaux mimes marqués à tort comme supprimés");
-assert.equal(stateModule.state.modes.mime.boxes.length, 21, "La réparation doit restaurer les nouvelles catégories de mime");
-assert.equal(stateModule.state.modes.mime.selectedBoxIds.length, 21, "Les nouvelles catégories réparées doivent être sélectionnées automatiquement");
-assert.equal(stateModule.state.modes.mime.libraryMeta.deletedOfficialCardIds.includes("mime-1000"), false, "Une fausse suppression de migration ne doit pas survivre");
+// La V0.9.7 remplace définitivement l’ancienne bibliothèque de 1 000 mimes
+// par les 644 cartes issues de l’audit. Les huit cartes à revoir restent
+// présentes dans le registre officiel mais sont masquées des parties.
+assert.equal(
+  stateModule.state.modes.mime.cards.filter(card => card.auditStatus === "review").length,
+  8,
+  "Les huit mimes à revoir doivent rester identifiables"
+);
+assert.equal(
+  librariesModule.selectedCardsForMode("mime").every(card => card.auditStatus === "approved"),
+  true,
+  "Les cartes à revoir ne doivent pas être jouables"
+);
 
 const drinkingConfig = configModule.MODE_CONFIG.drinking;
 const currentDrinkingLibrary = JSON.parse(await read("data/drinking.json"));
@@ -629,13 +626,31 @@ stateModule.state.settings.multiplayer = {
 };
 const backupModule = await import(pathToFileURL(path.join(root, "src/services/backup.js")).href);
 const newBackup = backupModule.createBackupData();
-assert.equal(newBackup.backupSchemaVersion, 8);
+assert.equal(newBackup.backupSchemaVersion, 9);
 assert.equal(newBackup.settings.multiplayer.cycles, 3);
 assert.equal(newBackup.settings.multiplayer.flowType, "mode-blocks");
 assert.deepEqual(newBackup.settings.globalDifficultyIds, ["easy", "hard"]);
 assert.equal(Object.hasOwn(newBackup, "multiplayerSession"), false, "La session temporaire ne doit pas être exportée");
-assert.ok(newBackup.cardRemovalReports, "Les signalements de cartes doivent être inclus dans la sauvegarde V8");
-assert.ok(newBackup.cardAudit, "Les données d’audit doivent être incluses dans la sauvegarde V8");
+assert.ok(newBackup.cardRemovalReports, "Les signalements de cartes doivent être inclus dans la sauvegarde V9");
+assert.ok(newBackup.cardAudit, "Les données d’audit doivent être incluses dans la sauvegarde V9");
+assert.ok(newBackup.gameplayFeedback, "Les statistiques de partie doivent être incluses dans la sauvegarde V9");
+
+const gameplayModule = await import(pathToFileURL(path.join(root, "src/services/gameplay-feedback.js")).href);
+memoryStorage.delete(configModule.GAMEPLAY_FEEDBACK_KEY);
+const gameplayCard = structuredClone(stateModule.state.modes.mime.cards.find(card => card.id === "mime-001"));
+gameplayModule.recordGameplayShown("mime", gameplayCard);
+const gameplayValidEvent = gameplayModule.recordGameplayOutcome("mime", gameplayCard, "valid", { usedMs: 1200 });
+gameplayModule.recordGameplayOutcome("mime", gameplayCard, "passed", { usedMs: 700 });
+gameplayModule.recordGameplayOutcome("mime", gameplayCard, "expired", { usedMs: 3000 });
+let gameplayReport = gameplayModule.createGameplayReport();
+assert.equal(gameplayReport.summary.shown, 1);
+assert.equal(gameplayReport.summary.valid, 1);
+assert.equal(gameplayReport.summary.passed, 1);
+assert.equal(gameplayReport.summary.expired, 1);
+assert.equal(gameplayReport.cards.find(entry => entry.cardId === gameplayCard.id).totalUsedMs, 4900);
+assert.equal(gameplayModule.undoGameplayOutcome(gameplayValidEvent), true);
+gameplayReport = gameplayModule.createGameplayReport();
+assert.equal(gameplayReport.summary.valid, 0, "Retour doit annuler le signal de réussite correspondant");
 
 const cardRemovalModule = await import(pathToFileURL(path.join(root, "src/services/card-removals.js")).href);
 cardRemovalModule.clearCardRemovalReports();
@@ -691,6 +706,8 @@ auditModule.markCardSeen("lyrics", auditCard, auditSession.id);
 auditModule.setCardAuditStatus("lyrics", auditCard, "liked");
 let auditReport = auditModule.createAuditReport();
 assert.equal(auditReport.kind, "mdb-card-audit-report");
+assert.ok(auditReport.gameplaySummary, "Le rapport d’audit doit contenir le résumé des parties");
+assert.ok(Array.isArray(auditReport.gameplayOnlyCards), "Les cartes jouées hors audit doivent rester exportées");
 assert.equal(auditReport.cards.find(entry => entry.cardId === auditCard.id).status, "liked");
 assert.equal(Object.hasOwn(auditReport.cards.find(entry => entry.cardId === auditCard.id), "seenSessionIds"), false);
 const auditCardsBeforeDelete = stateModule.state.modes.lyrics.cards.length;
@@ -704,7 +721,8 @@ assert.equal(stateModule.state.modes.lyrics.cards.some(card => card.id === audit
 assert.equal(auditModule.createAuditReport().cards.find(entry => entry.cardId === auditCard.id).status, "review");
 const backupWithAudit = backupModule.createBackupData();
 assert.ok(backupWithAudit.cardAudit.entries.some(entry => entry.cardId === auditCard.id));
-assert.equal(backupWithAudit.backupSchemaVersion, 8);
+assert.ok(backupWithAudit.gameplayFeedback.entries.length >= 1, "La sauvegarde doit contenir les statistiques de partie");
+assert.equal(backupWithAudit.backupSchemaVersion, 9);
 
 const legacyBackup = {
   backupSchemaVersion: 3,
@@ -735,6 +753,9 @@ const drawingSource = await read("src/features/drawing/drawing-controller.js");
 assert.match(drawingSource, /playDrawingArrivalSignal\(\);\s*showNextDrawingPrompt\(\);/);
 assert.doesNotMatch(drawingSource, /showPickupTransition/);
 assert.match(drawingSource, /round\?\.kind !== "mixed"/);
+assert.match(drawingSource, /POINTS_BY_DIFFICULTY\[difficulty\]/);
+assert.match(drawingSource, /recordGameplayShown\("draw"/);
+assert.match(drawingSource, /recordGameplayOutcome/);
 const mainSource = await read("src/main.js");
 assert.match(mainSource, /flipGameButton\.addEventListener\("click", toggleFlipped\)/, "Le bouton Retourner en jeu doit conserver son action");
 const gameSource = await read("src/features/game/game-controller.js");
@@ -745,7 +766,11 @@ assert.match(gameSource, /_nextCard:\s*null/, "Chaque résultat classique doit m
 assert.match(gameSource, /_sequenceCursorBeforeNext:\s*null/, "Le multijoueur doit mémoriser le curseur avant de préparer la carte suivante");
 assert.match(gameSource, /modeQueues\.set\(preparedCard\.modeId, \[preparedCard, \.\.\.queue\]\)/, "La carte déplacée doit revenir en tête de sa file multijoueur");
 assert.match(gameSource, /usedIds\.splice\(usedIndex, 1\)/, "Une carte réinsérée ne doit plus rester marquée comme déjà utilisée");
-assert.match(gameSource, /const \{ _nextCard, _sequenceCursorBeforeNext, \.\.\.publicEntry \} = entry/, "Les métadonnées internes de retour ne doivent pas sortir dans les résultats");
+assert.match(gameSource, /POINTS_BY_DIFFICULTY\[judgedCard\.difficulty\]/, "Les points classiques doivent dépendre de la difficulté");
+assert.match(gameSource, /pauseDifficultyChoices/, "Le menu Pause doit permettre de filtrer les difficultés");
+assert.match(gameSource, /roundDisabledDifficultyIds/, "Les difficultés désactivées doivent être retirées de la partie courante");
+assert.match(gameSource, /recordGameplayOutcome/, "Les résultats de partie doivent alimenter le rapport");
+assert.match(gameSource, /const \{ _nextCard, _sequenceCursorBeforeNext, _gameplayEventId, \.\.\.publicEntry \} = entry/, "Les métadonnées internes de retour ne doivent pas sortir dans les résultats");
 const cardRemovalSource = await read("src/services/card-removals.js");
 assert.match(cardRemovalSource, /kind:\s*REPORT_KIND/);
 assert.match(cardRemovalSource, /privacy:/);
@@ -959,6 +984,11 @@ assert.match(auditServiceSource, /edits:/);
 assert.match(auditServiceSource, /changes/);
 assert.match(auditServiceSource, /bibliotheque-auditee/);
 assert.match(auditServiceSource, /card\.origin !== "personal"/);
+assert.match(auditServiceSource, /gameplaySummary/);
+assert.match(auditServiceSource, /gameplayOnlyCards/);
+assert.match(auditServiceSource, /mdb-card-audit-state/);
+assert.match(auditServiceSource, /gameplayFeedback/);
+assert.match(auditServiceSource, /modes:/);
 const auditServiceModule = await import(pathToFileURL(path.join(root, "src/services/card-audit.js")).href);
 globalThis.localStorage = {
   getItem: key => memoryStorage.get(key) ?? null,
@@ -982,8 +1012,8 @@ assert.match(editorSource, /cardContextInput/);
 
 console.log("✓ Moteur Qui boit : pénalités variables, points et ciblage équilibré");
 console.log("✓ Audit : filtres, raccourcis, statuts, rapport, suppression et restauration validés");
-console.log("✓ Maestro : 172 cartes actives après audit, contexte et migration locale validés");
-console.log("✓ Arborescence, DOM, CSS, manifeste et cache de la V0.9.6.1 cohérents");
+console.log("✓ Maestro : 172 cartes actives après audit, contexte et migration locale validés\n✓ Mime : 644 cartes officielles, 636 validées et 8 masquées à revoir");
+console.log("✓ Arborescence, DOM, CSS, manifeste et cache de la V0.9.7 cohérents");
 console.log("✓ Modules ES résolus, dépendances orientées et aucun cycle d’import");
 console.log("✓ Deux déroulements multijoueurs testés de 1 à 12 modes et de 2 à 12 joueurs");
 console.log("✓ Filtres globaux, exceptions par mode et compteurs sélection/total validés");

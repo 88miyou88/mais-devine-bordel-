@@ -37,13 +37,27 @@ export function normalizeLibrary(modeId, raw) {
     adult: box.adult === true
   }));
   const boxIds = new Set(boxes.map(box => box.id));
+  const auditPolicy = {
+    newCardsRequireAudit: raw.auditPolicy?.newCardsRequireAudit === true,
+    approvedStatuses: Array.isArray(raw.auditPolicy?.approvedStatuses)
+      ? raw.auditPolicy.approvedStatuses.map(String)
+      : ["approved"],
+    hiddenStatuses: Array.isArray(raw.auditPolicy?.hiddenStatuses)
+      ? raw.auditPolicy.hiddenStatuses.map(String)
+      : ["pending", "review"]
+  };
 
   const cards = raw.cards.map(card => {
+    const auditStatus = ["approved", "pending", "review"].includes(card.auditStatus)
+      ? card.auditStatus
+      : (auditPolicy.newCardsRequireAudit ? "pending" : "approved");
     const common = {
       id: String(card.id),
       boxId: boxIds.has(String(card.boxId)) ? String(card.boxId) : UNCATEGORIZED_ID,
       active: card.active !== false,
-      difficulty: normalizeDifficulty(card.difficulty, modeId, card)
+      difficulty: normalizeDifficulty(card.difficulty, modeId, card),
+      auditStatus,
+      auditFingerprint: String(card.auditFingerprint || "")
     };
 
     if (config.type === "lyrics") {
@@ -100,6 +114,8 @@ export function normalizeLibrary(modeId, raw) {
     updatedAt: String(raw.updatedAt || ""),
     modeId,
     modeName: String(raw.modeName || config.name),
+    auditPolicy,
+    retiredOfficialCardIds: cleanIdList(raw.retiredOfficialCardIds),
     boxes,
     cards
   };
@@ -169,7 +185,9 @@ function sameCardAsOfficial(modeId, localCard, officialCard) {
     localCard.boxId !== officialCard.boxId ||
     Boolean(localCard.active) !== Boolean(officialCard.active !== false) ||
     localCard.prompt !== officialCard.prompt ||
-    normalizeDifficulty(localCard.difficulty, modeId, localCard) !== officialCard.difficulty
+    normalizeDifficulty(localCard.difficulty, modeId, localCard) !== officialCard.difficulty ||
+    String(localCard.auditStatus || "approved") !== String(officialCard.auditStatus || "approved") ||
+    String(localCard.auditFingerprint || "") !== String(officialCard.auditFingerprint || "")
   ) return false;
 
   if (config.type === "lyrics") {
@@ -204,8 +222,8 @@ const AUTO_LIBRARY_MIGRATIONS = {
     from: new Set(["2026.06.15-3", "2026.06.20-final-revise", "2026.06.20-audit-1"])
   },
   mime: {
-    target: "2026.06.19-1",
-    from: new Set(["2026.06.15-1", "0.9.4-content-mimes-1000-final"])
+    target: "2026.06.20-audit-1",
+    from: new Set(["2026.06.15-1", "0.9.4-content-mimes-1000-final", "2026.06.19-1"])
   },
   drinking: {
     target: "2026.06.20-2",
@@ -315,6 +333,9 @@ export function sanitizeMode(modeId, mode, library) {
       boxId: boxIds.has(String(card.boxId)) ? String(card.boxId) : UNCATEGORIZED_ID,
       active: card.active !== false,
       difficulty: normalizeDifficulty(card.difficulty, modeId, card),
+      auditStatus: ["approved", "pending", "review"].includes(card.auditStatus)
+        ? card.auditStatus : "approved",
+      auditFingerprint: String(card.auditFingerprint || ""),
       origin: card.origin || (officialCardIds.has(String(card.id)) ? "official" : "personal"),
       locallyModified: card.locallyModified === true
     };
@@ -384,6 +405,7 @@ async function loadMode(modeId, legacySettings) {
 
   const officialBoxes = new Map(library.boxes.map(box => [box.id, box]));
   const officialCards = new Map(library.cards.map(card => [card.id, card]));
+  const retiredOfficialCardIds = new Set(library.retiredOfficialCardIds || []);
   const installedVersion = String(storedMeta?.installedVersion || "");
   const mimeRepair = legacyMimeRepairPlan(modeId, storedCards, storedMeta, library);
   const autoMigrateOfficialContent = mimeRepair.needed || shouldAutoMigrateLibrary(
@@ -410,6 +432,7 @@ async function loadMode(modeId, legacySettings) {
   });
 
   const cards = storedCards.flatMap(card => {
+    if (retiredOfficialCardIds.has(String(card.id)) && card.origin !== "personal") return [];
     const official = officialCards.get(card.id);
     const normalizedCard = {
       ...card,
@@ -645,7 +668,11 @@ export function getBoxName(modeId, boxId) {
 }
 
 export function activeCountForBox(modeId, boxId) {
-  return modeState(modeId).cards.filter(card => card.boxId === boxId && card.active).length;
+  return modeState(modeId).cards.filter(card => card.boxId === boxId && isCardPlayable(card)).length;
+}
+
+export function isCardPlayable(card) {
+  return Boolean(card?.active !== false && String(card?.auditStatus || "approved") === "approved");
 }
 
 export function filteredCardsForMode(modeId) {
@@ -654,7 +681,7 @@ export function filteredCardsForMode(modeId) {
   const selectedDifficulties = new Set(normalizeDifficultyIds(mode.selectedDifficultyIds));
   return mode.cards
     .filter(card =>
-      card.active &&
+      isCardPlayable(card) &&
       selectedBoxes.has(card.boxId) &&
       selectedDifficulties.has(normalizeDifficulty(card.difficulty, modeId, card))
     )
@@ -666,7 +693,13 @@ export function selectedCardsForMode(modeId) {
 }
 
 export function activeCardCountForMode(modeId) {
-  return modeState(modeId).cards.filter(card => card.active).length;
+  return modeState(modeId).cards.filter(isCardPlayable).length;
+}
+
+export function auditPendingCountForMode(modeId) {
+  return modeState(modeId).cards.filter(card =>
+    card.active !== false && ["pending", "review"].includes(String(card.auditStatus || "approved"))
+  ).length;
 }
 
 export function selectedCardTotals() {
@@ -714,6 +747,12 @@ export function mergeModeLibrary(modeId, library) {
   const mode = modeState(modeId);
   const deletedBoxIds = new Set(mode.libraryMeta.deletedOfficialBoxIds);
   const deletedCardIds = new Set(mode.libraryMeta.deletedOfficialCardIds);
+  const retiredOfficialCardIds = new Set(library.retiredOfficialCardIds || []);
+  if (retiredOfficialCardIds.size) {
+    mode.cards = mode.cards.filter(card =>
+      !retiredOfficialCardIds.has(String(card.id)) || card.origin === "personal"
+    );
+  }
   const localBoxes = new Map(mode.boxes.map(box => [box.id, box]));
   const localCards = new Map(mode.cards.map(card => [card.id, card]));
   const stats = { boxesAdded: 0, boxesUpdated: 0, cardsAdded: 0, cardsUpdated: 0, localPreserved: 0 };

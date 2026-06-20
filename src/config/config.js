@@ -1,5 +1,5 @@
-export const APP_VERSION = "0.9.6.1";
-export const APP_CACHE_NAME = "mdb-v0-9-6-1";
+export const APP_VERSION = "0.9.7";
+export const APP_CACHE_NAME = "mdb-v0-9-7";
 export const SWIPE_ANIMATION_MS = 180;
 export const DRAW_HOLD_MS = 500;
 export const DRAW_RETURN_COUNTDOWN_SECONDS = 3;
@@ -126,7 +126,14 @@ export const CARD_REMOVAL_REPORTS_KEY = "mdb-card-removal-reports-v1";
 export const CARD_REMOVAL_REPORT_SCHEMA = 1;
 export const AUDIT_STORE_KEY = "mdb-card-audit-v1";
 export const AUDIT_INSTALLATION_ID_KEY = "mdb-card-audit-installation-v1";
-export const AUDIT_STORE_SCHEMA = 2;
+export const AUDIT_STORE_SCHEMA = 3;
+export const GAMEPLAY_FEEDBACK_KEY = "mdb-card-gameplay-v1";
+export const GAMEPLAY_FEEDBACK_SCHEMA = 1;
+export const POINTS_BY_DIFFICULTY = Object.freeze({
+  easy: 1,
+  medium: 2,
+  hard: 3
+});
 export const MULTIPLAYER_SESSION_SCHEMA = 3;
 export const MIN_MULTIPLAYER_PLAYERS = 2;
 export const MAX_MULTIPLAYER_PLAYERS = 12;

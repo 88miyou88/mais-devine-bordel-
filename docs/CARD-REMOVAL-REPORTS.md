@@ -21,7 +21,7 @@ Le journal peut être vidé après envoi. Vider le journal ne restaure pas les c
 {
   "kind": "mdb-deleted-cards-report",
   "schemaVersion": 1,
-  "appVersion": "0.9.6.1",
+  "appVersion": "0.9.7",
   "exportedAt": "2026-06-19T18:00:00.000Z",
   "privacy": "Aucun prénom de joueur ni contenu de partie n’est inclus.",
   "summary": {

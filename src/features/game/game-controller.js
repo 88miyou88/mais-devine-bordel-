@@ -1,4 +1,8 @@
-import { DIFFICULTY_LABELS } from "../../config/config.js";
+import {
+  DIFFICULTY_LABELS,
+  DIFFICULTY_ORDER,
+  POINTS_BY_DIFFICULTY
+} from "../../config/config.js";
 import {
   el,
   releaseWakeLock,
@@ -10,6 +14,11 @@ import {
 import { state } from "../../core/state.js";
 import { shuffle } from "../../core/utils.js";
 import { removeCardDuringGame } from "../../services/card-removals.js";
+import {
+  recordGameplayOutcome,
+  recordGameplayShown,
+  undoGameplayOutcome
+} from "../../services/gameplay-feedback.js";
 import {
   getBoxName,
   getPlayableCards,
@@ -49,6 +58,9 @@ let preparedMixedDrawingCount = null;
 let roundOptions = null;
 let sequenceCursor = 0;
 let modeQueues = new Map();
+let roundOriginalDifficultyIdsByMode = new Map();
+let roundDisabledDifficultyIds = new Set();
+let currentCardPending = false;
 
 function isMultiplayerRound() {
   return roundOptions?.multiplayer === true;
@@ -61,13 +73,46 @@ function selectedModeOrder() {
   return [...new Set(configured)];
 }
 
+function initializeRoundDifficulties() {
+  roundOriginalDifficultyIdsByMode = new Map(
+    selectedModeOrder().map(modeId => [
+      modeId,
+      new Set(state.modes[modeId]?.selectedDifficultyIds || DIFFICULTY_ORDER)
+    ])
+  );
+  roundDisabledDifficultyIds = new Set();
+}
+
+function cardAllowedInRound(card) {
+  if (!card) return false;
+  const original = roundOriginalDifficultyIdsByMode.get(card.modeId);
+  return Boolean(
+    (!original || original.has(card.difficulty)) &&
+    !roundDisabledDifficultyIds.has(card.difficulty)
+  );
+}
+
+function roundHasDifficulty(difficulty) {
+  return [...roundOriginalDifficultyIdsByMode.values()].some(ids => ids.has(difficulty));
+}
+
+function activeRoundDifficulties() {
+  return DIFFICULTY_ORDER.filter(difficulty =>
+    roundHasDifficulty(difficulty) && !roundDisabledDifficultyIds.has(difficulty)
+  );
+}
+
 function classicModeIds() {
   return selectedModeOrder().filter(modeId => modeId !== "draw");
 }
 
 function classicCards() {
-  if (!isMultiplayerRound()) return getPlayableCards({ excludeModeIds: ["draw"] });
-  return classicModeIds().flatMap(modeId => selectedCardsForMode(modeId));
+  if (!isMultiplayerRound()) {
+    return getPlayableCards({ excludeModeIds: ["draw"] }).filter(cardAllowedInRound);
+  }
+  return classicModeIds()
+    .flatMap(modeId => selectedCardsForMode(modeId))
+    .filter(cardAllowedInRound);
 }
 
 function refillQueue() {
@@ -86,7 +131,7 @@ function usedIdsForMode(modeId) {
 }
 
 function refillModeQueue(modeId) {
-  const cards = selectedCardsForMode(modeId);
+  const cards = selectedCardsForMode(modeId).filter(cardAllowedInRound);
   if (!cards.length) {
     modeQueues.set(modeId, []);
     return;
@@ -124,7 +169,7 @@ function prepareNextFreeCard() {
 
 function restorePreparedCardAfterUndo(entry) {
   const preparedCard = entry?._nextCard || null;
-  if (!preparedCard) return;
+  if (!preparedCard || !cardAllowedInRound(preparedCard)) return;
 
   if (!isMultiplayerRound()) {
     if (!state.queue.some(card => sameCard(card, preparedCard))) {
@@ -150,6 +195,8 @@ function drawNextCard() {
     return;
   }
   state.currentCard = state.queue.shift();
+  currentCardPending = true;
+  recordGameplayShown(state.currentCard.modeId, state.currentCard);
   renderGameCard();
 }
 
@@ -235,7 +282,7 @@ function createMixedDrawingState() {
   const modes = selectedModeOrder();
   const drawSelected = modes.includes("draw");
   if (!drawSelected || modes.length < 2) return null;
-  const drawCards = selectedCardsForMode("draw");
+  const drawCards = selectedCardsForMode("draw").filter(cardAllowedInRound);
   if (!drawCards.length) return null;
   const wanted = preparedMixedDrawingCount ?? Math.min(state.settings.modeOptions.draw.mixedCount, drawCards.length);
   preparedMixedDrawingCount = null;
@@ -294,6 +341,8 @@ function executeSequenceStep(step) {
     return;
   }
   state.currentCard = step.card;
+  currentCardPending = true;
+  recordGameplayShown(state.currentCard.modeId, state.currentCard);
   renderGameCard();
 }
 
@@ -361,6 +410,8 @@ function beginGame() {
   state.passed = 0;
   state.score = 0;
   state.remainingMs = state.durationMs;
+  initializeRoundDifficulties();
+  currentCardPending = false;
   state.mixedDrawing = createMixedDrawingState();
   sequenceCursor = 0;
   modeQueues = new Map();
@@ -382,9 +433,9 @@ function missedCount() {
 
 function updateScores() {
   const mixed = Boolean(state.mixedDrawing);
-  el.validScoreLabel.textContent = mixed ? "POINTS" : "VALIDÉES";
+  el.validScoreLabel.textContent = "POINTS";
   el.passScoreLabel.textContent = mixed ? "RATÉS" : "PASSÉES";
-  el.validScore.textContent = String(mixed ? state.score : state.valid);
+  el.validScore.textContent = String(state.score);
   el.passScore.textContent = String(mixed ? missedCount() : state.passed);
   const last = state.history.at(-1);
   el.undoButton.disabled = !last || last.kind !== "classic";
@@ -393,7 +444,99 @@ function updateScores() {
     : "Revenir à la carte précédente";
 }
 
+function remainingAllowedCardCount() {
+  return selectedModeOrder().reduce((total, modeId) => {
+    const cards = selectedCardsForMode(modeId);
+    return total + cards.filter(cardAllowedInRound).length;
+  }, 0);
+}
+
+function filterPendingQueuesForRoundDifficulties() {
+  state.queue = state.queue.filter(cardAllowedInRound);
+  modeQueues.forEach((queue, modeId) => {
+    modeQueues.set(modeId, queue.filter(cardAllowedInRound));
+  });
+  const plan = state.mixedDrawing;
+  if (plan && Array.isArray(plan.queue) && !plan.active) {
+    const completed = plan.queue.slice(0, plan.nextIndex);
+    const remaining = plan.queue.slice(plan.nextIndex).filter(cardAllowedInRound);
+    plan.queue = [...completed, ...remaining];
+    plan.requestedCount = plan.queue.length;
+    if (plan.nextIndex >= plan.requestedCount) {
+      plan.nextIndex = plan.requestedCount;
+    }
+  }
+}
+
+function replaceDisabledCurrentCard() {
+  if (!currentCardPending || !state.currentCard || cardAllowedInRound(state.currentCard)) return;
+  currentCardPending = false;
+  state.currentCard = null;
+  if (isMultiplayerRound()) {
+    let step = null;
+    const maxChecks = Math.max(4, selectedModeOrder().length * 3);
+    for (let index = 0; index < maxChecks; index += 1) {
+      const candidate = nextSequenceStep();
+      if (!candidate) break;
+      if (candidate.type === "classic") {
+        step = candidate;
+        break;
+      }
+    }
+    if (step) executeSequenceStep(step);
+    else finishGame("empty");
+  } else {
+    drawNextCard();
+  }
+}
+
+function setRoundDifficultyEnabled(difficulty, enabled) {
+  if (!roundHasDifficulty(difficulty)) return;
+  if (enabled) {
+    roundDisabledDifficultyIds.delete(difficulty);
+  } else {
+    const remaining = activeRoundDifficulties().filter(id => id !== difficulty);
+    if (!remaining.length) {
+      alert("Garde au moins une difficulté active.");
+      return;
+    }
+    roundDisabledDifficultyIds.add(difficulty);
+  }
+
+  filterPendingQueuesForRoundDifficulties();
+  if (remainingAllowedCardCount() === 0) {
+    if (enabled) roundDisabledDifficultyIds.add(difficulty);
+    else roundDisabledDifficultyIds.delete(difficulty);
+    alert("Aucune carte ne correspond à ce filtre pendant cette partie.");
+  }
+  filterPendingQueuesForRoundDifficulties();
+  replaceDisabledCurrentCard();
+  renderPauseDifficultyChoices();
+}
+
+function renderPauseDifficultyChoices() {
+  if (!el.pauseDifficultyChoices) return;
+  el.pauseDifficultyChoices.innerHTML = "";
+  DIFFICULTY_ORDER.forEach(difficulty => {
+    if (!roundHasDifficulty(difficulty)) return;
+    const label = document.createElement("label");
+    label.className = `pause-difficulty-choice difficulty-${difficulty}`;
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.checked = !roundDisabledDifficultyIds.has(difficulty);
+    input.addEventListener("change", () => {
+      setRoundDifficultyEnabled(difficulty, input.checked);
+    });
+    const text = document.createElement("span");
+    text.textContent = DIFFICULTY_LABELS[difficulty];
+    label.append(input, text);
+    el.pauseDifficultyChoices.append(label);
+  });
+}
+
 export function togglePause(forcePause) {
+  const willPause = typeof forcePause === "boolean" ? forcePause : !state.paused;
+  if (willPause) renderPauseDifficultyChoices();
   togglePauseState(forcePause, {
     onResume: requestWakeLock,
     onExpired: () => finishGame("time")
@@ -486,6 +629,7 @@ function deleteCurrentClassicCard() {
   )) return;
 
   if (!removeCardDuringGame(card.modeId, card.id, { source: "classic_game" })) return;
+  currentCardPending = false;
   state.queue = state.queue.filter(item => !(item.modeId === card.modeId && item.id === card.id));
   const modeQueue = modeQueues.get(card.modeId);
   if (modeQueue) {
@@ -500,19 +644,26 @@ function deleteCurrentClassicCard() {
 export function commitSwipe(result) {
   if (!state.running || state.paused || !state.currentCard) return;
   const judgedCard = state.currentCard;
-  const points = result === "valid" ? 1 : 0;
+  const points = result === "valid" ? (POINTS_BY_DIFFICULTY[judgedCard.difficulty] || 1) : 0;
+  const gameplayEventId = recordGameplayOutcome(
+    judgedCard.modeId,
+    judgedCard,
+    result === "valid" ? "valid" : "passed"
+  );
+  currentCardPending = false;
   const historyEntry = {
     kind: "classic",
     card: judgedCard,
     result,
     points,
     _nextCard: null,
-    _sequenceCursorBeforeNext: null
+    _sequenceCursorBeforeNext: null,
+    _gameplayEventId: gameplayEventId
   };
   state.history.push(historyEntry);
   if (result === "valid") {
     state.valid += 1;
-    state.score += 1;
+    state.score += points;
   } else {
     state.passed += 1;
   }
@@ -550,10 +701,11 @@ export function undoLast() {
   state.history.pop();
   if (last.result === "valid") {
     state.valid = Math.max(0, state.valid - 1);
-    state.score = Math.max(0, state.score - 1);
+    state.score = Math.max(0, state.score - (Number(last.points) || 0));
   } else {
     state.passed = Math.max(0, state.passed - 1);
   }
+  undoGameplayOutcome(last._gameplayEventId);
   restorePreparedCardAfterUndo(last);
   if (isMultiplayerRound()) {
     sequenceCursor = Number.isInteger(last._sequenceCursorBeforeNext)
@@ -561,6 +713,7 @@ export function undoLast() {
       : Math.max(0, sequenceCursor - 1);
   }
   state.currentCard = last.card;
+  currentCardPending = true;
   updateScores();
   renderGameCard();
 }
@@ -587,7 +740,7 @@ function currentRoundResult(reason) {
     valid: state.valid,
     passed: state.passed,
     history: state.history.map(entry => {
-      const { _nextCard, _sequenceCursorBeforeNext, ...publicEntry } = entry;
+      const { _nextCard, _sequenceCursorBeforeNext, _gameplayEventId, ...publicEntry } = entry;
       return {
         ...publicEntry,
         card: entry.card ? { ...entry.card } : null
@@ -598,6 +751,19 @@ function currentRoundResult(reason) {
 
 export function finishGame(reason = "manual") {
   if (!state.running) return;
+  if (reason === "time" && currentCardPending && state.currentCard) {
+    const gameplayEventId = recordGameplayOutcome(state.currentCard.modeId, state.currentCard, "expired");
+    state.history.push({
+      kind: "classic",
+      card: state.currentCard,
+      result: "expired",
+      points: 0,
+      _nextCard: null,
+      _sequenceCursorBeforeNext: null,
+      _gameplayEventId: gameplayEventId
+    });
+    currentCardPending = false;
+  }
   const result = currentRoundResult(reason);
   const complete = roundOptions?.onComplete || null;
   state.running = false;
@@ -635,6 +801,9 @@ export function stopClassicGame() {
   roundOptions = null;
   sequenceCursor = 0;
   modeQueues = new Map();
+  roundOriginalDifficultyIdsByMode = new Map();
+  roundDisabledDifficultyIds = new Set();
+  currentCardPending = false;
   stopTimers();
   el.pauseOverlay.classList.add("hidden");
   el.pauseButton.textContent = "Ⅱ Pause";

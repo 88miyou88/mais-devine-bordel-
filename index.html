@@ -9,16 +9,16 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
-  <link rel="stylesheet" href="./assets/styles/foundation.css?v=0961">
-  <link rel="stylesheet" href="./assets/styles/components.css?v=0961">
-  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=0961">
-  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=0961">
-  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=0961">
-  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=0961">
-  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=0961">
-  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=0961">
-  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=0961">
-  <link rel="stylesheet" href="./assets/styles/screens/audit.css?v=0961">
+  <link rel="stylesheet" href="./assets/styles/foundation.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/components.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/audit.css?v=097">
 </head>
 <body>
   <main id="app">
@@ -400,6 +400,7 @@
               <span>Cartes à afficher</span>
               <select id="auditScopeSelect" class="select-input">
                 <option value="unseen">Pas encore évaluées</option>
+                <option value="pending">Nouvelles cartes à auditer</option>
                 <option value="all">Toutes les cartes conservées</option>
                 <option value="neutral">Cartes neutres</option>
                 <option value="liked">Cartes excellentes</option>
@@ -435,8 +436,11 @@
           <div class="audit-setup-actions">
             <button id="startAuditButton" class="primary-button" type="button">Commencer un nouvel audit</button>
             <button id="resumeAuditButton" class="secondary-button hidden" type="button">Reprendre l’audit</button>
-            <button id="exportAuditButton" class="secondary-button" type="button">Télécharger le rapport d’audit</button>
+            <button id="exportAuditButton" class="secondary-button" type="button">Télécharger le rapport d’audit et de parties</button>
             <button id="exportCleanLibraryButton" class="secondary-button" type="button">Exporter le JSON audité</button>
+            <button id="exportAuditStateButton" class="secondary-button" type="button">Exporter l’état d’audit</button>
+            <button id="importAuditStateButton" class="secondary-button" type="button">Importer un état d’audit</button>
+            <input id="importAuditStateInput" class="hidden" type="file" accept=".json,application/json">
             <button id="clearAuditModeButton" class="danger-button" type="button">Effacer les statuts de ce mode</button>
           </div>
           <small>Une carte supprimée disparaît immédiatement de cet appareil. Le JSON officiel sur GitHub ne change qu’après intégration dans une future mise à jour.</small>
@@ -603,8 +607,15 @@
       </div>
 
       <div id="pauseOverlay" class="pause-overlay hidden" role="dialog" aria-modal="true">
-        <p>PAUSE</p>
-        <button id="resumeOverlayButton" class="primary-button" type="button">Reprendre</button>
+        <div class="pause-panel">
+          <p>PAUSE</p>
+          <div class="pause-difficulty-section">
+            <strong>Difficultés actives</strong>
+            <small>Décoche une difficulté pour retirer immédiatement ses cartes restantes de cette partie.</small>
+            <div id="pauseDifficultyChoices" class="pause-difficulty-choices"></div>
+          </div>
+          <button id="resumeOverlayButton" class="primary-button" type="button">Reprendre</button>
+        </div>
       </div>
 
       <footer class="game-controls">
@@ -1070,7 +1081,7 @@
 
   <script>
     (() => {
-      const VERSION_TOKEN = "0961";
+      const VERSION_TOKEN = "097";
       const recovery = document.querySelector("#bootRecovery");
       const message = document.querySelector("#bootRecoveryMessage");
       let bootFinished = false;
@@ -1124,7 +1135,7 @@
     })();
   </script>
   <script type="module" data-mdb-bootstrap>
-    import("./src/main.js?v=0961").catch(error => window.MDB_BOOT_FAILURE(error));
+    import("./src/main.js?v=097").catch(error => window.MDB_BOOT_FAILURE(error));
   </script>
 </body>
 </html>

@@ -18,7 +18,18 @@ import {
   removeCardDuringGame,
   restoreRemovedCard
 } from "./card-removals.js";
-import { getBoxName, modeConfig } from "./libraries.js";
+import {
+  getBoxName,
+  modeConfig,
+  sanitizeMode,
+  saveMode
+} from "./libraries.js";
+import {
+  createGameplayReport,
+  gameplayEntryMap,
+  readGameplayStore,
+  restoreGameplayStore
+} from "./gameplay-feedback.js";
 
 const REPORT_KIND = "mdb-card-audit-report";
 const STATUS_IDS = new Set(["seen", "neutral", "liked", "review", "deleted"]);
@@ -26,6 +37,33 @@ const STATUS_IDS = new Set(["seen", "neutral", "liked", "review", "deleted"]);
 function randomId(prefix) {
   if (globalThis.crypto?.randomUUID) return `${prefix}-${globalThis.crypto.randomUUID()}`;
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+}
+
+function stableSerialize(value) {
+  if (Array.isArray(value)) return `[${value.map(stableSerialize).join(",")}]`;
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${stableSerialize(value[key])}`).join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function computeAuditFingerprint(modeId, card) {
+  const snapshot = cleanCardSnapshot(card) || {};
+  delete snapshot.auditStatus;
+  delete snapshot.auditFingerprint;
+  delete snapshot.origin;
+  delete snapshot.locallyModified;
+  const text = `${modeId}|${stableSerialize(snapshot)}`;
+  let first = 0x811c9dc5;
+  let second = 0x9e3779b9;
+  for (let index = 0; index < text.length; index += 1) {
+    const code = text.charCodeAt(index);
+    first ^= code;
+    first = Math.imul(first, 0x01000193);
+    second ^= code + index;
+    second = Math.imul(second, 0x85ebca6b);
+  }
+  return `${(first >>> 0).toString(16).padStart(8, "0")}${(second >>> 0).toString(16).padStart(8, "0")}`;
 }
 
 export function getAuditInstallationId() {
@@ -105,7 +143,7 @@ function normalizeSession(session) {
     difficultyIds: Array.isArray(session.difficultyIds)
       ? DIFFICULTY_ORDER.filter(id => session.difficultyIds.includes(id))
       : [...DIFFICULTY_ORDER],
-    scope: ["unseen", "all", "neutral", "liked", "review"].includes(session.scope)
+    scope: ["unseen", "pending", "all", "neutral", "liked", "review"].includes(session.scope)
       ? session.scope : "unseen",
     queueKeys: [...new Set(session.queueKeys.map(String).filter(Boolean))],
     index: Math.max(0, Number(session.index) || 0),
@@ -240,7 +278,12 @@ export function setCardAuditStatus(modeId, card, status, {
   entry.lastRatedAt = now;
   entry.reasons = [...new Set((reasons || []).map(String).filter(Boolean))];
   entry.customReason = String(customReason || "");
-  Object.assign(entry, snapshotForCard(modeId, card));
+  const localCard = modeState(modeId).cards.find(item => item.id === card.id);
+  if (localCard && status !== "seen" && status !== "deleted") {
+    localCard.auditStatus = status === "review" ? "review" : "approved";
+    saveMode(modeId);
+  }
+  Object.assign(entry, snapshotForCard(modeId, localCard || card));
   writeAuditStore(store);
   return clone(entry);
 }
@@ -299,7 +342,18 @@ export function recordCardAuditEdit(modeId, before, after) {
     after: cleanCardSnapshot(after)
   });
   entry.edits = entry.edits.slice(-50);
-  Object.assign(entry, snapshotForCard(modeId, after));
+  const localCard = modeState(modeId).cards.find(item => item.id === after.id);
+  if (localCard) {
+    localCard.auditStatus = "approved";
+    localCard.auditFingerprint = computeAuditFingerprint(modeId, localCard);
+    saveMode(modeId);
+  }
+  entry.status = "neutral";
+  entry.firstRatedAt ||= now;
+  entry.lastRatedAt = now;
+  entry.reasons = [];
+  entry.customReason = "";
+  Object.assign(entry, snapshotForCard(modeId, localCard || after));
   writeAuditStore(store);
   return clone(entry);
 }
@@ -326,10 +380,15 @@ export function createAuditSession({ modeId, boxIds, difficultyIds, scope }) {
   const selectedBoxes = new Set(boxIds);
   const selectedDifficulties = new Set(difficultyIds);
   const cards = mode.cards.filter(card => {
-    if (!card.active || !selectedBoxes.has(card.boxId)) return false;
+    if (card.active === false || !selectedBoxes.has(card.boxId)) return false;
     if (!selectedDifficulties.has(normalizeDifficulty(card.difficulty, modeId, card))) return false;
-    const status = entryMap.get(`${modeId}::${card.id}`)?.status || "unseen";
+    const localStatus = entryMap.get(`${modeId}::${card.id}`)?.status || "";
+    const officialAuditStatus = String(card.auditStatus || "approved");
+    const status = localStatus || (officialAuditStatus === "review"
+      ? "review"
+      : (officialAuditStatus === "pending" ? "pending" : "unseen"));
     if (scope === "unseen") return status === "unseen" || status === "seen";
+    if (scope === "pending") return status === "pending";
     if (scope === "neutral") return status === "neutral";
     if (scope === "liked") return status === "liked";
     if (scope === "review") return status === "review";
@@ -391,6 +450,11 @@ export function deleteCardFromAudit(modeId, card, reason = "", customReason = ""
 
 export function restoreCardFromAudit(modeId, card) {
   restoreRemovedCard(modeId, card);
+  const localCard = modeState(modeId).cards.find(item => item.id === card.id);
+  if (localCard) {
+    localCard.auditStatus = "review";
+    saveMode(modeId);
+  }
   const store = readAuditStore();
   const entry = entryForCard(store, modeId, card.id);
   if (entry) {
@@ -432,6 +496,8 @@ export function auditSummary(input = null) {
 
 export function createAuditReport() {
   const store = readAuditStore();
+  const gameplayReport = createGameplayReport();
+  const gameplayMap = gameplayEntryMap();
   return {
     kind: REPORT_KIND,
     schemaVersion: AUDIT_STORE_SCHEMA,
@@ -449,11 +515,18 @@ export function createAuditReport() {
       edited: "Carte corrigée localement pendant l’audit ; le détail avant/après figure dans edits."
     },
     summary: auditSummary(store),
+    gameplaySummary: gameplayReport.summary,
     completedSessions: clone(store.completedSessions),
     cards: clone(store.entries).map(entry => {
       const { seenSessionIds, ...publicEntry } = entry;
-      return publicEntry;
-    })
+      return {
+        ...publicEntry,
+        gameplay: clone(gameplayMap.get(entry.key) || null)
+      };
+    }),
+    gameplayOnlyCards: gameplayReport.cards.filter(entry =>
+      !store.entries.some(auditEntry => auditEntry.key === entry.key)
+    )
   };
 }
 
@@ -473,7 +546,7 @@ function downloadJson(data, filename) {
 
 export function exportAuditReport() {
   const report = createAuditReport();
-  if (!report.cards.length) return false;
+  if (!report.cards.length && !report.gameplayOnlyCards.length) return false;
   downloadJson(report, `mdb-audit-cartes-${new Date().toISOString().slice(0, 10)}.json`);
   return true;
 }
@@ -511,11 +584,84 @@ export function exportCleanLibrary(modeId) {
     updatedAt: new Date().toISOString().slice(0, 10),
     modeId: library.modeId,
     modeName: library.modeName,
+    auditPolicy: clone(library.auditPolicy || {
+      newCardsRequireAudit: false,
+      approvedStatuses: ["approved"],
+      hiddenStatuses: ["pending", "review"]
+    }),
+    retiredOfficialCardIds: clone(library.retiredOfficialCardIds || []),
     boxes,
     cards
   };
   downloadJson(output, `${modeId}-bibliotheque-auditee-${new Date().toISOString().slice(0, 10)}.json`);
   return true;
+}
+
+
+export function exportAuditState() {
+  const payload = {
+    kind: "mdb-card-audit-state",
+    schemaVersion: AUDIT_STORE_SCHEMA,
+    appVersion: APP_VERSION,
+    exportedAt: new Date().toISOString(),
+    audit: readAuditStore(),
+    gameplayFeedback: readGameplayStore(),
+    modes: Object.fromEntries(MODE_ORDER.map(modeId => {
+      const mode = modeState(modeId);
+      return [modeId, {
+        boxes: clone(mode.boxes),
+        cards: clone(mode.cards),
+        selectedBoxIds: clone(mode.selectedBoxIds),
+        selectedDifficultyIds: clone(mode.selectedDifficultyIds),
+        libraryMeta: clone(mode.libraryMeta)
+      }];
+    }))
+  };
+  downloadJson(payload, `mdb-etat-audit-${new Date().toISOString().slice(0, 10)}.json`);
+  return true;
+}
+
+export async function readAuditStateFile(file) {
+  if (!file) throw new Error("Aucun fichier d’audit sélectionné.");
+  const data = JSON.parse(await file.text());
+  if (data?.kind !== "mdb-card-audit-state" || !data.audit) {
+    throw new Error("Ce fichier n’est pas une sauvegarde d’audit MDB valide.");
+  }
+  return data;
+}
+
+export function importAuditState(data) {
+  if (data?.kind !== "mdb-card-audit-state" || !data.audit) {
+    throw new Error("Sauvegarde d’audit invalide.");
+  }
+  if (data.modes && typeof data.modes === "object") {
+    MODE_ORDER.forEach(modeId => {
+      const restored = data.modes[modeId];
+      const mode = modeState(modeId);
+      if (!restored || !mode?.officialLibrary) return;
+      const officialBoxIds = new Set(mode.officialLibrary.boxes.map(box => box.id));
+      const officialCardIds = new Set(mode.officialLibrary.cards.map(card => card.id));
+      mode.boxes = clone(restored.boxes || mode.boxes).filter(box =>
+        officialBoxIds.has(String(box.id)) || box.origin === "personal" || box.locallyModified === true
+      );
+      mode.cards = clone(restored.cards || mode.cards).flatMap(card => {
+        if (officialCardIds.has(String(card.id)) || card.origin === "personal") return [card];
+        if (card.locallyModified === true) {
+          return [{ ...card, origin: "personal", locallyModified: true }];
+        }
+        return [];
+      });
+      mode.selectedBoxIds = clone(restored.selectedBoxIds || mode.selectedBoxIds);
+      mode.selectedDifficultyIds = clone(
+        restored.selectedDifficultyIds || mode.selectedDifficultyIds
+      );
+      mode.libraryMeta = clone(restored.libraryMeta || mode.libraryMeta);
+      sanitizeMode(modeId, mode, mode.officialLibrary);
+      saveMode(modeId);
+    });
+  }
+  if (data.gameplayFeedback) restoreGameplayStore(data.gameplayFeedback);
+  return writeAuditStore(data.audit);
 }
 
 export function clearAuditForMode(modeId) {

@@ -4,8 +4,8 @@ import { state } from "../../core/state.js";
 import { getBoxName, modeConfig } from "../../services/libraries.js";
 
 export function resetResultLabels() {
-  el.resultValidLabel.textContent = "validées";
-  el.resultPassedLabel.textContent = "passées";
+  el.resultValidLabel.textContent = "points";
+  el.resultPassedLabel.textContent = "réussites";
   el.resultTotalLabel.textContent = "jouées";
   el.resultBreakdown.classList.add("hidden");
   el.resultBreakdown.innerHTML = "";
@@ -26,6 +26,10 @@ function renderMixedBreakdown() {
   const drawing = state.mixedDrawing;
   if (!drawing) return;
   el.resultBreakdown.classList.remove("hidden");
+  const classicPoints = state.history
+    .filter(entry => entry.kind === "classic")
+    .reduce((total, entry) => total + (Number(entry.points) || 0), 0);
+  addBreakdownItem("points cartes", classicPoints, "positive");
   addBreakdownItem("cartes validées", state.valid, "positive");
   addBreakdownItem("cartes passées", state.passed, "negative");
   addBreakdownItem("dessins trouvés", drawing.found, "draw");
@@ -67,12 +71,15 @@ function createResultRow(entry) {
     source.textContent = `Dessin · ${DIFFICULTY_LABELS[card.difficulty]} · ${entry.points} pt · ${seconds} s · ${support} · −${entry.penaltySeconds} s`;
   } else {
     const config = modeConfig(card.modeId);
+    const pointsLabel = entry.result === "valid"
+      ? ` · ${entry.points} pt${entry.points > 1 ? "s" : ""}`
+      : "";
     if (config.type === "lyrics") {
       title.textContent = card.title;
-      source.textContent = `${config.name} · ${card.source}`;
+      source.textContent = `${config.name} · ${card.source} · ${DIFFICULTY_LABELS[card.difficulty]}${pointsLabel}`;
     } else {
       title.textContent = card.prompt;
-      source.textContent = `${config.name} · ${getBoxName(card.modeId, card.boxId)} · ${DIFFICULTY_LABELS[card.difficulty]}`;
+      source.textContent = `${config.name} · ${getBoxName(card.modeId, card.boxId)} · ${DIFFICULTY_LABELS[card.difficulty]}${pointsLabel}`;
     }
   }
 
@@ -82,7 +89,7 @@ function createResultRow(entry) {
   if (isDrawing) {
     word.textContent = valid ? "TROUVÉ" : entry.result === "expired" ? "EXPIRÉ" : "PASSÉ";
   } else {
-    word.textContent = valid ? "VALIDÉE" : "PASSÉE";
+    word.textContent = valid ? "VALIDÉE" : entry.result === "expired" ? "EXPIRÉE" : "PASSÉE";
   }
   row.append(status, details, word);
   return row;
@@ -101,9 +108,11 @@ export function renderGameResults(reason) {
     el.resultTotalLabel.textContent = "jouées";
     renderMixedBreakdown();
   } else {
-    el.resultValid.textContent = String(state.valid);
-    el.resultPassed.textContent = String(state.passed);
+    el.resultValid.textContent = String(state.score);
+    el.resultPassed.textContent = String(state.valid);
     el.resultTotal.textContent = String(state.history.length);
+    el.resultValidLabel.textContent = "points";
+    el.resultPassedLabel.textContent = "réussites";
   }
   el.resultDetails.innerHTML = "";
 

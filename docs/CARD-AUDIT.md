@@ -1,4 +1,4 @@
-# Audit des cartes — V0.9.6.1
+# Audit des cartes — V0.9.7
 
 ## Accès
 
@@ -10,22 +10,36 @@ L’audit ne lance ni chrono, ni score, ni joueur, ni pénalité. Il permet de f
 
 Actions :
 
-- **Neutre / suivante** : la carte a été vue sans jugement fort ;
-- **Excellente** : signal positif explicite ;
-- **À revoir** : carte conservée mais signalée comme douteuse ou améliorable ;
-- **Corriger** : ouvre l’éditeur de la carte courante ;
+- **Neutre / suivante** : carte vue sans jugement fort ; elle devient jouable si elle était nouvelle ;
+- **Excellente** : signal positif explicite ; elle devient jouable si elle était nouvelle ;
+- **À revoir** : carte conservée mais masquée des parties normales ;
+- **Corriger** : ouvre l’éditeur ; une correction vaut validation immédiate ;
 - **Supprimer** : retrait immédiat de la bibliothèque locale et ajout au rapport ;
 - **Retour** : annule la dernière décision, suppression ou correction.
 
-L’éditeur permet notamment de modifier le texte, le contexte, la catégorie et la difficulté. Chaque correction est enregistrée dans le rapport avec un état avant/après et le détail des champs modifiés.
+Après une correction, la carte passe à `auditStatus: approved`. Camille peut ensuite la remettre explicitement « À revoir » si nécessaire.
 
-Après « À revoir » ou « Supprimer », il est possible de :
+## Cartes nouvelles
 
-- choisir un motif rapide propre au mode ;
-- écrire une précision libre ;
-- continuer avec « Je ne sais pas ».
+Une bibliothèque peut activer :
 
-Pour Maestro, les motifs comprennent désormais « Paroles fausses / à corriger » et « Pas assez de contexte ».
+```json
+{
+  "auditPolicy": {
+    "newCardsRequireAudit": true,
+    "approvedStatuses": ["approved"],
+    "hiddenStatuses": ["pending", "review"]
+  }
+}
+```
+
+Dans ce cas :
+
+- `pending` : nouvelle carte, visible uniquement dans « Nouvelles cartes à auditer » ;
+- `approved` : carte jouable ;
+- `review` : carte masquée jusqu’à correction ou validation.
+
+La vraie catégorie éditoriale de la carte n’est jamais remplacée par une fausse catégorie « nouvelles cartes ».
 
 ## Raccourcis
 
@@ -37,15 +51,32 @@ Pour Maestro, les motifs comprennent désormais « Paroles fausses / à corriger
 - `S` ou `Suppr` : supprimer ;
 - `Échap` : quitter.
 
-Les mêmes actions sont disponibles sous forme de boutons tactiles, avec leur touche affichée.
+Les mêmes actions sont disponibles sous forme de boutons tactiles.
+
+## Motifs facultatifs
+
+Après « À revoir » ou « Supprimer », il est possible de choisir un motif propre au mode, d’écrire une précision libre ou de continuer avec « Je ne sais pas ».
+
+Ces motifs servent à accélérer l’apprentissage éditorial, sans rendre le formulaire obligatoire.
 
 ## Exports
 
-- **Télécharger le rapport d’audit** : cartes vues, neutres, excellentes, à revoir, corrigées et supprimées, sans prénom ni résultat individuel ;
-- **Exporter le JSON audité** : copie de la bibliothèque sans les cartes supprimées localement et avec les corrections locales actuelles.
+- **Télécharger le rapport d’audit et de parties** : décisions d’audit, corrections avant/après et statistiques de vraies parties ;
+- **Exporter le JSON audité** : bibliothèque locale nettoyée avec corrections et statuts ;
+- **Exporter l’état d’audit** : progression, cartes locales, suppressions, corrections et statistiques ;
+- **Importer un état d’audit** : reprise sur un autre ordinateur.
 
-Le rapport contient pour chaque correction un tableau `edits` avec les valeurs avant/après et les champs modifiés.
+Le rapport ne contient aucun prénom, score individuel, ciblage ou réponse personnelle.
+
+## Persistance entre appareils
+
+Deux niveaux sont distingués :
+
+1. **registre officiel** : statuts et corrections intégrés au JSON, disponibles sur tous les appareils après publication ;
+2. **état local en cours** : données du navigateur, transférables avec l’export/import d’état d’audit.
+
+L’import est normalisé contre la bibliothèque officielle installée afin de ne pas réintroduire volontairement des cartes retirées par une version plus récente.
 
 ## Suppression locale et restauration
 
-Une suppression est définitive sur l’appareil tant que la carte n’est pas restaurée. La liste de restauration est disponible dans l’écran de préparation de l’audit. La suppression globale pour tous les utilisateurs nécessite toujours une mise à jour du JSON officiel.
+Une suppression est définitive sur l’appareil tant que la carte n’est pas restaurée. La liste de restauration est disponible dans l’écran de préparation de l’audit. La suppression globale pour tous les utilisateurs nécessite une mise à jour du JSON officiel.

@@ -148,3 +148,97 @@
   .game-delete-card-button{top:5px;right:5px;min-width:70px;height:44px;padding:8px 9px;border-radius:10px}
   .mode-label{right:82px}
 }
+
+
+/* V0.9.7 — filtres de difficulté modifiables pendant la partie */
+.pause-panel{
+  width:min(520px,calc(100% - 28px));
+  max-height:calc(100dvh - 24px);
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:18px;
+  padding:clamp(18px,4vw,30px);
+  border:1px solid var(--outline);
+  border-radius:22px;
+  background:rgba(18,22,30,.97);
+  box-shadow:0 24px 80px rgba(0,0,0,.55);
+}
+.pause-panel>p{
+  font-size:clamp(2.2rem,10vw,5rem);
+  line-height:.9;
+  text-align:center;
+}
+.pause-difficulty-section{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.pause-difficulty-section>strong{
+  font-size:1.05rem;
+  text-align:center;
+}
+.pause-difficulty-section>small{
+  color:var(--muted);
+  text-align:center;
+  line-height:1.3;
+}
+.pause-difficulty-choices{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.pause-difficulty-choice{
+  min-height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:8px;
+  border:1px solid var(--outline);
+  border-radius:12px;
+  background:rgba(255,255,255,.045);
+  font-weight:900;
+  cursor:pointer;
+}
+.pause-difficulty-choice input{
+  width:19px;
+  height:19px;
+  margin:0;
+  accent-color:var(--accent);
+}
+.pause-difficulty-choice.difficulty-easy{color:var(--green)}
+.pause-difficulty-choice.difficulty-medium{color:#79b8ff}
+.pause-difficulty-choice.difficulty-hard{color:#ff8d96}
+
+@media (orientation:landscape) and (max-height:540px) and (min-width:600px){
+  .pause-overlay{padding:5px}
+  .pause-panel{
+    width:min(660px,calc(100% - 10px));
+    max-height:calc(100dvh - 10px);
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    align-items:center;
+    gap:12px;
+    padding:10px 12px;
+    border-radius:14px;
+  }
+  .pause-panel>p{
+    font-size:clamp(1.7rem,7vh,3.2rem);
+    writing-mode:horizontal-tb;
+  }
+  .pause-difficulty-section{gap:4px}
+  .pause-difficulty-section>strong{font-size:.88rem}
+  .pause-difficulty-section>small{font-size:.66rem}
+  .pause-difficulty-choices{gap:5px}
+  .pause-difficulty-choice{
+    min-height:44px;
+    padding:4px 7px;
+    font-size:.75rem;
+  }
+  .pause-panel>.primary-button{
+    min-height:44px;
+    padding:8px 14px;
+  }
+}

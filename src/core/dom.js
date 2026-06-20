@@ -169,6 +169,7 @@ export const el = {
   flipGameButton: document.querySelector("#flipGameButton"),
   endButton: document.querySelector("#endButton"),
   pauseOverlay: document.querySelector("#pauseOverlay"),
+  pauseDifficultyChoices: document.querySelector("#pauseDifficultyChoices"),
   resumeOverlayButton: document.querySelector("#resumeOverlayButton"),
 
   resultValid: document.querySelector("#resultValid"),
@@ -224,6 +225,9 @@ export const el = {
   resumeAuditButton: document.querySelector("#resumeAuditButton"),
   exportAuditButton: document.querySelector("#exportAuditButton"),
   exportCleanLibraryButton: document.querySelector("#exportCleanLibraryButton"),
+  exportAuditStateButton: document.querySelector("#exportAuditStateButton"),
+  importAuditStateButton: document.querySelector("#importAuditStateButton"),
+  importAuditStateInput: document.querySelector("#importAuditStateInput"),
   clearAuditModeButton: document.querySelector("#clearAuditModeButton"),
   auditDeletedSection: document.querySelector("#auditDeletedSection"),
   auditDeletedCardsList: document.querySelector("#auditDeletedCardsList"),

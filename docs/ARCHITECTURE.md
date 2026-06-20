@@ -163,8 +163,8 @@ La vue compacte ne change aucun état métier. Le défilement global est évité
 ## PWA
 
 ```text
-Version : 0.9.6.1
-Cache : mdb-v0-9-6-1
+Version : 0.9.7
+Cache : mdb-v0-9-7
 Jeton des ressources : 0961
 ```
 
@@ -241,3 +241,26 @@ L’éditeur de cartes existant est réutilisé par le raccourci `M`. L’évén
 `data/lyrics.json` utilise `2026.06.20-audit-2` et contient 172 cartes actives après l’audit complet. La migration automatique accepte `2026.06.15-3`, `2026.06.20-final-revise` et `2026.06.20-audit-1`, retire les anciennes cartes officielles absentes de la nouvelle bibliothèque, préserve les cartes personnelles et conserve comme personnelles les anciennes cartes officielles réellement modifiées localement.
 
 Le champ facultatif `context` est pris en charge par la normalisation, le comparateur de contenu officiel, le gestionnaire de cartes, l’affichage en partie, l’audit et les sauvegardes.
+
+
+## Évolutions V0.9.7
+
+### Statuts d’audit officiels
+
+Les cartes peuvent porter `auditStatus` (`approved`, `pending`, `review`) et `auditFingerprint`. `selectedCardsForMode()` et les compteurs jouables excluent tout statut autre que `approved`.
+
+### Statistiques de parties
+
+`src/services/gameplay-feedback.js` conserve les affichages et résultats par carte. `card-audit.js` fusionne ces données dans le rapport éditorial.
+
+### Points par difficulté
+
+`POINTS_BY_DIFFICULTY` centralise le barème 1/2/3. Les moteurs classique et Dessin utilisent la même source. Qui boit reste indépendant.
+
+### Difficultés actives pendant une manche
+
+`game-controller.js` conserve les difficultés initialement autorisées et un ensemble de difficultés désactivées pour la partie courante. Les files restantes sont filtrées sans modifier la sélection persistante du mode.
+
+### Sauvegardes
+
+Le schéma de sauvegarde passe à 9 pour inclure `gameplayFeedback`. L’état d’audit exportable contient également les bibliothèques locales nécessaires à une reprise sur un autre appareil.
