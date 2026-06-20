@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "libraryVersion": "2026.06.20-final-revise",
+  "libraryVersion": "2026.06.20-audit-2",
   "updatedAt": "2026-06-20",
   "modeId": "lyrics",
   "modeName": "La suite, maestro !",
@@ -214,7 +214,7 @@
       "boxId": "comedies-musicales",
       "active": true,
       "prompt": "Je voue mes nuits à l’assasymphonie",
-      "answer": "Aux requiems anatomiques",
+      "answer": "Aux requiems, tuant par dépit ce que je sème",
       "title": "L’Assasymphonie",
       "source": "Mozart, l’Opéra Rock",
       "difficulty": "hard",
@@ -441,17 +441,6 @@
       "context": ""
     },
     {
-      "id": "lyrics-037",
-      "boxId": "pop-rap-francais",
-      "active": true,
-      "prompt": "J’en ai marre de ceux qui pleurent",
-      "answer": "Qui ne roulent qu’à deux à l’heure",
-      "title": "J’en ai marre !",
-      "source": "Alizée",
-      "difficulty": "medium",
-      "context": ""
-    },
-    {
       "id": "lyrics-038",
       "boxId": "rock-francais",
       "active": true,
@@ -482,7 +471,7 @@
       "title": "Dernière danse",
       "source": "Indila",
       "difficulty": "medium",
-      "context": ""
+      "context": "Oh, ma douce souffrance"
     },
     {
       "id": "lyrics-041",
@@ -625,7 +614,7 @@
       "title": "Les Démons de minuit",
       "source": "Images",
       "difficulty": "easy",
-      "context": ""
+      "context": "Ils m’entraînent au bout de la nuit"
     },
     {
       "id": "lyrics-054",
@@ -708,12 +697,12 @@
       "id": "lyrics-061",
       "boxId": "rock-francais",
       "active": true,
-      "prompt": "Où la Terre serait ronde",
-      "answer": "Où la lune serait blonde",
+      "prompt": "Je rêvais d’un autre monde",
+      "answer": "Où la Terre serait ronde",
       "title": "Un autre monde",
       "source": "Téléphone",
       "difficulty": "medium",
-      "context": "Je rêvais d’un autre monde"
+      "context": ""
     },
     {
       "id": "lyrics-062",
@@ -724,17 +713,6 @@
       "title": "À la faveur de l’automne",
       "source": "Tété",
       "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-063",
-      "boxId": "variete-francaise",
-      "active": true,
-      "prompt": "Il suffira d’une étincelle",
-      "answer": "D’un rien, d’un geste",
-      "title": "Allumer le feu",
-      "source": "Johnny Hallyday",
-      "difficulty": "medium",
       "context": ""
     },
     {
@@ -1024,17 +1002,6 @@
       "context": ""
     },
     {
-      "id": "lyrics-090",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "You are the Dancing Queen",
-      "answer": "Young and sweet, only seventeen",
-      "title": "Dancing Queen",
-      "source": "ABBA",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
       "id": "lyrics-091",
       "boxId": "anglais",
       "active": true,
@@ -1074,17 +1041,6 @@
       "prompt": "’Cause this is thriller, thriller night",
       "answer": "And no one’s gonna save you",
       "title": "Thriller",
-      "source": "Michael Jackson",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-095",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "Beat it, beat it",
-      "answer": "No one wants to be defeated",
-      "title": "Beat It",
       "source": "Michael Jackson",
       "difficulty": "hard",
       "context": ""
@@ -1130,17 +1086,6 @@
       "answer": "I’m on a ride",
       "title": "Toxic",
       "source": "Britney Spears",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-100",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "Umbrella, ella, ella",
-      "answer": "Eh, eh, eh",
-      "title": "Umbrella",
-      "source": "Rihanna",
       "difficulty": "hard",
       "context": ""
     },
@@ -1211,28 +1156,6 @@
       "context": ""
     },
     {
-      "id": "lyrics-107",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "The club isn’t the best place",
-      "answer": "To find a lover",
-      "title": "Shape of You",
-      "source": "Ed Sheeran",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-108",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "I found a love for me",
-      "answer": "Darling, just dive right in",
-      "title": "Perfect",
-      "source": "Ed Sheeran",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
       "id": "lyrics-109",
       "boxId": "anglais",
       "active": true,
@@ -1255,28 +1178,6 @@
       "context": ""
     },
     {
-      "id": "lyrics-111",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "You know it’s not the same",
-      "answer": "As it was",
-      "title": "As It Was",
-      "source": "Harry Styles",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-112",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "If you don’t wanna see me",
-      "answer": "Dancing with somebody",
-      "title": "Don’t Start Now",
-      "source": "Dua Lipa",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
       "id": "lyrics-113",
       "boxId": "anglais",
       "active": true,
@@ -1288,50 +1189,6 @@
       "context": ""
     },
     {
-      "id": "lyrics-114",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "Look at the stars",
-      "answer": "Look how they shine for you",
-      "title": "Yellow",
-      "source": "Coldplay",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-115",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "With the lights out",
-      "answer": "It’s less dangerous",
-      "title": "Smells Like Teen Spirit",
-      "source": "Nirvana",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-116",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "Wake me up inside",
-      "answer": "I can’t wake up",
-      "title": "Bring Me to Life",
-      "source": "Evanescence",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-117",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "I tried so hard",
-      "answer": "And got so far",
-      "title": "In the End",
-      "source": "Linkin Park",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
       "id": "lyrics-118",
       "boxId": "anglais",
       "active": true,
@@ -1339,17 +1196,6 @@
       "answer": "In the Barbie world",
       "title": "Barbie Girl",
       "source": "Aqua",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-119",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "Tell me why",
-      "answer": "Ain’t nothing but a heartache",
-      "title": "I Want It That Way",
-      "source": "Backstreet Boys",
       "difficulty": "hard",
       "context": ""
     },
@@ -1372,17 +1218,6 @@
       "answer": "Like a room without a roof",
       "title": "Happy",
       "source": "Pharrell Williams",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-122",
-      "boxId": "anglais",
-      "active": true,
-      "prompt": "I’m off the deep end",
-      "answer": "Watch as I dive in",
-      "title": "Shallow",
-      "source": "Lady Gaga & Bradley Cooper",
       "difficulty": "hard",
       "context": ""
     },
@@ -1431,55 +1266,11 @@
       "context": ""
     },
     {
-      "id": "lyrics-127",
-      "active": true,
-      "prompt": "Malbrough s'en va-t-en guerre",
-      "answer": "Mironton, mironton, mirontaine",
-      "title": "Malbrough s'en va-t-en guerre",
-      "source": "Chanson traditionnelle",
-      "boxId": "comptines",
-      "difficulty": "easy",
-      "context": ""
-    },
-    {
       "id": "lyrics-128",
       "active": true,
       "prompt": "Cadet Rousselle a trois maisons",
       "answer": "Qui n'ont ni poutres ni chevrons",
       "title": "Cadet Rousselle",
-      "source": "Chanson traditionnelle",
-      "boxId": "comptines",
-      "difficulty": "easy",
-      "context": ""
-    },
-    {
-      "id": "lyrics-129",
-      "active": true,
-      "prompt": "Auprès de ma blonde",
-      "answer": "Qu'il fait bon, fait bon, fait bon",
-      "title": "Auprès de ma blonde",
-      "source": "Chanson traditionnelle",
-      "boxId": "comptines",
-      "difficulty": "easy",
-      "context": ""
-    },
-    {
-      "id": "lyrics-130",
-      "active": true,
-      "prompt": "Nous n'irons plus au bois",
-      "answer": "Les lauriers sont coupés",
-      "title": "Nous n'irons plus au bois",
-      "source": "Chanson traditionnelle",
-      "boxId": "comptines",
-      "difficulty": "easy",
-      "context": ""
-    },
-    {
-      "id": "lyrics-131",
-      "active": true,
-      "prompt": "J'ai descendu dans mon jardin",
-      "answer": "Pour y cueillir du romarin",
-      "title": "Gentil coquelicot",
       "source": "Chanson traditionnelle",
       "boxId": "comptines",
       "difficulty": "easy",
@@ -1530,17 +1321,6 @@
       "context": ""
     },
     {
-      "id": "lyrics-136",
-      "active": true,
-      "prompt": "Il était un p'tit homme",
-      "answer": "Appelé Guilleri",
-      "title": "Compère Guilleri",
-      "source": "Chanson traditionnelle",
-      "boxId": "comptines",
-      "difficulty": "easy",
-      "context": ""
-    },
-    {
       "id": "lyrics-137",
       "active": true,
       "prompt": "Pomme de reinette et pomme d'api",
@@ -1563,55 +1343,11 @@
       "context": ""
     },
     {
-      "id": "lyrics-139",
-      "active": true,
-      "prompt": "Twinkle, twinkle, little star",
-      "answer": "How I wonder what you are",
-      "title": "Twinkle, Twinkle, Little Star",
-      "source": "Traditional",
-      "boxId": "anglais",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-140",
-      "active": true,
-      "prompt": "Row, row, row your boat",
-      "answer": "Gently down the stream",
-      "title": "Row, Row, Row Your Boat",
-      "source": "Traditional",
-      "boxId": "anglais",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
       "id": "lyrics-141",
       "active": true,
       "prompt": "Old MacDonald had a farm",
       "answer": "E-I-E-I-O",
       "title": "Old MacDonald Had a Farm",
-      "source": "Traditional",
-      "boxId": "anglais",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-142",
-      "active": true,
-      "prompt": "London Bridge is falling down",
-      "answer": "Falling down, falling down",
-      "title": "London Bridge Is Falling Down",
-      "source": "Traditional",
-      "boxId": "anglais",
-      "difficulty": "hard",
-      "context": ""
-    },
-    {
-      "id": "lyrics-143",
-      "active": true,
-      "prompt": "Mary had a little lamb",
-      "answer": "Its fleece was white as snow",
-      "title": "Mary Had a Little Lamb",
       "source": "Traditional",
       "boxId": "anglais",
       "difficulty": "hard",
@@ -1689,7 +1425,7 @@
       "active": true,
       "context": "",
       "prompt": "Donne-moi ton cœur, baby",
-      "answer": "Ton body, baby",
+      "answer": "Ton corps, baby",
       "title": "Femme Like U",
       "source": "K.Maro",
       "difficulty": "medium"
@@ -1794,17 +1530,6 @@
       "difficulty": "hard"
     },
     {
-      "id": "lyrics-160",
-      "boxId": "variete-francaise",
-      "active": true,
-      "context": "",
-      "prompt": "Changer le monde, changer les choses",
-      "answer": "Avec des bouquets de roses",
-      "title": "Le Pouvoir des fleurs",
-      "source": "Laurent Voulzy",
-      "difficulty": "easy"
-    },
-    {
       "id": "lyrics-161",
       "boxId": "variete-francaise",
       "active": true,
@@ -1825,17 +1550,6 @@
       "title": "Le Coup de soleil",
       "source": "Richard Cocciante",
       "difficulty": "easy"
-    },
-    {
-      "id": "lyrics-163",
-      "boxId": "variete-francaise",
-      "active": true,
-      "context": "",
-      "prompt": "J’ai deux amours",
-      "answer": "Mon pays et Paris",
-      "title": "J’ai deux amours",
-      "source": "Joséphine Baker",
-      "difficulty": "hard"
     },
     {
       "id": "lyrics-164",
@@ -1874,7 +1588,7 @@
       "id": "lyrics-167",
       "boxId": "variete-francaise",
       "active": true,
-      "context": "",
+      "context": "Recommencer là où le monde a commencé",
       "prompt": "Je m’en irai dormir dans le",
       "answer": "Paradis blanc",
       "title": "Le Paradis blanc",

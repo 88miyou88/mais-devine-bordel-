@@ -200,16 +200,16 @@ function sameCardAsOfficial(modeId, localCard, officialCard) {
 
 const AUTO_LIBRARY_MIGRATIONS = {
   lyrics: {
-    target: "2026.06.20-final-revise",
-    from: new Set(["2026.06.15-3"])
+    target: "2026.06.20-audit-2",
+    from: new Set(["2026.06.15-3", "2026.06.20-final-revise", "2026.06.20-audit-1"])
   },
   mime: {
     target: "2026.06.19-1",
     from: new Set(["2026.06.15-1", "0.9.4-content-mimes-1000-final"])
   },
   drinking: {
-    target: "2026.06.19-1",
-    from: new Set(["2026.06.17-1", "2026.06.17-2"])
+    target: "2026.06.20-2",
+    from: new Set(["2026.06.17-1", "2026.06.17-2", "2026.06.19-1"])
   }
 };
 
@@ -409,25 +409,33 @@ async function loadMode(modeId, legacySettings) {
     };
   });
 
-  const cards = storedCards.map(card => {
+  const cards = storedCards.flatMap(card => {
     const official = officialCards.get(card.id);
     const normalizedCard = {
       ...card,
       difficulty: normalizeDifficulty(card.difficulty, modeId, card)
     };
-    if (!official) return {
-      ...normalizedCard,
-      active: card.active !== false,
-      origin: card.origin || "personal",
-      locallyModified: true
-    };
-    return {
+    if (!official) {
+      // Lors d’une migration officielle, une ancienne carte officielle absente
+      // de la nouvelle bibliothèque a été retirée globalement. Une version
+      // locale réellement modifiée reste conservée comme carte personnelle.
+      if (autoMigrateOfficialContent && card.origin === "official" && card.locallyModified !== true) {
+        return [];
+      }
+      return [{
+        ...normalizedCard,
+        active: card.active !== false,
+        origin: autoMigrateOfficialContent && card.origin === "official" ? "personal" : (card.origin || "personal"),
+        locallyModified: true
+      }];
+    }
+    return [{
       ...normalizedCard,
       active: card.active !== false,
       origin: "official",
       locallyModified: card.locallyModified === true ||
         (!autoMigrateOfficialContent && !sameCardAsOfficial(modeId, normalizedCard, official))
-    };
+    }];
   });
 
   const localBoxIds = new Set(boxes.map(box => box.id));

@@ -876,8 +876,8 @@
 }
 
 .drinking-card-admin-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px}
-.drinking-delete-card-button{flex:0 0 auto;min-width:72px}
+.drinking-delete-card-button{flex:0 0 44px;min-width:44px;width:44px;height:44px;padding:9px;border-radius:10px}
 @media (orientation:landscape) and (max-height:540px) and (min-width:600px){
   .drinking-card-admin-actions{gap:4px}
-  .drinking-delete-card-button{min-width:70px;height:44px;padding:8px 9px;border-radius:9px}
+  .drinking-delete-card-button{min-width:44px;width:44px;height:44px;padding:9px;border-radius:9px}
 }

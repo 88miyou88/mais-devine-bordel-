@@ -7,7 +7,8 @@ import { el, showScreen } from "../../core/dom.js";
 import { modeState } from "../../core/state.js";
 import { clone, normalizeDifficulty } from "../../core/utils.js";
 import { restoreRemovedCard } from "../../services/card-removals.js";
-import { getBoxName, modeConfig } from "../../services/libraries.js";
+import { getBoxName, modeConfig, saveMode } from "../../services/libraries.js";
+import { openCardEditor } from "../card-manager/card-editor.js";
 import {
   auditEntryMap,
   auditSummary,
@@ -20,6 +21,7 @@ import {
   exportCleanLibrary,
   markCardSeen,
   readAuditStore,
+  recordCardAuditEdit,
   restoreAuditEntrySnapshot,
   restoreCardFromAudit,
   saveAuditSession,
@@ -29,6 +31,8 @@ import {
 const REASONS = {
   lyrics: [
     ["song_unknown", "Chanson trop peu connue"],
+    ["wrong_lyrics", "Paroles fausses / à corriger"],
+    ["needs_context", "Pas assez de contexte"],
     ["passage_forgettable", "Passage peu mémorable"],
     ["continuation_unclear", "Suite pas évidente"],
     ["multiple_answers", "Plusieurs réponses possibles"],
@@ -85,6 +89,7 @@ const STATUS_LABELS = {
 
 let session = null;
 let pendingReasonAction = null;
+let pendingEditHistory = null;
 let onHomeDataChanged = null;
 
 function modeCard(modeId, cardId) {
@@ -330,7 +335,7 @@ function renderAuditCardContent(modeId, card) {
   }
 }
 
-function renderCurrentCard() {
+function renderCurrentCard({ countSeen = true } = {}) {
   if (!session) return;
   const current = currentAuditCard();
   if (!current) {
@@ -345,7 +350,7 @@ function renderCurrentCard() {
   }
 
   const { modeId, card } = current;
-  markCardSeen(modeId, card, session.id);
+  if (countSeen) markCardSeen(modeId, card, session.id);
   const status = statusFor(modeId, card.id);
   el.auditCard.classList.remove("hidden");
   el.auditCompletionPanel.classList.add("hidden");
@@ -363,6 +368,7 @@ function historySnapshot(modeId, card, action) {
   const store = readAuditStore();
   return {
     key: `${modeId}::${card.id}`,
+    modeId,
     index: session.index,
     action,
     card: clone(card),
@@ -370,17 +376,18 @@ function historySnapshot(modeId, card, action) {
   };
 }
 
-function advanceWithStatus(status, reason = "") {
+function advanceWithStatus(status, reason = "", customReason = "") {
   const current = currentAuditCard();
   if (!current) return;
   const { modeId, card } = current;
   const history = historySnapshot(modeId, card, status);
 
   if (status === "deleted") {
-    if (!deleteCardFromAudit(modeId, card, reason)) return;
+    if (!deleteCardFromAudit(modeId, card, reason, customReason)) return;
   } else {
     setCardAuditStatus(modeId, card, status, {
-      reasons: reason ? [reason] : []
+      reasons: reason ? [reason] : [],
+      customReason
     });
   }
 
@@ -395,12 +402,20 @@ function advanceWithStatus(status, reason = "") {
 function undoAuditAction() {
   if (!session?.history?.length) return;
   const history = session.history.pop();
-  if (history.action === "deleted") restoreRemovedCard(session.modeId, history.card);
+  if (history.action === "deleted") {
+    restoreRemovedCard(history.modeId || session.modeId, history.card);
+  } else if (history.action === "edited") {
+    const modeId = history.modeId || session.modeId;
+    const mode = modeState(modeId);
+    const index = mode.cards.findIndex(card => card.id === history.card.id);
+    if (index >= 0) mode.cards[index] = clone(history.card);
+    saveMode(modeId);
+  }
   restoreAuditEntrySnapshot(history);
   session.index = history.index;
   saveAuditSession(session);
   onHomeDataChanged?.();
-  renderCurrentCard();
+  renderCurrentCard({ countSeen: false });
 }
 
 function renderReasonChoices(action) {
@@ -412,6 +427,7 @@ function renderReasonChoices(action) {
     ? "Pourquoi supprimer cette carte ?"
     : "Pourquoi la mettre à revoir ?";
   el.auditReasonChoices.innerHTML = "";
+  el.auditCustomReasonInput.value = "";
   (REASONS[modeId] || []).forEach(([id, label]) => {
     const button = document.createElement("button");
     button.type = "button";
@@ -423,16 +439,31 @@ function renderReasonChoices(action) {
     });
     el.auditReasonChoices.append(button);
   });
-  const unknown = document.createElement("button");
-  unknown.type = "button";
-  unknown.className = action === "deleted" ? "danger-button audit-reason-button" : "secondary-button audit-reason-button";
-  unknown.textContent = "Autre / je ne sais pas";
-  unknown.addEventListener("click", () => {
-    el.auditReasonDialog.close();
-    advanceWithStatus(action, "unspecified");
-  });
-  el.auditReasonChoices.append(unknown);
+  el.auditReasonUnknownButton.className = action === "deleted"
+    ? "danger-button"
+    : "secondary-button";
   el.auditReasonDialog.showModal();
+}
+
+function openAuditCardEditor() {
+  const current = currentAuditCard();
+  if (!current) return;
+  const { modeId, card } = current;
+  pendingEditHistory = historySnapshot(modeId, card, "edited");
+  openCardEditor(modeId, card.id);
+}
+
+function handleCardEdited(event) {
+  if (!pendingEditHistory || !el.auditReviewScreen.classList.contains("active")) return;
+  const detail = event.detail || {};
+  if (detail.modeId !== pendingEditHistory.modeId || detail.cardId !== pendingEditHistory.card.id) return;
+  recordCardAuditEdit(detail.modeId, detail.before || pendingEditHistory.card, detail.after);
+  session.history.push(pendingEditHistory);
+  session.history = session.history.slice(-100);
+  pendingEditHistory = null;
+  saveAuditSession(session);
+  onHomeDataChanged?.();
+  renderCurrentCard({ countSeen: false });
 }
 
 function exitAudit() {
@@ -457,6 +488,9 @@ function handleAuditKeydown(event) {
   } else if (key === "r") {
     event.preventDefault();
     renderReasonChoices("review");
+  } else if (key === "m") {
+    event.preventDefault();
+    openAuditCardEditor();
   } else if (key === "s" || event.key === "Delete") {
     event.preventDefault();
     renderReasonChoices("deleted");
@@ -500,6 +534,7 @@ export function initializeAudit({ onHomeDataChanged: changed } = {}) {
   el.auditNeutralButton.addEventListener("click", () => advanceWithStatus("neutral"));
   el.auditLikeButton.addEventListener("click", () => advanceWithStatus("liked"));
   el.auditReviewButton.addEventListener("click", () => renderReasonChoices("review"));
+  el.auditEditButton.addEventListener("click", openAuditCardEditor);
   el.auditDeleteButton.addEventListener("click", () => renderReasonChoices("deleted"));
   el.auditCompletionBackButton.addEventListener("click", openAuditSetup);
   el.auditCompletionExportButton.addEventListener("click", () => exportAuditReport());
@@ -507,6 +542,23 @@ export function initializeAudit({ onHomeDataChanged: changed } = {}) {
     pendingReasonAction = null;
     el.auditReasonDialog.close();
   });
+  el.auditReasonUnknownButton.addEventListener("click", () => {
+    const action = pendingReasonAction;
+    if (!action) return;
+    el.auditReasonDialog.close();
+    advanceWithStatus(action, "unspecified");
+  });
+  el.auditReasonCustomButton.addEventListener("click", () => {
+    const action = pendingReasonAction;
+    const customReason = el.auditCustomReasonInput.value.trim();
+    if (!action || !customReason) {
+      alert("Écris une précision ou choisis « Je ne sais pas ».");
+      return;
+    }
+    el.auditReasonDialog.close();
+    advanceWithStatus(action, "custom", customReason);
+  });
+  window.addEventListener("mdb:card-edited", handleCardEdited);
   document.addEventListener("keydown", handleAuditKeydown);
   window.addEventListener("mdb:audit-changed", () => {
     if (el.auditSetupScreen.classList.contains("active")) renderAuditSetup();

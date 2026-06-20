@@ -1,50 +1,320 @@
 {
-  "kind": "mdb-editorial-deleted-cards-journal",
-  "schemaVersion": 1,
+  "kind": "mdb-deleted-cards-journal",
+  "schemaVersion": 2,
   "updatedAt": "2026-06-20",
-  "interpretation": "Une suppression isolée est un indice, pas une règle générale. Les causes induites doivent rester hypothétiques tant que les retours ne convergent pas.",
+  "interpretation": "Ces cartes sont des contre-exemples. Les motifs doivent être analysés par tendances et non transformés automatiquement en règles absolues.",
   "entries": [
     {
-      "key": "lyrics::lyrics-037",
-      "modeId": "lyrics",
       "cardId": "lyrics-037",
-      "firstReportedAt": "2026-06-19T19:38:31.634Z",
-      "lastReportedAt": "2026-06-19T19:38:31.634Z",
-      "reportCount": 1,
-      "card": {
-        "id": "lyrics-037",
-        "boxId": "pop-rap-francais",
-        "active": true,
-        "difficulty": "medium",
-        "prompt": "J’en ai marre de ceux qui pleurent",
-        "answer": "Qui ne roulent qu’à deux à l’heure",
-        "title": "J’en ai marre !",
-        "source": "Alizée"
-      },
-      "inferredReasons": [],
-      "confidence": "low",
-      "decision": "to_reassess"
+      "title": "J’en ai marre !",
+      "source": "Alizée",
+      "auditStatus": "deleted_before_audit",
+      "reasonsAfterCamilleClarification": [
+        "legacy_unspecified"
+      ],
+      "clarification": "Suppression antérieure au mode Audit ; aucun motif détaillé fourni.",
+      "displayCount": null,
+      "sessionsSeen": null
     },
     {
-      "key": "lyrics::lyrics-095",
-      "modeId": "lyrics",
+      "cardId": "lyrics-063",
+      "title": "Allumer le feu",
+      "source": "Johnny Hallyday",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "song_unknown"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-090",
+      "title": "Dancing Queen",
+      "source": "ABBA",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "continuation_unclear"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
       "cardId": "lyrics-095",
-      "firstReportedAt": "2026-06-19T19:36:45.810Z",
-      "lastReportedAt": "2026-06-19T19:36:45.810Z",
-      "reportCount": 1,
-      "card": {
-        "id": "lyrics-095",
-        "boxId": "anglais",
-        "active": true,
-        "difficulty": "hard",
-        "prompt": "Beat it, beat it",
-        "answer": "No one wants to be defeated",
-        "title": "Beat It",
-        "source": "Michael Jackson"
-      },
-      "inferredReasons": [],
-      "confidence": "low",
-      "decision": "to_reassess"
+      "title": "Beat It",
+      "source": "Michael Jackson",
+      "auditStatus": "deleted_before_audit",
+      "reasonsAfterCamilleClarification": [
+        "legacy_unspecified"
+      ],
+      "clarification": "Suppression antérieure au mode Audit ; aucun motif détaillé fourni.",
+      "displayCount": null,
+      "sessionsSeen": null
+    },
+    {
+      "cardId": "lyrics-100",
+      "title": "Umbrella",
+      "source": "Rihanna",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "passage_forgettable"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-107",
+      "title": "Shape of You",
+      "source": "Ed Sheeran",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "song_unknown"
+      ],
+      "clarification": "",
+      "displayCount": 2,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-108",
+      "title": "Perfect",
+      "source": "Ed Sheeran",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "song_unknown"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-111",
+      "title": "As It Was",
+      "source": "Harry Styles",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "song_unknown"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-112",
+      "title": "Don’t Start Now",
+      "source": "Dua Lipa",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "song_unknown"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-114",
+      "title": "Yellow",
+      "source": "Coldplay",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "song_unknown"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-115",
+      "title": "Smells Like Teen Spirit",
+      "source": "Nirvana",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-116",
+      "title": "Bring Me to Life",
+      "source": "Evanescence",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-117",
+      "title": "In the End",
+      "source": "Linkin Park",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-119",
+      "title": "I Want It That Way",
+      "source": "Backstreet Boys",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-122",
+      "title": "Shallow",
+      "source": "Lady Gaga & Bradley Cooper",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-127",
+      "title": "Malbrough s'en va-t-en guerre",
+      "source": "Chanson traditionnelle",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-129",
+      "title": "Auprès de ma blonde",
+      "source": "Chanson traditionnelle",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-130",
+      "title": "Nous n'irons plus au bois",
+      "source": "Chanson traditionnelle",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "bad_cut"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-131",
+      "title": "Gentil coquelicot",
+      "source": "Chanson traditionnelle",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-136",
+      "title": "Compère Guilleri",
+      "source": "Chanson traditionnelle",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 2,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-139",
+      "title": "Twinkle, Twinkle, Little Star",
+      "source": "Traditional",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-140",
+      "title": "Row, Row, Row Your Boat",
+      "source": "Traditional",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-142",
+      "title": "London Bridge Is Falling Down",
+      "source": "Traditional",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-143",
+      "title": "Mary Had a Little Lamb",
+      "source": "Traditional",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-160",
+      "title": "Le Pouvoir des fleurs",
+      "source": "Laurent Voulzy",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "song_unknown"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-163",
+      "title": "J’ai deux amours",
+      "source": "Joséphine Baker",
+      "auditStatus": "deleted",
+      "reasonsAfterCamilleClarification": [
+        "too_hard"
+      ],
+      "clarification": "",
+      "displayCount": 1,
+      "sessionsSeen": 1
     }
   ]
 }

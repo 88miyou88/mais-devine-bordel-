@@ -1,4 +1,4 @@
-# Audit des cartes — V0.9.6
+# Audit des cartes — V0.9.6.1
 
 ## Accès
 
@@ -13,10 +13,19 @@ Actions :
 - **Neutre / suivante** : la carte a été vue sans jugement fort ;
 - **Excellente** : signal positif explicite ;
 - **À revoir** : carte conservée mais signalée comme douteuse ou améliorable ;
+- **Corriger** : ouvre l’éditeur de la carte courante ;
 - **Supprimer** : retrait immédiat de la bibliothèque locale et ajout au rapport ;
-- **Retour** : annule la dernière décision, y compris une suppression.
+- **Retour** : annule la dernière décision, suppression ou correction.
 
-Les motifs proposés après « À revoir » ou « Supprimer » sont facultatifs ; « Autre / je ne sais pas » permet de continuer sans diagnostic précis.
+L’éditeur permet notamment de modifier le texte, le contexte, la catégorie et la difficulté. Chaque correction est enregistrée dans le rapport avec un état avant/après et le détail des champs modifiés.
+
+Après « À revoir » ou « Supprimer », il est possible de :
+
+- choisir un motif rapide propre au mode ;
+- écrire une précision libre ;
+- continuer avec « Je ne sais pas ».
+
+Pour Maestro, les motifs comprennent désormais « Paroles fausses / à corriger » et « Pas assez de contexte ».
 
 ## Raccourcis
 
@@ -24,6 +33,7 @@ Les motifs proposés après « À revoir » ou « Supprimer » sont facultatifs 
 - `Espace` ou `→` : neutre et suivante ;
 - `L` : excellente ;
 - `R` : à revoir ;
+- `M` : corriger ;
 - `S` ou `Suppr` : supprimer ;
 - `Échap` : quitter.
 
@@ -31,8 +41,10 @@ Les mêmes actions sont disponibles sous forme de boutons tactiles, avec leur to
 
 ## Exports
 
-- **Télécharger le rapport d’audit** : cartes vues, neutres, excellentes, à revoir et supprimées, sans prénom ni résultat individuel ;
-- **Exporter le JSON nettoyé** : copie de la bibliothèque officielle sans les cartes supprimées localement. Cette copie doit être vérifiée avant publication sur GitHub.
+- **Télécharger le rapport d’audit** : cartes vues, neutres, excellentes, à revoir, corrigées et supprimées, sans prénom ni résultat individuel ;
+- **Exporter le JSON audité** : copie de la bibliothèque sans les cartes supprimées localement et avec les corrections locales actuelles.
+
+Le rapport contient pour chaque correction un tableau `edits` avec les valeurs avant/après et les champs modifiés.
 
 ## Suppression locale et restauration
 

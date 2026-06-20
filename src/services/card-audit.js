@@ -84,7 +84,15 @@ function normalizeEntry(entry) {
     firstRatedAt: entry.firstRatedAt ? String(entry.firstRatedAt) : "",
     lastRatedAt: entry.lastRatedAt ? String(entry.lastRatedAt) : "",
     reasons: Array.isArray(entry.reasons) ? [...new Set(entry.reasons.map(String).filter(Boolean))] : [],
-    customReason: String(entry.customReason || "")
+    customReason: String(entry.customReason || ""),
+    edits: Array.isArray(entry.edits)
+      ? entry.edits.slice(-50).map(edit => ({
+          editedAt: String(edit?.editedAt || new Date().toISOString()),
+          changes: edit?.changes && typeof edit.changes === "object" ? clone(edit.changes) : {},
+          before: cleanCardSnapshot(edit?.before),
+          after: cleanCardSnapshot(edit?.after)
+        }))
+      : []
   };
 }
 
@@ -181,7 +189,8 @@ export function markCardSeen(modeId, card, sessionId) {
       firstRatedAt: "",
       lastRatedAt: "",
       reasons: [],
-      customReason: ""
+      customReason: "",
+      edits: []
     };
     store.entries.push(entry);
   }
@@ -221,7 +230,8 @@ export function setCardAuditStatus(modeId, card, status, {
       firstRatedAt: "",
       lastRatedAt: "",
       reasons: [],
-      customReason: ""
+      customReason: "",
+      edits: []
     };
     store.entries.push(entry);
   }
@@ -231,6 +241,65 @@ export function setCardAuditStatus(modeId, card, status, {
   entry.reasons = [...new Set((reasons || []).map(String).filter(Boolean))];
   entry.customReason = String(customReason || "");
   Object.assign(entry, snapshotForCard(modeId, card));
+  writeAuditStore(store);
+  return clone(entry);
+}
+
+function editableChanges(before, after) {
+  const ignored = new Set(["origin", "locallyModified", "modeId", "targetIds", "renderedPrompt"]);
+  const keys = new Set([
+    ...Object.keys(before || {}),
+    ...Object.keys(after || {})
+  ]);
+  const changes = {};
+  keys.forEach(key => {
+    if (ignored.has(key)) return;
+    const previous = before?.[key] ?? null;
+    const next = after?.[key] ?? null;
+    if (JSON.stringify(previous) !== JSON.stringify(next)) {
+      changes[key] = { from: clone(previous), to: clone(next) };
+    }
+  });
+  return changes;
+}
+
+export function recordCardAuditEdit(modeId, before, after) {
+  if (!before?.id || !after?.id || before.id !== after.id) return null;
+  const store = readAuditStore();
+  const now = new Date().toISOString();
+  let entry = entryForCard(store, modeId, after.id);
+  if (!entry) {
+    const snapshot = snapshotForCard(modeId, after);
+    entry = {
+      key: `${modeId}::${after.id}`,
+      modeId,
+      cardId: after.id,
+      ...snapshot,
+      status: "seen",
+      firstSeenAt: now,
+      lastSeenAt: now,
+      displayCount: 1,
+      sessionsSeen: 1,
+      seenSessionIds: [],
+      firstRatedAt: "",
+      lastRatedAt: "",
+      reasons: [],
+      customReason: "",
+      edits: []
+    };
+    store.entries.push(entry);
+  }
+  const changes = editableChanges(before, after);
+  if (!Object.keys(changes).length) return clone(entry);
+  entry.edits ||= [];
+  entry.edits.push({
+    editedAt: now,
+    changes,
+    before: cleanCardSnapshot(before),
+    after: cleanCardSnapshot(after)
+  });
+  entry.edits = entry.edits.slice(-50);
+  Object.assign(entry, snapshotForCard(modeId, after));
   writeAuditStore(store);
   return clone(entry);
 }
@@ -307,14 +376,15 @@ export function completeAuditSession(session) {
   writeAuditStore(store);
 }
 
-export function deleteCardFromAudit(modeId, card, reason = "") {
+export function deleteCardFromAudit(modeId, card, reason = "", customReason = "") {
   const removed = removeCardDuringGame(modeId, card.id, {
     source: "card_audit",
     reason: reason || "quality_rejection"
   });
   if (!removed) return null;
   setCardAuditStatus(modeId, card, "deleted", {
-    reasons: reason ? [reason] : []
+    reasons: reason ? [reason] : [],
+    customReason
   });
   return removed;
 }
@@ -340,17 +410,22 @@ export function auditSummary(input = null) {
     liked: 0,
     review: 0,
     deleted: 0,
+    edited: 0,
     byMode: Object.fromEntries(MODE_ORDER.map(modeId => [modeId, {
-      seen: 0, neutral: 0, liked: 0, review: 0, deleted: 0
+      seen: 0, neutral: 0, liked: 0, review: 0, deleted: 0, edited: 0
     }]))
   };
   store.entries.forEach(entry => {
     summary[entry.status] = (summary[entry.status] || 0) + 1;
-    const mode = summary.byMode[entry.modeId] ||= { seen: 0, neutral: 0, liked: 0, review: 0, deleted: 0 };
+    const mode = summary.byMode[entry.modeId] ||= { seen: 0, neutral: 0, liked: 0, review: 0, deleted: 0, edited: 0 };
     // `seen` représente ici le nombre total de cartes réellement affichées.
     // Les autres propriétés sont des sous-ensembles de ce total.
     mode.seen += 1;
     if (entry.status !== "seen") mode[entry.status] = (mode[entry.status] || 0) + 1;
+    if (entry.edits?.length) {
+      summary.edited += 1;
+      mode.edited += 1;
+    }
   });
   return summary;
 }
@@ -370,7 +445,8 @@ export function createAuditReport() {
       neutral: "Carte vue puis laissée neutre : aucune conclusion positive ou négative forte.",
       review: "Carte conservée mais signalée comme douteuse ou améliorable.",
       deleted: "Signal négatif explicite : carte retirée localement.",
-      seen: "Carte affichée mais audit interrompu avant décision."
+      seen: "Carte affichée mais audit interrompu avant décision.",
+      edited: "Carte corrigée localement pendant l’audit ; le détail avant/après figure dans edits."
     },
     summary: auditSummary(store),
     completedSessions: clone(store.completedSessions),
@@ -402,21 +478,43 @@ export function exportAuditReport() {
   return true;
 }
 
+function publicLibraryItem(item) {
+  const output = clone(item);
+  delete output.origin;
+  delete output.locallyModified;
+  delete output.modeId;
+  delete output.targetIds;
+  delete output.renderedPrompt;
+  return output;
+}
+
 export function exportCleanLibrary(modeId) {
   const mode = modeState(modeId);
   const deletedIds = new Set(mode.libraryMeta?.deletedOfficialCardIds || []);
   const library = mode.officialLibrary;
   if (!library) return false;
+
+  // L'export reprend la bibliothèque locale réellement auditée : les cartes
+  // supprimées sont absentes et les corrections/difficultés modifiées pendant
+  // l'audit sont conservées. Les cartes et catégories personnelles restent exclues.
+  const officialBoxIds = new Set(library.boxes.map(box => box.id));
+  const boxes = mode.boxes
+    .filter(box => box.origin !== "personal" && officialBoxIds.has(box.id))
+    .map(publicLibraryItem);
+  const cards = mode.cards
+    .filter(card => card.origin !== "personal" && !deletedIds.has(card.id))
+    .map(publicLibraryItem);
+
   const output = {
     schemaVersion: library.schemaVersion,
     libraryVersion: library.libraryVersion,
-    updatedAt: library.updatedAt,
+    updatedAt: new Date().toISOString().slice(0, 10),
     modeId: library.modeId,
     modeName: library.modeName,
-    boxes: clone(library.boxes),
-    cards: clone(library.cards).filter(card => !deletedIds.has(card.id))
+    boxes,
+    cards
   };
-  downloadJson(output, `${modeId}-bibliotheque-nettoyee-${new Date().toISOString().slice(0, 10)}.json`);
+  downloadJson(output, `${modeId}-bibliotheque-auditee-${new Date().toISOString().slice(0, 10)}.json`);
   return true;
 }
 

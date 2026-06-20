@@ -1,20 +1,19 @@
-# MAESTRO — SYNTHÈSE DE LA VERSION CONSOLIDÉE
+# MAESTRO — RAPPORT DE VALIDATION V0.9.6.1
 
-- Cartes historiques conservées : 143
-- Nouvelles cartes ajoutées : 55
-- Total final : 198
-- Cartes faciles : 82
-- Cartes moyennes : 61
-- Cartes difficiles : 55
-- Toutes les cartes anglaises sont classées difficiles : oui
-- Champ `context` ajouté : oui
-- IDs uniques : oui
+- Bibliothèque avant audit : 198 cartes
+- Cartes supprimées après consolidation : 26
+- Cartes actives finales : 172
+- Cartes corrigées immédiatement après audit : 6
+- Cartes restant à retravailler : 18
+- Cartes faciles : 76
+- Cartes moyennes : 59
+- Cartes difficiles : 37
+- Toutes les cartes anglaises actives classées difficiles : oui
+- Champ `context` conservé : oui
+- IDs actifs uniques : oui
 - JSON valide : oui
+- Version de bibliothèque : `2026.06.20-audit-2`
 
-## Important pour l’intégration
+## But
 
-Le moteur V0.9.4 doit être modifié pour conserver et afficher `context`. Sans cette modification, le champ peut être ignoré ou supprimé lors de la normalisation.
-
-## Passages explicitement non validés laissés dans la base historique
-
-Certaines chansons historiques n’ont pas reçu de nouvelle proposition définitivement validée avant l’arrêt de l’audit. Elles restent présentes avec leur contenu de la version auditée afin de préserver les chansons et les IDs. Elles sont documentées dans le rapport éditorial et pourront être reprises ultérieurement.
+Ce rapport confirme la cohérence technique du JSON intégré à la V0.9.6.1. Il ne clôt pas l’audit éditorial : les cartes listées « à retravailler » dans la passation doivent encore être traitées par la conversation spécialisée.

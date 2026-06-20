@@ -140,20 +140,38 @@ function saveCard(event) {
   }
 
   const id = el.cardIdInput.value;
+  let before = null;
+  let savedCard = null;
   if (id) {
     const index = mode.cards.findIndex(card => card.id === id);
-    if (index >= 0) mode.cards[index] = { ...mode.cards[index], ...data, locallyModified: true };
+    if (index >= 0) {
+      before = clone(mode.cards[index]);
+      mode.cards[index] = { ...mode.cards[index], ...data, locallyModified: true };
+      savedCard = clone(mode.cards[index]);
+    }
   } else {
-    mode.cards.unshift({
+    const created = {
       id: uniqueId(modeId),
       ...data,
       origin: "personal",
       locallyModified: true
-    });
+    };
+    mode.cards.unshift(created);
+    savedCard = clone(created);
   }
 
   saveMode(modeId);
   closeCardEditor();
+  if (savedCard && typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("mdb:card-edited", {
+      detail: {
+        modeId,
+        cardId: savedCard.id,
+        before,
+        after: savedCard
+      }
+    }));
+  }
   onChanged?.();
 }
 

@@ -138,7 +138,23 @@ function votePrompt(card, players, selectedTargetIds, amount, softMode) {
 function collectivePrompt(card, players, selectedTargetIds, amount, softMode) {
   const selected = selectedPlayers(players, selectedTargetIds);
   const consequence = groupPenaltyDescription(selected.length ? selected : players, amount, softMode);
-  return `${ensurePeriod(card.renderedPrompt)} Les personnes concernées prennent ${consequence}.`;
+  const prompt = ensurePeriod(card.renderedPrompt);
+  const placeholder = /(?:les\s+)?personnes?\s+concern(?:ée|é|ées|és)e?s?\s+prennent\s+(?:la\s+)?pénalité(?:\s+prévue)?[.!?…]*$/i;
+  const generic = /prennent\s+(?:la\s+)?pénalité(?:\s+prévue)?[.!?…]*$/i;
+  if (placeholder.test(prompt)) return prompt.replace(placeholder, `les personnes concernées prennent ${consequence}.`);
+  if (generic.test(prompt)) return prompt.replace(generic, `prennent ${consequence}.`);
+
+  // Les cartes « Qui a… ? » sont affichées comme une seule consigne complète
+  // au lieu d'ajouter une deuxième phrase répétitive sur la pénalité.
+  const barePrompt = prompt.replace(/[.!?…]+$/u, "").trim();
+  const whoHas = barePrompt.match(/^Qui a\s+(.+)$/iu);
+  if (whoHas) return `Toutes les personnes qui ont ${whoHas[1]} prennent ${consequence}.`;
+  const whoWears = barePrompt.match(/^Qui porte\s+(.+)$/iu);
+  if (whoWears) return `Toutes les personnes qui portent ${whoWears[1]} prennent ${consequence}.`;
+  const whoIs = barePrompt.match(/^Qui est\s+(.+)$/iu);
+  if (whoIs) return `Toutes les personnes qui sont ${whoIs[1]} prennent ${consequence}.`;
+
+  return `${prompt} Les personnes concernées prennent ${consequence}.`;
 }
 
 function duelPrompt(card, players, selectedTargetIds, amount, softMode) {

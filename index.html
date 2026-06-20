@@ -9,16 +9,16 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
-  <link rel="stylesheet" href="./assets/styles/foundation.css?v=096">
-  <link rel="stylesheet" href="./assets/styles/components.css?v=096">
-  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=096">
-  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=096">
-  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=096">
-  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=096">
-  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=096">
-  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=096">
-  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=096">
-  <link rel="stylesheet" href="./assets/styles/screens/audit.css?v=096">
+  <link rel="stylesheet" href="./assets/styles/foundation.css?v=0961">
+  <link rel="stylesheet" href="./assets/styles/components.css?v=0961">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=0961">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=0961">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=0961">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=0961">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=0961">
+  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=0961">
+  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=0961">
+  <link rel="stylesheet" href="./assets/styles/screens/audit.css?v=0961">
 </head>
 <body>
   <main id="app">
@@ -199,11 +199,10 @@
               <span id="drinkingLevel" class="drinking-level">Pépouze</span>
             </div>
             <div class="drinking-card-admin-actions">
+              <button id="drinkingEndButton" class="danger-button compact-button drinking-end-button" type="button">Fin</button>
               <button id="drinkingDeleteCardButton" class="card-delete-button drinking-delete-card-button" type="button" aria-label="Supprimer cette carte" title="Supprimer cette carte">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-1 11H8L7 9Zm3 2v7m4-7v7"/></svg>
-                <span class="card-delete-label">Suppr.</span>
               </button>
-              <button id="drinkingEndButton" class="danger-button compact-button drinking-end-button" type="button">Fin</button>
             </div>
           </div>
           <div id="drinkingSwipeLeftLabel" class="drinking-swipe-label drinking-swipe-label-left">NON</div>
@@ -437,7 +436,7 @@
             <button id="startAuditButton" class="primary-button" type="button">Commencer un nouvel audit</button>
             <button id="resumeAuditButton" class="secondary-button hidden" type="button">Reprendre l’audit</button>
             <button id="exportAuditButton" class="secondary-button" type="button">Télécharger le rapport d’audit</button>
-            <button id="exportCleanLibraryButton" class="secondary-button" type="button">Exporter le JSON nettoyé</button>
+            <button id="exportCleanLibraryButton" class="secondary-button" type="button">Exporter le JSON audité</button>
             <button id="clearAuditModeButton" class="danger-button" type="button">Effacer les statuts de ce mode</button>
           </div>
           <small>Une carte supprimée disparaît immédiatement de cet appareil. Le JSON officiel sur GitHub ne change qu’après intégration dans une future mise à jour.</small>
@@ -505,11 +504,12 @@
           <button id="auditNeutralButton" class="audit-action secondary-button" type="button"><kbd>Espace / →</kbd><span>Neutre · suivante</span></button>
           <button id="auditLikeButton" class="audit-action audit-like-button" type="button"><kbd>L</kbd><span>Excellente</span></button>
           <button id="auditReviewButton" class="audit-action audit-review-button" type="button"><kbd>R</kbd><span>À revoir</span></button>
+          <button id="auditEditButton" class="audit-action audit-edit-button" type="button"><kbd>M</kbd><span>Corriger</span></button>
           <button id="auditDeleteButton" class="audit-action danger-button" type="button"><kbd>S / Suppr</kbd><span>Supprimer</span></button>
         </footer>
 
         <p id="auditKeyboardHelp" class="audit-keyboard-help">
-          Clavier : <kbd>←</kbd> retour · <kbd>Espace</kbd> ou <kbd>→</kbd> neutre · <kbd>L</kbd> excellente · <kbd>R</kbd> à revoir · <kbd>S</kbd> ou <kbd>Suppr</kbd> supprimer · <kbd>Échap</kbd> quitter. Sur téléphone, touche les boutons correspondants.
+          Clavier : <kbd>←</kbd> retour · <kbd>Espace</kbd> ou <kbd>→</kbd> neutre · <kbd>L</kbd> excellente · <kbd>R</kbd> à revoir · <kbd>M</kbd> corriger · <kbd>S</kbd> ou <kbd>Suppr</kbd> supprimer · <kbd>Échap</kbd> quitter. Sur téléphone, touche les boutons correspondants.
         </p>
       </div>
     </section>
@@ -912,8 +912,16 @@
         <h2 id="auditReasonDialogTitle">Pourquoi cette carte ?</h2>
         <button id="closeAuditReasonButton" class="close-button" type="button" aria-label="Fermer">×</button>
       </div>
-      <p class="dialog-note">Le motif est facultatif. Un clic suffit pour enregistrer la décision et passer à la carte suivante.</p>
+      <p class="dialog-note">Le motif est facultatif. Choisis une raison rapide, écris une précision libre ou continue avec « Je ne sais pas ».</p>
       <div id="auditReasonChoices" class="audit-reason-choices"></div>
+      <label class="audit-custom-reason-field">
+        <span>Précision facultative</span>
+        <textarea id="auditCustomReasonInput" rows="3" placeholder="Ex. : ajouter la phrase précédente pour retrouver l’air"></textarea>
+      </label>
+      <div class="dialog-actions audit-reason-actions">
+        <button id="auditReasonUnknownButton" class="secondary-button" type="button">Je ne sais pas</button>
+        <button id="auditReasonCustomButton" class="primary-button" type="button">Enregistrer la précision</button>
+      </div>
     </form>
   </dialog>
 
@@ -1062,7 +1070,7 @@
 
   <script>
     (() => {
-      const VERSION_TOKEN = "096";
+      const VERSION_TOKEN = "0961";
       const recovery = document.querySelector("#bootRecovery");
       const message = document.querySelector("#bootRecoveryMessage");
       let bootFinished = false;
@@ -1116,7 +1124,7 @@
     })();
   </script>
   <script type="module" data-mdb-bootstrap>
-    import("./src/main.js?v=096").catch(error => window.MDB_BOOT_FAILURE(error));
+    import("./src/main.js?v=0961").catch(error => window.MDB_BOOT_FAILURE(error));
   </script>
 </body>
 </html>

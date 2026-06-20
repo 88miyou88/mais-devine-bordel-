@@ -5,7 +5,7 @@ import path from "node:path";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const libraries = [
-  ["lyrics", "data/lyrics.json", 198],
+  ["lyrics", "data/lyrics.json", 172],
   ["mime", "data/mimes.json", 1000],
   ["words", "data/words.json", 360],
   ["draw", "data/drawings.json", 420],
@@ -20,12 +20,16 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
   assert.equal(data.modeId, modeId, `${relativePath}: modeId incorrect`);
   assert.ok(data.libraryVersion, `${relativePath}: libraryVersion manquante`);
   if (modeId === "lyrics") {
-    assert.equal(data.libraryVersion, "2026.06.20-final-revise", `${relativePath}: version Maestro incorrecte`);
+    assert.equal(data.libraryVersion, "2026.06.20-audit-2", `${relativePath}: version Maestro incorrecte`);
     assert.equal(data.updatedAt, "2026-06-20", `${relativePath}: date Maestro incorrecte`);
   }
-  if (["mime", "drinking"].includes(modeId)) {
-    assert.equal(data.libraryVersion, "2026.06.19-1", `${relativePath}: version de bibliothèque V0.9.5 incorrecte`);
-    assert.equal(data.updatedAt, "2026-06-19", `${relativePath}: date de bibliothèque V0.9.5 incorrecte`);
+  if (modeId === "mime") {
+    assert.equal(data.libraryVersion, "2026.06.19-1", `${relativePath}: version Mime incorrecte`);
+    assert.equal(data.updatedAt, "2026-06-19", `${relativePath}: date Mime incorrecte`);
+  }
+  if (modeId === "drinking") {
+    assert.equal(data.libraryVersion, "2026.06.20-2", `${relativePath}: version Qui boit incorrecte`);
+    assert.equal(data.updatedAt, "2026-06-20", `${relativePath}: date Qui boit incorrecte`);
   }
   assert.ok(Array.isArray(data.boxes) && data.boxes.length > 0, `${relativePath}: catégories absentes`);
   assert.ok(Array.isArray(data.cards), `${relativePath}: cartes absentes`);
@@ -92,5 +96,5 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
   console.log(`✓ ${modeId}: ${data.cards.length} cartes, ${data.boxes.length} catégories`);
 }
 
-assert.equal(totalCards, 3028, "Total de cartes inattendu");
+assert.equal(totalCards, 3002, "Total de cartes inattendu");
 console.log(`✓ Total: ${totalCards} cartes`);

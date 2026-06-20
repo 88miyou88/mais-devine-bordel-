@@ -294,7 +294,7 @@
 
 .audit-action-bar {
   display: grid;
-  grid-template-columns: .7fr 1.2fr .9fr .9fr 1fr;
+  grid-template-columns: .62fr 1.18fr .82fr .82fr .82fr .94fr;
   gap: 8px;
 }
 
@@ -333,6 +333,10 @@
   color: #1d1300;
   background: #ffd166;
 }
+.audit-edit-button {
+  color: #07131e;
+  background: #72c7ff;
+}
 
 .audit-keyboard-help {
   margin: 0;
@@ -364,6 +368,25 @@
   min-height: 48px;
   text-align: left;
 }
+.audit-custom-reason-field {
+  display: grid;
+  gap: 7px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-weight: 800;
+}
+.audit-custom-reason-field textarea {
+  width: 100%;
+  min-height: 78px;
+  resize: vertical;
+  border: 1px solid var(--outline);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: var(--panel-2);
+  color: var(--text);
+  font: inherit;
+}
+.audit-reason-actions { margin-top: 12px; }
 
 .lyrics-context-text {
   margin: 0 0 8px;
@@ -398,7 +421,7 @@
   .audit-summary-panel > small { grid-column: auto; }
   .audit-category-grid { grid-template-columns: 1fr; max-height: 250px; }
   .audit-action-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .audit-action:last-child { grid-column: 1 / -1; }
+  .audit-action:last-child { grid-column: auto; }
   .audit-keyboard-help { display: none; }
   .audit-reason-choices { grid-template-columns: 1fr; }
 }
@@ -411,11 +434,11 @@
   .audit-action span { font-size: .78rem; }
 }
 
-/* Le profil téléphone paysage doit garder les cinq commandes sur une ligne.
+/* Le profil téléphone paysage doit garder les six commandes sur une ligne.
    Cette règle vient après les media queries de largeur pour éviter leur écrasement. */
 @media (orientation: landscape) and (max-height: 540px) and (min-width: 600px) {
   .audit-action-bar {
-    grid-template-columns: .68fr 1.25fr .9fr .9fr 1fr;
+    grid-template-columns: .58fr 1.17fr .78fr .78fr .78fr .92fr;
   }
   .audit-action:last-child { grid-column: auto; }
   .audit-keyboard-help { display: block; }

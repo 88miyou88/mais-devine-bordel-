@@ -1,0 +1,782 @@
+{
+  "kind": "mdb-liked-cards-journal",
+  "schemaVersion": 2,
+  "updatedAt": "2026-06-20",
+  "interpretation": "Ces cartes sont des exemples positifs explicites. Une carte neutre ne doit pas être considérée comme mauvaise.",
+  "entries": [
+    {
+      "cardId": "lyrics-001",
+      "title": "Libérée, délivrée",
+      "source": "La Reine des Neiges",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-002",
+      "title": "Les Lacs du Connemara",
+      "source": "Michel Sardou",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-003",
+      "title": "Frère Jacques",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-005",
+      "title": "Ce rêve bleu",
+      "source": "Aladdin",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-006",
+      "title": "J’ai demandé à la lune",
+      "source": "Indochine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-007",
+      "title": "Une souris verte",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-008",
+      "title": "Pour que tu m’aimes encore",
+      "source": "Céline Dion",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-009",
+      "title": "Hakuna Matata",
+      "source": "Le Roi Lion",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-012",
+      "title": "Les Champs-Élysées",
+      "source": "Joe Dassin",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-015",
+      "title": "Au clair de la lune",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-017",
+      "title": "Le Temps des cathédrales",
+      "source": "Notre-Dame de Paris",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-018",
+      "title": "Voyage, voyage",
+      "source": "Desireless",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-019",
+      "title": "Il en faut peu pour être heureux",
+      "source": "Le Livre de la Jungle",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-021",
+      "title": "Promenons-nous dans les bois",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-022",
+      "title": "Femme libérée",
+      "source": "Cookie Dingler",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-023",
+      "title": "Je suis malade",
+      "source": "Serge Lama",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-024",
+      "title": "J’irai où tu iras",
+      "source": "Céline Dion & Jean-Jacques Goldman",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-025",
+      "title": "Savez-vous planter les choux",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-026",
+      "title": "Quand la musique est bonne",
+      "source": "Jean-Jacques Goldman",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-027",
+      "title": "Jeune demoiselle",
+      "source": "Diam’s",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-028",
+      "title": "La Tribu de Dana",
+      "source": "Manau",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-029",
+      "title": "Sur le pont d’Avignon",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-030",
+      "title": "Mon essentiel",
+      "source": "Emmanuel Moire / Le Roi Soleil",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-033",
+      "title": "Meunier, tu dors",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-039",
+      "title": "Ainsi font, font, font",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-042",
+      "title": "Il était un petit navire",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-043",
+      "title": "Toi + Moi",
+      "source": "Grégoire",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-044",
+      "title": "Alexandrie Alexandra",
+      "source": "Claude François",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-046",
+      "title": "Manhattan-Kaboul",
+      "source": "Renaud & Axelle Red",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-047",
+      "title": "Pirouette Cacahuète",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-048",
+      "title": "Pour un flirt",
+      "source": "Michel Delpech",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 2,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-050",
+      "title": "Une poule sur un mur",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-055",
+      "title": "Alouette",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-057",
+      "title": "Je vole",
+      "source": "Michel Sardou",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-059",
+      "title": "À la pêche aux moules",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-060",
+      "title": "Le lundi au soleil",
+      "source": "Claude François",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-064",
+      "title": "Je veux",
+      "source": "Zaz",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-065",
+      "title": "Dansons la capucine",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-067",
+      "title": "On va s’aimer",
+      "source": "Gilbert Montagné",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-069",
+      "title": "Cendrillon",
+      "source": "Téléphone",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-070",
+      "title": "J’ai encore rêvé d’elle",
+      "source": "Il était une fois",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-072",
+      "title": "Emmenez-moi",
+      "source": "Charles Aznavour",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 2,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-073",
+      "title": "Partenaire particulier",
+      "source": "Partenaire Particulier",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-075",
+      "title": "Prince Ali",
+      "source": "Aladdin",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-085",
+      "title": "Nuit de folie",
+      "source": "Début de Soirée",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-092",
+      "title": "We Are the Champions",
+      "source": "Queen",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-097",
+      "title": "Oops!... I Did It Again",
+      "source": "Britney Spears",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-103",
+      "title": "I Kissed a Girl",
+      "source": "Katy Perry",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-109",
+      "title": "Call Me Maybe",
+      "source": "Carly Rae Jepsen",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-110",
+      "title": "Flowers",
+      "source": "Miley Cyrus",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-118",
+      "title": "Barbie Girl",
+      "source": "Aqua",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-123",
+      "title": "Never Gonna Give You Up",
+      "source": "Rick Astley",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-124",
+      "title": "Ah ! les crocodiles",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-125",
+      "title": "Il court, il court, le furet",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-126",
+      "title": "À la claire fontaine",
+      "source": "Chanson traditionnelle",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-128",
+      "title": "Cadet Rousselle",
+      "source": "Chanson traditionnelle",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-132",
+      "title": "La Mère Michel",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-133",
+      "title": "Il pleut, il pleut, bergère",
+      "source": "Chanson traditionnelle",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-134",
+      "title": "Mon beau sapin",
+      "source": "Chanson traditionnelle",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-137",
+      "title": "Pomme de reinette",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-138",
+      "title": "Un, deux, trois, nous irons au bois",
+      "source": "Comptine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-141",
+      "title": "Old MacDonald Had a Farm",
+      "source": "Traditional",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-144",
+      "title": "Le Chanteur",
+      "source": "Daniel Balavoine",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-145",
+      "title": "J’t’emmène au vent",
+      "source": "Louise Attaque",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-148",
+      "title": "Les Rois du monde",
+      "source": "Roméo et Juliette",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-152",
+      "title": "Les Sardines",
+      "source": "Patrick Sébastien",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-158",
+      "title": "Take on Me",
+      "source": "a-ha",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 2,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-162",
+      "title": "Le Coup de soleil",
+      "source": "Richard Cocciante",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-168",
+      "title": "Encore un matin",
+      "source": "Jean-Jacques Goldman",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-170",
+      "title": "Cette année-là",
+      "source": "Claude François",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-173",
+      "title": "Foule sentimentale",
+      "source": "Alain Souchon",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 2,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-174",
+      "title": "Allô maman bobo",
+      "source": "Alain Souchon",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 3,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-175",
+      "title": "Je te promets",
+      "source": "Johnny Hallyday",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 3,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-177",
+      "title": "Mon mec à moi",
+      "source": "Patricia Kaas",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 3,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-178",
+      "title": "Santiano",
+      "source": "Hugues Aufray",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-179",
+      "title": "Une belle histoire",
+      "source": "Michel Fugain",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 3,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-180",
+      "title": "Il est libre Max",
+      "source": "Hervé Cristiani",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 3,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-182",
+      "title": "Rockollection",
+      "source": "Laurent Voulzy",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-183",
+      "title": "Plantation",
+      "source": "Kana",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-184",
+      "title": "Double Je",
+      "source": "Christophe Willem",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-186",
+      "title": "Face à la mer",
+      "source": "Calogero & Passi",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-187",
+      "title": "Un monde parfait",
+      "source": "Ilona Mitrecey",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-188",
+      "title": "Un monde parfait",
+      "source": "Ilona Mitrecey",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-192",
+      "title": "Avant qu’elle parte",
+      "source": "Sexion d’Assaut",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 2,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-194",
+      "title": "Sur ma route",
+      "source": "Black M",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    },
+    {
+      "cardId": "lyrics-196",
+      "title": "L’Horloge tourne",
+      "source": "Mickaël Miro",
+      "auditStatus": "liked",
+      "reasonsAfterCamilleClarification": [],
+      "displayCount": 1,
+      "sessionsSeen": 1
+    }
+  ]
+}

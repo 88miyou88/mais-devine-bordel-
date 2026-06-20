@@ -171,3 +171,18 @@ Le fichier final ajoute une propriété facultative `context` à chaque carte. L
 - préserver le contexte lors de l’édition, de l’import et de l’export des cartes.
 
 Les champs historiques restent inchangés : `id`, `boxId`, `active`, `prompt`, `answer`, `title`, `source`, `difficulty`.
+
+## 14. Enseignements de l’audit complet du 20 juin 2026
+
+L’audit humain de 198 cartes a produit 86 statuts Excellente, 62 Neutre, 24 À revoir et 26 suppressions.
+
+Les conclusions les plus solides sont :
+
+- une chanson connue peut produire une mauvaise carte si la suite exacte du passage ne vient pas spontanément ;
+- une amorce courte n’est efficace que lorsqu’elle est iconique ; sinon, il faut intégrer la phrase précédente ou une portion plus longue dans `context` ou `prompt` ;
+- les chansons anglaises doivent être jugées selon la mémoire réelle d’un public francophone, pas selon leur célébrité mondiale ;
+- la difficulté ne doit jamais compenser une coupure arbitraire ou un passage peu mémorable ;
+- les comptines françaises fortement ancrées fonctionnent, tandis que les traditions anglaises ajoutées pour remplir la catégorie ont été largement rejetées ;
+- le statut Neutre reste un signal neutre : seule l’action explicite Excellente constitue une validation forte.
+
+Les fichiers `MAESTRO_AUDIT_HANDOFF_2026-06-20.md`, `MAESTRO_AUDIT_DECISIONS_2026-06-20.json`, `liked-cards-journal.json` et `deleted-cards-journal.json` doivent être consultés avant toute nouvelle proposition.
