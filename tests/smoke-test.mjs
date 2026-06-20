@@ -17,17 +17,21 @@ const exists = async relativePath => {
 
 const expectedFiles = [
   "index.html", "manifest.webmanifest", "sw.js", "README.md",
-  "docs/ARCHITECTURE.md", "docs/TESTS.md", "docs/CARD-REMOVAL-REPORTS.md",
+  "docs/ARCHITECTURE.md", "docs/TESTS.md", "docs/CARD-REMOVAL-REPORTS.md", "docs/CARD-AUDIT.md",
+  "docs/editorial/MAESTRO_EDITORIAL_GUIDE.md", "docs/editorial/MAESTRO_VALIDATION_REPORT.md",
+  "docs/editorial/PROMPT_AUDIT_MAESTRO.md", "docs/editorial/deleted-cards-journal.json",
+  "docs/editorial/CARD-QUALITY-LESSONS.md",
   "assets/icons/icon-192.png", "assets/icons/icon-512.png",
   "assets/styles/foundation.css", "assets/styles/components.css",
   "assets/styles/screens/home.css", "assets/styles/screens/game.css",
   "assets/styles/screens/drawing.css", "assets/styles/screens/manager.css",
   "assets/styles/screens/results.css", "assets/styles/screens/multiplayer.css", "assets/styles/screens/drinking-game.css",
+  "assets/styles/screens/audit.css",
   "data/lyrics.json", "data/mimes.json", "data/words.json", "data/drawings.json", "data/drinking.json",
   "src/main.js", "src/config/config.js",
   "src/core/state.js", "src/core/dom.js", "src/core/storage.js", "src/core/utils.js",
-  "src/services/libraries.js", "src/services/backup.js", "src/services/card-removals.js", "src/services/diagnostics.js",
-  "src/features/home.js",
+  "src/services/libraries.js", "src/services/backup.js", "src/services/card-removals.js", "src/services/card-audit.js", "src/services/diagnostics.js",
+  "src/features/home.js", "src/features/audit/audit-controller.js",
   "src/features/game/game-controller.js", "src/features/game/timer.js",
   "src/features/game/swipe.js", "src/features/game/results.js",
   "src/features/drawing/drawing-controller.js", "src/features/drawing/mixed-drawing.js",
@@ -61,7 +65,7 @@ for (const relativePath of legacyFiles) {
 
 const html = await read("index.html");
 assert.match(html, /<script\s+type="module"\s+data-mdb-bootstrap>/);
-assert.match(html, /import\(["']\.\/src\/main\.js\?v=0951["']\)/);
+assert.match(html, /import\(["']\.\/src\/main\.js\?v=096["']\)/);
 assert.match(html, /id="bootRecovery"/);
 assert.match(html, /id="bootRepairButton"/);
 assert.match(html, /id="orientationGuard"/);
@@ -117,6 +121,19 @@ for (const id of [
 assert.match(html, />Télécharger les cartes supprimées</);
 assert.equal((html.match(/class="card-delete-label">Suppr\.<\/span>/g) || []).length, 2, "Les boutons de suppression classiques et Qui boit doivent afficher un libellé visible");
 
+for (const id of [
+  "openAuditButton", "auditSetupScreen", "auditReviewScreen", "auditModeSelect", "auditScopeSelect",
+  "auditCategoryChoices", "auditDifficultyChoices", "startAuditButton", "resumeAuditButton",
+  "exportAuditButton", "exportCleanLibraryButton", "auditActionBar", "auditKeyboardHelp",
+  "auditBackButton", "auditNeutralButton", "auditLikeButton", "auditReviewButton", "auditDeleteButton",
+  "auditReasonDialog", "lyricsContextText", "cardContextInput"
+]) assert.ok(htmlIds.includes(id), `Élément Audit ou contexte absent : #${id}`);
+assert.match(html, /Clavier :[\s\S]*Espace[\s\S]*excellente[\s\S]*à revoir[\s\S]*supprimer[\s\S]*Échap/);
+assert.match(html, /<kbd>Espace \/ →<\/kbd><span>Neutre · suivante<\/span>/);
+assert.match(html, /<kbd>L<\/kbd><span>Excellente<\/span>/);
+assert.match(html, /<kbd>R<\/kbd><span>À revoir<\/span>/);
+assert.match(html, /<kbd>S \/ Suppr<\/kbd><span>Supprimer<\/span>/);
+
 
 assert.match(html, /id="modeRuleDetails"[\s\S]*?<summary><h3>Comment jouer \?<\/h3><\/summary>/, "Le bloc Comment jouer doit être repliable");
 const responsiveCss = [
@@ -124,10 +141,13 @@ const responsiveCss = [
   await read("assets/styles/screens/home.css"),
   await read("assets/styles/screens/game.css"),
   await read("assets/styles/screens/drinking-game.css"),
-  await read("assets/styles/screens/multiplayer.css")
+  await read("assets/styles/screens/multiplayer.css"),
+  await read("assets/styles/screens/audit.css")
 ].join("\n");
 assert.match(responsiveCss, /orientation:landscape[\s\S]*max-height:540px/, "Le profil téléphone paysage compact est absent");
 assert.match(responsiveCss, /\.card-delete-button\{[\s\S]*?min-width:72px[\s\S]*?height:44px/, "La suppression en jeu doit rester visible avec une cible tactile suffisante");
+assert.match(responsiveCss, /\.audit-choice\s*\{[\s\S]*?min-height:\s*44px/, "Les filtres Audit doivent avoir une cible tactile suffisante");
+assert.match(responsiveCss, /orientation:\s*landscape[\s\S]*?audit-action-bar[\s\S]*?grid-template-columns:/, "Les actions Audit doivent rester compactes en paysage");
 
 const manifest = JSON.parse(await read("manifest.webmanifest"));
 assert.equal(manifest.name, "Mais devine, bordel !");
@@ -136,8 +156,8 @@ assert.equal(manifest.orientation, "landscape");
 assert.ok(manifest.icons.every(icon => icon.src.replace(/^\.\//, "").startsWith("assets/icons/")), "Chemins des icônes du manifeste incorrects");
 
 const config = await read("src/config/config.js");
-assert.match(config, /APP_VERSION\s*=\s*"0\.9\.5\.1"/);
-assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-5-1"/);
+assert.match(config, /APP_VERSION\s*=\s*"0\.9\.6"/);
+assert.match(config, /APP_CACHE_NAME\s*=\s*"mdb-v0-9-6"/);
 assert.match(config, /name:\s*"La suite, maestro !"/);
 assert.match(config, /name:\s*"Ferme-la et mime !"/);
 assert.match(config, /name:\s*"Picasso en PLS"/);
@@ -146,6 +166,9 @@ assert.match(config, /mdb-drinking-boxes-v1/);
 assert.match(config, /DRINKING_SESSION_KEY/);
 assert.match(config, /CARD_REMOVAL_REPORTS_KEY\s*=\s*"mdb-card-removal-reports-v1"/);
 assert.match(config, /CARD_REMOVAL_REPORT_SCHEMA\s*=\s*1/);
+assert.match(config, /AUDIT_STORE_KEY\s*=\s*"mdb-card-audit-v1"/);
+assert.match(config, /AUDIT_INSTALLATION_ID_KEY\s*=\s*"mdb-card-audit-installation-v1"/);
+assert.match(config, /AUDIT_STORE_SCHEMA\s*=\s*1/);
 assert.match(config, /DIFFICULTY_ORDER\s*=\s*\["easy", "medium", "hard"\]/);
 assert.match(config, /easy:\s*\{ shortLabel: "F"/);
 assert.match(config, /medium:\s*\{ shortLabel: "M"/);
@@ -167,7 +190,7 @@ for (const key of [
 ]) assert.ok(config.includes(key), `Clé de stockage absente : ${key}`);
 
 const sw = await read("sw.js");
-assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-5-1"/);
+assert.match(sw, /CACHE_NAME\s*=\s*"mdb-v0-9-6"/);
 assert.match(sw, /new Request\(url, \{ cache: "reload" \}\)/);
 assert.match(sw, /SKIP_WAITING/);
 const cachedPaths = new Set([...sw.matchAll(/"(\.\/[^"\n]+)"/g)].map(match => match[1]));
@@ -184,12 +207,13 @@ const expectedStylePaths = [
   "./assets/styles/screens/results.css",
   "./assets/styles/screens/drawing.css",
   "./assets/styles/screens/multiplayer.css",
-  "./assets/styles/screens/drinking-game.css"
+  "./assets/styles/screens/drinking-game.css",
+  "./assets/styles/screens/audit.css"
 ];
 const linkedStylePaths = [...html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)]
   .map(match => match[1].split("?")[0]);
 assert.deepEqual(linkedStylePaths, expectedStylePaths, "Ordre ou chemins des feuilles de style incorrects");
-assert.equal((html.match(/\?v=0951/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
+assert.equal((html.match(/\?v=096/g) || []).length >= expectedStylePaths.length + 1, true, "Les ressources critiques doivent être versionnées");
 
 const styleFiles = expectedFiles.filter(file => file.endsWith(".css"));
 for (const relativePath of styleFiles) {
@@ -431,6 +455,7 @@ await librariesModule.loadContent();
 assert.ok(stateModule.state.modes.lyrics.cards.some(card => card.id === "personal-card"), "Carte personnelle V0.6.0 perdue");
 assert.ok(stateModule.state.modes.lyrics.boxes.some(box => box.id === "personal-box"), "Catégorie personnelle V0.6.0 perdue");
 assert.equal(stateModule.state.modes.lyrics.cards[0].prompt, "Modification locale conservée");
+assert.equal(typeof stateModule.state.modes.lyrics.cards.find(card => card.id === "lyrics-032").context, "string");
 assert.equal(stateModule.state.settings.modeOptions.draw.attemptCount, 5);
 assert.equal(stateModule.state.settings.modeOptions.draw.soundEnabled, false);
 assert.equal(stateModule.state.settings.modeOptions.draw.mixedCount, 2);
@@ -442,6 +467,38 @@ assert.deepEqual(stateModule.state.settings.globalDifficultyIds, ["easy", "hard"
 assert.equal(librariesModule.activeCardCountForMode("lyrics") >= librariesModule.filteredCardsForMode("lyrics").length, true);
 const selectedTotals = librariesModule.selectedCardTotals();
 assert.equal(selectedTotals.selected <= selectedTotals.total, true);
+
+const lyricsConfig = configModule.MODE_CONFIG.lyrics;
+const currentLyricsLibrary = JSON.parse(await read("data/lyrics.json"));
+const legacyLyricsCards = currentLyricsLibrary.cards
+  .filter(card => Number(String(card.id).split("-").at(-1)) <= 143)
+  .map(card => ({ ...structuredClone(card), context: undefined, origin: "official", locallyModified: false }));
+const locallyEditedLyrics = legacyLyricsCards.find(card => card.id === "lyrics-001");
+locallyEditedLyrics.prompt = "Modification locale Maestro conservée";
+locallyEditedLyrics.locallyModified = true;
+const deletedLegacyLyricsId = "lyrics-037";
+const storedLegacyLyricsCards = legacyLyricsCards.filter(card => card.id !== deletedLegacyLyricsId);
+memoryStorage.set(lyricsConfig.storage.boxes, JSON.stringify(currentLyricsLibrary.boxes.map(box => ({ ...box, origin: "official", locallyModified: false }))));
+memoryStorage.set(lyricsConfig.storage.cards, JSON.stringify(storedLegacyLyricsCards));
+memoryStorage.set(lyricsConfig.storage.meta, JSON.stringify({
+  installedVersion: "2026.06.15-3",
+  deletedOfficialCardIds: [deletedLegacyLyricsId],
+  deletedOfficialBoxIds: []
+}));
+memoryStorage.set(lyricsConfig.storage.selection, JSON.stringify({
+  boxIds: currentLyricsLibrary.boxes.map(box => box.id), difficultyIds: ["easy", "medium", "hard"]
+}));
+await librariesModule.loadContent();
+assert.equal(stateModule.state.modes.lyrics.libraryMeta.installedVersion, "2026.06.20-final-revise");
+assert.equal(stateModule.state.modes.lyrics.cards.length, 197, "La migration Maestro doit ajouter 55 cartes sans restaurer une suppression locale");
+assert.equal(stateModule.state.modes.lyrics.cards.some(card => card.id === "lyrics-198"), true, "Les nouvelles cartes Maestro doivent être ajoutées");
+assert.equal(stateModule.state.modes.lyrics.cards.some(card => card.id === deletedLegacyLyricsId), false, "Une carte Maestro supprimée localement ne doit pas réapparaître");
+assert.equal(
+  stateModule.state.modes.lyrics.cards.find(card => card.id === "lyrics-001").prompt,
+  "Modification locale Maestro conservée",
+  "La migration Maestro ne doit pas écraser une carte modifiée localement"
+);
+assert.equal(stateModule.state.modes.lyrics.cards.find(card => card.id === "lyrics-032").context, "Et mon tapis volant, dis ?");
 
 const mimeConfig = configModule.MODE_CONFIG.mime;
 const currentMimeLibrary = JSON.parse(await read("data/mimes.json"));
@@ -482,7 +539,7 @@ assert.equal(
 );
 assert.equal(stateModule.state.modes.mime.boxes.length, 21, "Les nouvelles catégories de mime doivent être installées");
 
-// Réparation V0.9.5.1 : certains téléphones ont mémorisé la nouvelle version
+// Réparation V0.9.6 : certains téléphones ont mémorisé la nouvelle version
 // alors que seules les 395 anciennes cartes étaient présentes et que les
 // 605 nouveautés avaient été marquées à tort comme supprimées.
 const brokenMimeCards = currentMimeLibrary.cards.slice(0, 395).map(card => ({
@@ -561,12 +618,13 @@ stateModule.state.settings.multiplayer = {
 };
 const backupModule = await import(pathToFileURL(path.join(root, "src/services/backup.js")).href);
 const newBackup = backupModule.createBackupData();
-assert.equal(newBackup.backupSchemaVersion, 7);
+assert.equal(newBackup.backupSchemaVersion, 8);
 assert.equal(newBackup.settings.multiplayer.cycles, 3);
 assert.equal(newBackup.settings.multiplayer.flowType, "mode-blocks");
 assert.deepEqual(newBackup.settings.globalDifficultyIds, ["easy", "hard"]);
 assert.equal(Object.hasOwn(newBackup, "multiplayerSession"), false, "La session temporaire ne doit pas être exportée");
-assert.ok(newBackup.cardRemovalReports, "Les signalements de cartes doivent être inclus dans la sauvegarde V7");
+assert.ok(newBackup.cardRemovalReports, "Les signalements de cartes doivent être inclus dans la sauvegarde V8");
+assert.ok(newBackup.cardAudit, "Les données d’audit doivent être incluses dans la sauvegarde V8");
 
 const cardRemovalModule = await import(pathToFileURL(path.join(root, "src/services/card-removals.js")).href);
 cardRemovalModule.clearCardRemovalReports();
@@ -605,6 +663,37 @@ for (const fixture of removedFixtures) {
   librariesModule.saveMode(fixture.modeId);
 }
 cardRemovalModule.clearCardRemovalReports();
+
+const auditModule = await import(pathToFileURL(path.join(root, "src/services/card-audit.js")).href);
+memoryStorage.delete(configModule.AUDIT_STORE_KEY);
+memoryStorage.delete(configModule.AUDIT_INSTALLATION_ID_KEY);
+const auditCard = structuredClone(stateModule.state.modes.lyrics.cards.find(card => card.id === "lyrics-001"));
+const auditBoxes = [auditCard.boxId];
+const auditSession = auditModule.createAuditSession({
+  modeId: "lyrics",
+  boxIds: auditBoxes,
+  difficultyIds: [auditCard.difficulty],
+  scope: "all"
+});
+assert.ok(auditSession.queueKeys.includes(`lyrics::${auditCard.id}`));
+auditModule.markCardSeen("lyrics", auditCard, auditSession.id);
+auditModule.setCardAuditStatus("lyrics", auditCard, "liked");
+let auditReport = auditModule.createAuditReport();
+assert.equal(auditReport.kind, "mdb-card-audit-report");
+assert.equal(auditReport.cards.find(entry => entry.cardId === auditCard.id).status, "liked");
+assert.equal(Object.hasOwn(auditReport.cards.find(entry => entry.cardId === auditCard.id), "seenSessionIds"), false);
+const auditCardsBeforeDelete = stateModule.state.modes.lyrics.cards.length;
+auditModule.deleteCardFromAudit("lyrics", auditCard, "bad_cut");
+assert.equal(stateModule.state.modes.lyrics.cards.length, auditCardsBeforeDelete - 1);
+auditReport = auditModule.createAuditReport();
+assert.equal(auditReport.cards.find(entry => entry.cardId === auditCard.id).status, "deleted");
+assert.deepEqual(auditReport.cards.find(entry => entry.cardId === auditCard.id).reasons, ["bad_cut"]);
+auditModule.restoreCardFromAudit("lyrics", auditCard);
+assert.equal(stateModule.state.modes.lyrics.cards.some(card => card.id === auditCard.id), true);
+assert.equal(auditModule.createAuditReport().cards.find(entry => entry.cardId === auditCard.id).status, "review");
+const backupWithAudit = backupModule.createBackupData();
+assert.ok(backupWithAudit.cardAudit.entries.some(entry => entry.cardId === auditCard.id));
+assert.equal(backupWithAudit.backupSchemaVersion, 8);
 
 const legacyBackup = {
   backupSchemaVersion: 3,
@@ -814,8 +903,27 @@ activeRules = rulesModule.tickRules(activeRules, newestRuleId);
 assert.equal(activeRules.at(-1).remainingCards, 3, "Une nouvelle règle ne perd pas une carte dès son ajout");
 assert.equal(activeRules[0].remainingCards, 2);
 
+const auditControllerSource = await read("src/features/audit/audit-controller.js");
+assert.match(auditControllerSource, /event\.key === "ArrowRight"/);
+assert.match(auditControllerSource, /key === "l"/);
+assert.match(auditControllerSource, /key === "r"/);
+assert.match(auditControllerSource, /key === "s" \|\| event\.key === "Delete"/);
+assert.match(auditControllerSource, /restoreRemovedCard/);
+assert.match(auditControllerSource, /exportCleanLibrary/);
+const auditServiceSource = await read("src/services/card-audit.js");
+assert.match(auditServiceSource, /installationId/);
+assert.match(auditServiceSource, /completedSessions/);
+assert.match(auditServiceSource, /privacy:/);
+assert.match(auditServiceSource, /seenSessionIds/);
+const gameControllerSource = await read("src/features/game/game-controller.js");
+assert.match(gameControllerSource, /lyricsContextText/);
+const editorSource = await read("src/features/card-manager/card-editor.js");
+assert.match(editorSource, /cardContextInput/);
+
 console.log("✓ Moteur Qui boit : pénalités variables, points et ciblage équilibré");
-console.log("✓ Arborescence, DOM, CSS, manifeste et cache de la V0.9.5.1 cohérents");
+console.log("✓ Audit : filtres, raccourcis, statuts, rapport, suppression et restauration validés");
+console.log("✓ Maestro : 198 cartes, contexte et migration locale validés");
+console.log("✓ Arborescence, DOM, CSS, manifeste et cache de la V0.9.6 cohérents");
 console.log("✓ Modules ES résolus, dépendances orientées et aucun cycle d’import");
 console.log("✓ Deux déroulements multijoueurs testés de 1 à 12 modes et de 2 à 12 joueurs");
 console.log("✓ Filtres globaux, exceptions par mode et compteurs sélection/total validés");

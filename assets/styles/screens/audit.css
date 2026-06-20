@@ -1,0 +1,422 @@
+#auditSetupScreen,
+#auditReviewScreen {
+  align-items: stretch;
+  justify-content: center;
+  overflow: hidden;
+  --audit-accent: #b981ff;
+}
+
+.audit-shell,
+.audit-review-shell {
+  width: min(1180px, 100%);
+  min-height: 0;
+  border: 1px solid var(--outline);
+  border-radius: 26px;
+  background: rgba(21, 25, 34, .96);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .42);
+}
+
+.audit-setup-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(14px, 2vw, 24px);
+  overflow-y: auto;
+}
+
+.audit-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.audit-header h2 { margin-bottom: 5px; }
+.audit-header p:not(.eyebrow) { margin: 0; color: var(--muted); }
+
+.audit-setup-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, .75fr) minmax(360px, 1.25fr);
+  gap: 14px;
+}
+
+.audit-panel,
+.audit-summary-panel {
+  border: 1px solid var(--outline);
+  border-radius: 18px;
+  padding: 14px;
+  background: rgba(14, 17, 23, .72);
+}
+
+.audit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.audit-field select { width: 100%; }
+
+.audit-filter-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.audit-filter-heading > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.audit-filter-heading small,
+.audit-summary-panel small,
+.audit-deleted-row small {
+  color: var(--muted);
+}
+
+.audit-choice-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.audit-difficulty-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.audit-category-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-height: 310px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.audit-choice {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  border: 1px solid var(--outline);
+  border-radius: 12px;
+  background: var(--panel-2);
+  cursor: pointer;
+}
+
+.audit-choice input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.audit-choice span {
+  min-width: 0;
+  font-size: .88rem;
+  font-weight: 780;
+}
+
+.audit-summary-panel {
+  display: grid;
+  grid-template-columns: minmax(230px, .72fr) minmax(520px, 1.28fr);
+  gap: 12px 18px;
+  align-items: center;
+}
+
+.audit-summary-panel p {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.audit-summary-panel > small { grid-column: 1 / -1; }
+
+.audit-setup-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.audit-deleted-section { margin-bottom: 4px; }
+.audit-deleted-list { display: grid; gap: 8px; }
+.audit-deleted-row {
+  min-height: 52px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 10px;
+  border: 1px solid var(--outline);
+  border-radius: 12px;
+  background: var(--panel-2);
+}
+.audit-deleted-row > div { min-width: 0; display: flex; flex-direction: column; }
+.audit-deleted-row strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.audit-review-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: 10px;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.audit-review-hud {
+  min-height: 46px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.audit-mode-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 950;
+  letter-spacing: .08em;
+  color: var(--accent);
+}
+
+.audit-status-badge {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--outline);
+  background: var(--panel-2);
+  font-weight: 900;
+  font-size: .82rem;
+}
+.audit-status-badge[data-status="liked"] { color: #06150b; background: var(--green); }
+.audit-status-badge[data-status="review"] { color: #1d1300; background: #ffd166; }
+.audit-status-badge[data-status="deleted"] { color: #fff; background: var(--red); }
+.audit-status-badge[data-status="neutral"] { color: var(--text); background: #3a4457; }
+
+.audit-card {
+  --mode-color: var(--accent);
+  position: relative;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  border: 2px solid color-mix(in srgb, var(--mode-color) 70%, transparent);
+  border-radius: 24px;
+  padding: clamp(58px, 8vh, 86px) clamp(22px, 6vw, 80px) clamp(62px, 9vh, 90px);
+  background:
+    radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--mode-color) 20%, transparent), transparent 34%),
+    linear-gradient(145deg, color-mix(in srgb, var(--mode-color) 9%, #121722), #10141d);
+  box-shadow: inset 0 0 42px rgba(0, 0, 0, .22);
+}
+
+.audit-card-content {
+  width: min(960px, 100%);
+  text-align: center;
+}
+
+.audit-lyrics-context {
+  margin: 0 0 12px;
+  color: #aeb6c5;
+  font-size: clamp(.92rem, 2.1vw, 1.35rem);
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.audit-lyrics-prompt,
+.audit-lyrics-answer,
+.audit-simple-prompt {
+  margin: 0;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.audit-lyrics-prompt {
+  font-size: clamp(1.9rem, 5.7vw, 4.7rem);
+  line-height: 1.02;
+  font-weight: 920;
+}
+
+.audit-lyrics-answer {
+  color: var(--green);
+  font-size: clamp(1.55rem, 4.7vw, 3.8rem);
+  line-height: 1.03;
+  font-weight: 900;
+}
+
+.audit-separator {
+  margin: clamp(8px, 2vh, 16px) 0;
+  color: var(--mode-color);
+  font-size: clamp(1.7rem, 4vw, 3rem);
+  font-weight: 950;
+}
+
+.audit-simple-prompt {
+  font-size: clamp(2rem, 6vw, 5rem);
+  line-height: 1.03;
+  font-weight: 930;
+}
+
+.audit-forbidden-block {
+  margin: 24px auto 0;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 91, 103, .1);
+  border: 1px solid rgba(255, 91, 103, .34);
+}
+.audit-forbidden-block > span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--red);
+  font-weight: 950;
+  letter-spacing: .08em;
+}
+
+.audit-card-meta {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 13px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: clamp(.72rem, 1.6vw, .95rem);
+}
+.audit-card-meta strong { color: var(--text); }
+.audit-card-meta span { text-align: right; }
+
+.audit-action-bar {
+  display: grid;
+  grid-template-columns: .7fr 1.2fr .9fr .9fr 1fr;
+  gap: 8px;
+}
+
+.audit-action {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  font-weight: 900;
+}
+
+.audit-action kbd,
+.audit-keyboard-help kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 3px 7px;
+  border: 1px solid rgba(255,255,255,.28);
+  border-bottom-width: 3px;
+  border-radius: 7px;
+  background: rgba(0,0,0,.24);
+  color: inherit;
+  font: 800 .73rem/1 system-ui, sans-serif;
+  white-space: nowrap;
+}
+
+.audit-like-button {
+  color: #06150b;
+  background: var(--green);
+}
+.audit-review-button {
+  color: #1d1300;
+  background: #ffd166;
+}
+
+.audit-keyboard-help {
+  margin: 0;
+  color: var(--muted);
+  font-size: .76rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.audit-completion-panel {
+  align-self: center;
+  justify-self: center;
+  width: min(620px, 100%);
+  padding: 24px;
+  border: 1px solid var(--outline);
+  border-radius: 22px;
+  background: var(--panel-2);
+  text-align: center;
+}
+.audit-completion-panel p:not(.eyebrow) { color: var(--muted); }
+
+.audit-reason-dialog { width: min(720px, calc(100% - 24px)); }
+.audit-reason-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.audit-reason-button {
+  min-height: 48px;
+  text-align: left;
+}
+
+.lyrics-context-text {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: clamp(.76rem, 1.8vw, 1.05rem);
+  font-style: italic;
+  line-height: 1.18;
+  text-align: center;
+}
+
+@media (orientation: landscape) and (max-height: 540px) and (min-width: 600px) {
+  #auditReviewScreen { padding: max(5px, var(--safe-top)) max(6px, var(--safe-right)) max(5px, var(--safe-bottom)) max(6px, var(--safe-left)); }
+  .audit-review-shell { width: 100%; border-radius: 18px; padding: 6px; gap: 5px; }
+  .audit-review-hud { min-height: 38px; gap: 6px; }
+  .audit-review-hud .compact-button { min-height: 36px; padding: 5px 9px; }
+  .audit-card { border-radius: 16px; padding: 38px 52px 40px; }
+  .audit-lyrics-context { margin-bottom: 4px; font-size: clamp(.72rem, 1.7vw, .95rem); }
+  .audit-lyrics-prompt { font-size: clamp(1.45rem, 5.1vw, 3rem); }
+  .audit-lyrics-answer { font-size: clamp(1.25rem, 4.2vw, 2.5rem); }
+  .audit-simple-prompt { font-size: clamp(1.5rem, 5.3vw, 3.2rem); }
+  .audit-separator { margin: 3px 0; }
+  .audit-card-meta { bottom: 5px; left: 10px; right: 10px; font-size: .68rem; }
+  .audit-action-bar { gap: 5px; }
+  .audit-action { min-height: 44px; padding: 4px 6px; font-size: .76rem; }
+  .audit-action kbd { min-height: 20px; padding: 2px 5px; font-size: .62rem; }
+  .audit-keyboard-help { font-size: .62rem; line-height: 1.15; }
+}
+
+@media (max-width: 820px) {
+  .audit-setup-grid,
+  .audit-summary-panel { grid-template-columns: 1fr; }
+  .audit-summary-panel > small { grid-column: auto; }
+  .audit-category-grid { grid-template-columns: 1fr; max-height: 250px; }
+  .audit-action-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .audit-action:last-child { grid-column: 1 / -1; }
+  .audit-keyboard-help { display: none; }
+  .audit-reason-choices { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+  .audit-difficulty-grid,
+  .audit-setup-actions { grid-template-columns: 1fr; }
+  .audit-review-hud { grid-template-columns: auto 1fr auto; }
+  .audit-status-badge { grid-column: 1 / -1; justify-self: stretch; }
+  .audit-action span { font-size: .78rem; }
+}
+
+/* Le profil téléphone paysage doit garder les cinq commandes sur une ligne.
+   Cette règle vient après les media queries de largeur pour éviter leur écrasement. */
+@media (orientation: landscape) and (max-height: 540px) and (min-width: 600px) {
+  .audit-action-bar {
+    grid-template-columns: .68fr 1.25fr .9fr .9fr 1fr;
+  }
+  .audit-action:last-child { grid-column: auto; }
+  .audit-keyboard-help { display: block; }
+}

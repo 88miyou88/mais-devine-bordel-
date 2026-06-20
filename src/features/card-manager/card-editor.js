@@ -45,6 +45,7 @@ export function openCardEditor(modeId, cardId = null) {
   el.wordsEditorFields.classList.toggle("hidden", config.type !== "words");
 
   if (config.type === "lyrics") {
+    el.cardContextInput.value = card?.context || "";
     el.cardPromptInput.value = card?.prompt || "";
     el.cardAnswerInput.value = card?.answer || "";
     el.cardTitleInput.value = card?.title || "";
@@ -94,6 +95,7 @@ function saveCard(event) {
   if (config.type === "lyrics") {
     data = {
       ...common,
+      context: el.cardContextInput.value.trim(),
       prompt: el.cardPromptInput.value.trim(),
       answer: el.cardAnswerInput.value.trim(),
       title: el.cardTitleInput.value.trim(),

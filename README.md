@@ -8,87 +8,67 @@ Application web mobile installable (PWA) regroupant cinq mini-jeux de soirée :
 - Picasso en PLS
 - Qui boit, bordel ?
 
-L’interface, les filtres et le planificateur multijoueur reposent sur la configuration des modes. Ils ne supposent pas qu’il existera toujours exactement cinq modes.
-
 ## Version
 
-Base technique actuelle : **0.9.5.1**
+Version actuelle : **0.9.6**
 
-La V0.9.5.1 stable ajoute :
+La V0.9.6 ajoute :
 
-- la suppression d’une carte directement pendant une partie dans les cinq modes ;
-- une confirmation avant suppression et une cible tactile de 44 × 44 px ;
-- le passage immédiat à la carte suivante sans modifier le score ;
-- la conservation locale des suppressions afin que la carte ne ressorte plus ;
-- un rapport JSON dédupliqué téléchargeable depuis les paramètres avancés ;
-- l’intégration de ce journal aux sauvegardes générales ;
-- l’absence de prénoms, de réponses ou d’autres données de partie dans le rapport exporté ;
-- un historique corrigé : après un ou plusieurs retours, les cartes qui avaient déjà été préparées reviennent dans le même ordre ;
-- la nouvelle bibliothèque de 1 000 mimes ;
-- la bibliothèque Qui boit révisée sans changement d’identifiants ;
-- la réparation automatique des téléphones restés bloqués à 395 mimes ;
-- un bouton de suppression désormais libellé « Suppr. » pour être clairement visible en jeu.
+- un mode **Audit des cartes** accessible depuis Paramètres avancés ;
+- choix du mode, des catégories, des difficultés et du type de cartes à revoir ;
+- navigation sans chrono, score, joueurs ni pénalités ;
+- reprise automatique à la dernière carte ;
+- statuts Vue, Neutre, Excellente, À revoir et Supprimée ;
+- raccourcis clavier et boutons tactiles équivalents ;
+- motifs facultatifs adaptés à chaque mode ;
+- annulation de la dernière décision, y compris une suppression ;
+- restauration des cartes supprimées localement ;
+- export d’un rapport complet et d’un JSON officiel nettoyé ;
+- intégration de l’audit aux sauvegardes générales ;
+- intégration de la bibliothèque Maestro révisée à 198 cartes ;
+- prise en charge du champ facultatif `context` dans le jeu, l’audit et le gestionnaire.
+
+La suppression directe en partie, l’historique corrigé, les 1 000 mimes et les 1 050 cartes Qui boit restent présents.
 
 ## Bibliothèques
 
 | Mode | Fichier | Cartes |
 |---|---|---:|
-| La suite, maestro ! | `data/lyrics.json` | 143 |
+| La suite, maestro ! | `data/lyrics.json` | 198 |
 | Ferme-la et mime ! | `data/mimes.json` | 1 000 |
 | Sans le dire ! | `data/words.json` | 360 |
 | Picasso en PLS | `data/drawings.json` | 420 |
 | Qui boit, bordel ? | `data/drinking.json` | 1 050 |
-| **Total** | | **2 973** |
+| **Total** | | **3 028** |
 
-## Qui boit, bordel ?
+## Audit éditorial
 
-### Résolution des cartes
+Accès : **Réglages → Paramètres avancés → Auditer les cartes**.
 
-Les comportements sont déterminés par la mécanique de la carte :
+Raccourcis :
 
-- vote : sélectionner une personne dans la carte, puis swiper à droite ;
-- condition collective : sélectionner toutes les personnes concernées, puis swiper à droite ;
-- condition personnelle : swipe à droite si oui, à gauche si non ;
-- vérité ou anecdote : swipe à droite si la personne répond, à gauche si elle refuse ;
-- défi : swipe à droite en cas de réussite, à gauche en cas d’échec ou de refus ;
-- duel : sélectionner le perdant puis swiper à droite, ou swiper à gauche en cas d’égalité ;
-- tribunal : droite pour coupable, gauche pour non coupable ;
-- règle temporaire : droite pour activer, gauche pour ignorer.
+- `←` : retour ;
+- `Espace` ou `→` : neutre et suivante ;
+- `L` : excellente ;
+- `R` : à revoir ;
+- `S` ou `Suppr` : supprimer ;
+- `Échap` : quitter.
 
-
-### Pénalités
-
-Chaque carte possède une intensité structurée. Le moteur tire une valeur compatible avec le plafond choisi pour la partie.
-
-- joueur classique : la conséquence visible est exprimée en gorgées ;
-- joueur `🥤 Team soft` : la conséquence visible utilise l’alternative choisie ;
-- la même valeur alimente silencieusement le classement en pénalités.
-
-### Après minuit
-
-Le thème est désactivé par défaut. Lorsqu’il est activé, ses 75 cartes rejoignent la sélection et une flamme rose apparaît sur la tuile du mode.
-
-### Mode autonome
-
-Qui boit, bordel ? reste autonome. Une future « playlist de soirée » pourra alterner des blocs complets de modes sans injecter ces cartes une par une dans les manches classiques.
+Voir `docs/CARD-AUDIT.md` et `docs/editorial/`.
 
 ## Compatibilité
 
-La V0.9.5.1 conserve :
+La migration vers la nouvelle bibliothèque Maestro :
 
-- les identifiants des 1 050 cartes Qui boit et des 395 premiers mimes ;
-- les cartes et catégories personnelles ;
-- les cartes officielles modifiées localement ;
-- les cartes supprimées localement, qui ne sont pas restaurées par la migration ;
-- les réglages, filtres et sauvegardes existants ;
-- les deux déroulements multijoueurs ;
-- le Dessin autonome et mélangé.
+- ajoute les 55 nouvelles cartes ;
+- actualise les cartes officielles non modifiées ;
+- conserve les cartes et catégories personnelles ;
+- conserve les cartes officielles modifiées localement ;
+- ne restaure pas les cartes supprimées localement.
 
-La session temporaire de Qui boit utilise la clé `mdb-drinking-session-v1` avec le schéma interne `2`. Une session V0.9.0 incomplète n’est pas restaurée.
+Le champ `context` est désormais conservé lors de la normalisation, de l’édition, de l’import, de l’export et des sauvegardes.
 
 ## Publication
-
-Cette archive constitue la version stable V0.9.5.1. Les autres bibliothèques révisées seront intégrées dans une mise à jour ultérieure.
 
 Application de référence :
 
@@ -96,13 +76,13 @@ Application de référence :
 
 URL de test :
 
-`https://88miyou88.github.io/mais-devine-bordel-/?v=0951`
+`https://88miyou88.github.io/mais-devine-bordel-/?v=096`
 
 Diagnostic attendu :
 
 ```text
-Version : 0.9.5.1
-Cache attendu : mdb-v0-9-5-1
+Version : 0.9.6
+Cache attendu : mdb-v0-9-6
 ```
 
 ## Développement local
@@ -115,7 +95,7 @@ python3 -m http.server 8000
 
 Puis ouvrir :
 
-`http://localhost:8000/?v=0951`
+`http://localhost:8000/?v=096`
 
 ## Contrôles automatiques
 
@@ -124,4 +104,4 @@ node tests/validate-data.mjs
 node tests/smoke-test.mjs
 ```
 
-Voir également `docs/ARCHITECTURE.md`, `docs/TESTS.md` et `docs/CARD-REMOVAL-REPORTS.md`.
+Voir également `docs/ARCHITECTURE.md`, `docs/TESTS.md`, `docs/CARD-AUDIT.md` et `docs/CARD-REMOVAL-REPORTS.md`.

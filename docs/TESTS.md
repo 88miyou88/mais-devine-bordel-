@@ -1,4 +1,4 @@
-# Tests — base V0.9.5.1
+# Tests — base V0.9.6
 
 ## Commandes
 
@@ -33,8 +33,8 @@ Le validateur contrôle notamment :
 Il contrôle notamment :
 
 - les 60 fichiers attendus ;
-- la version `0.9.5.1` ;
-- le cache `mdb-v0-9-5-1` ;
+- la version `0.9.6` ;
+- le cache `mdb-v0-9-6` ;
 - les chemins HTML, CSS, JS, JSON et manifeste ;
 - la syntaxe des modules ;
 - les imports et l’absence de cycles ;
@@ -67,7 +67,7 @@ Il contrôle notamment :
 
 ## Vérifications Android à effectuer
 
-1. ouvrir la base de test avec `?v=0951` ;
+1. ouvrir la base de test avec `?v=096` ;
 2. vérifier la version et le cache dans le diagnostic ;
 3. tester un swipe gauche et droit sur chaque grande famille de carte ;
 4. vérifier qu’un vote ne peut pas être validé sans personne sélectionnée ;
@@ -149,3 +149,21 @@ Le smoke test reconstruit aussi l’état défectueux observé sur téléphone :
 - 605 nouveautés et nouvelles catégories marquées à tort comme supprimées.
 
 Le test vérifie que le chargement restaure 1 000 cartes, 21 catégories, sélectionne les nouvelles catégories et retire les faux marqueurs de suppression. Il vérifie également la présence du libellé visible `Suppr.` sur les boutons de suppression des modes classiques et de Qui boit.
+
+
+## Régression V0.9.6 — Audit et Maestro
+
+Les contrôles couvrent :
+
+- les 198 cartes Maestro et leurs 9 catégories ;
+- le champ `context` sur toutes les cartes ;
+- la migration depuis `2026.06.15-3` ;
+- la conservation d’une carte Maestro modifiée localement ;
+- la non-restauration d’une carte supprimée localement ;
+- la présence du mode Audit, de ses raccourcis et de ses boutons tactiles ;
+- la création, la reprise et l’achèvement d’une session d’audit ;
+- les statuts neutre, excellente, à revoir et supprimée ;
+- l’annulation et la restauration d’une suppression ;
+- l’absence de données privées dans le rapport ;
+- l’intégration de l’audit dans les sauvegardes de schéma 8 ;
+- le rendu à 800 × 360, 915 × 412 et 1280 × 720.

@@ -10,6 +10,7 @@ import {
 } from "./core/dom.js";
 import { recordError, state } from "./core/state.js";
 import { initializeHome, renderHomeData } from "./features/home.js";
+import { initializeAudit, openAuditSetup } from "./features/audit/audit-controller.js";
 import {
   initializeCardManager,
   openManageScreen,
@@ -93,6 +94,7 @@ async function init() {
   setFlipped(state.flipped);
 
   initializeCardManager({ onHomeDataChanged: renderHomeData });
+  initializeAudit({ onHomeDataChanged: renderHomeData });
   initializeDrawing({ onAbortMixed: () => finishGame("manual") });
   initializeGame({ onReplay: startFlow, onHome: returnHome });
   el.flipGameButton.addEventListener("click", toggleFlipped);
@@ -101,6 +103,7 @@ async function init() {
   initializeHome({
     onStart: startFlow,
     onManage: openManageScreen,
+    onAudit: openAuditSetup,
     onFlip: toggleFlipped,
     onTestVibration: result => vibrateForResult(result, true),
     onDataChanged: handleDataChanged

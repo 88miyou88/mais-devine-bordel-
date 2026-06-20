@@ -1,0 +1,50 @@
+{
+  "kind": "mdb-editorial-deleted-cards-journal",
+  "schemaVersion": 1,
+  "updatedAt": "2026-06-20",
+  "interpretation": "Une suppression isolée est un indice, pas une règle générale. Les causes induites doivent rester hypothétiques tant que les retours ne convergent pas.",
+  "entries": [
+    {
+      "key": "lyrics::lyrics-037",
+      "modeId": "lyrics",
+      "cardId": "lyrics-037",
+      "firstReportedAt": "2026-06-19T19:38:31.634Z",
+      "lastReportedAt": "2026-06-19T19:38:31.634Z",
+      "reportCount": 1,
+      "card": {
+        "id": "lyrics-037",
+        "boxId": "pop-rap-francais",
+        "active": true,
+        "difficulty": "medium",
+        "prompt": "J’en ai marre de ceux qui pleurent",
+        "answer": "Qui ne roulent qu’à deux à l’heure",
+        "title": "J’en ai marre !",
+        "source": "Alizée"
+      },
+      "inferredReasons": [],
+      "confidence": "low",
+      "decision": "to_reassess"
+    },
+    {
+      "key": "lyrics::lyrics-095",
+      "modeId": "lyrics",
+      "cardId": "lyrics-095",
+      "firstReportedAt": "2026-06-19T19:36:45.810Z",
+      "lastReportedAt": "2026-06-19T19:36:45.810Z",
+      "reportCount": 1,
+      "card": {
+        "id": "lyrics-095",
+        "boxId": "anglais",
+        "active": true,
+        "difficulty": "hard",
+        "prompt": "Beat it, beat it",
+        "answer": "No one wants to be defeated",
+        "title": "Beat It",
+        "source": "Michael Jackson"
+      },
+      "inferredReasons": [],
+      "confidence": "low",
+      "decision": "to_reassess"
+    }
+  ]
+}

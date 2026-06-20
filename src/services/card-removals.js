@@ -206,3 +206,35 @@ export function restoreCardRemovalStore(data) {
   if (!data) return;
   writeCardRemovalStore(data);
 }
+
+export function restoreRemovedCard(modeId, card) {
+  const mode = modeState(modeId);
+  if (!mode || !card?.id) return false;
+  if (!mode.cards.some(item => item.id === card.id)) {
+    const restored = {
+      ...clone(card),
+      origin: card.origin || (mode.officialLibrary?.cards?.some(item => item.id === card.id) ? "official" : "personal"),
+      locallyModified: card.locallyModified === true,
+      active: card.active !== false
+    };
+    const officialOrder = new Map((mode.officialLibrary?.cards || []).map((item, index) => [item.id, index]));
+    const restoredOrder = officialOrder.get(restored.id);
+    if (Number.isInteger(restoredOrder)) {
+      const insertAt = mode.cards.findIndex(item => {
+        const order = officialOrder.get(item.id);
+        return Number.isInteger(order) && order > restoredOrder;
+      });
+      if (insertAt >= 0) mode.cards.splice(insertAt, 0, restored);
+      else mode.cards.push(restored);
+    } else {
+      mode.cards.unshift(restored);
+    }
+  }
+  mode.libraryMeta.deletedOfficialCardIds = (mode.libraryMeta.deletedOfficialCardIds || [])
+    .filter(id => id !== card.id);
+  const store = readCardRemovalStore();
+  store.entries = store.entries.filter(entry => entry.key !== `${modeId}::${card.id}`);
+  writeCardRemovalStore(store);
+  saveMode(modeId);
+  return true;
+}

@@ -60,7 +60,7 @@ function getFilteredCards() {
     if (!search) return true;
     const config = modeConfig(modeId);
     let values;
-    if (config.type === "lyrics") values = [card.prompt, card.answer, card.title, card.source];
+    if (config.type === "lyrics") values = [card.context, card.prompt, card.answer, card.title, card.source];
     else if (config.type === "words") values = [card.prompt, ...(card.forbiddenWords || [])];
     else if (config.type === "drinking") values = [card.prompt, card.mechanic, card.targetType];
     else values = [card.prompt];
@@ -112,7 +112,7 @@ function renderCardList() {
     const subtitle = document.createElement("span");
     if (config.type === "lyrics") {
       title.textContent = card.title;
-      subtitle.textContent = `${card.prompt} … ${card.answer}`;
+      subtitle.textContent = `${card.context ? `${card.context} · ` : ""}${card.prompt} … ${card.answer}`;
     } else if (config.type === "words") {
       title.textContent = card.prompt;
       subtitle.className = "forbidden-preview";

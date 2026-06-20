@@ -521,6 +521,7 @@ export function initializeHome(options = {}) {
   el.freePlayButton.addEventListener("click", () => setPlayType("free"));
   el.multiplayerPlayButton.addEventListener("click", () => setPlayType("multiplayer"));
   el.manageCardsButton.addEventListener("click", () => callbacks.onManage?.());
+  el.openAuditButton.addEventListener("click", () => callbacks.onAudit?.());
   el.selectAllButton.addEventListener("click", selectEverything);
   el.selectNoneButton.addEventListener("click", selectNothing);
   el.globalDifficultyInputs.forEach(input => {

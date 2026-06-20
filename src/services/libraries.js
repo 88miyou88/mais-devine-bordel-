@@ -52,7 +52,8 @@ export function normalizeLibrary(modeId, raw) {
         prompt: String(card.prompt || ""),
         answer: String(card.answer || ""),
         title: String(card.title || ""),
-        source: String(card.source || "")
+        source: String(card.source || ""),
+        context: String(card.context || "")
       };
     }
 
@@ -174,7 +175,8 @@ function sameCardAsOfficial(modeId, localCard, officialCard) {
   if (config.type === "lyrics") {
     return localCard.answer === officialCard.answer &&
       localCard.title === officialCard.title &&
-      localCard.source === officialCard.source;
+      localCard.source === officialCard.source &&
+      String(localCard.context || "") === String(officialCard.context || "");
   }
 
   if (config.type === "words") {
@@ -197,20 +199,28 @@ function sameCardAsOfficial(modeId, localCard, officialCard) {
 }
 
 const AUTO_LIBRARY_MIGRATIONS = {
-  mime: new Set([
-    "2026.06.15-1",
-    "0.9.4-content-mimes-1000-final"
-  ]),
-  drinking: new Set([
-    "2026.06.17-1",
-    "2026.06.17-2"
-  ])
+  lyrics: {
+    target: "2026.06.20-final-revise",
+    from: new Set(["2026.06.15-3"])
+  },
+  mime: {
+    target: "2026.06.19-1",
+    from: new Set(["2026.06.15-1", "0.9.4-content-mimes-1000-final"])
+  },
+  drinking: {
+    target: "2026.06.19-1",
+    from: new Set(["2026.06.17-1", "2026.06.17-2"])
+  }
 };
 
 function shouldAutoMigrateLibrary(modeId, installedVersion, libraryVersion) {
   if (!installedVersion || installedVersion === libraryVersion) return false;
-  return AUTO_LIBRARY_MIGRATIONS[modeId]?.has(String(installedVersion)) === true &&
-    String(libraryVersion) === "2026.06.19-1";
+  const migration = AUTO_LIBRARY_MIGRATIONS[modeId];
+  return Boolean(
+    migration &&
+    migration.from.has(String(installedVersion)) &&
+    String(libraryVersion) === migration.target
+  );
 }
 
 const MIME_LEGACY_CARD_COUNT = 395;
@@ -308,6 +318,13 @@ export function sanitizeMode(modeId, mode, library) {
       origin: card.origin || (officialCardIds.has(String(card.id)) ? "official" : "personal"),
       locallyModified: card.locallyModified === true
     };
+    if (config.type === "lyrics") {
+      normalized.prompt = String(card.prompt || "");
+      normalized.answer = String(card.answer || "");
+      normalized.title = String(card.title || "");
+      normalized.source = String(card.source || "");
+      normalized.context = String(card.context || "");
+    }
     if (config.type === "words") {
       normalized.forbiddenWords = Array.isArray(card.forbiddenWords)
         ? card.forbiddenWords.map(String).filter(Boolean)

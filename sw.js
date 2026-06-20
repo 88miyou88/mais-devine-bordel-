@@ -1,4 +1,4 @@
-const CACHE_NAME = "mdb-v0-9-5-1";
+const CACHE_NAME = "mdb-v0-9-6";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -14,6 +14,7 @@ const APP_FILES = [
   "./assets/styles/screens/drawing.css",
   "./assets/styles/screens/multiplayer.css",
   "./assets/styles/screens/drinking-game.css",
+  "./assets/styles/screens/audit.css",
   "./data/lyrics.json",
   "./data/mimes.json",
   "./data/words.json",
@@ -28,8 +29,10 @@ const APP_FILES = [
   "./src/services/libraries.js",
   "./src/services/backup.js",
   "./src/services/card-removals.js",
+  "./src/services/card-audit.js",
   "./src/services/diagnostics.js",
   "./src/features/home.js",
+  "./src/features/audit/audit-controller.js",
   "./src/features/game/game-controller.js",
   "./src/features/game/timer.js",
   "./src/features/game/swipe.js",

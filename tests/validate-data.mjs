@@ -5,7 +5,7 @@ import path from "node:path";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const libraries = [
-  ["lyrics", "data/lyrics.json", 143],
+  ["lyrics", "data/lyrics.json", 198],
   ["mime", "data/mimes.json", 1000],
   ["words", "data/words.json", 360],
   ["draw", "data/drawings.json", 420],
@@ -19,6 +19,10 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
   const data = JSON.parse(await readFile(path.join(root, relativePath), "utf8"));
   assert.equal(data.modeId, modeId, `${relativePath}: modeId incorrect`);
   assert.ok(data.libraryVersion, `${relativePath}: libraryVersion manquante`);
+  if (modeId === "lyrics") {
+    assert.equal(data.libraryVersion, "2026.06.20-final-revise", `${relativePath}: version Maestro incorrecte`);
+    assert.equal(data.updatedAt, "2026-06-20", `${relativePath}: date Maestro incorrecte`);
+  }
   if (["mime", "drinking"].includes(modeId)) {
     assert.equal(data.libraryVersion, "2026.06.19-1", `${relativePath}: version de bibliothèque V0.9.5 incorrecte`);
     assert.equal(data.updatedAt, "2026-06-19", `${relativePath}: date de bibliothèque V0.9.5 incorrecte`);
@@ -46,6 +50,7 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
     if (modeId === "lyrics") {
       assert.ok(String(card.answer || "").trim(), `${relativePath}: réponse vide pour ${card.id}`);
       assert.ok(String(card.title || "").trim(), `${relativePath}: titre vide pour ${card.id}`);
+      assert.equal(typeof (card.context ?? ""), "string", `${relativePath}: contexte invalide pour ${card.id}`);
     }
     if (modeId === "words") {
       assert.equal(card.forbiddenWords?.length, 5, `${relativePath}: ${card.id} doit avoir cinq mots interdits`);
@@ -87,5 +92,5 @@ for (const [modeId, relativePath, expectedCount] of libraries) {
   console.log(`✓ ${modeId}: ${data.cards.length} cartes, ${data.boxes.length} catégories`);
 }
 
-assert.equal(totalCards, 2973, "Total de cartes inattendu");
+assert.equal(totalCards, 3028, "Total de cartes inattendu");
 console.log(`✓ Total: ${totalCards} cartes`);

@@ -165,6 +165,8 @@ function renderGameCard() {
   el.gameCard.classList.remove("forbidden-hidden");
 
   if (config.type === "lyrics") {
+    el.lyricsContextText.textContent = card.context || "";
+    el.lyricsContextText.classList.toggle("hidden", !String(card.context || "").trim());
     el.promptText.textContent = card.prompt;
     el.answerText.textContent = card.answer;
     el.cardMetaPrimary.textContent = card.title;
@@ -198,7 +200,7 @@ function fitCardContent() {
   if (!card) return;
   const config = modeConfig(card.modeId);
   let length = card.prompt.length;
-  if (config.type === "lyrics") length += card.answer.length;
+  if (config.type === "lyrics") length += card.answer.length + String(card.context || "").length * 0.65;
   if (config.type === "words" && state.settings.modeOptions.words.showForbiddenWords) {
     length += (card.forbiddenWords || []).join(" ").length * 0.55;
   }

@@ -9,15 +9,16 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
-  <link rel="stylesheet" href="./assets/styles/foundation.css?v=0951">
-  <link rel="stylesheet" href="./assets/styles/components.css?v=0951">
-  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=0951">
-  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=0951">
-  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=0951">
-  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=0951">
-  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=0951">
-  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=0951">
-  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=0951">
+  <link rel="stylesheet" href="./assets/styles/foundation.css?v=096">
+  <link rel="stylesheet" href="./assets/styles/components.css?v=096">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=096">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=096">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=096">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=096">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=096">
+  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=096">
+  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=096">
+  <link rel="stylesheet" href="./assets/styles/screens/audit.css?v=096">
 </head>
 <body>
   <main id="app">
@@ -120,6 +121,7 @@
                   </div>
 
                   <div class="advanced-actions">
+                    <button id="openAuditButton" class="primary-button compact-button" type="button">Auditer les cartes</button>
                     <button id="checkLibrariesButton" class="secondary-button compact-button" type="button">Vérifier les mises à jour</button>
                     <button id="updateLibrariesButton" class="primary-button compact-button" type="button" disabled>Mettre à jour les bibliothèques</button>
                     <button id="exportBackupButton" class="secondary-button compact-button" type="button">Exporter une sauvegarde</button>
@@ -378,6 +380,140 @@
       </div>
     </section>
 
+    <section id="auditSetupScreen" class="screen audit-screen">
+      <div class="audit-shell audit-setup-shell">
+        <header class="audit-header">
+          <button id="auditHomeButton" class="secondary-button compact-button" type="button">← Accueil</button>
+          <div>
+            <p class="eyebrow">Contrôle éditorial</p>
+            <h2>Audit des cartes</h2>
+            <p>Parcours les bibliothèques sans chrono ni score. La progression est enregistrée automatiquement.</p>
+          </div>
+        </header>
+
+        <div class="audit-setup-grid">
+          <section class="audit-panel">
+            <label class="audit-field">
+              <span>Mode à auditer</span>
+              <select id="auditModeSelect" class="select-input"></select>
+            </label>
+            <label class="audit-field">
+              <span>Cartes à afficher</span>
+              <select id="auditScopeSelect" class="select-input">
+                <option value="unseen">Pas encore évaluées</option>
+                <option value="all">Toutes les cartes conservées</option>
+                <option value="neutral">Cartes neutres</option>
+                <option value="liked">Cartes excellentes</option>
+                <option value="review">Cartes à revoir</option>
+              </select>
+            </label>
+            <div class="audit-filter-heading">
+              <strong>Difficultés</strong>
+            </div>
+            <div id="auditDifficultyChoices" class="audit-choice-grid audit-difficulty-grid"></div>
+          </section>
+
+          <section class="audit-panel audit-categories-panel">
+            <div class="audit-filter-heading">
+              <div>
+                <strong>Catégories</strong>
+                <small>Les cartes restent dans l’ordre de la bibliothèque.</small>
+              </div>
+              <div class="section-mini-actions">
+                <button id="auditSelectAllCategoriesButton" class="mini-button" type="button">Tout</button>
+                <button id="auditSelectNoCategoriesButton" class="mini-button" type="button">Aucun</button>
+              </div>
+            </div>
+            <div id="auditCategoryChoices" class="audit-choice-grid audit-category-grid"></div>
+          </section>
+        </div>
+
+        <section class="audit-summary-panel">
+          <div>
+            <strong id="auditSetupCount">0 carte dans cette sélection</strong>
+            <p id="auditSetupStats">Aucune carte auditée.</p>
+          </div>
+          <div class="audit-setup-actions">
+            <button id="startAuditButton" class="primary-button" type="button">Commencer un nouvel audit</button>
+            <button id="resumeAuditButton" class="secondary-button hidden" type="button">Reprendre l’audit</button>
+            <button id="exportAuditButton" class="secondary-button" type="button">Télécharger le rapport d’audit</button>
+            <button id="exportCleanLibraryButton" class="secondary-button" type="button">Exporter le JSON nettoyé</button>
+            <button id="clearAuditModeButton" class="danger-button" type="button">Effacer les statuts de ce mode</button>
+          </div>
+          <small>Une carte supprimée disparaît immédiatement de cet appareil. Le JSON officiel sur GitHub ne change qu’après intégration dans une future mise à jour.</small>
+        </section>
+
+        <section id="auditDeletedSection" class="audit-panel audit-deleted-section hidden">
+          <div class="audit-filter-heading">
+            <div>
+              <strong>Cartes supprimées localement</strong>
+              <small>Elles peuvent être restaurées avant la publication d’un nouveau JSON officiel.</small>
+            </div>
+          </div>
+          <div id="auditDeletedCardsList" class="audit-deleted-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="auditReviewScreen" class="screen audit-screen">
+      <div class="audit-review-shell">
+        <header class="audit-review-hud">
+          <button id="auditExitButton" class="secondary-button compact-button" type="button">Quitter</button>
+          <span id="auditModeLabel" class="audit-mode-label">AUDIT</span>
+          <strong id="auditProgress">1 / 1</strong>
+          <span id="auditStatusBadge" class="audit-status-badge" data-status="seen">Vue</span>
+        </header>
+
+        <article id="auditCard" class="audit-card" aria-live="polite">
+          <div id="auditLyricsContent" class="audit-card-content">
+            <p id="auditLyricsContext" class="audit-lyrics-context hidden"></p>
+            <p id="auditLyricsPrompt" class="audit-lyrics-prompt"></p>
+            <div class="audit-separator">…</div>
+            <p id="auditLyricsAnswer" class="audit-lyrics-answer"></p>
+          </div>
+
+          <div id="auditSimpleContent" class="audit-card-content hidden">
+            <p id="auditSimplePrompt" class="audit-simple-prompt"></p>
+          </div>
+
+          <div id="auditWordsContent" class="audit-card-content hidden">
+            <p id="auditWordPrompt" class="audit-simple-prompt"></p>
+            <div class="audit-forbidden-block">
+              <span>MOTS INTERDITS</span>
+              <div id="auditForbiddenWords" class="forbidden-words-list"></div>
+            </div>
+          </div>
+
+          <div class="audit-card-meta">
+            <strong id="auditMetaPrimary"></strong>
+            <span id="auditMetaSecondary"></span>
+          </div>
+        </article>
+
+        <section id="auditCompletionPanel" class="audit-completion-panel hidden">
+          <p class="eyebrow">Bibliothèque parcourue</p>
+          <h2>Audit terminé</h2>
+          <p>Le rapport contient les cartes vues, neutres, excellentes, à revoir et supprimées.</p>
+          <div class="dialog-actions">
+            <button id="auditCompletionBackButton" class="secondary-button" type="button">Retour aux filtres</button>
+            <button id="auditCompletionExportButton" class="primary-button" type="button">Télécharger le rapport</button>
+          </div>
+        </section>
+
+        <footer id="auditActionBar" class="audit-action-bar">
+          <button id="auditBackButton" class="audit-action secondary-button" type="button" disabled><kbd>←</kbd><span>Retour</span></button>
+          <button id="auditNeutralButton" class="audit-action secondary-button" type="button"><kbd>Espace / →</kbd><span>Neutre · suivante</span></button>
+          <button id="auditLikeButton" class="audit-action audit-like-button" type="button"><kbd>L</kbd><span>Excellente</span></button>
+          <button id="auditReviewButton" class="audit-action audit-review-button" type="button"><kbd>R</kbd><span>À revoir</span></button>
+          <button id="auditDeleteButton" class="audit-action danger-button" type="button"><kbd>S / Suppr</kbd><span>Supprimer</span></button>
+        </footer>
+
+        <p id="auditKeyboardHelp" class="audit-keyboard-help">
+          Clavier : <kbd>←</kbd> retour · <kbd>Espace</kbd> ou <kbd>→</kbd> neutre · <kbd>L</kbd> excellente · <kbd>R</kbd> à revoir · <kbd>S</kbd> ou <kbd>Suppr</kbd> supprimer · <kbd>Échap</kbd> quitter. Sur téléphone, touche les boutons correspondants.
+        </p>
+      </div>
+    </section>
+
     <section id="manageScreen" class="screen">
       <div class="manage-card">
         <header class="manage-header">
@@ -441,6 +577,7 @@
           </button>
 
           <div id="lyricsGameContent" class="mode-card-content">
+            <p id="lyricsContextText" class="lyrics-context-text hidden"></p>
             <p id="promptText" class="prompt-text"></p>
             <div class="separator">…</div>
             <p id="answerText" class="answer-text"></p>
@@ -769,6 +906,17 @@
     </form>
   </dialog>
 
+  <dialog id="auditReasonDialog" class="editor-dialog audit-reason-dialog">
+    <form method="dialog">
+      <div class="dialog-header">
+        <h2 id="auditReasonDialogTitle">Pourquoi cette carte ?</h2>
+        <button id="closeAuditReasonButton" class="close-button" type="button" aria-label="Fermer">×</button>
+      </div>
+      <p class="dialog-note">Le motif est facultatif. Un clic suffit pour enregistrer la décision et passer à la carte suivante.</p>
+      <div id="auditReasonChoices" class="audit-reason-choices"></div>
+    </form>
+  </dialog>
+
   <dialog id="cardDialog" class="editor-dialog">
     <form id="cardForm">
       <div class="dialog-header">
@@ -780,6 +928,10 @@
       <input id="cardModeInput" type="hidden">
 
       <div id="lyricsEditorFields">
+        <label>
+          Contexte gris facultatif
+          <textarea id="cardContextInput" rows="2" placeholder="Phrase précédente ou indice très court"></textarea>
+        </label>
         <label>
           Paroles à chanter
           <textarea id="cardPromptInput" rows="2" placeholder="Libérée, délivrée"></textarea>
@@ -910,7 +1062,7 @@
 
   <script>
     (() => {
-      const VERSION_TOKEN = "0951";
+      const VERSION_TOKEN = "096";
       const recovery = document.querySelector("#bootRecovery");
       const message = document.querySelector("#bootRecoveryMessage");
       let bootFinished = false;
@@ -964,7 +1116,7 @@
     })();
   </script>
   <script type="module" data-mdb-bootstrap>
-    import("./src/main.js?v=0951").catch(error => window.MDB_BOOT_FAILURE(error));
+    import("./src/main.js?v=096").catch(error => window.MDB_BOOT_FAILURE(error));
   </script>
 </body>
 </html>
