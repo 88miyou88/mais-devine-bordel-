@@ -1,0 +1,5906 @@
+{
+  "schemaVersion": 2,
+  "libraryVersion": "2026.06.20-audit-1",
+  "updatedAt": "2026-06-20",
+  "modeId": "mime",
+  "modeName": "Mimer",
+  "auditPolicy": {
+    "newCardsRequireAudit": true,
+    "approvedStatuses": [
+      "approved"
+    ],
+    "hiddenStatuses": [
+      "pending",
+      "review"
+    ]
+  },
+  "retiredOfficialCardIds": [
+    "mime-322",
+    "mime-923"
+  ],
+  "boxes": [
+    {
+      "id": "animals",
+      "name": "Animaux"
+    },
+    {
+      "id": "jobs",
+      "name": "Métiers"
+    },
+    {
+      "id": "sports",
+      "name": "Sports et loisirs"
+    },
+    {
+      "id": "daily",
+      "name": "Actions du quotidien"
+    },
+    {
+      "id": "emotions",
+      "name": "Réactions visibles"
+    },
+    {
+      "id": "characters",
+      "name": "Personnages et univers connus"
+    },
+    {
+      "id": "objects",
+      "name": "Objets et machines"
+    },
+    {
+      "id": "absurd",
+      "name": "Situations absurdes"
+    },
+    {
+      "id": "expressions",
+      "name": "Expressions et situations à interpréter"
+    },
+    {
+      "id": "parties",
+      "name": "Soirées et fêtes"
+    },
+    {
+      "id": "tech",
+      "name": "Galères technologiques"
+    },
+    {
+      "id": "transport",
+      "name": "Transports et voyages"
+    },
+    {
+      "id": "food",
+      "name": "Cuisine et nourriture"
+    },
+    {
+      "id": "awkward",
+      "name": "Situations gênantes et catastrophes"
+    },
+    {
+      "id": "school_work",
+      "name": "École, travail et réunions"
+    },
+    {
+      "id": "home_diy",
+      "name": "Maison, ménage et bricolage"
+    },
+    {
+      "id": "nature_adventure",
+      "name": "Nature et aventure"
+    },
+    {
+      "id": "health_first_aid",
+      "name": "Santé et premiers secours"
+    },
+    {
+      "id": "music_stage",
+      "name": "Musique, scène et spectacle"
+    },
+    {
+      "id": "shops_public",
+      "name": "Magasins et lieux publics"
+    },
+    {
+      "id": "uncategorized",
+      "name": "Sans catégorie",
+      "protected": true
+    }
+  ],
+  "cards": [
+    {
+      "id": "mime-001",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un éléphant",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "58bf035c5c796437"
+    },
+    {
+      "id": "mime-002",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un singe",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "aca1a8dc79508e3a"
+    },
+    {
+      "id": "mime-003",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un kangourou",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "da20239bdffc2aef"
+    },
+    {
+      "id": "mime-004",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un serpent",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "124bd491ee7ae1f8"
+    },
+    {
+      "id": "mime-005",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un pingouin",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "b8d8578a086aefc2"
+    },
+    {
+      "id": "mime-006",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Une poule",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "c962c9a75ad42ee4"
+    },
+    {
+      "id": "mime-007",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un poisson",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "d33f63cbd362f2a9"
+    },
+    {
+      "id": "mime-008",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un gorille qui se frappe la poitrine",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "3bfa8a8c55b409d6"
+    },
+    {
+      "id": "mime-009",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un canard qui marche en se dandinant",
+      "difficulty": "easy",
+      "auditStatus": "review",
+      "auditFingerprint": "3daff93b7d814000"
+    },
+    {
+      "id": "mime-010",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un lapin qui mange une carotte",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "3e84516e046f7ee8"
+    },
+    {
+      "id": "mime-011",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un chien qui réclame une friandise",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "d50238eb8f9c0d6d"
+    },
+    {
+      "id": "mime-012",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un chat qui joue avec une pelote de laine",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "efe1ce35f71e3b55"
+    },
+    {
+      "id": "mime-013",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un paresseux",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "b0393cfcb4a4644c"
+    },
+    {
+      "id": "mime-014",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un crabe",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "7ba2156a04f7fce2"
+    },
+    {
+      "id": "mime-015",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un flamant rose",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "c4144e9efe1e2706"
+    },
+    {
+      "id": "mime-016",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Une grenouille",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "4870a2a27127b47d"
+    },
+    {
+      "id": "mime-017",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un écureuil",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "a949b04d6ce9e100"
+    },
+    {
+      "id": "mime-018",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un cheval qui galope",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "971c4409266983d6"
+    },
+    {
+      "id": "mime-019",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un chat qui fait sa toilette",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "a074ecd2da39dddc"
+    },
+    {
+      "id": "mime-020",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un lama qui crache",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "c846d0a5f8fb92c1"
+    },
+    {
+      "id": "mime-021",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un hérisson qui se met en boule",
+      "difficulty": "medium",
+      "auditStatus": "review",
+      "auditFingerprint": "d4c58539bcad51cb"
+    },
+    {
+      "id": "mime-022",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un coq qui chante en battant des ailes",
+      "difficulty": "medium",
+      "auditStatus": "review",
+      "auditFingerprint": "b742f91ec050f152"
+    },
+    {
+      "id": "mime-023",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Une loutre qui ouvre un coquillage sur son ventre",
+      "difficulty": "hard",
+      "auditStatus": "review",
+      "auditFingerprint": "bb61ccc327670ce2"
+    },
+    {
+      "id": "mime-024",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un cheval qui refuse d’avancer",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "c91bbc173c96b47e"
+    },
+    {
+      "id": "mime-025",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un chien qui tourne en rond pour attraper sa queue",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "04dd5c3e044c415d"
+    },
+    {
+      "id": "mime-026",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un paon qui fait la roue",
+      "difficulty": "medium",
+      "auditStatus": "review",
+      "auditFingerprint": "624bc85232528168"
+    },
+    {
+      "id": "mime-027",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Une chauve-souris suspendue la tête en bas",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "b243eaf52e07dab9"
+    },
+    {
+      "id": "mime-028",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un caméléon qui attrape une mouche avec sa langue",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "d3e81275a175edfc"
+    },
+    {
+      "id": "mime-029",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un ours qui plonge la patte dans une ruche",
+      "difficulty": "medium",
+      "auditStatus": "review",
+      "auditFingerprint": "3556179206561bb9"
+    },
+    {
+      "id": "mime-030",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Une araignée qui tisse sa toile",
+      "difficulty": "medium",
+      "auditStatus": "review",
+      "auditFingerprint": "77f8d25539156e06"
+    },
+    {
+      "id": "mime-031",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un chien qui se secoue",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "94e0cc93f20e250e"
+    },
+    {
+      "id": "mime-032",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un chat qui essaie d’attraper un insecte",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "208c83fe95695fb9"
+    },
+    {
+      "id": "mime-033",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Un ours qui se gratte le dos contre un arbre",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "5239fb2e077b59b7"
+    },
+    {
+      "id": "mime-034",
+      "boxId": "animals",
+      "active": true,
+      "prompt": "Une poule qui pond un œuf",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "2558f7a41f402c75"
+    },
+    {
+      "id": "mime-036",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un médecin",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "7af8de175c4c52b3"
+    },
+    {
+      "id": "mime-037",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un pompier",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "6df82719f2fca5f4"
+    },
+    {
+      "id": "mime-038",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un policier",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "7e587e8320cec928"
+    },
+    {
+      "id": "mime-039",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un cuisinier",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "58dbbed50eaada45"
+    },
+    {
+      "id": "mime-040",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un coiffeur",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "b4bb444ca3afd74e"
+    },
+    {
+      "id": "mime-041",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un professeur",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "fffe099f5f5142a8"
+    },
+    {
+      "id": "mime-042",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un serveur",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "9b40cc0dc1b6c808"
+    },
+    {
+      "id": "mime-043",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un boulanger qui pétrit du pain",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "1e8d3699ee08b896"
+    },
+    {
+      "id": "mime-044",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un barman qui prépare un cocktail",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "7f630b0942164c29"
+    },
+    {
+      "id": "mime-045",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un DJ qui mixe de la musique",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "821b56873758ef21"
+    },
+    {
+      "id": "mime-046",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un peintre qui repeint un mur",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "48949ea2a57c4df4"
+    },
+    {
+      "id": "mime-047",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un pilote d’avion",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "386d36cca0597f71"
+    },
+    {
+      "id": "mime-048",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un sculpteur qui taille une statue",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "afd5321f71a94e03"
+    },
+    {
+      "id": "mime-049",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un mécanicien",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "207b86de8836c5b1"
+    },
+    {
+      "id": "mime-050",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un dentiste",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "259779b122eddcfe"
+    },
+    {
+      "id": "mime-051",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un facteur",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "53ba3da476e0945e"
+    },
+    {
+      "id": "mime-052",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un jardinier",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "e9470bee84585cbc"
+    },
+    {
+      "id": "mime-053",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un magicien",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "f6a8b9155478aa2e"
+    },
+    {
+      "id": "mime-054",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un chef d’orchestre",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "ff1dc1d6f6c35211"
+    },
+    {
+      "id": "mime-055",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un caissier qui scanne une longue file d’articles",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "a6ace2e072b2f49a"
+    },
+    {
+      "id": "mime-056",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un plombier qui répare une fuite",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "f8de732b98405a18"
+    },
+    {
+      "id": "mime-057",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un maître-nageur qui surveille",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "cfcf95ff0e81a773"
+    },
+    {
+      "id": "mime-058",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un serveur qui porte beaucoup d’assiettes",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "b7db74c34295259e"
+    },
+    {
+      "id": "mime-059",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un journaliste qui interviewe quelqu’un",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "869564860daf8752"
+    },
+    {
+      "id": "mime-060",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un contrôleur de train qui vérifie les billets",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "f5cf7e8bd5d78827"
+    },
+    {
+      "id": "mime-061",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un vétérinaire qui soigne un cheval",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "6ce3cda5075aa632"
+    },
+    {
+      "id": "mime-063",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un agent secret en mission",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "01ac2b5d95648396"
+    },
+    {
+      "id": "mime-064",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un astronaute qui marche sur la Lune",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "f9159b101e1f4167"
+    },
+    {
+      "id": "mime-066",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un coiffeur qui coupe une mèche beaucoup trop courte",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "00d0dbc8f8965ac1"
+    },
+    {
+      "id": "mime-067",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un serveur qui renverse une boisson",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "c1140e5eb1449265"
+    },
+    {
+      "id": "mime-069",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un photographe qui fait prendre la pose à tout le monde",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "a1ca87ae77f60061"
+    },
+    {
+      "id": "mime-070",
+      "boxId": "jobs",
+      "active": true,
+      "prompt": "Un dentiste qui essaie d’arracher une dent",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "cb50a9ed44112087"
+    },
+    {
+      "id": "mime-071",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Jouer au football",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "9c5c7d3f8d583ef1"
+    },
+    {
+      "id": "mime-072",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Jouer au tennis",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "912536fae6e0176d"
+    },
+    {
+      "id": "mime-073",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire du vélo",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "ac2e8ebedc5f1550"
+    },
+    {
+      "id": "mime-074",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Nager",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "33ab5dad0cfd1049"
+    },
+    {
+      "id": "mime-075",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire du ski",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "c20a08b0b7f395f8"
+    },
+    {
+      "id": "mime-076",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Jouer au basket",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "846a743f4d2b74b8"
+    },
+    {
+      "id": "mime-077",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire de la boxe",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "7ec6982cd196624f"
+    },
+    {
+      "id": "mime-078",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Jouer au badminton",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "321586c396832030"
+    },
+    {
+      "id": "mime-079",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire de la musculation",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "ffcd1f4bd192c97d"
+    },
+    {
+      "id": "mime-080",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Jouer au billard",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "69e3a68ee2a56ddb"
+    },
+    {
+      "id": "mime-081",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Aller à la pêche",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "82cf85ebaea75767"
+    },
+    {
+      "id": "mime-082",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Danser la salsa",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "07f4ecb559a587e1"
+    },
+    {
+      "id": "mime-083",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire de l’escalade",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "180878093c9b93ae"
+    },
+    {
+      "id": "mime-084",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire du bowling",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "291392994a0a7cac"
+    },
+    {
+      "id": "mime-085",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Jouer au golf",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "32a4ff50ad46288e"
+    },
+    {
+      "id": "mime-086",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire du patinage artistique",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "74318bbc142a7720"
+    },
+    {
+      "id": "mime-087",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Tirer à l’arc",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "96c0b93ff82c2362"
+    },
+    {
+      "id": "mime-088",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire du surf",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "6c862fb48b85d079"
+    },
+    {
+      "id": "mime-089",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Jouer au ping-pong",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "cb3c201dd09d531d"
+    },
+    {
+      "id": "mime-090",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Participer à une course en sac",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "6286cb9bbfea2994"
+    },
+    {
+      "id": "mime-091",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire une partie de pétanque",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "f236a8b365529917"
+    },
+    {
+      "id": "mime-092",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Jongler avec plusieurs balles",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "4b72ae01f85c6bb1"
+    },
+    {
+      "id": "mime-093",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Chanter au karaoké",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "acb4725d97cb7ae9"
+    },
+    {
+      "id": "mime-094",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Lancer une boule de bowling",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "be500d7eb88708ee"
+    },
+    {
+      "id": "mime-096",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire du trampoline",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "9e55276d73fcd709"
+    },
+    {
+      "id": "mime-097",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire une course à cheval",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "e8414cf02c984158"
+    },
+    {
+      "id": "mime-098",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Faire du yoga",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "083f33ade9c9cb34"
+    },
+    {
+      "id": "mime-100",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Un footballeur qui rate un but",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "7d11f4a69926f826"
+    },
+    {
+      "id": "mime-1000",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Ramasser ses pièces au sol",
+      "auditStatus": "approved",
+      "auditFingerprint": "9c4cb28220999b71"
+    },
+    {
+      "id": "mime-101",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Un cycliste qui a crevé",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "1f02b9e5d753ff3c"
+    },
+    {
+      "id": "mime-102",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Un skieur qui tombe",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "ba24a847ad7f6750"
+    },
+    {
+      "id": "mime-103",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Un boxeur qui esquive plusieurs coups",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "d081954a6730acd7"
+    },
+    {
+      "id": "mime-105",
+      "boxId": "sports",
+      "active": true,
+      "prompt": "Un gardien de but qui arrête le ballon",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "44a491ba4bdb4183"
+    },
+    {
+      "id": "mime-106",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Se brosser les dents",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "148a2df290e5477a"
+    },
+    {
+      "id": "mime-107",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Prendre une douche",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "7bbe84c1684855aa"
+    },
+    {
+      "id": "mime-108",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Se maquiller",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "8954545d06adc742"
+    },
+    {
+      "id": "mime-109",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire la vaisselle",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "758122d07af139c3"
+    },
+    {
+      "id": "mime-110",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Passer l’aspirateur",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "1112fb4d8811a63e"
+    },
+    {
+      "id": "mime-111",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Se réveiller",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "a37134303ee3f1f6"
+    },
+    {
+      "id": "mime-112",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "S’habiller",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "bff21eb833d1066c"
+    },
+    {
+      "id": "mime-113",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Se sécher les cheveux",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "b1169ac8c74b975d"
+    },
+    {
+      "id": "mime-114",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Mettre ses chaussures",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "7f5f75dbe100d1b5"
+    },
+    {
+      "id": "mime-115",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Préparer un café",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "c05feb396e2ac299"
+    },
+    {
+      "id": "mime-116",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Se couper les ongles",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "2f1cd4d436495276"
+    },
+    {
+      "id": "mime-117",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Fermer les rideaux",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "aea610e3d270808e"
+    },
+    {
+      "id": "mime-118",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Monter un meuble",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "34ad4f212fb552e0"
+    },
+    {
+      "id": "mime-119",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Changer une ampoule",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "b1b0033c4c295196"
+    },
+    {
+      "id": "mime-120",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Chercher ses clés",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "e7e6e22af32313b8"
+    },
+    {
+      "id": "mime-121",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Ouvrir un cadeau",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "e219a17fa1f30585"
+    },
+    {
+      "id": "mime-122",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire ses courses",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "f540d810a26df54a"
+    },
+    {
+      "id": "mime-123",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Prendre un selfie",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "f4b3c677f0e33d0f"
+    },
+    {
+      "id": "mime-124",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Essayer un pantalon trop petit",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "575622f92598213f"
+    },
+    {
+      "id": "mime-125",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Essayer de démêler ses cheveux",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "9955713c03360cb6"
+    },
+    {
+      "id": "mime-127",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Mettre une housse de couette",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "22c9b12bcd76a794"
+    },
+    {
+      "id": "mime-128",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Essayer de fermer une valise trop pleine",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "d2cf2d930a56f3cb"
+    },
+    {
+      "id": "mime-130",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Marcher sur un Lego",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "c9c41d4741448f81"
+    },
+    {
+      "id": "mime-131",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Essayer d’attraper quelque chose sous un meuble",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "0cc26266d636c37b"
+    },
+    {
+      "id": "mime-132",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Quitter une pièce sur la pointe des pieds",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "3f5a4be0ff174390"
+    },
+    {
+      "id": "mime-133",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Porter trop de sacs (de courses)",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "07bd6bc7d5616ab3"
+    },
+    {
+      "id": "mime-134",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Tenter de dormir avec un moustique dans la chambre",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "bad9662e98be904f"
+    },
+    {
+      "id": "mime-137",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Se lever d’un lit en essayant de ne faire aucun bruit",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "3a59d7323a08d656"
+    },
+    {
+      "id": "mime-138",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Essayer d’attraper un insecte avec un verre",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "1c91d4274a643499"
+    },
+    {
+      "id": "mime-139",
+      "boxId": "daily",
+      "active": true,
+      "prompt": "Faire tomber quelque chose et essayer de le rattraper avec le pied",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "36b5688e7286a0e1"
+    },
+    {
+      "id": "mime-141",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Sauter de joie",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "f1e4c482208ede3f"
+    },
+    {
+      "id": "mime-143",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Se brûler la langue avec un aliment trop chaud",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "e88fab62e2b3a437"
+    },
+    {
+      "id": "mime-146",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Envoyer des bisous",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "3c1f466039e6e626"
+    },
+    {
+      "id": "mime-147",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Lutter pour ne pas s’endormir",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "681e3c1575d83eb6"
+    },
+    {
+      "id": "mime-148",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Attendre quelqu’un en retard (et regarder l’heure sans arrêt)",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "1249391256b20a6e"
+    },
+    {
+      "id": "mime-150",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Essayer d’enfiler un fil dans une aiguille",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "6e41f3d5f2a2ff48"
+    },
+    {
+      "id": "mime-151",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "S’installer dans un transat avec une boisson",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "77831bfe1d9e10f1"
+    },
+    {
+      "id": "mime-152",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Goûter un plat vraiment infect",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "a4f3ab32d6b4ddcd"
+    },
+    {
+      "id": "mime-156",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Montrer un trophée à tout le monde (et prendre la pose)",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "e00a8aeab77006b0"
+    },
+    {
+      "id": "mime-159",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "S’endormir assis puis se réveiller d’un coup",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "d3bb716931a93e85"
+    },
+    {
+      "id": "mime-162",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Traverser une pièce dans le noir en avançant à tâtons",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "7bc24658c622a4b2"
+    },
+    {
+      "id": "mime-163",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Essayer de ne pas rire",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "4a1f54959620c045"
+    },
+    {
+      "id": "mime-164",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Retrouver ses clés après les avoir cherchées partout",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "c45b6b5e26b8c83f"
+    },
+    {
+      "id": "mime-168",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Sursauter (après avoir entendu un bruit)",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "77966bc366416db1"
+    },
+    {
+      "id": "mime-170",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Se ronger les ongles",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "ea6cdb9cdb87ee66"
+    },
+    {
+      "id": "mime-172",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Ouvrir un paquet de chips presque vide, (le secouer et regarder dedans plusieurs fois)",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "0b2d5896d846d8f2"
+    },
+    {
+      "id": "mime-174",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Regarder un film d’horreur",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "5117ceb863431e8d"
+    },
+    {
+      "id": "mime-175",
+      "boxId": "emotions",
+      "active": true,
+      "prompt": "Renverser un verre et l’éponger en catastrophe",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "5181d5bb85fe9df2"
+    },
+    {
+      "id": "mime-176",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Spider-Man",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "ef6ae2bbe3734117"
+    },
+    {
+      "id": "mime-177",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Harry Potter",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "915d77dbab3e7def"
+    },
+    {
+      "id": "mime-178",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Dark Vador",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "dc4a179f604ed2db"
+    },
+    {
+      "id": "mime-180",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Superman",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "36c4d2522ae629a1"
+    },
+    {
+      "id": "mime-183",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Batman",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "ff1ceeb566111b75"
+    },
+    {
+      "id": "mime-185",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Tarzan",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "b516e3416e7a9dfc"
+    },
+    {
+      "id": "mime-186",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Pinocchio",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "e1c36269dba75c72"
+    },
+    {
+      "id": "mime-187",
+      "boxId": "characters",
+      "active": false,
+      "prompt": "Aladdin (sur son tapis volant)",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "a2034fac830bc7ab"
+    },
+    {
+      "id": "mime-189",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Jack Sparrow",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "88372d3d2e5a7973"
+    },
+    {
+      "id": "mime-191",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Hulk",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "8c68fba462a073bb"
+    },
+    {
+      "id": "mime-193",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Mr Bean",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "dee243b3dda699e0"
+    },
+    {
+      "id": "mime-195",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Wolverine (qui sort ses griffes)",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "760573dd13878ebe"
+    },
+    {
+      "id": "mime-200",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Gollum (qui cherche son précieux)",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "4a6a10e82c768d53"
+    },
+    {
+      "id": "mime-201",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Voldemort (qui lance un sort)",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "388366fb6a0fd4b5"
+    },
+    {
+      "id": "mime-202",
+      "boxId": "shops_public",
+      "active": true,
+      "prompt": "Monter les escaliers",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "7a229732acae6470"
+    },
+    {
+      "id": "mime-203",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Matrix",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "0fb3c0a66f95d786"
+    },
+    {
+      "id": "mime-204",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "mélanger des cartes",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "2b198901e44fe948"
+    },
+    {
+      "id": "mime-206",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "Gandalf (qui empêche quelqu’un de passer)",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "fcf9906c02317f9f"
+    },
+    {
+      "id": "mime-207",
+      "boxId": "characters",
+      "active": true,
+      "prompt": "E.T. (qui tend son doigt)",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "0adf22fc159e7dd1"
+    },
+    {
+      "id": "mime-211",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Utiliser un téléphone",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "dc9b9f01c7232a55"
+    },
+    {
+      "id": "mime-212",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Utiliser un fer à repasser",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "85ff88a28131b4c5"
+    },
+    {
+      "id": "mime-213",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Utiliser un marteau-piqueur",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "3eb3d96b4807d33a"
+    },
+    {
+      "id": "mime-214",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Éteindre un réveil",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "6e6f381a6f2c1ff1"
+    },
+    {
+      "id": "mime-215",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Ouvrir un parapluie",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "c6bd6a1d8fdb436c"
+    },
+    {
+      "id": "mime-216",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Utiliser une machine à laver",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "163c5dd7d8d7ab0b"
+    },
+    {
+      "id": "mime-218",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Utiliser un grille-pain",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "bc04f4295ad9a41f"
+    },
+    {
+      "id": "mime-219",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Utiliser un sèche-cheveux",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "889dcd3463b40fc1"
+    },
+    {
+      "id": "mime-220",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Faire de la trottinette",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "b44f631e1d542993"
+    },
+    {
+      "id": "mime-221",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Passer une tondeuse à gazon",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "c6cc0bc314255f6d"
+    },
+    {
+      "id": "mime-224",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Un robot (qui marche)",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "c0ca92b26643758d"
+    },
+    {
+      "id": "mime-225",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Utiliser une tronçonneuse",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "75bed471364cffcf"
+    },
+    {
+      "id": "mime-226",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Utiliser un détecteur de métaux",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "a7f7dc7c703891b5"
+    },
+    {
+      "id": "mime-227",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Utiliser une machine à café",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "a9461111cc3620b5"
+    },
+    {
+      "id": "mime-228",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "(utiliser) un distributeur automatique",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "0933f7fbfa0aca4a"
+    },
+    {
+      "id": "mime-229",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Piloter un drone",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "684ecb61165df67f"
+    },
+    {
+      "id": "mime-233",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Une porte automatique qui refuse de s’ouvrir",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "549ca592208497e2"
+    },
+    {
+      "id": "mime-234",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Régler un pied de micro qui descend tout seul",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "f7ab80b609e502b5"
+    },
+    {
+      "id": "mime-235",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Monter un escalator à contre-sens",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "0946cece8796ea5a"
+    },
+    {
+      "id": "mime-237",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Être coincé dans un ascenseur",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "b8ddc68c4a2025c6"
+    },
+    {
+      "id": "mime-238",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Essayer de démarrer une voiture (qui refuse de démarrer)",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "82cce42e9dc63039"
+    },
+    {
+      "id": "mime-240",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Compter la monnaie",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "1abf3a14354889a3"
+    },
+    {
+      "id": "mime-241",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Tirer une valise à roulettes",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "0a6c844ef16b1d2c"
+    },
+    {
+      "id": "mime-242",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Utiliser un casque de réalité virtuelle",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "03074e27e118afbd"
+    },
+    {
+      "id": "mime-243",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "Frapper une télécommande pour qu’elle fonctionne",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "facccbbe91000b47"
+    },
+    {
+      "id": "mime-245",
+      "boxId": "objects",
+      "active": true,
+      "prompt": "(Utiliser) un parapluie",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "e8ecccb7bb574dce"
+    },
+    {
+      "id": "mime-246",
+      "boxId": "absurd",
+      "active": true,
+      "prompt": "Un kangourou qui fait ses courses",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "8c4039b2704d4888"
+    },
+    {
+      "id": "mime-247",
+      "boxId": "absurd",
+      "active": true,
+      "prompt": "Un chat qui conduit une voiture",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "e40b5274f7c9ea43"
+    },
+    {
+      "id": "mime-248",
+      "boxId": "absurd",
+      "active": true,
+      "prompt": "Un vampire chez le dentiste",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "d4bdfc2835c6f507"
+    },
+    {
+      "id": "mime-252",
+      "boxId": "absurd",
+      "active": true,
+      "prompt": "Un zombie qui danse",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "b796e39ea4339b0c"
+    },
+    {
+      "id": "mime-253",
+      "boxId": "absurd",
+      "active": true,
+      "prompt": "Un vampire qui met de la crème solaire",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "d80c40085f800442"
+    },
+    {
+      "id": "mime-254",
+      "boxId": "absurd",
+      "active": true,
+      "prompt": "Un zombie qui fait du jogging",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "fa9bd1997fea4614"
+    },
+    {
+      "id": "mime-255",
+      "boxId": "absurd",
+      "active": true,
+      "prompt": "Un robot qui danse",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "9aac0ec0285d9262"
+    },
+    {
+      "id": "mime-264",
+      "boxId": "absurd",
+      "active": true,
+      "prompt": "Une sorcière dont le balai refuse de décoller",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "0bea9f1e76c68999"
+    },
+    {
+      "id": "mime-273",
+      "boxId": "absurd",
+      "active": true,
+      "prompt": "Un pirate qui a le mal de mer",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "f67bd4dc9445d22d"
+    },
+    {
+      "id": "mime-274",
+      "boxId": "absurd",
+      "active": true,
+      "prompt": "Un magicien qui tire un lapin de son chapeau",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "5daf7077eef69241"
+    },
+    {
+      "id": "mime-281",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir le coup de foudre",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "fe776218c4a6f488"
+    },
+    {
+      "id": "mime-282",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Dormir comme un bébé",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "9047c4e8d6ff7560"
+    },
+    {
+      "id": "mime-283",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir faim",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "c9a48f67f8773322"
+    },
+    {
+      "id": "mime-284",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Être mort de rire",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "24e2c626d889efc5"
+    },
+    {
+      "id": "mime-285",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir froid",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "9ff448c5779f7f48"
+    },
+    {
+      "id": "mime-286",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir chaud",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "a5a46132bb2d9e75"
+    },
+    {
+      "id": "mime-287",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Être dans la lune",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "79b72bdc0080e96f"
+    },
+    {
+      "id": "mime-288",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir un chat dans la gorge",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "7d8c0b6333c34b9e"
+    },
+    {
+      "id": "mime-289",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Coûter un bras",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "86610dab6a769ce8"
+    },
+    {
+      "id": "mime-291",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir les yeux plus gros que le ventre",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "0e797f3c74bef192"
+    },
+    {
+      "id": "mime-292",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Donner sa langue au chat",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "623e9a04f4763588"
+    },
+    {
+      "id": "mime-293",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Chercher une aiguille dans une botte de foin",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "c3b4fe8f1f08eb36"
+    },
+    {
+      "id": "mime-294",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Tomber dans les pommes",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "de8bbcabea99ad7a"
+    },
+    {
+      "id": "mime-295",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Poser un lapin",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "2e55b2ecddabf278"
+    },
+    {
+      "id": "mime-296",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Mettre les pieds dans le plat",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "ecb92834e4d7b721"
+    },
+    {
+      "id": "mime-298",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir un poil dans la main",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "15d96cb0d5e00f05"
+    },
+    {
+      "id": "mime-299",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Prendre ses jambes à son cou",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "7de44f36e729f8b9"
+    },
+    {
+      "id": "mime-301",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Prendre le taureau par les cornes",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "32b2922c036858b7"
+    },
+    {
+      "id": "mime-305",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Jeter l’éponge",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "4557240bcb7d9f48"
+    },
+    {
+      "id": "mime-306",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Casser les pieds",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "edd33d91714cfb8c"
+    },
+    {
+      "id": "mime-307",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Se mettre le doigt dans l’œil",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "bd74c9740394320b"
+    },
+    {
+      "id": "mime-308",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir la main verte",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "3987ab02068e7339"
+    },
+    {
+      "id": "mime-309",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Se serrer la ceinture",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "d583709db18302a8"
+    },
+    {
+      "id": "mime-311",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir les mains liées",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "b8c146eca6619a97"
+    },
+    {
+      "id": "mime-312",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Prendre la mouche",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "68e04953615fabb9"
+    },
+    {
+      "id": "mime-313",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Avoir un coup de barre",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "d1746a0bd902cb79"
+    },
+    {
+      "id": "mime-314",
+      "boxId": "expressions",
+      "active": true,
+      "prompt": "Mettre la main à la pâte",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "ca4f634961bab999"
+    },
+    {
+      "id": "mime-316",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Danser (en boîte)",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "7d3786792217e0cf"
+    },
+    {
+      "id": "mime-317",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Souffler des bougies",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "3cacbf2df29377de"
+    },
+    {
+      "id": "mime-318",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Ouvrir une bouteille de champagne",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "43b32b40ef99ca8d"
+    },
+    {
+      "id": "mime-319",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Prendre une photo de groupe",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "c574ba11d94c940c"
+    },
+    {
+      "id": "mime-320",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Lancer des confettis",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "e32aa1972e3da731"
+    },
+    {
+      "id": "mime-323",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Faire une chenille en soirée",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "8868a09fff2d5b92"
+    },
+    {
+      "id": "mime-324",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Danser avec un verre plein dans la main",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "1ef752049d803e80"
+    },
+    {
+      "id": "mime-326",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Danser en étant trop bourré.e",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "0f338dace7fc814a"
+    },
+    {
+      "id": "mime-328",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Arracher une grande nappe (sans renverser les verres déjà posés)",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "ab9d97dd1f93dbf5"
+    },
+    {
+      "id": "mime-329",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Faire une demande en mariage et laisser tomber la bague",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "301d092afc6188fc"
+    },
+    {
+      "id": "mime-330",
+      "boxId": "parties",
+      "active": true,
+      "prompt": "Faire tomber son verre en essayant de danser",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "d4b14f6643da0e82"
+    },
+    {
+      "id": "mime-331",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Scanner un QR code avec son téléphone",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "a900e01828e34b50"
+    },
+    {
+      "id": "mime-332",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Jouer avec un casque de réalité virtuelle",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "7378e7c60f540c11"
+    },
+    {
+      "id": "mime-333",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Écrire très vite sur un téléphone",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "ec4eec3fbd18d478"
+    },
+    {
+      "id": "mime-334",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Brancher un chargeur",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "34abbb907d8dce13"
+    },
+    {
+      "id": "mime-335",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Utiliser une souris d’ordinateur",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "61d40ddc48c212cd"
+    },
+    {
+      "id": "mime-336",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Chercher du réseau avec son téléphone",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "7f27fbc11b8811aa"
+    },
+    {
+      "id": "mime-338",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Essayer de prendre une photo avec des gants",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "b6cb5c52ddda551f"
+    },
+    {
+      "id": "mime-341",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Faire tomber son téléphone sur son visage dans le lit",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "378e99ab14c91f22"
+    },
+    {
+      "id": "mime-342",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Marcher en regardant son téléphone et heurter un poteau",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "6df77f3776714a3f"
+    },
+    {
+      "id": "mime-343",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Démêler des écouteurs complètement noués",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "a1d305ef52ec5043"
+    },
+    {
+      "id": "mime-344",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "(Cliquer frénétiquement sur un) ordinateur qui bug",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "f1a96eb5c71c346f"
+    },
+    {
+      "id": "mime-345",
+      "boxId": "tech",
+      "active": true,
+      "prompt": "Bouger son chargeur dans tous les sens pour qu’il fonctionne",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "b67dcceaf2a3ba88"
+    },
+    {
+      "id": "mime-346",
+      "boxId": "transport",
+      "active": true,
+      "prompt": "Conduire une voiture",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "d795b490f1a6646c"
+    },
+    {
+      "id": "mime-347",
+      "boxId": "transport",
+      "active": true,
+      "prompt": "Faire du stop",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "33555d74599c9405"
+    },
+    {
+      "id": "mime-348",
+      "boxId": "transport",
+      "active": true,
+      "prompt": "Attendre un bus",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "b78c182210be5be9"
+    },
+    {
+      "id": "mime-349",
+      "boxId": "transport",
+      "active": true,
+      "prompt": "Tirer une valise",
+      "difficulty": "easy",
+      "auditStatus": "review",
+      "auditFingerprint": "487640c29f19f535"
+    },
+    {
+      "id": "mime-350",
+      "boxId": "transport",
+      "active": true,
+      "prompt": "Prendre l’avion",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "f469227d98a9cffc"
+    },
+    {
+      "id": "mime-351",
+      "boxId": "transport",
+      "active": true,
+      "prompt": "Courir pour ne pas rater son train/bus/avion",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "a6322ad56e8c336d"
+    },
+    {
+      "id": "mime-353",
+      "boxId": "transport",
+      "active": true,
+      "prompt": "Conduire sur une route pleine de virages",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "b3347692fa209c57"
+    },
+    {
+      "id": "mime-354",
+      "boxId": "transport",
+      "active": true,
+      "prompt": "Porter une valise beaucoup trop lourde",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "2c0630018d845985"
+    },
+    {
+      "id": "mime-359",
+      "boxId": "transport",
+      "active": true,
+      "prompt": "Passer un contrôle de sécurité avec les poches pleines",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "6e1d5442b9b4c749"
+    },
+    {
+      "id": "mime-360",
+      "boxId": "transport",
+      "active": true,
+      "prompt": "Chercher sa voiture dans un immense parking",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "ca2daf9969a45f8e"
+    },
+    {
+      "id": "mime-361",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Éplucher une banane",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "01d18a873b29982d"
+    },
+    {
+      "id": "mime-362",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Manger des spaghettis",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "605a1fa93c144b5d"
+    },
+    {
+      "id": "mime-363",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Faire sauter une crêpe",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "c0a501f980982a61"
+    },
+    {
+      "id": "mime-364",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Couper un oignon",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "f6c3b8a794b1d9f7"
+    },
+    {
+      "id": "mime-365",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Manger une soupe brûlante",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "10d0718bf64ea121"
+    },
+    {
+      "id": "mime-366",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Essayer d’ouvrir un bocal très serré",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "3387219f2f2f997e"
+    },
+    {
+      "id": "mime-367",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Manger quelque chose de beaucoup trop épicé",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "b26404fe23147c6c"
+    },
+    {
+      "id": "mime-368",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Faire tomber une boule de glace",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "63d1f9b40f17987e"
+    },
+    {
+      "id": "mime-369",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Essayer de manger un hamburger trop gros",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "5f252b83657270d7"
+    },
+    {
+      "id": "mime-370",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Cuisiner avec de l'huile qui éclabousse",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "38e0cb39c4d5e673"
+    },
+    {
+      "id": "mime-373",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Sentir un aliment périmé (puis le jeter )",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "f22e1939f4615762"
+    },
+    {
+      "id": "mime-374",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Casser un œuf et repêcher des morceaux de coquille",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "9daff5ffeea41732"
+    },
+    {
+      "id": "mime-375",
+      "boxId": "food",
+      "active": true,
+      "prompt": "Faire sauter une crêpe qui retombe par terre",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "b6f3811a390537ad"
+    },
+    {
+      "id": "mime-376",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Faire tomber son téléphone dans les toilettes",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "ee951aa79eab5cae"
+    },
+    {
+      "id": "mime-377",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Arriver en retard",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "f3b220cc5f1fb5a3"
+    },
+    {
+      "id": "mime-379",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Se rendre compte que sa braguette est ouverte",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "2f95d20867887b6b"
+    },
+    {
+      "id": "mime-380",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Ouvrir une bouteille qui explose",
+      "difficulty": "easy",
+      "auditStatus": "approved",
+      "auditFingerprint": "3c25e3691fe9d6d2"
+    },
+    {
+      "id": "mime-381",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Tenter de tuer un moustique",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "c20409461a2bfbe9"
+    },
+    {
+      "id": "mime-386",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Essayer de retirer quelque chose coincé entre ses dents",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "08b4ccc863c66fc8"
+    },
+    {
+      "id": "mime-388",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Perdre l’équilibre dans un bus/métro",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "a1f9c946b441367c"
+    },
+    {
+      "id": "mime-389",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Essayer d’ouvrir un emballage impossible",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "e0d7a6bb1c7f4122"
+    },
+    {
+      "id": "mime-391",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Faire tomber un gâteau d'anniversaire",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "65d72804aa1429c2"
+    },
+    {
+      "id": "mime-393",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Faire semblant de travailler (quand quelqu’un arrive)",
+      "difficulty": "hard",
+      "auditStatus": "approved",
+      "auditFingerprint": "e64464febef0fa05"
+    },
+    {
+      "id": "mime-394",
+      "boxId": "awkward",
+      "active": true,
+      "prompt": "Découvrir un énorme insecte dans son lit",
+      "difficulty": "medium",
+      "auditStatus": "approved",
+      "auditFingerprint": "56f334e87cc1f9bd"
+    },
+    {
+      "id": "mime-396",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Une girafe qui mange les feuilles d’un arbre",
+      "auditStatus": "approved",
+      "auditFingerprint": "360e266709e134cb"
+    },
+    {
+      "id": "mime-397",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Une tortue qui rentre la tête dans sa carapace",
+      "auditStatus": "approved",
+      "auditFingerprint": "bbd4332e46cbce62"
+    },
+    {
+      "id": "mime-398",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Un dauphin",
+      "auditStatus": "approved",
+      "auditFingerprint": "385d0b8d99a0c477"
+    },
+    {
+      "id": "mime-399",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Un hibou (qui tourne la tête)",
+      "auditStatus": "approved",
+      "auditFingerprint": "639a166b4ac9ed9c"
+    },
+    {
+      "id": "mime-400",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Un phoque qui applaudit (avec ses nageoires)",
+      "auditStatus": "approved",
+      "auditFingerprint": "ca6276c2ae0965b2"
+    },
+    {
+      "id": "mime-401",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un chat qui essaie d’entrer dans une boîte trop petite",
+      "auditStatus": "approved",
+      "auditFingerprint": "04e3c3eb008035f4"
+    },
+    {
+      "id": "mime-402",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Un chien qui enterre un os",
+      "auditStatus": "approved",
+      "auditFingerprint": "9d6bd112138c36b8"
+    },
+    {
+      "id": "mime-403",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un écureuil qui cache des noisettes",
+      "auditStatus": "approved",
+      "auditFingerprint": "dc83c4e7f0d060fe"
+    },
+    {
+      "id": "mime-405",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Un cheval qui se cabre",
+      "auditStatus": "approved",
+      "auditFingerprint": "f6c86484f73705cf"
+    },
+    {
+      "id": "mime-406",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un manchot qui protège son œuf (entre ses pattes)",
+      "auditStatus": "approved",
+      "auditFingerprint": "392f3cb5559df9d5"
+    },
+    {
+      "id": "mime-407",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un crocodile qui attaque",
+      "auditStatus": "approved",
+      "auditFingerprint": "a7590f059f35a483"
+    },
+    {
+      "id": "mime-408",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un oiseau qui vole de la nourriture",
+      "auditStatus": "approved",
+      "auditFingerprint": "1919f8dab45a997f"
+    },
+    {
+      "id": "mime-409",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Un bouc qui donne un coup de tête",
+      "auditStatus": "approved",
+      "auditFingerprint": "2ab3f08f7b53bbf3"
+    },
+    {
+      "id": "mime-410",
+      "boxId": "animals",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Une pieuvre",
+      "auditStatus": "approved",
+      "auditFingerprint": "6fc0c216ee5d613e"
+    },
+    {
+      "id": "mime-411",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Un maçon (qui empile des briques)",
+      "auditStatus": "approved",
+      "auditFingerprint": "87ff167b80511a99"
+    },
+    {
+      "id": "mime-413",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Un libraire qui range des livres",
+      "auditStatus": "approved",
+      "auditFingerprint": "3dd97eb00c69d36c"
+    },
+    {
+      "id": "mime-414",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Un couturier qui coud",
+      "auditStatus": "approved",
+      "auditFingerprint": "72bd063d922ddcdc"
+    },
+    {
+      "id": "mime-415",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Un masseur qui masse le dos de quelqu’un",
+      "auditStatus": "approved",
+      "auditFingerprint": "b42de0f68c7bcd52"
+    },
+    {
+      "id": "mime-416",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Un électricien qui reçoit une décharge",
+      "auditStatus": "approved",
+      "auditFingerprint": "39e5b61524ab2c7b"
+    },
+    {
+      "id": "mime-417",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Un fleuriste qui compose un bouquet",
+      "auditStatus": "approved",
+      "auditFingerprint": "52279e25016e95c9"
+    },
+    {
+      "id": "mime-418",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Quelqu'un qui essaie plusieurs clés",
+      "auditStatus": "approved",
+      "auditFingerprint": "c1f0fdfa3e72aa6e"
+    },
+    {
+      "id": "mime-419",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un réalisateur qui donne des consignes sur un tournage",
+      "auditStatus": "approved",
+      "auditFingerprint": "fb2cf80eefe4b594"
+    },
+    {
+      "id": "mime-420",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Un livreur qui porte une pile de colis",
+      "auditStatus": "approved",
+      "auditFingerprint": "4aa6a94cc85ddf2a"
+    },
+    {
+      "id": "mime-421",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un démineur qui coupe le fil d'une bombe",
+      "auditStatus": "approved",
+      "auditFingerprint": "81293a4090cf8325"
+    },
+    {
+      "id": "mime-425",
+      "boxId": "jobs",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un marionnettiste/marionette",
+      "auditStatus": "approved",
+      "auditFingerprint": "aeb86527180be2ce"
+    },
+    {
+      "id": "mime-426",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Faire du hula-hoop",
+      "auditStatus": "approved",
+      "auditFingerprint": "6d90cbefddf5921f"
+    },
+    {
+      "id": "mime-427",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Sauter à la corde",
+      "auditStatus": "approved",
+      "auditFingerprint": "8ea2fcb6d8241c78"
+    },
+    {
+      "id": "mime-428",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Faire du canoë",
+      "auditStatus": "approved",
+      "auditFingerprint": "1ac57c1e948135d7"
+    },
+    {
+      "id": "mime-429",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer au volley-ball",
+      "auditStatus": "approved",
+      "auditFingerprint": "b74d7ced4b12de59"
+    },
+    {
+      "id": "mime-430",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Faire du skateboard",
+      "auditStatus": "approved",
+      "auditFingerprint": "83c2ef63df02daef"
+    },
+    {
+      "id": "mime-431",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire de l’escrime",
+      "auditStatus": "approved",
+      "auditFingerprint": "0ce86489a90ce533"
+    },
+    {
+      "id": "mime-432",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Jouer au baseball",
+      "auditStatus": "approved",
+      "auditFingerprint": "2b9fb7e10824c13d"
+    },
+    {
+      "id": "mime-433",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Faire du ski nautique",
+      "auditStatus": "approved",
+      "auditFingerprint": "6bbbed721246622a"
+    },
+    {
+      "id": "mime-434",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Lancer un boomerang puis le rattraper",
+      "auditStatus": "approved",
+      "auditFingerprint": "0449dcfa0789b72b"
+    },
+    {
+      "id": "mime-435",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire du tir à la corde",
+      "auditStatus": "approved",
+      "auditFingerprint": "7d1c206c8e84adb1"
+    },
+    {
+      "id": "mime-436",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un joueur de volley (qui fait un smash)",
+      "auditStatus": "approved",
+      "auditFingerprint": "64346e24c5ec24cd"
+    },
+    {
+      "id": "mime-438",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un golfeur réussi un 1 coup",
+      "auditStatus": "approved",
+      "auditFingerprint": "d40ced6cdea86c57"
+    },
+    {
+      "id": "mime-439",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Un pêcheur qui lutte pour remonter une énorme prise",
+      "auditStatus": "approved",
+      "auditFingerprint": "d11a7ffe7f0127b3"
+    },
+    {
+      "id": "mime-440",
+      "boxId": "sports",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un arbitre qui sépare deux joueurs",
+      "auditStatus": "approved",
+      "auditFingerprint": "40f9c963e39289f4"
+    },
+    {
+      "id": "mime-441",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mettre du déodorant",
+      "auditStatus": "approved",
+      "auditFingerprint": "2ad99b4e5d60131c"
+    },
+    {
+      "id": "mime-442",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Arroser une plante",
+      "auditStatus": "approved",
+      "auditFingerprint": "d3db61169d9d81b0"
+    },
+    {
+      "id": "mime-443",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Plier du linge",
+      "auditStatus": "approved",
+      "auditFingerprint": "8b7d322bf362bfa7"
+    },
+    {
+      "id": "mime-444",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Tartiner une tranche de pain",
+      "auditStatus": "approved",
+      "auditFingerprint": "535345a5a9ba4cbc"
+    },
+    {
+      "id": "mime-445",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Se laver les mains",
+      "auditStatus": "approved",
+      "auditFingerprint": "df5f18a9028a5b23"
+    },
+    {
+      "id": "mime-446",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Desserrer une bouteille difficile à ouvrir",
+      "auditStatus": "approved",
+      "auditFingerprint": "5850bde911fef73a"
+    },
+    {
+      "id": "mime-447",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Chercher deux chaussettes assorties",
+      "auditStatus": "approved",
+      "auditFingerprint": "612420dce7b7ac34"
+    },
+    {
+      "id": "mime-448",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Gonfler un matelas pneumatique",
+      "auditStatus": "approved",
+      "auditFingerprint": "faf0692ff0b56437"
+    },
+    {
+      "id": "mime-449",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Nettoyer une vitre (avec une raclette)",
+      "auditStatus": "approved",
+      "auditFingerprint": "e201ed326534a814"
+    },
+    {
+      "id": "mime-450",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Transporter un gâteau très grand",
+      "auditStatus": "approved",
+      "auditFingerprint": "33e7878f9a3e6d5d"
+    },
+    {
+      "id": "mime-451",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "mettre un drap-housse sur un matelas",
+      "auditStatus": "approved",
+      "auditFingerprint": "395ed08835f12ac2"
+    },
+    {
+      "id": "mime-452",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Déplier une carte routière impossible à replier",
+      "auditStatus": "approved",
+      "auditFingerprint": "25697ad57a194dc0"
+    },
+    {
+      "id": "mime-454",
+      "boxId": "daily",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Essayer d’ouvrir un parapluie coincé",
+      "auditStatus": "approved",
+      "auditFingerprint": "e6ad3b269d22596d"
+    },
+    {
+      "id": "mime-456",
+      "boxId": "emotions",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Décrocher son téléphone",
+      "auditStatus": "approved",
+      "auditFingerprint": "7af2d4dcb47ee793"
+    },
+    {
+      "id": "mime-457",
+      "boxId": "emotions",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Se cogner le petit orteil contre un meuble",
+      "auditStatus": "approved",
+      "auditFingerprint": "6725a1e48e597123"
+    },
+    {
+      "id": "mime-458",
+      "boxId": "emotions",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Sentir une mauvaise odeur (et chercher d’où elle vient)",
+      "auditStatus": "approved",
+      "auditFingerprint": "366118fe54f497c4"
+    },
+    {
+      "id": "mime-460",
+      "boxId": "emotions",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Gonfler un ballon jusqu’à ce qu’il éclate et sursauter",
+      "auditStatus": "approved",
+      "auditFingerprint": "f46517270a83126b"
+    },
+    {
+      "id": "mime-461",
+      "boxId": "emotions",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Fouiller toutes ses poches puis retrouver son portefeuille",
+      "auditStatus": "approved",
+      "auditFingerprint": "d7cbcc70499b58d9"
+    },
+    {
+      "id": "mime-462",
+      "boxId": "emotions",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Voir l’ascenseur se fermer juste devant soi",
+      "auditStatus": "approved",
+      "auditFingerprint": "48685e926410708d"
+    },
+    {
+      "id": "mime-465",
+      "boxId": "emotions",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Essayer de retenir un éternuement",
+      "auditStatus": "approved",
+      "auditFingerprint": "fb2bbb71f850d7ab"
+    },
+    {
+      "id": "mime-466",
+      "boxId": "emotions",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "S’asseoir sur quelque chose de mouillé (et se relever d’un bond)",
+      "auditStatus": "approved",
+      "auditFingerprint": "5d5f5f904f2b1b83"
+    },
+    {
+      "id": "mime-467",
+      "boxId": "emotions",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire tomber son téléphone et vérifier l’écran avec peur",
+      "auditStatus": "approved",
+      "auditFingerprint": "3367c52dc3ec3a16"
+    },
+    {
+      "id": "mime-468",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Écouter aux portes",
+      "auditStatus": "approved",
+      "auditFingerprint": "c61735bc1def63d0"
+    },
+    {
+      "id": "mime-470",
+      "boxId": "emotions",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Ouvrir le frigo, le refermer, puis le rouvrir aussitôt",
+      "auditStatus": "approved",
+      "auditFingerprint": "ec68b1096e240c72"
+    },
+    {
+      "id": "mime-473",
+      "boxId": "characters",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Le Génie d’Aladdin qui sort de la lampe",
+      "auditStatus": "approved",
+      "auditFingerprint": "68a55280061bb3d0"
+    },
+    {
+      "id": "mime-474",
+      "boxId": "characters",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Peter Pan (qui vole)",
+      "auditStatus": "approved",
+      "auditFingerprint": "424fa0364641c34a"
+    },
+    {
+      "id": "mime-477",
+      "boxId": "characters",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Popeye qui mange des épinards (puis montre ses muscles)",
+      "auditStatus": "approved",
+      "auditFingerprint": "2d6f95330a27ae5c"
+    },
+    {
+      "id": "mime-478",
+      "boxId": "characters",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Rémy de Ratatouille qui cuisine",
+      "auditStatus": "approved",
+      "auditFingerprint": "008ae5b9f752c937"
+    },
+    {
+      "id": "mime-483",
+      "boxId": "characters",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Le Mask qui enfile son masque (et se transforme)",
+      "auditStatus": "approved",
+      "auditFingerprint": "23cd9872a208c3e4"
+    },
+    {
+      "id": "mime-484",
+      "boxId": "characters",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Simba présenté au sommet d’un rocher",
+      "auditStatus": "approved",
+      "auditFingerprint": "f337560d660d5da9"
+    },
+    {
+      "id": "mime-485",
+      "boxId": "characters",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jack de Titanic à l’avant du bateau, (les bras écartés)",
+      "auditStatus": "approved",
+      "auditFingerprint": "5e811ca1f87a83a2"
+    },
+    {
+      "id": "mime-486",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Utiliser une perceuse",
+      "auditStatus": "approved",
+      "auditFingerprint": "73fc350af33cee90"
+    },
+    {
+      "id": "mime-487",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Se peser sur une balance",
+      "auditStatus": "approved",
+      "auditFingerprint": "a8bc5a00e725ce40"
+    },
+    {
+      "id": "mime-488",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Gonfler un pneu avec une pompe",
+      "auditStatus": "approved",
+      "auditFingerprint": "20819e2c5229ed28"
+    },
+    {
+      "id": "mime-489",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Utiliser une agrafeuse",
+      "auditStatus": "approved",
+      "auditFingerprint": "cf6db077f06a8adf"
+    },
+    {
+      "id": "mime-490",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Chercher quelque chose avec une lampe de poche",
+      "auditStatus": "approved",
+      "auditFingerprint": "11f6abd3640deca8"
+    },
+    {
+      "id": "mime-491",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Souffler des feuilles avec un souffleur",
+      "auditStatus": "approved",
+      "auditFingerprint": "42e80f01bdee4670"
+    },
+    {
+      "id": "mime-492",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Utiliser un nettoyeur haute pression",
+      "auditStatus": "approved",
+      "auditFingerprint": "6a9acb9613b74846"
+    },
+    {
+      "id": "mime-493",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Coudre avec une machine à coudre",
+      "auditStatus": "approved",
+      "auditFingerprint": "6bc4c94e7e9e41a0"
+    },
+    {
+      "id": "mime-494",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Mixer une préparation avec un blender",
+      "auditStatus": "approved",
+      "auditFingerprint": "df58ba908dd937a2"
+    },
+    {
+      "id": "mime-495",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Scanner un article à une caisse automatique",
+      "auditStatus": "approved",
+      "auditFingerprint": "194ff81117a6c433"
+    },
+    {
+      "id": "mime-496",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Une chaise de bureau qui descend toute seule",
+      "auditStatus": "approved",
+      "auditFingerprint": "449e0d3c14b8e8c5"
+    },
+    {
+      "id": "mime-498",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Pousser un chariot de supermarché (dont une roue bloque)",
+      "auditStatus": "approved",
+      "auditFingerprint": "f6bf9910f9f12818"
+    },
+    {
+      "id": "mime-499",
+      "boxId": "objects",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un mixeur dont le couvercle s'ouvre",
+      "auditStatus": "approved",
+      "auditFingerprint": "bd12c7160ebb1cd5"
+    },
+    {
+      "id": "mime-504",
+      "boxId": "absurd",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Une sirène qui essaie de marcher",
+      "auditStatus": "approved",
+      "auditFingerprint": "e30619419b47fffc"
+    },
+    {
+      "id": "mime-514",
+      "boxId": "absurd",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Un super-héros qui repasse sa cape",
+      "auditStatus": "approved",
+      "auditFingerprint": "d2d6f1e60a41201f"
+    },
+    {
+      "id": "mime-516",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Se creuser la tête",
+      "auditStatus": "approved",
+      "auditFingerprint": "418e95c834422579"
+    },
+    {
+      "id": "mime-517",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Trembler comme une feuille",
+      "auditStatus": "approved",
+      "auditFingerprint": "624444805d303d72"
+    },
+    {
+      "id": "mime-520",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Avoir la tête qui tourne",
+      "auditStatus": "approved",
+      "auditFingerprint": "3c83c7b198d65c69"
+    },
+    {
+      "id": "mime-521",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Tourner autour du pot",
+      "auditStatus": "approved",
+      "auditFingerprint": "b0092bc7e6920078"
+    },
+    {
+      "id": "mime-522",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Tenir la chandelle",
+      "auditStatus": "approved",
+      "auditFingerprint": "1659a888c19f241d"
+    },
+    {
+      "id": "mime-524",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Retourner sa veste",
+      "auditStatus": "approved",
+      "auditFingerprint": "60614bb46968c2aa"
+    },
+    {
+      "id": "mime-525",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Mettre la clé sous la porte",
+      "auditStatus": "approved",
+      "auditFingerprint": "53fc4ce65bdbdf98"
+    },
+    {
+      "id": "mime-526",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Noyer le poisson",
+      "auditStatus": "approved",
+      "auditFingerprint": "a3ff67cc45b5cd09"
+    },
+    {
+      "id": "mime-527",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Tirer les vers du nez",
+      "auditStatus": "approved",
+      "auditFingerprint": "f487ef1b624d3f9a"
+    },
+    {
+      "id": "mime-530",
+      "boxId": "expressions",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Avoir plusieurs cordes à son arc",
+      "auditStatus": "approved",
+      "auditFingerprint": "922a620d6ed8f848"
+    },
+    {
+      "id": "mime-531",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Trinquer",
+      "auditStatus": "approved",
+      "auditFingerprint": "1a624aa23cc75023"
+    },
+    {
+      "id": "mime-533",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Emballer un cadeau",
+      "auditStatus": "approved",
+      "auditFingerprint": "0a5f32661861c941"
+    },
+    {
+      "id": "mime-534",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Frapper une piñata",
+      "auditStatus": "approved",
+      "auditFingerprint": "d9c72ebc5b450ddc"
+    },
+    {
+      "id": "mime-536",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Servir des parts de gâteau",
+      "auditStatus": "approved",
+      "auditFingerprint": "377ce14f81b0a3ff"
+    },
+    {
+      "id": "mime-539",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Poser dans un photomaton",
+      "auditStatus": "approved",
+      "auditFingerprint": "dc860aba796422dd"
+    },
+    {
+      "id": "mime-542",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Faire tourner une serviette au-dessus de sa tête",
+      "auditStatus": "approved",
+      "auditFingerprint": "f05ca0fb2cda836e"
+    },
+    {
+      "id": "mime-543",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Passer sous une barre de limbo",
+      "auditStatus": "approved",
+      "auditFingerprint": "234de23e66131c33"
+    },
+    {
+      "id": "mime-544",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Démêler une guirlande/fil",
+      "auditStatus": "approved",
+      "auditFingerprint": "c6f89b798fc09d9e"
+    },
+    {
+      "id": "mime-546",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Remplir des verres avec une louche dans un grand bol de punch",
+      "auditStatus": "approved",
+      "auditFingerprint": "f8cb752732bba209"
+    },
+    {
+      "id": "mime-547",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Rattraper un ballon",
+      "auditStatus": "approved",
+      "auditFingerprint": "3feeda4dd7ae6cf0"
+    },
+    {
+      "id": "mime-548",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire le DJ ( avec un casque et une table de mixage)",
+      "auditStatus": "approved",
+      "auditFingerprint": "f41bc5d478bbd8f9"
+    },
+    {
+      "id": "mime-549",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Ouvrir un cadeau entouré de beaucoup trop de ruban adhésif",
+      "auditStatus": "approved",
+      "auditFingerprint": "87c3195dfbf8b619"
+    },
+    {
+      "id": "mime-552",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Danser avec une personne beaucoup plus grande",
+      "auditStatus": "approved",
+      "auditFingerprint": "3733943ba961f4ef"
+    },
+    {
+      "id": "mime-553",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Serveur avec plateau de verres dans une foule",
+      "auditStatus": "approved",
+      "auditFingerprint": "251cb2ef652403aa"
+    },
+    {
+      "id": "mime-554",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Secouer un shaker à cocktail",
+      "auditStatus": "approved",
+      "auditFingerprint": "9707aee96fa16175"
+    },
+    {
+      "id": "mime-555",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Prendre une photo avec un retardateur puis courir se placer",
+      "auditStatus": "approved",
+      "auditFingerprint": "0a3b6024152eb276"
+    },
+    {
+      "id": "mime-556",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Faire une entrée spectaculaire puis trébucher sur le tapis rouge",
+      "auditStatus": "approved",
+      "auditFingerprint": "64829d323dde23b8"
+    },
+    {
+      "id": "mime-557",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Marcher avec une tenue de soirée beaucoup trop longue",
+      "auditStatus": "approved",
+      "auditFingerprint": "ae72dcab5be1b7d1"
+    },
+    {
+      "id": "mime-558",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Porter une tour de gobelets sans la faire tomber",
+      "auditStatus": "approved",
+      "auditFingerprint": "66e144f972e06d20"
+    },
+    {
+      "id": "mime-565",
+      "boxId": "parties",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Lancer un bouquet de mariage",
+      "auditStatus": "approved",
+      "auditFingerprint": "21ed2d251e508dd0"
+    },
+    {
+      "id": "mime-566",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mettre des écouteurs sans fil",
+      "auditStatus": "approved",
+      "auditFingerprint": "ec9f995f6aa2859e"
+    },
+    {
+      "id": "mime-567",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Brancher une clé USB",
+      "auditStatus": "approved",
+      "auditFingerprint": "5c89972d6b411f66"
+    },
+    {
+      "id": "mime-569",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Utiliser une imprimante",
+      "auditStatus": "approved",
+      "auditFingerprint": "ff2de0d1ad6c7b98"
+    },
+    {
+      "id": "mime-570",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Fermer un ordinateur portable",
+      "auditStatus": "approved",
+      "auditFingerprint": "33cf95882c3061ba"
+    },
+    {
+      "id": "mime-572",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Utiliser un stylet sur une tablette",
+      "auditStatus": "approved",
+      "auditFingerprint": "cc93993e3b43a97e"
+    },
+    {
+      "id": "mime-573",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Régler le volume avec une télécommande",
+      "auditStatus": "approved",
+      "auditFingerprint": "88b5507e2051bda8"
+    },
+    {
+      "id": "mime-574",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Prendre un appel en visio",
+      "auditStatus": "approved",
+      "auditFingerprint": "150e325fa2196061"
+    },
+    {
+      "id": "mime-576",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Montre connectée",
+      "auditStatus": "approved",
+      "auditFingerprint": "07980d0af3c7f2a6"
+    },
+    {
+      "id": "mime-577",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Éteindre un ordinateur avec le bouton",
+      "auditStatus": "approved",
+      "auditFingerprint": "19d59feaa34e0d33"
+    },
+    {
+      "id": "mime-578",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Brancher une clé USB dans le mauvais sens puis la retourner",
+      "auditStatus": "approved",
+      "auditFingerprint": "f247efcdb0117536"
+    },
+    {
+      "id": "mime-579",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Nettoyer ses lunettes",
+      "auditStatus": "approved",
+      "auditFingerprint": "12fbda9f926673d8"
+    },
+    {
+      "id": "mime-580",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Prendre une photo panoramique en tournant lentement",
+      "auditStatus": "approved",
+      "auditFingerprint": "38eb37639415aa49"
+    },
+    {
+      "id": "mime-584",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "(Essayer plusieurs fois un) lecteur d’empreinte qui ne marche pas",
+      "auditStatus": "approved",
+      "auditFingerprint": "a02be01464751e1c"
+    },
+    {
+      "id": "mime-589",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Changer les piles d’une télécommande",
+      "auditStatus": "approved",
+      "auditFingerprint": "03150b8d0daf9dbf"
+    },
+    {
+      "id": "mime-590",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Renverser un verre sur un clavier et éponger en catastrophe",
+      "auditStatus": "approved",
+      "auditFingerprint": "9f5812e8de41eb9f"
+    },
+    {
+      "id": "mime-600",
+      "boxId": "tech",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Téléphone qui a freeze",
+      "auditStatus": "approved",
+      "auditFingerprint": "df3f52cb174e596c"
+    },
+    {
+      "id": "mime-601",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Pédaler sur un vélo",
+      "auditStatus": "approved",
+      "auditFingerprint": "d1e937f88113aa88"
+    },
+    {
+      "id": "mime-602",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Conduire un scooter",
+      "auditStatus": "approved",
+      "auditFingerprint": "8c44e5bc888d56e7"
+    },
+    {
+      "id": "mime-603",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Ramer (dans une barque)",
+      "auditStatus": "approved",
+      "auditFingerprint": "36d1b9b439cb9dac"
+    },
+    {
+      "id": "mime-604",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Piloter un hélicoptère",
+      "auditStatus": "approved",
+      "auditFingerprint": "4cd56e11f7084b58"
+    },
+    {
+      "id": "mime-605",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Attacher sa ceinture (en voiture)",
+      "auditStatus": "approved",
+      "auditFingerprint": "b8df5ed39adb0d35"
+    },
+    {
+      "id": "mime-606",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Faire le plein d’essence",
+      "auditStatus": "approved",
+      "auditFingerprint": "7690a54bc62c1728"
+    },
+    {
+      "id": "mime-607",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Valider un ticket dans un bus",
+      "auditStatus": "approved",
+      "auditFingerprint": "537e99fbd52d5f43"
+    },
+    {
+      "id": "mime-610",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mettre un casque de moto",
+      "auditStatus": "approved",
+      "auditFingerprint": "aefa523b5e5152b5"
+    },
+    {
+      "id": "mime-611",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Garer une voiture",
+      "auditStatus": "approved",
+      "auditFingerprint": "1ba02eba8b28c2f0"
+    },
+    {
+      "id": "mime-612",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Charger une valise dans le coffre d’une voiture",
+      "auditStatus": "approved",
+      "auditFingerprint": "21781081d2e3148f"
+    },
+    {
+      "id": "mime-614",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Pédaler dans une montée très raide",
+      "auditStatus": "approved",
+      "auditFingerprint": "59d6fcfd0c7e9f0e"
+    },
+    {
+      "id": "mime-615",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire une marche arrière",
+      "auditStatus": "approved",
+      "auditFingerprint": "dc5a4cc684bf411a"
+    },
+    {
+      "id": "mime-616",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Plier une trottinette",
+      "auditStatus": "approved",
+      "auditFingerprint": "a975bedd4ed0bcac"
+    },
+    {
+      "id": "mime-618",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Conduire sous une pluie battante avec les essuie-glaces",
+      "auditStatus": "approved",
+      "auditFingerprint": "8c65e46690212cc1"
+    },
+    {
+      "id": "mime-619",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Changer une roue crevée",
+      "auditStatus": "approved",
+      "auditFingerprint": "dcc40e95b50f8831"
+    },
+    {
+      "id": "mime-621",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Faire signe à un taxi",
+      "auditStatus": "approved",
+      "auditFingerprint": "a1dcba9ad491b099"
+    },
+    {
+      "id": "mime-622",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Accrocher son vélo à un antivol",
+      "auditStatus": "approved",
+      "auditFingerprint": "860f80b9903c9253"
+    },
+    {
+      "id": "mime-623",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Porter un vélo dans un escalier",
+      "auditStatus": "approved",
+      "auditFingerprint": "575c116b11d1519a"
+    },
+    {
+      "id": "mime-625",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire un créneau",
+      "auditStatus": "approved",
+      "auditFingerprint": "8c6fe10af3eee9eb"
+    },
+    {
+      "id": "mime-628",
+      "boxId": "transport",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Pousser une voiture en panne",
+      "auditStatus": "approved",
+      "auditFingerprint": "c70530859efaaf4e"
+    },
+    {
+      "id": "mime-636",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Battre des œufs au fouet",
+      "auditStatus": "approved",
+      "auditFingerprint": "fac944b3c49654c7"
+    },
+    {
+      "id": "mime-637",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Éplucher une pomme de terre",
+      "auditStatus": "approved",
+      "auditFingerprint": "a9b1ce8f83d730ed"
+    },
+    {
+      "id": "mime-638",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Presser une orange",
+      "auditStatus": "approved",
+      "auditFingerprint": "a960b74d46cdc4e6"
+    },
+    {
+      "id": "mime-639",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Tartiner du beurre sur du pain",
+      "auditStatus": "approved",
+      "auditFingerprint": "375a921c66019ab0"
+    },
+    {
+      "id": "mime-640",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Râper du fromage",
+      "auditStatus": "approved",
+      "auditFingerprint": "0388a9a1b038e5d6"
+    },
+    {
+      "id": "mime-641",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Verser des céréales puis du lait",
+      "auditStatus": "approved",
+      "auditFingerprint": "fe153b6b0e4fc7e7"
+    },
+    {
+      "id": "mime-642",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Étaler une pâte avec un rouleau",
+      "auditStatus": "approved",
+      "auditFingerprint": "f9307015b9caad80"
+    },
+    {
+      "id": "mime-643",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Couper une pizza (avec une roulette)",
+      "auditStatus": "approved",
+      "auditFingerprint": "4919fcf304b95780"
+    },
+    {
+      "id": "mime-644",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Manger un épi de maïs",
+      "auditStatus": "approved",
+      "auditFingerprint": "58d75eba838a844f"
+    },
+    {
+      "id": "mime-645",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Casser un œuf dans un bol",
+      "auditStatus": "approved",
+      "auditFingerprint": "202b0246c9b2f22b"
+    },
+    {
+      "id": "mime-646",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Préparer un sandwich",
+      "auditStatus": "approved",
+      "auditFingerprint": "a4f987da8138da53"
+    },
+    {
+      "id": "mime-647",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Remuer une poêle",
+      "auditStatus": "approved",
+      "auditFingerprint": "9a8895be92132369"
+    },
+    {
+      "id": "mime-648",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Séparer le blanc du jaune d’un œuf",
+      "auditStatus": "approved",
+      "auditFingerprint": "1444a7756bcb0884"
+    },
+    {
+      "id": "mime-649",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Décorer un gâteau (avec une poche à douille)",
+      "auditStatus": "approved",
+      "auditFingerprint": "92e53666a1e6bcb2"
+    },
+    {
+      "id": "mime-650",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Hacher des herbes/ ciboulette",
+      "auditStatus": "approved",
+      "auditFingerprint": "12b18778cfb8ce84"
+    },
+    {
+      "id": "mime-652",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Faire retourner une omelette dans une poêle",
+      "auditStatus": "approved",
+      "auditFingerprint": "20c3571e12b64742"
+    },
+    {
+      "id": "mime-654",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "(Recevoir du) jus de citron dans l’œil",
+      "auditStatus": "approved",
+      "auditFingerprint": "cce0146d1bffe4b1"
+    },
+    {
+      "id": "mime-655",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Pétrir une pâte",
+      "auditStatus": "approved",
+      "auditFingerprint": "35a42b856ca985d5"
+    },
+    {
+      "id": "mime-656",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Manger avec des baguettes",
+      "auditStatus": "approved",
+      "auditFingerprint": "f5f9df8e2c5c482c"
+    },
+    {
+      "id": "mime-657",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Faire griller un marshmallow (au bout d’un bâton)",
+      "auditStatus": "approved",
+      "auditFingerprint": "33e6acd5e0271290"
+    },
+    {
+      "id": "mime-659",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Utiliser une passoire pour égoutter des pâtes",
+      "auditStatus": "approved",
+      "auditFingerprint": "dca13d56fb898c7b"
+    },
+    {
+      "id": "mime-664",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Rouler des makis (avec une natte)",
+      "auditStatus": "approved",
+      "auditFingerprint": "b8f6b0a9e508fe61"
+    },
+    {
+      "id": "mime-666",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Manger une pizza dont le fromage s’étiiire",
+      "auditStatus": "approved",
+      "auditFingerprint": "dfee1b67447c9157"
+    },
+    {
+      "id": "mime-669",
+      "boxId": "food",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Démouler un gâteau (qui reste coincé)",
+      "auditStatus": "approved",
+      "auditFingerprint": "62e2bbdf898e9a9c"
+    },
+    {
+      "id": "mime-677",
+      "boxId": "awkward",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Rater une poignée de main",
+      "auditStatus": "approved",
+      "auditFingerprint": "12820839f353c7ec"
+    },
+    {
+      "id": "mime-681",
+      "boxId": "awkward",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Rater plusieurs fois un high five",
+      "auditStatus": "approved",
+      "auditFingerprint": "1a672ff56676da31"
+    },
+    {
+      "id": "mime-684",
+      "boxId": "awkward",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Renverser un verre et éponger avec beaucoup trop d'essuis tout",
+      "auditStatus": "approved",
+      "auditFingerprint": "40350e6da8e04467"
+    },
+    {
+      "id": "mime-692",
+      "boxId": "awkward",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Faire tomber de la sauce sur sa tenue puis essayer de nettoyer/cacher la tache",
+      "auditStatus": "approved",
+      "auditFingerprint": "cc0249190874bfc5"
+    },
+    {
+      "id": "mime-693",
+      "boxId": "awkward",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Lancer un déchet vers une poubelle, le rater puis aller le ramasser",
+      "auditStatus": "approved",
+      "auditFingerprint": "f6672874dcdd8843"
+    },
+    {
+      "id": "mime-694",
+      "boxId": "awkward",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Prendre la mauvaise boisson et la reposer discrètement",
+      "auditStatus": "approved",
+      "auditFingerprint": "ba1c248fc15fc69f"
+    },
+    {
+      "id": "mime-701",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Écrire au tableau",
+      "auditStatus": "approved",
+      "auditFingerprint": "f1c5cfb46962d125"
+    },
+    {
+      "id": "mime-702",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Lever la main en classe",
+      "auditStatus": "approved",
+      "auditFingerprint": "43602c9fd7e80388"
+    },
+    {
+      "id": "mime-703",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Porter une pile de livres",
+      "auditStatus": "approved",
+      "auditFingerprint": "ec384ff46812f57b"
+    },
+    {
+      "id": "mime-704",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Lire un livre (à son bureau)",
+      "auditStatus": "approved",
+      "auditFingerprint": "d6622f7c09fafcbf"
+    },
+    {
+      "id": "mime-705",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Prendre des notes",
+      "auditStatus": "approved",
+      "auditFingerprint": "2cf1d2a287fe18eb"
+    },
+    {
+      "id": "mime-706",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Tailler un crayon",
+      "auditStatus": "approved",
+      "auditFingerprint": "9889e087753291a9"
+    },
+    {
+      "id": "mime-707",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Effacer un tableau",
+      "auditStatus": "approved",
+      "auditFingerprint": "58f934123abceb91"
+    },
+    {
+      "id": "mime-708",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Ouvrir un casier",
+      "auditStatus": "approved",
+      "auditFingerprint": "967185603d1c904d"
+    },
+    {
+      "id": "mime-709",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Faire des photocopies",
+      "auditStatus": "approved",
+      "auditFingerprint": "f5415accf3a18a97"
+    },
+    {
+      "id": "mime-710",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Taper sur un clavier au bureau",
+      "auditStatus": "approved",
+      "auditFingerprint": "01ffd0a71bc81488"
+    },
+    {
+      "id": "mime-712",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Tamponner des documents",
+      "auditStatus": "approved",
+      "auditFingerprint": "16616834ab874c3c"
+    },
+    {
+      "id": "mime-713",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Distribuer des feuilles",
+      "auditStatus": "approved",
+      "auditFingerprint": "19dafd8e4e69763e"
+    },
+    {
+      "id": "mime-719",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "S’endormir sur son bureau",
+      "auditStatus": "approved",
+      "auditFingerprint": "05e84afdefe58b1a"
+    },
+    {
+      "id": "mime-720",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Copier discrètement sur la feuille du voisin",
+      "auditStatus": "approved",
+      "auditFingerprint": "6e3afb0966f4b898"
+    },
+    {
+      "id": "mime-723",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Effacer le tableau avec sa manche",
+      "auditStatus": "approved",
+      "auditFingerprint": "071fb6a5e82fa597"
+    },
+    {
+      "id": "mime-724",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Caler une table qui bouge avec une feuille pliée",
+      "auditStatus": "approved",
+      "auditFingerprint": "9b5b25bb659733e1"
+    },
+    {
+      "id": "mime-726",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Chercher un stylo au fond d’un sac rempli",
+      "auditStatus": "approved",
+      "auditFingerprint": "9a81ab45b37a54ac"
+    },
+    {
+      "id": "mime-727",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Tenir le téléphone avec l’épaule tout en tapant au clavier",
+      "auditStatus": "approved",
+      "auditFingerprint": "d46feb9da98fcaa9"
+    },
+    {
+      "id": "mime-732",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Mesurer quelque chose avec une règle trop courte",
+      "auditStatus": "approved",
+      "auditFingerprint": "912f4b3df87287ba"
+    },
+    {
+      "id": "mime-738",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Changer la grosse bouteille d’une fontaine à eau",
+      "auditStatus": "approved",
+      "auditFingerprint": "e5ddae11683ee394"
+    },
+    {
+      "id": "mime-747",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Être en classe de physique (verser un liquide dans une éprouvette)",
+      "auditStatus": "approved",
+      "auditFingerprint": "515239d237694d51"
+    },
+    {
+      "id": "mime-750",
+      "boxId": "school_work",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Accrocher une grande affiche dont les coins se décollent sans arrêt",
+      "auditStatus": "approved",
+      "auditFingerprint": "061ba302d7190f67"
+    },
+    {
+      "id": "mime-751",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Balayer le sol",
+      "auditStatus": "approved",
+      "auditFingerprint": "418b35d1a9999128"
+    },
+    {
+      "id": "mime-752",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Passer la serpillière",
+      "auditStatus": "approved",
+      "auditFingerprint": "ef7ef962be439a83"
+    },
+    {
+      "id": "mime-753",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Faire son lit",
+      "auditStatus": "approved",
+      "auditFingerprint": "6bb1b88ea153d08a"
+    },
+    {
+      "id": "mime-754",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Secouer un tapis",
+      "auditStatus": "approved",
+      "auditFingerprint": "7a835a932cffcdef"
+    },
+    {
+      "id": "mime-755",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Essuyer une table",
+      "auditStatus": "approved",
+      "auditFingerprint": "5ca2c5f8da167701"
+    },
+    {
+      "id": "mime-756",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Planter un clou avec un marteau",
+      "auditStatus": "approved",
+      "auditFingerprint": "054dae310032a89f"
+    },
+    {
+      "id": "mime-757",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Visser une vis avec un tournevis",
+      "auditStatus": "approved",
+      "auditFingerprint": "88e0839189a42bd3"
+    },
+    {
+      "id": "mime-758",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mesurer un mur avec un mètre",
+      "auditStatus": "approved",
+      "auditFingerprint": "519d4f991165c555"
+    },
+    {
+      "id": "mime-759",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Poncer une planche",
+      "auditStatus": "approved",
+      "auditFingerprint": "cf5efffaf7b67054"
+    },
+    {
+      "id": "mime-760",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Peindre un mur au rouleau",
+      "auditStatus": "approved",
+      "auditFingerprint": "f81bec19eb6fea9d"
+    },
+    {
+      "id": "mime-761",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Poser du papier peint",
+      "auditStatus": "approved",
+      "auditFingerprint": "42efa7f39501d941"
+    },
+    {
+      "id": "mime-762",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Déboucher un évier avec une ventouse",
+      "auditStatus": "approved",
+      "auditFingerprint": "2f410aefbaa68720"
+    },
+    {
+      "id": "mime-763",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Nettoyer les toilettes avec une brosse",
+      "auditStatus": "approved",
+      "auditFingerprint": "534921a427321716"
+    },
+    {
+      "id": "mime-764",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Changer un rouleau de papier toilette",
+      "auditStatus": "approved",
+      "auditFingerprint": "db2a3511bee81f87"
+    },
+    {
+      "id": "mime-765",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Retourner un matelas",
+      "auditStatus": "approved",
+      "auditFingerprint": "39b3c6134b9c2b76"
+    },
+    {
+      "id": "mime-766",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Porter une échelle",
+      "auditStatus": "approved",
+      "auditFingerprint": "83f871c142e2015b"
+    },
+    {
+      "id": "mime-767",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Ranger des livres sur une étagère",
+      "auditStatus": "approved",
+      "auditFingerprint": "ccffc372981c7533"
+    },
+    {
+      "id": "mime-768",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Vider une poubelle",
+      "auditStatus": "approved",
+      "auditFingerprint": "464cce41877628f9"
+    },
+    {
+      "id": "mime-769",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Dépoussiérer un meuble avec un plumeau",
+      "auditStatus": "approved",
+      "auditFingerprint": "17626fb3b67fa9dc"
+    },
+    {
+      "id": "mime-770",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Accrocher un cadre au mur",
+      "auditStatus": "approved",
+      "auditFingerprint": "5f03200b1600a50b"
+    },
+    {
+      "id": "mime-772",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Peindre un plafond avec un rouleau",
+      "auditStatus": "approved",
+      "auditFingerprint": "84420438f060f419"
+    },
+    {
+      "id": "mime-776",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Scier une planche",
+      "auditStatus": "approved",
+      "auditFingerprint": "9a2c97ff80070d57"
+    },
+    {
+      "id": "mime-779",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Changer le sac d’un aspirateur",
+      "auditStatus": "approved",
+      "auditFingerprint": "3ce5aeef3666b253"
+    },
+    {
+      "id": "mime-780",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Plier un drap-housse",
+      "auditStatus": "approved",
+      "auditFingerprint": "c486665fdae945fd"
+    },
+    {
+      "id": "mime-781",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Déplacer un canapé très lourd",
+      "auditStatus": "approved",
+      "auditFingerprint": "b669d93ee6bd5c7d"
+    },
+    {
+      "id": "mime-782",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire passer un matelas par une porte étroite",
+      "auditStatus": "approved",
+      "auditFingerprint": "4af7bdd3cd61eeba"
+    },
+    {
+      "id": "mime-783",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Ouvrir un escabeau et monter dessus",
+      "auditStatus": "approved",
+      "auditFingerprint": "6cd46e2a3449d8cc"
+    },
+    {
+      "id": "mime-784",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Démêler une rallonge électrique",
+      "auditStatus": "approved",
+      "auditFingerprint": "b0d92577f7f09050"
+    },
+    {
+      "id": "mime-785",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Enrouler un tuyau d’arrosage",
+      "auditStatus": "approved",
+      "auditFingerprint": "73aeb08cdb44c522"
+    },
+    {
+      "id": "mime-788",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Retirer un clou avec une pince",
+      "auditStatus": "approved",
+      "auditFingerprint": "cee4a1608693156c"
+    },
+    {
+      "id": "mime-791",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Installer un abat-jour",
+      "auditStatus": "approved",
+      "auditFingerprint": "ee399aa61bb14e9d"
+    },
+    {
+      "id": "mime-795",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Réparer un tuyau qui fuit avec du ruban adhésif",
+      "auditStatus": "approved",
+      "auditFingerprint": "1a1f82ace8df7aaf"
+    },
+    {
+      "id": "mime-798",
+      "boxId": "home_diy",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Retirer un clou coincé en tirant de toutes ses forces",
+      "auditStatus": "approved",
+      "auditFingerprint": "d822029121acb5c1"
+    },
+    {
+      "id": "mime-801",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Marcher avec des bâtons de randonnée",
+      "auditStatus": "approved",
+      "auditFingerprint": "975c6ac7e0c03f9e"
+    },
+    {
+      "id": "mime-802",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Observer un oiseau avec des jumelles",
+      "auditStatus": "approved",
+      "auditFingerprint": "4c6bb641ecb6abca"
+    },
+    {
+      "id": "mime-803",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Ramasser du bois (pour un feu de camp)",
+      "auditStatus": "approved",
+      "auditFingerprint": "48ada1e0760ce34d"
+    },
+    {
+      "id": "mime-804",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Cueillir des champignons",
+      "auditStatus": "approved",
+      "auditFingerprint": "4a99489d610b5c06"
+    },
+    {
+      "id": "mime-805",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Marcher dans la neige profonde",
+      "auditStatus": "approved",
+      "auditFingerprint": "a5f496bcbd1bd76a"
+    },
+    {
+      "id": "mime-807",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Lire une boussole",
+      "auditStatus": "approved",
+      "auditFingerprint": "324525cad9fe6aa5"
+    },
+    {
+      "id": "mime-808",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Boire à une gourde",
+      "auditStatus": "approved",
+      "auditFingerprint": "cce04af49801a7aa"
+    },
+    {
+      "id": "mime-809",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Se glisser dans un sac de couchage",
+      "auditStatus": "approved",
+      "auditFingerprint": "a420b13d7f25f417"
+    },
+    {
+      "id": "mime-810",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Chasser des moustiques",
+      "auditStatus": "approved",
+      "auditFingerprint": "b6d29aa5c56346ac"
+    },
+    {
+      "id": "mime-811",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mettre de la crème solaire",
+      "auditStatus": "approved",
+      "auditFingerprint": "910bb5d2ab1e91f1"
+    },
+    {
+      "id": "mime-812",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Lacer des chaussures",
+      "auditStatus": "approved",
+      "auditFingerprint": "23b3143a6b7963f1"
+    },
+    {
+      "id": "mime-814",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Planter un drapeau au sommet",
+      "auditStatus": "approved",
+      "auditFingerprint": "883178a92d7980c6"
+    },
+    {
+      "id": "mime-815",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Ramasser des coquillages",
+      "auditStatus": "approved",
+      "auditFingerprint": "c4f10671378f08a4"
+    },
+    {
+      "id": "mime-816",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Creuser un trou avec une pelle",
+      "auditStatus": "approved",
+      "auditFingerprint": "058c866202c086c9"
+    },
+    {
+      "id": "mime-817",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Pêcher avec une canne",
+      "auditStatus": "approved",
+      "auditFingerprint": "b2938bd4f0855ba0"
+    },
+    {
+      "id": "mime-819",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Suivre des traces d’animaux au sol",
+      "auditStatus": "approved",
+      "auditFingerprint": "9b3f5900d012ecf7"
+    },
+    {
+      "id": "mime-820",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Secouer du sable hors de ses chaussures",
+      "auditStatus": "approved",
+      "auditFingerprint": "4bd63f7116eff0fc"
+    },
+    {
+      "id": "mime-821",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Monter une tente",
+      "auditStatus": "approved",
+      "auditFingerprint": "1eed932335b92491"
+    },
+    {
+      "id": "mime-822",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Rouler un sac de couchage",
+      "auditStatus": "approved",
+      "auditFingerprint": "956a1763944de252"
+    },
+    {
+      "id": "mime-823",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Porter un gros sac à dos dans une montée",
+      "auditStatus": "approved",
+      "auditFingerprint": "1cbfae82709bb9c9"
+    },
+    {
+      "id": "mime-824",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Rassembler des branches en fagot",
+      "auditStatus": "approved",
+      "auditFingerprint": "69dd7d0f361a93df"
+    },
+    {
+      "id": "mime-827",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Installer un hamac entre deux arbres",
+      "auditStatus": "approved",
+      "auditFingerprint": "21d560bfefab48f2"
+    },
+    {
+      "id": "mime-830",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Retirer un caillou de sa chaussure",
+      "auditStatus": "approved",
+      "auditFingerprint": "c60633b76d81c7c1"
+    },
+    {
+      "id": "mime-831",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Avancer dans de hautes herbes",
+      "auditStatus": "approved",
+      "auditFingerprint": "5aabf6338523c1ea"
+    },
+    {
+      "id": "mime-833",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Grimper une pente en s’aidant d’une corde",
+      "auditStatus": "approved",
+      "auditFingerprint": "35f2581c7d325565"
+    },
+    {
+      "id": "mime-834",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Marcher contre un vent très fort",
+      "auditStatus": "approved",
+      "auditFingerprint": "28d553915721b5a4"
+    },
+    {
+      "id": "mime-838",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Mettre de l’antimoustique (sur tout le corps)",
+      "auditStatus": "approved",
+      "auditFingerprint": "1effcc1a3ace2c88"
+    },
+    {
+      "id": "mime-839",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Secouer une tente trempée par la pluie",
+      "auditStatus": "approved",
+      "auditFingerprint": "ca67a73d9c22d8f6"
+    },
+    {
+      "id": "mime-840",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire sécher des vêtements sur une branche",
+      "auditStatus": "approved",
+      "auditFingerprint": "7db77e32f295e078"
+    },
+    {
+      "id": "mime-841",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Tirer un canoë sur la rive",
+      "auditStatus": "approved",
+      "auditFingerprint": "5d5fb8bf4b33dac7"
+    },
+    {
+      "id": "mime-844",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Faire entrer tout son matériel dans un petit sac à dos",
+      "auditStatus": "approved",
+      "auditFingerprint": "7e7db07e7b83ccd6"
+    },
+    {
+      "id": "mime-845",
+      "boxId": "nature_adventure",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Traverser un pont de corde qui se balance",
+      "auditStatus": "approved",
+      "auditFingerprint": "18831f3e8a6ba42c"
+    },
+    {
+      "id": "mime-851",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Prendre sa température avec un thermomètre",
+      "auditStatus": "approved",
+      "auditFingerprint": "1dad816c6e025db9"
+    },
+    {
+      "id": "mime-852",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mettre un pansement sur son doigt",
+      "auditStatus": "approved",
+      "auditFingerprint": "933c931274e860c4"
+    },
+    {
+      "id": "mime-853",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Marcher avec des béquilles",
+      "auditStatus": "approved",
+      "auditFingerprint": "08a32a2a3e457ed3"
+    },
+    {
+      "id": "mime-854",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Porter un bras en écharpe",
+      "auditStatus": "approved",
+      "auditFingerprint": "a0c5fbea249e9dae"
+    },
+    {
+      "id": "mime-855",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Écouter un cœur avec un stéthoscope",
+      "auditStatus": "approved",
+      "auditFingerprint": "73bcd941867633aa"
+    },
+    {
+      "id": "mime-856",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Prendre son pouls au poignet",
+      "auditStatus": "approved",
+      "auditFingerprint": "db16bb8ca6aee6bd"
+    },
+    {
+      "id": "mime-857",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mettre des gouttes dans ses yeux",
+      "auditStatus": "approved",
+      "auditFingerprint": "f42a589b6de4838d"
+    },
+    {
+      "id": "mime-858",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mettre un masque chirurgical",
+      "auditStatus": "approved",
+      "auditFingerprint": "b5b7ec808cf757f2"
+    },
+    {
+      "id": "mime-859",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Désinfecter une petite plaie",
+      "auditStatus": "approved",
+      "auditFingerprint": "286b940a60944958"
+    },
+    {
+      "id": "mime-860",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Enrouler un bandage autour de sa cheville",
+      "auditStatus": "approved",
+      "auditFingerprint": "0ba2b4f14c3e6fbb"
+    },
+    {
+      "id": "mime-861",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Avaler un médicament avec un verre d’eau",
+      "auditStatus": "approved",
+      "auditFingerprint": "8bc787713c60a9e7"
+    },
+    {
+      "id": "mime-862",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Utiliser un inhalateur",
+      "auditStatus": "approved",
+      "auditFingerprint": "2b7b7cc3961b5492"
+    },
+    {
+      "id": "mime-863",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Tester le réflexe du genou avec un petit marteau",
+      "auditStatus": "approved",
+      "auditFingerprint": "08d0a1e65b28da7f"
+    },
+    {
+      "id": "mime-864",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Poser une poche de glace sur une bosse",
+      "auditStatus": "approved",
+      "auditFingerprint": "105e5f90346d7c1f"
+    },
+    {
+      "id": "mime-865",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Tousser dans son coude",
+      "auditStatus": "approved",
+      "auditFingerprint": "2a50c3ad55588308"
+    },
+    {
+      "id": "mime-866",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Éternuer dans un mouchoir",
+      "auditStatus": "approved",
+      "auditFingerprint": "fc30aa9c0fea37c3"
+    },
+    {
+      "id": "mime-867",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mettre de la crème sur une piqûre",
+      "auditStatus": "approved",
+      "auditFingerprint": "8bc37f5a8cd7315d"
+    },
+    {
+      "id": "mime-868",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Rincer une petite plaie sous l’eau",
+      "auditStatus": "approved",
+      "auditFingerprint": "20e41180ae414475"
+    },
+    {
+      "id": "mime-869",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Prendre du sirop avec une cuillère",
+      "auditStatus": "approved",
+      "auditFingerprint": "f45e1093ae884b03"
+    },
+    {
+      "id": "mime-870",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mettre une bouillotte sur son ventre",
+      "auditStatus": "approved",
+      "auditFingerprint": "25f4d629888e0424"
+    },
+    {
+      "id": "mime-871",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Prendre la tension avec un brassard",
+      "auditStatus": "approved",
+      "auditFingerprint": "46e2359a149ee149"
+    },
+    {
+      "id": "mime-872",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Examiner une gorge avec une lampe",
+      "auditStatus": "approved",
+      "auditFingerprint": "3d80fdde9eca27aa"
+    },
+    {
+      "id": "mime-873",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Enfiler des gants médicaux rapidement",
+      "auditStatus": "approved",
+      "auditFingerprint": "98d7b05f21107451"
+    },
+    {
+      "id": "mime-874",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Retirer une écharde avec une pince à épiler",
+      "auditStatus": "approved",
+      "auditFingerprint": "b3ec8c57e35dca38"
+    },
+    {
+      "id": "mime-875",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Mettre une genouillère",
+      "auditStatus": "approved",
+      "auditFingerprint": "73d6eed0a3b499e4"
+    },
+    {
+      "id": "mime-876",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Pincer son nez pendant un saignement",
+      "auditStatus": "approved",
+      "auditFingerprint": "9d3d964d5db50ff5"
+    },
+    {
+      "id": "mime-877",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Enrouler un bandage autour de son poignet",
+      "auditStatus": "approved",
+      "auditFingerprint": "910bb2380697634d"
+    },
+    {
+      "id": "mime-878",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Installer un appareil auditif derrière son oreille",
+      "auditStatus": "approved",
+      "auditFingerprint": "d4f4ff1bb0afcae0"
+    },
+    {
+      "id": "mime-879",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Poser une compresse sur son front",
+      "auditStatus": "approved",
+      "auditFingerprint": "2bd014d5dbb5070a"
+    },
+    {
+      "id": "mime-880",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire la manœuvre de Heimlich",
+      "auditStatus": "approved",
+      "auditFingerprint": "fc50892d2d88ab1b"
+    },
+    {
+      "id": "mime-882",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Mettre un cache sur un œil",
+      "auditStatus": "approved",
+      "auditFingerprint": "9dd5a273f67cd5b5"
+    },
+    {
+      "id": "mime-883",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Changer un pansement au niveau du coude",
+      "auditStatus": "approved",
+      "auditFingerprint": "df702c0b10fb02a8"
+    },
+    {
+      "id": "mime-884",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Installer un masque à oxygène",
+      "auditStatus": "approved",
+      "auditFingerprint": "6f8fbc6acf7cff30"
+    },
+    {
+      "id": "mime-886",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire lire des lettres sur un panneau de vue",
+      "auditStatus": "approved",
+      "auditFingerprint": "aaac54072b69ce47"
+    },
+    {
+      "id": "mime-887",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Mettre des gouttes dans une oreille",
+      "auditStatus": "approved",
+      "auditFingerprint": "3ea43cec0d2cd85c"
+    },
+    {
+      "id": "mime-888",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Avancer avec un déambulateur",
+      "auditStatus": "approved",
+      "auditFingerprint": "96d7ef305b1b8a2c"
+    },
+    {
+      "id": "mime-889",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Immobiliser un doigt avec une petite attelle",
+      "auditStatus": "approved",
+      "auditFingerprint": "cc5507eebb071bb5"
+    },
+    {
+      "id": "mime-890",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Rincer une brûlure sous l’eau",
+      "auditStatus": "approved",
+      "auditFingerprint": "01f74ebc3a604e1b"
+    },
+    {
+      "id": "mime-891",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire un test avec un écouvillon dans le nez",
+      "auditStatus": "approved",
+      "auditFingerprint": "a08a167cac709fcd"
+    },
+    {
+      "id": "mime-892",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Faire un massage cardiaque",
+      "auditStatus": "approved",
+      "auditFingerprint": "0aa432044ec234cf"
+    },
+    {
+      "id": "mime-893",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Poser une attelle sur une jambe blessée",
+      "auditStatus": "approved",
+      "auditFingerprint": "8d417839452a7f42"
+    },
+    {
+      "id": "mime-895",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Enfiler une blouse, un masque et des gants médicaux",
+      "auditStatus": "approved",
+      "auditFingerprint": "bec90100680a18f5"
+    },
+    {
+      "id": "mime-896",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Faire un plâtre autour d’un bras",
+      "auditStatus": "approved",
+      "auditFingerprint": "7a0adbf218a33de3"
+    },
+    {
+      "id": "mime-897",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Installer une minerve sans bouger la tête",
+      "auditStatus": "approved",
+      "auditFingerprint": "4b142da5980321d5"
+    },
+    {
+      "id": "mime-900",
+      "boxId": "health_first_aid",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Poser les électrodes d’un défibrillateur puis déclencher",
+      "auditStatus": "approved",
+      "auditFingerprint": "4cc895706b5e0455"
+    },
+    {
+      "id": "mime-901",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer de la guitare",
+      "auditStatus": "approved",
+      "auditFingerprint": "8762553b6dd6085b"
+    },
+    {
+      "id": "mime-902",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer du piano",
+      "auditStatus": "approved",
+      "auditFingerprint": "9812b9853500cd53"
+    },
+    {
+      "id": "mime-903",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer de la batterie",
+      "auditStatus": "approved",
+      "auditFingerprint": "979cd0352bdd41b6"
+    },
+    {
+      "id": "mime-904",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer du violon",
+      "auditStatus": "approved",
+      "auditFingerprint": "8a635f1508137386"
+    },
+    {
+      "id": "mime-905",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer de la flûte",
+      "auditStatus": "approved",
+      "auditFingerprint": "78a6d61af6f563a0"
+    },
+    {
+      "id": "mime-906",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer de la trompette",
+      "auditStatus": "approved",
+      "auditFingerprint": "15a6f73d33d1b379"
+    },
+    {
+      "id": "mime-907",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer de l’accordéon",
+      "auditStatus": "approved",
+      "auditFingerprint": "b12e9e59c3516fd7"
+    },
+    {
+      "id": "mime-908",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer du saxophone",
+      "auditStatus": "approved",
+      "auditFingerprint": "830361b1250339f6"
+    },
+    {
+      "id": "mime-909",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer du violoncelle",
+      "auditStatus": "approved",
+      "auditFingerprint": "dfe996587f59ca36"
+    },
+    {
+      "id": "mime-910",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer de l’harmonica",
+      "auditStatus": "approved",
+      "auditFingerprint": "2773b87c868c9251"
+    },
+    {
+      "id": "mime-911",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer des maracas",
+      "auditStatus": "approved",
+      "auditFingerprint": "3f9513c69ceea4cd"
+    },
+    {
+      "id": "mime-912",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer du tambourin",
+      "auditStatus": "approved",
+      "auditFingerprint": "066f2327a9a8fabe"
+    },
+    {
+      "id": "mime-913",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Diriger un orchestre",
+      "auditStatus": "approved",
+      "auditFingerprint": "7cfa455847dfc4a6"
+    },
+    {
+      "id": "mime-914",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Chanter dans un microphone",
+      "auditStatus": "approved",
+      "auditFingerprint": "f90a0895fcd50e6b"
+    },
+    {
+      "id": "mime-916",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Danser comme une ballerine",
+      "auditStatus": "approved",
+      "auditFingerprint": "5cea45d68887e2ee"
+    },
+    {
+      "id": "mime-917",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Saluer le public après un spectacle",
+      "auditStatus": "approved",
+      "auditFingerprint": "6fa02e06581972a6"
+    },
+    {
+      "id": "mime-918",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Accorder une guitare",
+      "auditStatus": "approved",
+      "auditFingerprint": "4da050112be2e39b"
+    },
+    {
+      "id": "mime-919",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer du triangle",
+      "auditStatus": "approved",
+      "auditFingerprint": "dc5443593b818785"
+    },
+    {
+      "id": "mime-920",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jouer de la harpe",
+      "auditStatus": "approved",
+      "auditFingerprint": "b94a2597389446bf"
+    },
+    {
+      "id": "mime-921",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Jouer de la batterie (en perdant une baguette)",
+      "auditStatus": "approved",
+      "auditFingerprint": "eece7f644a1f7450"
+    },
+    {
+      "id": "mime-926",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire des claquettes",
+      "auditStatus": "approved",
+      "auditFingerprint": "a34a9083e500090d"
+    },
+    {
+      "id": "mime-928",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Mimer une personne enfermée dans une boîte invisible",
+      "auditStatus": "approved",
+      "auditFingerprint": "190a7a9b1fe71dd0"
+    },
+    {
+      "id": "mime-931",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Répéter une chorégraphie",
+      "auditStatus": "approved",
+      "auditFingerprint": "66c30b42cd7cd671"
+    },
+    {
+      "id": "mime-944",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Jouer de la guitare derrière sa tête",
+      "auditStatus": "approved",
+      "auditFingerprint": "acd69a0b21b2a9e2"
+    },
+    {
+      "id": "mime-945",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Faire une pirouette de ballerine",
+      "auditStatus": "approved",
+      "auditFingerprint": "ec87c2478eef2dcb"
+    },
+    {
+      "id": "mime-950",
+      "boxId": "music_stage",
+      "active": true,
+      "difficulty": "hard",
+      "prompt": "Manipuler deux marionnettes dont les fils s’emmêlent",
+      "auditStatus": "approved",
+      "auditFingerprint": "9da33a8311fc6c15"
+    },
+    {
+      "id": "mime-951",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Pousser un caddie de supermarché",
+      "auditStatus": "approved",
+      "auditFingerprint": "0bf7436912b862fd"
+    },
+    {
+      "id": "mime-952",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Choisir des fruits sur un étal",
+      "auditStatus": "approved",
+      "auditFingerprint": "27a56d47ea1c2905"
+    },
+    {
+      "id": "mime-953",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Essayer une paire de chaussures",
+      "auditStatus": "approved",
+      "auditFingerprint": "32c7c9a265fd621d"
+    },
+    {
+      "id": "mime-954",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Peser des légumes",
+      "auditStatus": "approved",
+      "auditFingerprint": "a1d49dfb1b25ef34"
+    },
+    {
+      "id": "mime-955",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Attendre dans une file",
+      "auditStatus": "approved",
+      "auditFingerprint": "9edbf8dbf071a2ad"
+    },
+    {
+      "id": "mime-959",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Retirer de l’argent à un distributeur",
+      "auditStatus": "approved",
+      "auditFingerprint": "84e3f3229f3c151f"
+    },
+    {
+      "id": "mime-962",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Chercher un produit dans un rayon",
+      "auditStatus": "approved",
+      "auditFingerprint": "48a600ee761b17fa"
+    },
+    {
+      "id": "mime-963",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Comparer deux produits",
+      "auditStatus": "approved",
+      "auditFingerprint": "3ad1c9c4c9778cfd"
+    },
+    {
+      "id": "mime-964",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Mettre une pièce dans un caddie",
+      "auditStatus": "approved",
+      "auditFingerprint": "0401320f838d4908"
+    },
+    {
+      "id": "mime-965",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Prendre un ascenseur",
+      "auditStatus": "approved",
+      "auditFingerprint": "98367c8170d8c73c"
+    },
+    {
+      "id": "mime-966",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Passer dans une porte tournante",
+      "auditStatus": "approved",
+      "auditFingerprint": "70b3751cbbade4a3"
+    },
+    {
+      "id": "mime-967",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "easy",
+      "prompt": "Jeter un déchet dans une poubelle",
+      "auditStatus": "approved",
+      "auditFingerprint": "89eeda8e2da536bf"
+    },
+    {
+      "id": "mime-971",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Attraper un produit placé tout en haut d’un rayon",
+      "auditStatus": "approved",
+      "auditFingerprint": "4533f6d52b03bec6"
+    },
+    {
+      "id": "mime-974",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Porter un plateau bien rempli",
+      "auditStatus": "approved",
+      "auditFingerprint": "fbd5d63652c5e584"
+    },
+    {
+      "id": "mime-980",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Se faufiler devant plusieurs personnes pour rejoindre sa place au cinéma",
+      "auditStatus": "approved",
+      "auditFingerprint": "0b3dba3239fbe17f"
+    },
+    {
+      "id": "mime-983",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Refermer un parapluie mouillé avant d’entrer dans un magasin",
+      "auditStatus": "approved",
+      "auditFingerprint": "5e38ca716068fb86"
+    },
+    {
+      "id": "mime-985",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Déposer son manteau au vestiaire et récupérer un ticket",
+      "auditStatus": "approved",
+      "auditFingerprint": "566c7beed7b0e06b"
+    },
+    {
+      "id": "mime-987",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Essayer plusieurs paires de lunettes de soleil",
+      "auditStatus": "approved",
+      "auditFingerprint": "834c6ad4c3d826d5"
+    },
+    {
+      "id": "mime-989",
+      "boxId": "shops_public",
+      "active": true,
+      "difficulty": "medium",
+      "prompt": "Remplir une machine à laver",
+      "auditStatus": "approved",
+      "auditFingerprint": "4ee38746b50e6ff0"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+/* Résultats */
+#resultsScreen .results-card{height:100%;max-height:100%;min-height:0;padding:clamp(10px,2vw,20px);display:flex;flex-direction:column;overflow:hidden}
+#resultsScreen .eyebrow{margin-bottom:2px}#resultsScreen h2{font-size:clamp(1.45rem,3.6vw,2.35rem);line-height:1}
+.result-summary{flex:0 0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.result-summary>div{min-height:58px;background:var(--panel-2);border:1px solid var(--outline);border-radius:13px;padding:7px 8px;display:flex;align-items:baseline;justify-content:center;gap:7px}
+.result-summary strong{font-size:clamp(1.65rem,4.5vw,2.75rem);line-height:1}.result-summary span{color:var(--muted);font-size:clamp(.72rem,1.7vw,.98rem);font-weight:850}
+.result-summary>div:nth-child(1) strong,.result-summary>div:nth-child(1) span{color:var(--green)}
+.result-summary>div:nth-child(2) strong,.result-summary>div:nth-child(2) span{color:var(--red)}
+.result-details{flex:1 1 auto;min-height:82px;overflow-y:auto;border:1px solid var(--outline);border-radius:14px;margin-bottom:9px}
+.result-row{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:9px;align-items:center;min-height:57px;padding:8px 12px;border-bottom:1px solid var(--outline)}
+.result-row:last-child{border-bottom:0}.result-row.valid{background:rgba(72,224,125,.055)}.result-row.passed{background:rgba(255,91,103,.055)}
+.result-row .status{font-size:1.35rem;font-weight:1000}
+.result-row.valid .status,.result-row.valid .details strong,.result-row.valid .details small,.result-row.valid .result-word{color:var(--green)}
+.result-row.passed .status,.result-row.passed .details strong,.result-row.passed .details small,.result-row.passed .result-word{color:var(--red)}
+.result-row .details{min-width:0;display:flex;flex-direction:column}.result-row .details strong,.result-row .details small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.result-row .details small{opacity:.78}.result-row .result-word{font-size:.74rem;font-weight:950}
+.results-actions{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:9px}.results-actions .primary-button,.results-actions .secondary-button{min-height:48px;padding:9px 14px}
+
+/* Détail des manches mélangées */
+.result-breakdown{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 9px}
+.result-breakdown-item{min-width:0;padding:7px 8px;border:1px solid var(--outline);border-radius:11px;background:var(--panel-2);display:flex;align-items:baseline;justify-content:center;gap:5px;text-align:center}
+.result-breakdown-item strong{font-size:1.05rem;line-height:1}.result-breakdown-item span{min-width:0;color:var(--muted);font-size:.64rem;font-weight:800;line-height:1.1}
+.result-breakdown-item.positive strong{color:var(--green)}.result-breakdown-item.negative strong{color:var(--red)}.result-breakdown-item.draw strong{color:#5ff4e8}.result-breakdown-item.neutral strong{color:#ffd27a}
+.result-row.drawing{box-shadow:inset 3px 0 0 #20c9be}.result-row.drawing .details small{color:#9feee7}
+@media(max-width:760px){.result-breakdown{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-height:500px){.result-breakdown{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.result-breakdown-item{padding:5px}.result-breakdown-item span{font-size:.58rem}}

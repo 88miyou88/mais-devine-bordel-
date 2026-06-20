@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#111318">
+  <meta name="description" content="Mais devine, bordel ! — jeu de cartes personnalisable à poser sur le front.">
+  <title>Mais devine, bordel !</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
+  <link rel="stylesheet" href="./assets/styles/foundation.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/components.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/home.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/manager.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/game.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/results.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/drawing.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/multiplayer.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/drinking-game.css?v=097">
+  <link rel="stylesheet" href="./assets/styles/screens/audit.css?v=097">
+</head>
+<body>
+  <main id="app">
+    <section id="homeScreen" class="screen active" aria-labelledby="appTitle">
+      <div class="home-card">
+        <header class="home-topbar">
+          <div class="home-brand">
+            <h1 id="appTitle">Mais devine, bordel !</h1>
+          </div>
+
+          <div class="home-top-controls">
+            <div class="play-type-switch" role="radiogroup" aria-label="Type de partie">
+              <button id="freePlayButton" class="play-type-button selected" type="button" data-play-type="free" aria-pressed="true">Partie libre</button>
+              <button id="multiplayerPlayButton" class="play-type-button" type="button" data-play-type="multiplayer" aria-pressed="false">Multijoueur</button>
+            </div>
+
+            <fieldset id="globalTimerSettings" class="timer-settings home-timer-settings">
+              <legend>Durée de la manche</legend>
+              <div class="preset-row" role="radiogroup" aria-label="Durée">
+                <button class="duration-btn" data-seconds="30" type="button">30 s</button>
+                <button class="duration-btn selected" data-seconds="60" type="button">60 s</button>
+                <button class="duration-btn" data-seconds="90" type="button">90 s</button>
+                <label class="custom-duration-chip" title="Durée personnalisée">
+                  <input id="customSeconds" type="number" min="10" max="600" step="5" inputmode="numeric" placeholder="45" aria-label="Durée personnalisée en secondes">
+                  <span>s</span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </header>
+
+        <fieldset class="mode-selection-panel">
+          <legend>Modes de jeu</legend>
+          <div class="selection-topline">
+            <div class="selection-summary">
+              <strong id="availableCount">0 / 0 carte</strong>
+              <div id="globalDifficultyChoices" class="global-difficulty-choices" role="group" aria-label="Difficultés appliquées à tous les modes">
+                <label class="global-difficulty-chip difficulty-easy" title="Facile">
+                  <input type="checkbox" value="easy" checked>
+                  <span>F</span><small>Facile</small>
+                </label>
+                <label class="global-difficulty-chip difficulty-medium" title="Moyen">
+                  <input type="checkbox" value="medium" checked>
+                  <span>M</span><small>Moyen</small>
+                </label>
+                <label class="global-difficulty-chip difficulty-hard" title="Difficile">
+                  <input type="checkbox" value="hard" checked>
+                  <span>D</span><small>Difficile</small>
+                </label>
+              </div>
+            </div>
+            <div class="selection-actions">
+              <button id="selectAllButton" class="mini-button" type="button">Tout</button>
+              <button id="selectNoneButton" class="mini-button" type="button">Aucun</button>
+            </div>
+          </div>
+          <div id="modeSelectionList" class="mode-app-grid"></div>
+        </fieldset>
+
+        <div class="home-action-bar">
+          <button id="startButton" class="primary-button home-start-button" type="button">Lancer la partie</button>
+          <button id="manageCardsButton" class="secondary-button home-compact-button" type="button">Gérer les cartes</button>
+          <button id="installButton" class="secondary-button home-compact-button hidden" type="button">Installer</button>
+
+          <details class="settings-panel">
+            <summary>⚙ Réglages</summary>
+            <div class="settings-content">
+              <label class="toggle-row">
+                <span>
+                  <strong>Vibrations</strong>
+                  <small>Petites impulsions = validé · vibration longue = passé</small>
+                </span>
+                <input id="vibrationToggle" type="checkbox" checked>
+              </label>
+
+              <div class="test-vibrations">
+                <button id="testValidVibrationButton" class="mini-button valid-test" type="button">Tester « validé »</button>
+                <button id="testPassVibrationButton" class="mini-button pass-test" type="button">Tester « passé »</button>
+              </div>
+
+              <details id="advancedSettingsPanel" class="advanced-settings">
+                <summary>Paramètres avancés</summary>
+                <div class="advanced-settings-content">
+                  <p class="advanced-explanation">
+                    Chaque mode possède sa bibliothèque officielle GitHub. Les cartes personnelles et les modifications restent sur ce téléphone.
+                  </p>
+
+                  <div id="libraryVersionList" class="library-version-list"></div>
+
+                  <p id="libraryLastChecked" class="library-last-checked">Dernière vérification : jamais</p>
+                  <p id="libraryStatusMessage" class="library-status-message">Bibliothèques chargées.</p>
+
+                  <div class="card-removal-report-panel">
+                    <p id="cardRemovalReportStatus" class="card-removal-report-status">Aucune carte supprimée en jeu.</p>
+                    <div class="card-removal-report-actions">
+                      <button id="exportCardRemovalReportButton" class="secondary-button compact-button" type="button" disabled>Télécharger les cartes supprimées</button>
+                      <button id="clearCardRemovalReportButton" class="danger-button compact-button" type="button" disabled>Vider la liste</button>
+                    </div>
+                    <small>Le fichier ne contient aucun prénom de joueur. Il permet seulement d’identifier les cartes à revoir ou à retirer des JSON officiels.</small>
+                  </div>
+
+                  <div class="advanced-actions">
+                    <button id="openAuditButton" class="primary-button compact-button" type="button">Auditer les cartes</button>
+                    <button id="checkLibrariesButton" class="secondary-button compact-button" type="button">Vérifier les mises à jour</button>
+                    <button id="updateLibrariesButton" class="primary-button compact-button" type="button" disabled>Mettre à jour les bibliothèques</button>
+                    <button id="exportBackupButton" class="secondary-button compact-button" type="button">Exporter une sauvegarde</button>
+                    <button id="restoreBackupButton" class="secondary-button compact-button" type="button">Restaurer une sauvegarde</button>
+                    <input id="restoreBackupInput" class="hidden" type="file" accept=".json,application/json">
+                    <button id="diagnosticButton" class="secondary-button compact-button" type="button">Diagnostic</button>
+                    <button id="resetLibrariesButton" class="danger-button compact-button" type="button">Réinitialiser les bibliothèques officielles</button>
+                  </div>
+
+                  <p class="advanced-warning">
+                    La réinitialisation annule les modifications locales des cartes officielles, mais conserve les cartes et boîtes personnelles.
+                  </p>
+                </div>
+              </details>
+            </div>
+          </details>
+
+          <button id="flipHomeButton" class="secondary-button home-compact-button" type="button">↻ Retourner</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="drinkingSetupScreen" class="screen drinking-screen">
+      <div class="drinking-shell drinking-setup-shell">
+        <header class="drinking-header">
+          <button id="drinkingSetupBackButton" class="secondary-button compact-button" type="button">← Accueil</button>
+          <div>
+            <p class="eyebrow">Préparation du chaos</p>
+            <h2>Qui boit, bordel ?</h2>
+          </div>
+          <div class="drinking-hot-badge hidden" id="drinkingSetupHotBadge">🔥 Après minuit</div>
+        </header>
+
+        <div class="drinking-setup-grid">
+          <section class="drinking-panel drinking-players-panel">
+            <div class="section-title-row">
+              <div><h3>Joueurs</h3><p>Les profils Team soft participent à tout, sans alcool.</p></div>
+              <div class="section-mini-actions">
+                <button id="drinkingShufflePlayersButton" class="mini-button" type="button">Mélanger</button>
+                <button id="drinkingAddPlayerButton" class="mini-button" type="button">+ Ajouter</button>
+              </div>
+            </div>
+            <div id="drinkingPlayerList" class="drinking-player-list"></div>
+          </section>
+
+          <section class="drinking-panel drinking-options-panel">
+            <h3>Format de la partie</h3>
+            <div class="drinking-end-type" role="radiogroup" aria-label="Fin de partie">
+              <label><input type="radio" name="drinkingEndType" value="cards" checked><span>Nombre de cartes</span></label>
+              <label><input type="radio" name="drinkingEndType" value="minutes"><span>Durée</span></label>
+            </div>
+            <div class="drinking-format-grid">
+              <label id="drinkingCardLimitField">Cartes<input id="drinkingCardLimitInput" type="number" min="5" max="250" step="5" value="30"></label>
+              <label id="drinkingDurationField" class="hidden">Durée<select id="drinkingDurationInput"><option value="15">15 min</option><option value="30" selected>30 min</option><option value="45">45 min</option><option value="60">60 min</option></select></label>
+              <label>Plafond par carte<input id="drinkingMaxPenaltyInput" type="number" min="1" max="10" step="1" value="3"></label>
+              <label>Alternative Team soft<select id="drinkingSoftModeInput"><option value="points">Points</option><option value="tokens">Jetons</option><option value="mini_challenge">Mini-défi</option><option value="joker">Joker perdu</option></select></label>
+            </div>
+            <div id="drinkingPenaltyPreview" class="drinking-penalty-preview"></div>
+            <button id="startDrinkingButton" class="primary-button" type="button">Lancer le chaos</button>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="drinkingGameScreen" class="screen drinking-screen">
+      <div class="drinking-shell drinking-game-shell">
+        <article id="drinkingCard" class="drinking-card">
+          <div class="drinking-card-hud">
+            <div class="drinking-progress-hud" aria-live="polite">
+              <span id="drinkingProgress">1 / 30 · 0 jouée</span>
+              <strong id="drinkingClock" class="hidden">—</strong>
+            </div>
+            <div class="drinking-card-topline">
+              <span id="drinkingTheme" class="drinking-theme">Thème</span>
+              <span id="drinkingLevel" class="drinking-level">Pépouze</span>
+            </div>
+            <div class="drinking-card-admin-actions">
+              <button id="drinkingEndButton" class="danger-button compact-button drinking-end-button" type="button">Fin</button>
+              <button id="drinkingDeleteCardButton" class="card-delete-button drinking-delete-card-button" type="button" aria-label="Supprimer cette carte" title="Supprimer cette carte">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-1 11H8L7 9Zm3 2v7m4-7v7"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="drinkingSwipeLeftLabel" class="drinking-swipe-label drinking-swipe-label-left">NON</div>
+          <div id="drinkingSwipeRightLabel" class="drinking-swipe-label drinking-swipe-label-right">OUI</div>
+          <p id="drinkingPrompt" class="drinking-prompt"></p>
+
+          <div id="drinkingTargetPanel" class="drinking-target-panel hidden">
+            <p id="drinkingTargetLabel" class="drinking-resolution-label">Qui est concerné ?</p>
+            <div id="drinkingTargetChoices" class="drinking-target-choices"></div>
+          </div>
+
+          <div id="drinkingRuleReminder" class="drinking-card-rule-reminder hidden">
+            <div id="drinkingRulesSummary" class="drinking-rules-summary"></div>
+            <button id="drinkingRulePenaltyButton" class="secondary-button compact-button drinking-rule-penalty-button hidden" type="button" aria-label="Signaler un oubli de règle">Règle oubliée</button>
+          </div>
+
+          <button id="drinkingChallengeTimerButton" class="mini-button hidden" type="button">Lancer le chrono</button>
+          <div id="drinkingChallengeTimer" class="drinking-challenge-timer hidden"></div>
+
+          <div class="drinking-card-controls">
+            <button id="drinkingBackButton" class="secondary-button compact-button" type="button">↶ Retour</button>
+            <span class="drinking-swipe-help">Glisse la carte à gauche ou à droite</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="drinkingResultsScreen" class="screen drinking-screen">
+      <div class="drinking-shell drinking-results-shell">
+        <header class="drinking-results-header">
+          <p class="eyebrow">Fin du carnage</p>
+          <h2>Résultats</h2>
+          <p id="drinkingResultsSummary"></p>
+        </header>
+        <div id="drinkingRanking" class="drinking-ranking"></div>
+        <div class="drinking-results-actions">
+          <button id="drinkingReplayButton" class="primary-button" type="button">Rejouer</button>
+          <button id="drinkingResultsHomeButton" class="secondary-button" type="button">Accueil</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="multiplayerSetupScreen" class="screen multiplayer-screen">
+      <div class="multiplayer-shell multiplayer-setup-shell">
+        <header class="multiplayer-header">
+          <button id="multiplayerSetupBackButton" class="secondary-button compact-button" type="button">← Accueil</button>
+          <div>
+            <p class="eyebrow">Préparation de la partie</p>
+            <h2>Multijoueur</h2>
+          </div>
+          <div id="multiplayerSetupModeSummary" class="multiplayer-mode-summary"></div>
+        </header>
+
+        <div class="multiplayer-setup-grid">
+          <section class="multiplayer-panel players-panel">
+            <div class="multiplayer-panel-title">
+              <div>
+                <h3>Joueurs</h3>
+                <p>De 2 à 12 personnes. L’ordre affiché est l’ordre de passage.</p>
+              </div>
+              <div class="section-mini-actions">
+                <button id="shufflePlayersButton" class="mini-button" type="button">Mélanger</button>
+                <button id="addPlayerButton" class="mini-button" type="button">+ Ajouter</button>
+              </div>
+            </div>
+            <div id="multiplayerPlayerList" class="multiplayer-player-list"></div>
+          </section>
+
+          <section class="multiplayer-panel multiplayer-rules-panel">
+            <div class="multiplayer-panel-title">
+              <div>
+                <h3>Déroulement</h3>
+                <p id="multiplayerFlowIntro">Chaque joueur garde le téléphone pendant toute sa manche et enchaîne les modes.</p>
+              </div>
+            </div>
+
+            <div class="multiplayer-flow-choices" role="radiogroup" aria-label="Type de déroulement">
+              <label class="multiplayer-flow-card">
+                <input type="radio" name="multiplayerFlow" value="continuous" checked>
+                <span>
+                  <strong>Modes enchaînés</strong>
+                  <small>Chaque joueur garde le téléphone pendant une seule manche et alterne les modes.</small>
+                </span>
+              </label>
+              <label class="multiplayer-flow-card">
+                <input type="radio" name="multiplayerFlow" value="mode-blocks">
+                <span>
+                  <strong>Manches par mode</strong>
+                  <small>Chaque manche entière est consacrée à un seul mode avant de passer au suivant.</small>
+                </span>
+              </label>
+            </div>
+
+            <label class="multiplayer-setting-row">
+              <span>
+                <strong>Nombre de cycles</strong>
+                <small id="multiplayerCyclesHelp">Un cycle = une manche complète par joueur.</small>
+              </span>
+              <select id="multiplayerCyclesInput">
+                <option value="1">1 cycle</option>
+                <option value="2">2 cycles</option>
+                <option value="3">3 cycles</option>
+                <option value="4">4 cycles</option>
+                <option value="5">5 cycles</option>
+              </select>
+            </label>
+
+            <div class="multiplayer-order-choices" role="radiogroup" aria-label="Ordre des modes">
+              <label class="multiplayer-order-card">
+                <input type="radio" name="multiplayerOrder" value="common">
+                <span>
+                  <strong>Ordre commun</strong>
+                  <small id="multiplayerCommonOrderHelp">Tous les joueurs suivent le même enchaînement de modes.</small>
+                </span>
+              </label>
+              <label class="multiplayer-order-card">
+                <input type="radio" name="multiplayerOrder" value="balanced" checked>
+                <span>
+                  <strong>Rotation équilibrée</strong>
+                  <small id="multiplayerBalancedOrderHelp">Chaque joueur reçoit les mêmes modes dans un ordre différent et équitable.</small>
+                </span>
+              </label>
+            </div>
+
+            <div id="multiplayerEstimate" class="multiplayer-estimate"></div>
+            <button id="startMultiplayerButton" class="primary-button multiplayer-start-button" type="button">Préparer la partie</button>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="multiplayerHandoffScreen" class="screen multiplayer-screen">
+      <div class="multiplayer-shell multiplayer-handoff-card">
+        <p id="multiplayerHandoffKicker" class="eyebrow">Manche 1 sur 2</p>
+        <h2 id="multiplayerHandoffTitle">Passe le téléphone à Camille</h2>
+        <p id="multiplayerHandoffText">Tu as 60 secondes pour marquer un maximum de points.</p>
+        <div id="multiplayerHandoffModes" class="multiplayer-mode-route"></div>
+        <div id="multiplayerHandoffScore" class="multiplayer-current-score"></div>
+        <div class="multiplayer-handoff-actions">
+          <button id="multiplayerAbortButton" class="secondary-button" type="button">Abandonner la partie</button>
+          <button id="multiplayerReadyButton" class="primary-button" type="button">Je suis prêt·e</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="multiplayerTurnSummaryScreen" class="screen multiplayer-screen">
+      <div class="multiplayer-shell multiplayer-summary-card">
+        <p id="multiplayerTurnSummaryKicker" class="eyebrow">Manche terminée</p>
+        <h2 id="multiplayerTurnSummaryTitle">Camille</h2>
+        <div class="multiplayer-turn-score">
+          <strong id="multiplayerTurnScore">0</strong>
+          <span>points cette manche</span>
+        </div>
+        <div id="multiplayerTurnModeStats" class="multiplayer-mode-stats"></div>
+        <p id="multiplayerTurnTotal" class="multiplayer-turn-total"></p>
+        <button id="multiplayerContinueButton" class="primary-button" type="button">Passer au joueur suivant</button>
+      </div>
+    </section>
+
+    <section id="multiplayerResultsScreen" class="screen multiplayer-screen">
+      <div class="multiplayer-shell multiplayer-results-shell">
+        <header class="multiplayer-results-header">
+          <div>
+            <p class="eyebrow">Partie terminée</p>
+            <h2>Classement final</h2>
+          </div>
+          <div id="multiplayerWinnerBanner" class="multiplayer-winner-banner"></div>
+        </header>
+        <div id="multiplayerRanking" class="multiplayer-ranking"></div>
+        <div class="multiplayer-final-actions">
+          <button id="multiplayerReplayButton" class="primary-button" type="button">Rejouer avec les mêmes réglages</button>
+          <button id="multiplayerResultsHomeButton" class="secondary-button" type="button">Accueil</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="auditSetupScreen" class="screen audit-screen">
+      <div class="audit-shell audit-setup-shell">
+        <header class="audit-header">
+          <button id="auditHomeButton" class="secondary-button compact-button" type="button">← Accueil</button>
+          <div>
+            <p class="eyebrow">Contrôle éditorial</p>
+            <h2>Audit des cartes</h2>
+            <p>Parcours les bibliothèques sans chrono ni score. La progression est enregistrée automatiquement.</p>
+          </div>
+        </header>
+
+        <div class="audit-setup-grid">
+          <section class="audit-panel">
+            <label class="audit-field">
+              <span>Mode à auditer</span>
+              <select id="auditModeSelect" class="select-input"></select>
+            </label>
+            <label class="audit-field">
+              <span>Cartes à afficher</span>
+              <select id="auditScopeSelect" class="select-input">
+                <option value="unseen">Pas encore évaluées</option>
+                <option value="pending">Nouvelles cartes à auditer</option>
+                <option value="all">Toutes les cartes conservées</option>
+                <option value="neutral">Cartes neutres</option>
+                <option value="liked">Cartes excellentes</option>
+                <option value="review">Cartes à revoir</option>
+              </select>
+            </label>
+            <div class="audit-filter-heading">
+              <strong>Difficultés</strong>
+            </div>
+            <div id="auditDifficultyChoices" class="audit-choice-grid audit-difficulty-grid"></div>
+          </section>
+
+          <section class="audit-panel audit-categories-panel">
+            <div class="audit-filter-heading">
+              <div>
+                <strong>Catégories</strong>
+                <small>Les cartes restent dans l’ordre de la bibliothèque.</small>
+              </div>
+              <div class="section-mini-actions">
+                <button id="auditSelectAllCategoriesButton" class="mini-button" type="button">Tout</button>
+                <button id="auditSelectNoCategoriesButton" class="mini-button" type="button">Aucun</button>
+              </div>
+            </div>
+            <div id="auditCategoryChoices" class="audit-choice-grid audit-category-grid"></div>
+          </section>
+        </div>
+
+        <section class="audit-summary-panel">
+          <div>
+            <strong id="auditSetupCount">0 carte dans cette sélection</strong>
+            <p id="auditSetupStats">Aucune carte auditée.</p>
+          </div>
+          <div class="audit-setup-actions">
+            <button id="startAuditButton" class="primary-button" type="button">Commencer un nouvel audit</button>
+            <button id="resumeAuditButton" class="secondary-button hidden" type="button">Reprendre l’audit</button>
+            <button id="exportAuditButton" class="secondary-button" type="button">Télécharger le rapport d’audit et de parties</button>
+            <button id="exportCleanLibraryButton" class="secondary-button" type="button">Exporter le JSON audité</button>
+            <button id="exportAuditStateButton" class="secondary-button" type="button">Exporter l’état d’audit</button>
+            <button id="importAuditStateButton" class="secondary-button" type="button">Importer un état d’audit</button>
+            <input id="importAuditStateInput" class="hidden" type="file" accept=".json,application/json">
+            <button id="clearAuditModeButton" class="danger-button" type="button">Effacer les statuts de ce mode</button>
+          </div>
+          <small>Une carte supprimée disparaît immédiatement de cet appareil. Le JSON officiel sur GitHub ne change qu’après intégration dans une future mise à jour.</small>
+        </section>
+
+        <section id="auditDeletedSection" class="audit-panel audit-deleted-section hidden">
+          <div class="audit-filter-heading">
+            <div>
+              <strong>Cartes supprimées localement</strong>
+              <small>Elles peuvent être restaurées avant la publication d’un nouveau JSON officiel.</small>
+            </div>
+          </div>
+          <div id="auditDeletedCardsList" class="audit-deleted-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="auditReviewScreen" class="screen audit-screen">
+      <div class="audit-review-shell">
+        <header class="audit-review-hud">
+          <button id="auditExitButton" class="secondary-button compact-button" type="button">Quitter</button>
+          <span id="auditModeLabel" class="audit-mode-label">AUDIT</span>
+          <strong id="auditProgress">1 / 1</strong>
+          <span id="auditStatusBadge" class="audit-status-badge" data-status="seen">Vue</span>
+        </header>
+
+        <article id="auditCard" class="audit-card" aria-live="polite">
+          <div id="auditLyricsContent" class="audit-card-content">
+            <p id="auditLyricsContext" class="audit-lyrics-context hidden"></p>
+            <p id="auditLyricsPrompt" class="audit-lyrics-prompt"></p>
+            <div class="audit-separator">…</div>
+            <p id="auditLyricsAnswer" class="audit-lyrics-answer"></p>
+          </div>
+
+          <div id="auditSimpleContent" class="audit-card-content hidden">
+            <p id="auditSimplePrompt" class="audit-simple-prompt"></p>
+          </div>
+
+          <div id="auditWordsContent" class="audit-card-content hidden">
+            <p id="auditWordPrompt" class="audit-simple-prompt"></p>
+            <div class="audit-forbidden-block">
+              <span>MOTS INTERDITS</span>
+              <div id="auditForbiddenWords" class="forbidden-words-list"></div>
+            </div>
+          </div>
+
+          <div class="audit-card-meta">
+            <strong id="auditMetaPrimary"></strong>
+            <span id="auditMetaSecondary"></span>
+          </div>
+        </article>
+
+        <section id="auditCompletionPanel" class="audit-completion-panel hidden">
+          <p class="eyebrow">Bibliothèque parcourue</p>
+          <h2>Audit terminé</h2>
+          <p>Le rapport contient les cartes vues, neutres, excellentes, à revoir et supprimées.</p>
+          <div class="dialog-actions">
+            <button id="auditCompletionBackButton" class="secondary-button" type="button">Retour aux filtres</button>
+            <button id="auditCompletionExportButton" class="primary-button" type="button">Télécharger le rapport</button>
+          </div>
+        </section>
+
+        <footer id="auditActionBar" class="audit-action-bar">
+          <button id="auditBackButton" class="audit-action secondary-button" type="button" disabled><kbd>←</kbd><span>Retour</span></button>
+          <button id="auditNeutralButton" class="audit-action secondary-button" type="button"><kbd>Espace / →</kbd><span>Neutre · suivante</span></button>
+          <button id="auditLikeButton" class="audit-action audit-like-button" type="button"><kbd>L</kbd><span>Excellente</span></button>
+          <button id="auditReviewButton" class="audit-action audit-review-button" type="button"><kbd>R</kbd><span>À revoir</span></button>
+          <button id="auditEditButton" class="audit-action audit-edit-button" type="button"><kbd>M</kbd><span>Corriger</span></button>
+          <button id="auditDeleteButton" class="audit-action danger-button" type="button"><kbd>S / Suppr</kbd><span>Supprimer</span></button>
+        </footer>
+
+        <p id="auditKeyboardHelp" class="audit-keyboard-help">
+          Clavier : <kbd>←</kbd> retour · <kbd>Espace</kbd> ou <kbd>→</kbd> neutre · <kbd>L</kbd> excellente · <kbd>R</kbd> à revoir · <kbd>M</kbd> corriger · <kbd>S</kbd> ou <kbd>Suppr</kbd> supprimer · <kbd>Échap</kbd> quitter. Sur téléphone, touche les boutons correspondants.
+        </p>
+      </div>
+    </section>
+
+    <section id="manageScreen" class="screen">
+      <div class="manage-card">
+        <header class="manage-header">
+          <button id="manageBackButton" class="secondary-button compact-button" type="button">← Accueil</button>
+          <div>
+            <p class="eyebrow">Contenu du jeu</p>
+            <h2>Gérer les cartes</h2>
+          </div>
+        </header>
+
+        <div id="manageModeTabs" class="manage-mode-tabs"></div>
+
+        <div class="manage-toolbar">
+          <input id="cardSearchInput" class="search-input" type="search" placeholder="Rechercher une carte…">
+          <select id="manageBoxFilter" class="select-input" aria-label="Filtrer par boîte"></select>
+          <button id="addCardButton" class="primary-button compact-button" type="button">+ Ajouter une carte</button>
+          <button id="manageBoxesButton" class="secondary-button compact-button" type="button">Gérer les boîtes</button>
+        </div>
+
+        <p id="manageStats" class="manage-stats"></p>
+        <div id="cardList" class="card-list"></div>
+      </div>
+    </section>
+
+    <section id="countdownScreen" class="screen" aria-live="assertive">
+      <div id="countdownValue" class="countdown-value">3</div>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <header class="game-header">
+        <div class="time-block" aria-label="Temps restant">
+          <span class="header-label">TEMPS</span>
+          <span id="timeDisplay" class="time-display">60</span>
+        </div>
+        <div class="score-block valid">
+          <span id="validScoreLabel" class="header-label">VALIDÉES</span>
+          <span id="validScore">0</span>
+        </div>
+        <div class="score-block passed">
+          <span id="passScoreLabel" class="header-label">PASSÉES</span>
+          <span id="passScore">0</span>
+        </div>
+      </header>
+
+      <div class="swipe-stage">
+        <article id="gameCard" class="game-card" aria-live="polite">
+          <div id="leftSwipeGuide" class="swipe-guide swipe-guide-left guide-pass" data-result="pass" aria-hidden="true">
+            <span class="guide-arrow">&lt;</span>
+            <span class="guide-word">PASSÉE</span>
+          </div>
+
+          <div id="rightSwipeGuide" class="swipe-guide swipe-guide-right guide-valid" data-result="valid" aria-hidden="true">
+            <span class="guide-word">VALIDÉE</span>
+            <span class="guide-arrow">&gt;</span>
+          </div>
+
+          <p id="gameModeLabel" class="mode-label">DEVINER LES PAROLES</p>
+          <button id="deleteCurrentCardButton" class="card-delete-button game-delete-card-button" type="button" aria-label="Supprimer cette carte" title="Supprimer cette carte">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-1 11H8L7 9Zm3 2v7m4-7v7"/></svg>
+            <span class="card-delete-label">Suppr.</span>
+          </button>
+
+          <div id="lyricsGameContent" class="mode-card-content">
+            <p id="lyricsContextText" class="lyrics-context-text hidden"></p>
+            <p id="promptText" class="prompt-text"></p>
+            <div class="separator">…</div>
+            <p id="answerText" class="answer-text"></p>
+          </div>
+
+          <div id="mimeGameContent" class="mode-card-content hidden">
+            <p id="mimePromptText" class="mime-prompt-text"></p>
+          </div>
+
+          <div id="wordsGameContent" class="mode-card-content hidden">
+            <p id="wordPromptText" class="word-prompt-text"></p>
+            <div id="forbiddenWordsBlock" class="forbidden-words-block">
+              <span class="forbidden-title">MOTS INTERDITS</span>
+              <div id="forbiddenWordsList" class="forbidden-words-list"></div>
+            </div>
+          </div>
+
+          <div id="cardMeta" class="card-meta">
+            <span id="cardMetaPrimary"></span>
+            <span id="cardMetaSecondary"></span>
+          </div>
+        </article>
+      </div>
+
+      <div id="pauseOverlay" class="pause-overlay hidden" role="dialog" aria-modal="true">
+        <div class="pause-panel">
+          <p>PAUSE</p>
+          <div class="pause-difficulty-section">
+            <strong>Difficultés actives</strong>
+            <small>Décoche une difficulté pour retirer immédiatement ses cartes restantes de cette partie.</small>
+            <div id="pauseDifficultyChoices" class="pause-difficulty-choices"></div>
+          </div>
+          <button id="resumeOverlayButton" class="primary-button" type="button">Reprendre</button>
+        </div>
+      </div>
+
+      <footer class="game-controls">
+        <button id="undoButton" class="control-button" type="button" disabled>↶ Retour</button>
+        <button id="pauseButton" class="control-button" type="button">Ⅱ Pause</button>
+        <button id="flipGameButton" class="control-button" type="button">↻ Retourner</button>
+        <button id="endButton" class="control-button danger" type="button">■ Terminer</button>
+      </footer>
+    </section>
+
+    <section id="drawTransitionScreen" class="screen draw-screen" aria-live="assertive">
+      <div class="draw-transition-card">
+        <p id="drawTransitionKicker" class="draw-mode-kicker">DESSIN TERMINÉ</p>
+        <div class="draw-transition-icon" aria-hidden="true">✎</div>
+        <h2 id="drawTransitionTitle">Remets le téléphone sur ton front</h2>
+        <p id="drawTransitionText">La partie reprend automatiquement.</p>
+        <div id="drawTransitionCountdown" class="draw-transition-countdown">3</div>
+      </div>
+    </section>
+
+    <section id="drawRevealScreen" class="screen draw-screen">
+      <div class="draw-reveal-card">
+        <div id="drawPromptPanel">
+          <p class="draw-mode-kicker">DESSINE-MOI ÇA !</p>
+          <p id="drawAttemptLabel" class="draw-attempt-label">Dessin 1 sur 3</p>
+
+          <button id="drawRevealPromptButton" class="draw-reveal-prompt-button" type="button" aria-pressed="false">
+            <span id="drawRevealPrompt">Appuie pour révéler le mot</span>
+            <small>Écran face au dessinateur uniquement</small>
+          </button>
+
+          <p id="drawRevealMeta" class="draw-reveal-meta hidden">Catégorie · Difficulté</p>
+          <p class="draw-rule-reminder">Pas de lettres, de mots ni de chiffres qui donnent la réponse.</p>
+          <div class="draw-reveal-actions draw-reveal-actions-direct">
+            <button id="drawOnPhoneButton" class="primary-button draw-primary" type="button" disabled>Je gribouille ici</button>
+            <button id="drawOnPaperButton" class="secondary-button" type="button" disabled>Je massacre une feuille</button>
+            <button id="drawSkipRevealButton" class="danger-button" type="button" disabled>Passer ce dessin</button>
+            <button id="drawDeleteCardButton" class="danger-button draw-delete-card-button" type="button" disabled>Supprimer la carte</button>
+          </div>
+          <p class="draw-choice-note">Le chrono démarre seulement après le choix du support.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="drawPlayScreen" class="screen draw-screen">
+      <div class="draw-play-shell">
+        <div class="draw-workspace">
+          <div class="draw-canvas-hud" aria-live="polite">
+            <div class="draw-hud-progress">
+              <strong id="drawPlayProgress">Dessin 1/3</strong>
+              <span id="drawLiveScore">0 point</span>
+            </div>
+            <div class="draw-hud-actions">
+              <button id="drawPauseButton" class="draw-hud-button" type="button" aria-label="Mettre le dessin en pause">Ⅱ</button>
+              <button id="drawEndButton" class="draw-hud-button draw-hud-end" type="button" aria-label="Terminer la manche">■</button>
+              <div id="drawTimerDisplay" class="draw-timer-display">30</div>
+            </div>
+          </div>
+
+          <div id="drawCanvasArea" class="draw-canvas-area">
+            <canvas id="drawingCanvas" aria-label="Zone de dessin"></canvas>
+          </div>
+
+          <div id="drawPaperArea" class="draw-paper-area hidden">
+            <div class="paper-icon" aria-hidden="true">▱</div>
+            <h2>Massacre la feuille !</h2>
+            <p>Le mot est caché. Dessine jusqu’à ce qu’il soit trouvé ou que le chrono explose.</p>
+          </div>
+
+          <div class="draw-side-stack draw-side-stack-left">
+            <button id="drawFoundButton" class="draw-result-button draw-found-button" type="button" aria-label="Maintenir une demi-seconde pour valider">
+              <span class="draw-result-icon" aria-hidden="true">✓</span>
+              <span>Trouvé</span>
+              <small>0,5 s</small>
+            </button>
+
+            <div id="drawColorChoices" class="draw-side-toolbar draw-color-choices" aria-label="Couleurs">
+              <button class="draw-color selected" type="button" data-color="#111318" style="--swatch:#111318" aria-label="Noir"></button>
+              <button class="draw-color" type="button" data-color="#e53935" style="--swatch:#e53935" aria-label="Rouge"></button>
+              <button class="draw-color" type="button" data-color="#1976d2" style="--swatch:#1976d2" aria-label="Bleu"></button>
+              <button class="draw-color" type="button" data-color="#2e7d32" style="--swatch:#2e7d32" aria-label="Vert"></button>
+              <button class="draw-color" type="button" data-color="#f9a825" style="--swatch:#f9a825" aria-label="Jaune"></button>
+              <button class="draw-color" type="button" data-color="#8e24aa" style="--swatch:#8e24aa" aria-label="Violet"></button>
+            </div>
+          </div>
+
+          <div id="drawPauseOverlay" class="draw-pause-overlay hidden" role="dialog" aria-modal="true">
+            <p>PAUSE</p>
+            <button id="drawResumeButton" class="primary-button draw-primary" type="button">Reprendre le dessin</button>
+          </div>
+
+          <div class="draw-side-stack draw-side-stack-right">
+            <button id="drawPassButton" class="draw-result-button draw-pass-button" type="button" aria-label="Maintenir une demi-seconde pour passer">
+              <span class="draw-result-icon" aria-hidden="true">✕</span>
+              <span>Passer</span>
+              <small>0,5 s</small>
+            </button>
+
+            <div id="drawToolsPanel" class="draw-side-toolbar draw-tools-panel" aria-label="Outils de dessin">
+              <label class="draw-size-control" aria-label="Épaisseur du trait">
+                <span class="draw-size-icon" aria-hidden="true">●</span>
+                <input id="drawBrushSize" type="range" min="2" max="24" value="7" aria-label="Épaisseur du trait">
+              </label>
+              <button id="drawEraserButton" class="draw-tool-button draw-icon-button" type="button" aria-label="Passer à la gomme" title="Gomme">
+                <span id="drawToolIcon" aria-hidden="true"></span>
+              </button>
+              <button id="drawUndoButton" class="draw-tool-button draw-icon-button" type="button" aria-label="Annuler le dernier trait" title="Annuler">
+                <span class="draw-undo-icon" aria-hidden="true">↶</span>
+              </button>
+              <button id="drawClearButton" class="draw-tool-button draw-icon-button draw-trash-button" type="button" aria-label="Tout effacer" title="Tout effacer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-1 11H8L7 9Zm3 2v7m4-7v7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultsScreen" class="screen">
+      <div class="results-card">
+        <p class="eyebrow">Manche terminée</p>
+        <h2>Résultats</h2>
+
+        <div class="result-summary">
+          <div><strong id="resultValid">0</strong><span id="resultValidLabel">validées</span></div>
+          <div><strong id="resultPassed">0</strong><span id="resultPassedLabel">passées</span></div>
+          <div><strong id="resultTotal">0</strong><span id="resultTotalLabel">jouées</span></div>
+        </div>
+
+        <div id="resultBreakdown" class="result-breakdown hidden"></div>
+        <div id="resultDetails" class="result-details"></div>
+
+        <div class="results-actions">
+          <button id="replayButton" class="primary-button" type="button">Rejouer</button>
+          <button id="homeButton" class="secondary-button" type="button">Accueil</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section id="orientationGuard" class="orientation-guard hidden" role="alertdialog" aria-modal="true" aria-labelledby="orientationGuardTitle">
+    <div class="orientation-guard-card">
+      <div class="orientation-guard-phone" aria-hidden="true">↻</div>
+      <p class="eyebrow">Mode paysage requis</p>
+      <h2 id="orientationGuardTitle">Tourne ton téléphone</h2>
+      <p>Cette partie est conçue pour être jouée à l’horizontale. L’application essaie de verrouiller automatiquement l’écran en paysage.</p>
+      <button id="orientationGuardButton" class="primary-button" type="button">Passer en paysage</button>
+    </div>
+  </section>
+
+  <dialog id="modeConfigDialog" class="mode-config-dialog">
+    <form>
+      <div id="modeDialogHero" class="mode-dialog-hero">
+        <div id="modeDialogIcon" class="mode-dialog-icon" aria-hidden="true"></div>
+        <div class="mode-dialog-heading">
+          <p class="mode-dialog-title-line"><span>Mode de jeu :</span> <strong id="modeDialogTitle">Mode</strong></p>
+          <p id="modeDialogDescription"></p>
+        </div>
+        <button id="closeModeDialogButton" class="close-button mode-dialog-close" type="button" aria-label="Fermer">×</button>
+      </div>
+
+      <div class="mode-dialog-body">
+        <label class="mode-enable-row">
+          <span>
+            <strong>Inclure ce mode dans la partie</strong>
+            <small id="modeDialogCount">0 carte sélectionnée</small>
+          </span>
+          <input id="modeEnabledInput" type="checkbox" checked>
+        </label>
+
+        <details id="modeRuleDetails" class="mode-rule-card" open>
+          <summary><h3>Comment jouer ?</h3></summary>
+          <ul id="modeRulesList"></ul>
+        </details>
+
+        <section class="mode-setting-section">
+          <div class="section-title-row">
+            <div>
+              <h3>Difficulté</h3>
+              <p>Ce filtre s’applique à toutes les catégories du mode.</p>
+            </div>
+          </div>
+          <div id="modeDifficultyChoices" class="difficulty-choice-grid"></div>
+        </section>
+
+        <section id="wordsSpecialSettings" class="mode-setting-section hidden">
+          <label class="special-option-row">
+            <span>
+              <strong>Afficher les mots interdits</strong>
+              <small>Ils apparaîtront en rouge sous le mot à faire deviner.</small>
+            </span>
+            <input id="showForbiddenWordsInput" type="checkbox" checked>
+          </label>
+        </section>
+
+        <section id="drawSpecialSettings" class="mode-setting-section hidden">
+          <div class="draw-config-group">
+            <div class="draw-config-heading">
+              <h4>Dessin seul</h4>
+              <p>Nombre de tentatives lorsque ce mode est lancé sans les autres.</p>
+            </div>
+            <label class="draw-attempt-setting">
+              Nombre de dessins
+              <select id="drawAttemptCountInput">
+                <option value="3">3 dessins</option>
+                <option value="5">5 dessins</option>
+                <option value="7">7 dessins</option>
+                <option value="10">10 dessins</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="draw-config-group draw-mixed-settings">
+            <div class="draw-config-heading">
+              <h4>Partie mélangée</h4>
+              <p>Le chrono général se met en pause pendant chaque dessin.</p>
+            </div>
+            <div class="draw-mixed-grid">
+              <label>
+                Dessins par manche
+                <select id="drawMixedCountInput">
+                  <option value="1">1 dessin</option>
+                  <option value="2">2 dessins</option>
+                  <option value="3">3 dessins</option>
+                  <option value="4">4 dessins</option>
+                  <option value="5">5 dessins</option>
+                </select>
+              </label>
+              <div id="drawPenaltyPreview" class="draw-penalty-preview">Pénalité : −5 s par dessin</div>
+            </div>
+            <label class="special-option-row draw-arrival-option">
+              <span>
+                <strong>Son spécial à l’arrivée</strong>
+                <small>La vibration distinctive respecte le réglage général.</small>
+              </span>
+              <input id="drawArrivalSoundEnabledInput" type="checkbox" checked>
+            </label>
+          </div>
+
+          <div class="draw-config-group">
+            <div class="draw-config-heading">
+              <h4>Durée des dessins</h4>
+              <p>Ces durées s’appliquent au mode seul et aux parties mélangées.</p>
+            </div>
+            <div class="draw-config-grid draw-duration-grid">
+              <label>
+                Facile
+                <span><input id="drawEasySecondsInput" type="number" min="10" max="120" step="5" value="30"> s</span>
+              </label>
+              <label>
+                Moyen
+                <span><input id="drawMediumSecondsInput" type="number" min="10" max="120" step="5" value="45"> s</span>
+              </label>
+              <label>
+                Difficile
+                <span><input id="drawHardSecondsInput" type="number" min="10" max="180" step="5" value="60"> s</span>
+              </label>
+            </div>
+          </div>
+
+          <label class="special-option-row draw-sound-option">
+            <span>
+              <strong>Son à la fin du chrono</strong>
+              <small>La vibration reste active selon le réglage général.</small>
+            </span>
+            <input id="drawSoundEnabledInput" type="checkbox" checked>
+          </label>
+        </section>
+
+        <section id="drinkingSpecialSettings" class="mode-setting-section hidden">
+          <label class="special-option-row drinking-hot-option">
+            <span>
+              <strong>🔥 Après minuit</strong>
+              <small>Ajoute les 75 cartes adultes et affiche une flamme rose sur la tuile.</small>
+            </span>
+            <input id="drinkingAdultModeInput" type="checkbox">
+          </label>
+          <p class="dialog-note">Les niveaux correspondent à Pépouze, Ça chauffe et Demain, on nie tout. Le mode reste autonome.</p>
+        </section>
+
+        <section class="mode-setting-section">
+          <div class="section-title-row">
+            <div>
+              <h3>Catégories</h3>
+              <p>Choisis les boîtes utilisées pour ce mode.</p>
+            </div>
+            <div class="section-mini-actions">
+              <button id="modeSelectAllBoxesButton" class="mini-button" type="button">Tout</button>
+              <button id="modeSelectNoBoxesButton" class="mini-button" type="button">Aucun</button>
+            </div>
+          </div>
+          <div id="modeBoxChoices" class="mode-box-choice-grid"></div>
+        </section>
+      </div>
+
+      <div class="dialog-actions one-column mode-dialog-actions">
+        <button id="doneModeDialogButton" class="primary-button" type="button">Terminer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="auditReasonDialog" class="editor-dialog audit-reason-dialog">
+    <form method="dialog">
+      <div class="dialog-header">
+        <h2 id="auditReasonDialogTitle">Pourquoi cette carte ?</h2>
+        <button id="closeAuditReasonButton" class="close-button" type="button" aria-label="Fermer">×</button>
+      </div>
+      <p class="dialog-note">Le motif est facultatif. Choisis une raison rapide, écris une précision libre ou continue avec « Je ne sais pas ».</p>
+      <div id="auditReasonChoices" class="audit-reason-choices"></div>
+      <label class="audit-custom-reason-field">
+        <span>Précision facultative</span>
+        <textarea id="auditCustomReasonInput" rows="3" placeholder="Ex. : ajouter la phrase précédente pour retrouver l’air"></textarea>
+      </label>
+      <div class="dialog-actions audit-reason-actions">
+        <button id="auditReasonUnknownButton" class="secondary-button" type="button">Je ne sais pas</button>
+        <button id="auditReasonCustomButton" class="primary-button" type="button">Enregistrer la précision</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="cardDialog" class="editor-dialog">
+    <form id="cardForm">
+      <div class="dialog-header">
+        <h2 id="cardDialogTitle">Ajouter une carte</h2>
+        <button id="closeCardDialogButton" class="close-button" type="button" aria-label="Fermer">×</button>
+      </div>
+
+      <input id="cardIdInput" type="hidden">
+      <input id="cardModeInput" type="hidden">
+
+      <div id="lyricsEditorFields">
+        <label>
+          Contexte gris facultatif
+          <textarea id="cardContextInput" rows="2" placeholder="Phrase précédente ou indice très court"></textarea>
+        </label>
+        <label>
+          Paroles à chanter
+          <textarea id="cardPromptInput" rows="2" placeholder="Libérée, délivrée"></textarea>
+        </label>
+        <label>
+          Paroles à retrouver
+          <textarea id="cardAnswerInput" rows="2" placeholder="Je ne mentirai plus jamais"></textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            Titre
+            <input id="cardTitleInput" type="text" placeholder="Libérée, délivrée">
+          </label>
+          <label>
+            Artiste / film / source
+            <input id="cardSourceInput" type="text" placeholder="La Reine des Neiges">
+          </label>
+        </div>
+      </div>
+
+      <div id="mimeEditorFields" class="hidden">
+        <label>
+          <span id="simplePromptLabel">Consigne à mimer</span>
+          <textarea id="mimePromptInput" rows="3" placeholder="Un pigeon qui vole une frite"></textarea>
+        </label>
+      </div>
+
+      <div id="wordsEditorFields" class="hidden">
+        <label>
+          Mot ou expression à faire deviner
+          <textarea id="wordPromptInput" rows="2" placeholder="Ornithorynque"></textarea>
+        </label>
+        <label>
+          Mots interdits
+          <textarea id="forbiddenWordsInput" rows="3" placeholder="bec, canard, Australie, mammifère, castor"></textarea>
+          <small>Sépare les mots par des virgules ou des retours à la ligne.</small>
+        </label>
+      </div>
+
+      <label>
+        Difficulté
+        <select id="cardDifficultyInput">
+          <option value="easy">Facile</option>
+          <option value="medium">Moyen</option>
+          <option value="hard">Difficile</option>
+        </select>
+      </label>
+
+      <label>
+        Boîte
+        <select id="cardBoxInput" required></select>
+      </label>
+
+      <label class="checkbox-row">
+        <input id="cardActiveInput" type="checkbox" checked>
+        Carte active dans le jeu
+      </label>
+
+      <div class="dialog-actions">
+        <button class="secondary-button" id="cancelCardButton" type="button">Annuler</button>
+        <button class="primary-button" type="submit">Enregistrer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="boxesDialog" class="editor-dialog">
+    <form>
+      <div class="dialog-header">
+        <h2 id="boxesDialogTitle">Gérer les boîtes</h2>
+        <button id="closeBoxesDialogButton" class="close-button" type="button" aria-label="Fermer">×</button>
+      </div>
+      <div class="add-box-row">
+        <input id="newBoxNameInput" type="text" placeholder="Nom de la nouvelle boîte">
+        <button id="addBoxButton" class="primary-button compact-button" type="button">Ajouter</button>
+      </div>
+      <div id="boxesList" class="boxes-list"></div>
+      <p class="dialog-note">Si tu supprimes une boîte, ses cartes seront déplacées dans « Sans catégorie ».</p>
+      <div class="dialog-actions one-column">
+        <button id="doneBoxesButton" class="secondary-button" type="button">Terminer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="diagnosticDialog" class="diagnostic-dialog">
+    <form method="dialog">
+      <div class="dialog-header">
+        <h2>Diagnostic</h2>
+        <button class="close-button" value="close" aria-label="Fermer">×</button>
+      </div>
+      <pre id="diagnosticOutput"></pre>
+      <div class="dialog-actions">
+        <button id="copyDiagnosticButton" class="primary-button" type="button">Copier le diagnostic</button>
+        <button class="secondary-button" value="close">Fermer</button>
+      </div>
+    </form>
+  </dialog>
+
+
+  <dialog id="resumeMultiplayerDialog" class="resume-multiplayer-dialog">
+    <form>
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">Partie en cours</p>
+          <h2>Reprendre le multijoueur ?</h2>
+        </div>
+      </div>
+      <p id="resumeMultiplayerText">Une partie interrompue a été retrouvée.</p>
+      <div class="dialog-actions">
+        <button id="discardMultiplayerButton" class="danger-button" type="button">Abandonner</button>
+        <button id="resumeMultiplayerButton" class="primary-button" type="button">Reprendre</button>
+      </div>
+    </form>
+  </dialog>
+
+
+  <section id="bootRecovery" class="boot-recovery hidden" role="alertdialog" aria-modal="true" aria-labelledby="bootRecoveryTitle">
+    <div class="boot-recovery-card">
+      <p class="eyebrow">Démarrage interrompu</p>
+      <h2 id="bootRecoveryTitle">L’application n’a pas pu se charger</h2>
+      <p id="bootRecoveryMessage">Un fichier ou un ancien cache empêche le démarrage.</p>
+      <div class="boot-recovery-actions">
+        <button id="bootRetryButton" class="secondary-button" type="button">Réessayer</button>
+        <button id="bootRepairButton" class="primary-button" type="button">Réparer le cache technique</button>
+      </div>
+      <small>La réparation conserve les cartes personnelles, les réglages et les sauvegardes locales.</small>
+    </div>
+  </section>
+
+  <script>
+    (() => {
+      const VERSION_TOKEN = "097";
+      const recovery = document.querySelector("#bootRecovery");
+      const message = document.querySelector("#bootRecoveryMessage");
+      let bootFinished = false;
+
+      function showBootFailure(error) {
+        if (bootFinished) return;
+        const detail = error?.message
+          ? `Détail technique : ${error.message}`
+          : "Un fichier ou un ancien cache empêche le démarrage.";
+        message.textContent = detail;
+        recovery.classList.remove("hidden");
+      }
+
+      window.MDB_BOOT_FAILURE = showBootFailure;
+      window.addEventListener("mdb:ready", () => {
+        bootFinished = true;
+        recovery.classList.add("hidden");
+      }, { once: true });
+
+      document.querySelector("#bootRetryButton").addEventListener("click", () => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("v", `${VERSION_TOKEN}-${Date.now()}`);
+        window.location.replace(url);
+      });
+
+      document.querySelector("#bootRepairButton").addEventListener("click", async () => {
+        const button = document.querySelector("#bootRepairButton");
+        button.disabled = true;
+        message.textContent = "Nettoyage du cache technique…";
+        try {
+          if ("serviceWorker" in navigator) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations.map(registration => registration.unregister()));
+          }
+          if ("caches" in window) {
+            const keys = await caches.keys();
+            await Promise.all(keys.filter(key => key.startsWith("mdb-")).map(key => caches.delete(key)));
+          }
+        } finally {
+          const url = new URL(window.location.href);
+          url.searchParams.set("v", `${VERSION_TOKEN}-repair-${Date.now()}`);
+          window.location.replace(url);
+        }
+      });
+
+      window.setTimeout(() => {
+        if (document.documentElement.dataset.mdbReady !== "1") {
+          showBootFailure(new Error("Le démarrage dépasse 20 secondes."));
+        }
+      }, 20000);
+    })();
+  </script>
+  <script type="module" data-mdb-bootstrap>
+    import("./src/main.js?v=097").catch(error => window.MDB_BOOT_FAILURE(error));
+  </script>
+</body>
+</html>

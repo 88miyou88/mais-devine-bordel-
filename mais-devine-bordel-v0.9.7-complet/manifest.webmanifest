@@ -1,0 +1,26 @@
+{
+  "name": "Mais devine, bordel !",
+  "short_name": "MDB!",
+  "description": "Application de jeux de soirée : devinettes, mime, dessin et cartes de groupe.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#0b0d11",
+  "theme_color": "#111318",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "./assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
